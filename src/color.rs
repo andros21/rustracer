@@ -4,15 +4,9 @@ const EPSILON: f32 = 1e-5;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Color {
-    r: f32,
-    g: f32,
-    b: f32,
-}
-
-impl From<()> for Color {
-    fn from(_: ()) -> Self {
-        Self::default()
-    }
+    pub r: f32,
+    pub g: f32,
+    pub b: f32,
 }
 
 impl From<(f32, f32, f32)> for Color {
@@ -61,7 +55,7 @@ impl Mul<f32> for Color {
     }
 }
 
-trait IsClose<Rhs = Self> {
+pub trait IsClose<Rhs = Self> {
     fn is_close(self, other: Self) -> bool;
 }
 

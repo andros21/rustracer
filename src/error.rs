@@ -1,7 +1,11 @@
 use thiserror::Error;
 
-#[derive(Error, Debug, PartialEq)]
+#[derive(Error, Debug)]
 pub enum HdrImageErr {
-    #[error("(HdrImage) invalid indexes: {0:?}, hdr image shape: {1:?}")]
+    #[error("invalid indexes: {0:?}, expected hdr image shape: {1:?}")]
     OutOfBounds((usize, usize), (usize, usize)),
+    #[error("invalid pfm file format: {0}")]
+    InvalidPfmFileFormat(String),
+    #[error("impossible to read binary data from the file")]
+    InvalidPfmFileParse(#[from] std::io::Error),
 }

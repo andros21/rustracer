@@ -71,6 +71,15 @@ impl IsClose for Color {
     }
 }
 
+impl IntoIterator for Color {
+    type Item = f32;
+    type IntoIter = std::array::IntoIter<f32, 3>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        std::array::IntoIter::new([self.r, self.b, self.g])
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;

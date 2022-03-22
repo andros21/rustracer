@@ -76,7 +76,7 @@ impl IntoIterator for Color {
     type IntoIter = std::array::IntoIter<f32, 3>;
 
     fn into_iter(self) -> Self::IntoIter {
-        std::array::IntoIter::new([self.r, self.b, self.g])
+        std::array::IntoIter::new([self.r, self.g, self.b])
     }
 }
 

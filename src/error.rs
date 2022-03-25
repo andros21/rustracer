@@ -7,5 +7,9 @@ pub enum HdrImageErr {
     #[error("invalid pfm file format: {0}")]
     InvalidPfmFileFormat(String),
     #[error("impossible to read binary data from the file")]
-    InvalidPfmFileParse(#[from] std::io::Error),
+    PfmFileReadFailure(#[from] std::io::Error),
+    #[error("impossible to interpret size specification as integer")]
+    ImgShapeParseFailure(#[from] std::num::ParseIntError),
+    #[error("impossible to interpret float specification as float")]
+    EndiannessParseFailure(#[from] std::num::ParseFloatError),
 }

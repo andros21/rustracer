@@ -9,6 +9,13 @@ pub struct Color {
     pub b: f32,
 }
 
+impl Color {
+    pub fn luminosity(self) -> f32 {
+        (self.into_iter().reduce(f32::max).unwrap() + self.into_iter().reduce(f32::min).unwrap())
+            * 0.5
+    }
+}
+
 impl From<(f32, f32, f32)> for Color {
     fn from(rgb: (f32, f32, f32)) -> Self {
         Self {
@@ -119,18 +126,23 @@ mod test {
     }
 
     #[test]
-    fn is_close_color_0() {
+    fn is_close_color() {
         assert!(
             (Color::from((1.23, 4.56, 7.89)) * Color::from((9.87, 6.54, 3.21)))
                 .is_close(Color::from((12.1401, 29.8224, 25.3269)))
-        )
-    }
-
-    #[test]
-    fn is_close_color_1() {
+        );
         assert!(
             (Color::from((1.0, 2.0, 3.0)) + Color::from((1.0, 2.0 + EPSILON * 1e-1, 3.0)))
                 .is_close(Color::from((2.0, 4.0, 6.0)))
         )
+    }
+
+    #[test]
+    fn luminosity() {
+        let col1 = Color::from((1.0, 2.0, 3.0));
+        let col2 = Color::from((9.0, 5.0, 7.0));
+
+        assert!(col1.luminosity().is_close(2.0));
+        assert!(col2.luminosity().is_close(7.0))
     }
 }

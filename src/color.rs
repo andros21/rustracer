@@ -92,7 +92,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn add() {
+    fn test_add() {
         assert_eq!(
             Color::from((1.0, 1.0, 1.0)) + Color::from((2.0, 2.0, 2.0)),
             Color::from((3.0, 3.0, 3.0))
@@ -100,7 +100,7 @@ mod test {
     }
 
     #[test]
-    fn mul_color() {
+    fn test_mul_color() {
         assert_eq!(
             Color::from((1.0, 1.0, 1.0)) * Color::from((2.0, 1.0, 2.0)),
             Color::from((2.0, 1.0, 2.0))
@@ -108,7 +108,7 @@ mod test {
     }
 
     #[test]
-    fn mul_float() {
+    fn test_mul_float() {
         assert_eq!(
             Color::from((1.0, 1.0, 1.0)) * 2.0,
             Color::from((2.0, 2.0, 2.0))
@@ -116,17 +116,17 @@ mod test {
     }
 
     #[test]
-    fn is_close_float() {
+    fn test_is_close_float() {
         assert!((EPSILON * 1e-1 + 1.0).is_close(1.0))
     }
 
     #[test]
-    fn neg_is_close_float() {
+    fn test_neg_is_close_float() {
         assert!(!(EPSILON + 1.0).is_close(1.0))
     }
 
     #[test]
-    fn is_close_color() {
+    fn test_is_close_color() {
         assert!(
             (Color::from((1.23, 4.56, 7.89)) * Color::from((9.87, 6.54, 3.21)))
                 .is_close(Color::from((12.1401, 29.8224, 25.3269)))
@@ -138,7 +138,7 @@ mod test {
     }
 
     #[test]
-    fn luminosity() {
+    fn test_luminosity() {
         let col1 = Color::from((1.0, 2.0, 3.0));
         let col2 = Color::from((9.0, 5.0, 7.0));
 

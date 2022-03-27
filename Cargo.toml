@@ -8,3 +8,8 @@ edition = "2021"
 [dependencies]
 thiserror = "1.0.30"
 byteorder = "1.4.3"
+
+[dependencies.image]
+version          = "0.24.1"
+default-features = false
+features         = ["farbfeld", "png"]

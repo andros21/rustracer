@@ -1,9 +1,30 @@
 [package]
-name = "rustracer"
-version = "0.1.0"
-edition = "2021"
+name        = "rustracer"
+license     = "GPL-3.0"
+version     = "0.1.0"
+edition     = "2021"
+authors     = [
+   "Andrea Rossoni <andros21 at e.email>",
+   "Paolo Azzini <paolo.azzini1 at gmail.com>"
+]
+readme      = "README.md"
+repository  = "https://github.com/andros21/rustracer"
+homepage    = "https://github.com/andros21/rustracer"
+categories  = ["command-line-utilities"]
+description = "cli photorealistic image generator"
+keywords    = [
+   "cli",
+   "generator",
+   "image",
+   "photo",
+   "raytracer",
+   "raytracing",
+   "realistic",
+]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "rustracer"
+path = "src/main.rs"
 
 [dependencies]
 thiserror = "1.0.30"
@@ -13,3 +34,8 @@ byteorder = "1.4.3"
 version          = "0.24.1"
 default-features = false
 features         = ["farbfeld", "png"]
+
+[dependencies.clap]
+version          = "3.1.6"
+default-features = false
+features         = ["std", "suggestions", "wrap_help"]

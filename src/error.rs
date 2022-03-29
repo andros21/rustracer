@@ -17,3 +17,11 @@ pub enum HdrImageErr {
     #[error("unsupported {0} ldr file format, only ff or png supported")]
     UnsupportedLdrFileFormat(String),
 }
+
+#[derive(Error, Debug)]
+pub enum ConvertErr {
+    #[error("invalid {0}, expected floating-point number")]
+    FloatParseFailure(#[source] std::num::ParseFloatError, String),
+    #[error("{0}")]
+    IoError(#[source] HdrImageErr),
+}

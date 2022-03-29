@@ -1,12 +1,12 @@
 use byteorder::{ReadBytesExt, WriteBytesExt};
 use image::{DynamicImage, ImageFormat, Rgb, Rgba};
 use std::fs::File;
-use std::io::{BufRead, BufReader, BufWriter, Cursor, Write};
+use std::io::{BufRead, BufReader, BufWriter, Write};
 use std::path::Path;
 use std::str::FromStr;
 use std::vec::Vec;
 
-use crate::color::{Color, IsClose};
+use crate::color::Color;
 use crate::error::HdrImageErr;
 
 const DELTA: f32 = 1e-10;
@@ -280,6 +280,8 @@ fn clamp(x: f32) -> f32 {
 #[cfg(test)]
 mod test {
     use super::*;
+    use std::io::Cursor;
+    use crate::color::IsClose;
 
     #[test]
     fn test_image_creation() {

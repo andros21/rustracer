@@ -22,7 +22,7 @@ permissions: read-all
 jobs:
   lint:
     name: lint ci
-    if: ${{ github.event.pull_request.merged == 'false' }}
+    if: ${{ !github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout project

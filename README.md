@@ -4,14 +4,22 @@
   <a href="https://github.com/andros21/rustracer">
     <img src="https://user-images.githubusercontent.com/58751603/160428859-381f9846-b460-4d9e-bb25-4b111f99fb77.png" alt="Logo" width="70%">
   </a>
-  <br>
   <h3>cli photorealistic image generator</h3>
+  <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/workflow/status/andros21/rustracer/CI?style=flat-square&label=ci&logo=github" alt="CI">
+  </a>
+  <a href="https://github.com/andros21/rustracer/releases">
+    <img src="https://img.shields.io/github/v/release/andros21/rustracer?color=orange&&sort=semver&style=flat-square" alt="Version">
+  </a>
+  <a href="https://github.com/andros21/rustracer/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/andros21/rustracer?color=blue&style=flat-square" alt="License">
+  </a>
   <div align="center">
+    <a href="#prerequisites">Prerequisites</a>
+    ·
     <a href="#installation">Installation</a>
     ·
     <a href="#usage">Usage</a>
-    ·
-    <a href="#license">License</a>
   </div>
 </div>
 
@@ -21,18 +29,20 @@
 
 **Platform requirements**
 
-`Linux x86_64`
+* `x86_64-unknown-linux-gnu` (with `glibc>=2.27`)
+* `x86_64-unknown-linux-musl`
 
 **Compiler requirements**
 
-Install [`cargo`](https://github.com/rust-lang/cargo/) stable latest build system, for devel it's advisable to install the entire (stable latest) toolchain using [`rustup`](https://www.rust-lang.org/tools/install)
+Install [`cargo`](https://github.com/rust-lang/cargo/) stable latest build system, \
+for devel it's advisable to install the entire (stable latest) toolchain using [`rustup`](https://www.rust-lang.org/tools/install)
 
 ### From binary
 
-Install from binary (you can ignore [prerequisites](#prerequisites)):
+Install from binary (you can ignore **Compiler requirements**):
 
 ```bash
-$ rustracer="rustrace-$version-x86_64-unknown-linux-gnu"
+$ rustracer="rustracer-$version-$platform"
 $ curl -sJSOL "https://github.com/andros21/rustracer/releases/download/$version/$rustracer.tgz"
 $ tar -xvf "$rustracer.tgz"
 $ install -Dm755 "$rustracer/bin/rustracer" "$PREFIX/bin/rustracer"
@@ -45,7 +55,7 @@ Install from source code:
 ```bash
 $ cargo install --locked \
                 --root "$PREFIX" \
-                --version "$version" \
+                --tag "$version" \
                 --git "https://github.com/andros21/rustracer" rustracer
 ```
 
@@ -57,11 +67,8 @@ Example of `rustracer convert` subcommand:
 
 ```bash
 # convert to png
-rustracer convert image.pfm image.png
+$ rustracer convert image.pfm image.png
 
 # convert to farbfeld
-rustracer convert image.pfm image.ff
+$ rustracer convert image.pfm image.ff
 ```
-## License
-
-`rustracer` is released as open source software under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license, see the [LICENSE](https://github.com/andros21/rustracer/blob/master/LICENSE) file in the project root for the full license text

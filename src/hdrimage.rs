@@ -280,8 +280,8 @@ fn clamp(x: f32) -> f32 {
 #[cfg(test)]
 mod test {
     use super::*;
-    use std::io::Cursor;
     use crate::color::IsClose;
+    use std::io::Cursor;
 
     #[test]
     fn test_image_creation() {
@@ -315,7 +315,7 @@ mod test {
     fn test_get_pixel() {
         let color: Color = Default::default();
 
-        assert!(matches!(HdrImage::new(3, 3).get_pixel(0, 0), Ok(color)));
+        assert!(matches!(HdrImage::new(3, 3).get_pixel(0, 0), Ok(col) if col == color));
         assert!(matches!(HdrImage::new(3, 3).get_pixel(3, 3),
             Err(HdrImageErr::OutOfBounds(a, b)) if a == (3, 3) && b == (3, 3)))
     }
@@ -328,7 +328,7 @@ mod test {
         let mut hdr_img = HdrImage::new(3, 3);
         assert!(matches!(hdr_img.set_pixel(0, 0, color1), Ok(())));
         assert!(matches!(hdr_img.set_pixel(2, 2, color2), Ok(())));
-        assert!(matches!(hdr_img.get_pixel(0, 0), Ok(color1)));
+        assert!(matches!(hdr_img.get_pixel(0, 0), Ok(col1) if col1 == color1));
         assert!(hdr_img.get_pixel(2, 2).unwrap().is_close(color2));
         assert!(matches!(hdr_img.set_pixel(5, 5, color1),
             Err(HdrImageErr::OutOfBounds(a, b)) if a == (5, 5) && b == (3, 3)))
@@ -359,17 +359,17 @@ mod test {
         line = "10 20.1";
         assert!(matches!(
             parse_img_shape(&line),
-            Err(HdrImageErr::PfmIntParseFailure(e, msg)) if msg.as_str() == "image height"
+            Err(HdrImageErr::PfmIntParseFailure(_, msg)) if msg.as_str() == "image height"
         ));
         line = "-10 20";
         assert!(matches!(
             parse_img_shape(&line),
-            Err(HdrImageErr::PfmIntParseFailure(e, msg)) if msg.as_str() == "image width"
+            Err(HdrImageErr::PfmIntParseFailure(_, msg)) if msg.as_str() == "image width"
         ));
         line = "abc 20";
         assert!(matches!(
             parse_img_shape(&line),
-            Err(HdrImageErr::PfmIntParseFailure(e, msg)) if msg.as_str() == "image width"
+            Err(HdrImageErr::PfmIntParseFailure(_, msg)) if msg.as_str() == "image width"
         ))
     }
 
@@ -437,12 +437,12 @@ mod test {
 
         let mut stream = Cursor::new(reference_bytes_be);
         let hdr_img_result = HdrImage::read_pfm_image(&mut stream);
-        assert!(matches!(hdr_img_result, Ok(ref hdr_img)));
+        assert!(matches!(hdr_img_result, Ok(ref img) if img == &hdr_img));
         assert_eq!(&hdr_img_result.unwrap(), &hdr_img);
 
         let mut stream = Cursor::new(&reference_bytes_le);
         let hdr_img_result = HdrImage::read_pfm_image(&mut stream);
-        assert!(matches!(hdr_img_result, Ok(ref hdr_img)));
+        assert!(matches!(hdr_img_result, Ok(ref img) if img == &hdr_img));
         assert_eq!(&hdr_img_result.unwrap(), &hdr_img);
 
         let wrong_magic = vec![0x46, 0x50, 0x0a];
@@ -566,7 +566,7 @@ mod test {
         ));
         stream.set_position(0);
         let hdr_img_result = HdrImage::read_pfm_image(&mut stream);
-        assert!(matches!(hdr_img_result, Ok(ref hdr_img)));
+        assert!(matches!(hdr_img_result, Ok(ref img) if img == &hdr_img));
         assert_eq!(hdr_img_result.unwrap(), hdr_img);
     }
 
@@ -612,11 +612,11 @@ mod test {
         ));
 
         let hdr_img_result = HdrImage::read_pfm_file(&reference_file_be);
-        assert!(matches!(hdr_img_result, Ok(ref hdr_img)));
+        assert!(matches!(hdr_img_result, Ok(ref img) if img == &hdr_img));
         assert_eq!(hdr_img_result.unwrap(), hdr_img);
 
         let hdr_img_result = HdrImage::read_pfm_file(&reference_file_le);
-        assert!(matches!(hdr_img_result, Ok(ref hdr_img)));
+        assert!(matches!(hdr_img_result, Ok(ref img) if img == &hdr_img));
         assert_eq!(hdr_img_result.unwrap(), hdr_img);
 
         let hdr_img_result = HdrImage::read_pfm_file(&invalid_file);

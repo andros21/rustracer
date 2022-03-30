@@ -714,10 +714,7 @@ mod test {
             hdr_img.write_ldr_file(invalid_path, 1.0),
             Err(HdrImageErr::LdrFileWriteFailure(_))
         ));
-        assert!(matches!(
-            hdr_img.write_ldr_file(reference_png, 1.0),
-            Ok(())
-        ));
+        assert!(matches!(hdr_img.write_ldr_file(reference_png, 1.0), Ok(())));
         assert!(matches!(hdr_img.write_ldr_file(reference_ff, 1.0), Ok(())))
     }
 }

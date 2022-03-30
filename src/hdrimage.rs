@@ -32,7 +32,7 @@ impl HdrImage {
     }
 
     fn valid_coordinates(&self, x: u32, y: u32) -> bool {
-        return (x < self.width) & (y < self.height);
+        x < self.width && y < self.height
     }
 
     pub fn get_pixel(&self, x: u32, y: u32) -> Result<Color, HdrImageErr> {
@@ -46,7 +46,8 @@ impl HdrImage {
     pub fn set_pixel(&mut self, x: u32, y: u32, new_color: Color) -> Result<(), HdrImageErr> {
         if self.valid_coordinates(x, y) {
             let pixel_offset = self.pixel_offset(x, y);
-            Ok(self.pixels[pixel_offset] = new_color)
+            self.pixels[pixel_offset] = new_color;
+            Ok(())
         } else {
             Err(HdrImageErr::OutOfBounds((x, y), (self.width, self.height)))
         }
@@ -56,7 +57,7 @@ impl HdrImage {
         let mut line = String::new();
         buf_reader
             .read_line(&mut line)
-            .map_err(|e| HdrImageErr::PfmFileReadFailure(e))?;
+            .map_err(HdrImageErr::PfmFileReadFailure)?;
         check_eol(line.ends_with('\n'))?;
         if line.trim_end() != "PF" {
             return Err(HdrImageErr::InvalidPfmFileFormat(String::from(
@@ -66,15 +67,15 @@ impl HdrImage {
         line.clear();
         buf_reader
             .read_line(&mut line)
-            .map_err(|e| HdrImageErr::PfmFileReadFailure(e))?;
+            .map_err(HdrImageErr::PfmFileReadFailure)?;
         check_eol(line.ends_with('\n'))?;
-        let (width, height) = parse_img_shape(&line.trim_end())?;
+        let (width, height) = parse_img_shape(line.trim_end())?;
         line.clear();
         buf_reader
             .read_line(&mut line)
-            .map_err(|e| HdrImageErr::PfmFileReadFailure(e))?;
+            .map_err(HdrImageErr::PfmFileReadFailure)?;
         check_eol(line.ends_with('\n'))?;
-        let endianness: ByteOrder = parse_endianness(&line.trim_end())?;
+        let endianness: ByteOrder = parse_endianness(line.trim_end())?;
         line.clear();
         let mut buffer = [0_f32; 3];
         let mut hdr_img = HdrImage::new(width, height);
@@ -83,10 +84,10 @@ impl HdrImage {
                 match endianness {
                     ByteOrder::LittleEndian => buf_reader
                         .read_f32_into::<byteorder::LittleEndian>(&mut buffer)
-                        .map_err(|e| HdrImageErr::PfmFileReadFailure(e))?,
+                        .map_err(HdrImageErr::PfmFileReadFailure)?,
                     ByteOrder::BigEndian => buf_reader
                         .read_f32_into::<byteorder::BigEndian>(&mut buffer)
-                        .map_err(|e| HdrImageErr::PfmFileReadFailure(e))?,
+                        .map_err(HdrImageErr::PfmFileReadFailure)?,
                 }
                 hdr_img.set_pixel(x, y, (buffer[0], buffer[1], buffer[2]).into())?;
             }
@@ -101,7 +102,7 @@ impl HdrImage {
     }
 
     pub fn read_pfm_file(path: &Path) -> Result<HdrImage, HdrImageErr> {
-        let file = File::open(path).map_err(|e| HdrImageErr::PfmFileReadFailure(e))?;
+        let file = File::open(path).map_err(HdrImageErr::PfmFileReadFailure)?;
         let mut buf_reader = BufReader::new(file);
         HdrImage::read_pfm_image(&mut buf_reader)
     }
@@ -116,7 +117,7 @@ impl HdrImage {
             ByteOrder::BigEndian => header.push_str("1.0\n"),
             ByteOrder::LittleEndian => header.push_str("-1.0\n"),
         }
-        stream.write(header.as_bytes())?;
+        stream.write_all(header.as_bytes())?;
         for y in (0..self.height).rev() {
             for x in 0..self.width {
                 for el in self.get_pixel(x, y).unwrap().into_iter() {
@@ -160,8 +161,7 @@ impl HdrImage {
     }
 
     pub fn write_ldr_file(&self, path: &Path, gamma: f32) -> Result<(), HdrImageErr> {
-        let format =
-            ImageFormat::from_path(&path).map_err(|e| HdrImageErr::LdrFileWriteFailure(e))?;
+        let format = ImageFormat::from_path(&path).map_err(HdrImageErr::LdrFileWriteFailure)?;
         match format {
             ImageFormat::Farbfeld => {
                 let mut ldr_img = DynamicImage::new_rgb16(self.width, self.height).into_rgba16();
@@ -182,7 +182,7 @@ impl HdrImage {
                 }
                 ldr_img
                     .save_with_format(&path, format)
-                    .map_err(|e| HdrImageErr::LdrFileWriteFailure(e))
+                    .map_err(HdrImageErr::LdrFileWriteFailure)
             }
             ImageFormat::Png => {
                 let mut ldr_img = DynamicImage::new_rgb8(self.width, self.height).into_rgb8();
@@ -202,11 +202,11 @@ impl HdrImage {
                 }
                 ldr_img
                     .save_with_format(&path, format)
-                    .map_err(|e| HdrImageErr::LdrFileWriteFailure(e))
+                    .map_err(HdrImageErr::LdrFileWriteFailure)
             }
             _ => {
                 return Err(HdrImageErr::UnsupportedLdrFileFormat(String::from(
-                    path.extension().unwrap().to_str().unwrap_or(&""),
+                    path.extension().unwrap().to_str().unwrap_or(""),
                 )))
             }
         }

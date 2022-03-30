@@ -1,0 +1,98 @@
+---
+name: CI
+
+"on":
+  push:
+    branches:
+      - master
+    paths:
+      - 'Cargo.lock'
+      - 'Cargo.toml'
+      - 'src/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'Cargo.lock'
+      - 'Cargo.toml'
+      - 'src/**'
+
+permissions: read-all
+
+jobs:
+  lint:
+    name: lint ci
+    if: ${{ github.event.pull_request.merged == 'false' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout project
+        uses: actions/checkout@v3
+      - name: check cache
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: install rust toolchain
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: stable
+          default: true
+          profile: minimal
+          components: rustfmt, clippy
+      - name: cargo fmt check
+        uses: actions-rs/cargo@v1.0.1
+        with:
+          command: fmt
+          args: -- --check --verbose
+      - name: cargo clippy main
+        uses: actions-rs/cargo@v1.0.1
+        with:
+          command: clippy
+          args: --locked --workspace
+      - name: cargo clippy tests
+        uses: actions-rs/cargo@v1.0.1
+        with:
+          command: clippy
+          args: --locked --tests
+  test:
+    name: test ci
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout project
+        uses: actions/checkout@v3
+      - name: check cache
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: install rust toolchain
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions-rs/toolchain@v1.0.6
+        with:
+          toolchain: stable
+          default: true
+          profile: minimal
+      - name: cargo build
+        uses: actions-rs/cargo@v1.0.1
+        with:
+          command: build
+          args: --locked
+      - name: cargo test
+        uses: actions-rs/cargo@v1.0.1
+        with:
+          command: test
+          args: --locked

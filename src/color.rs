@@ -63,17 +63,17 @@ impl Mul<f32> for Color {
 }
 
 pub trait IsClose<Rhs = Self> {
-    fn is_close(self, other: Self) -> bool;
+    fn is_close(&self, other: Self) -> bool;
 }
 
 impl IsClose for f32 {
-    fn is_close(self, other: f32) -> bool {
+    fn is_close(&self, other: f32) -> bool {
         (self - other).abs() < EPSILON
     }
 }
 
 impl IsClose for Color {
-    fn is_close(self, other: Color) -> bool {
+    fn is_close(&self, other: Color) -> bool {
         self.r.is_close(other.r) & self.g.is_close(other.g) & self.b.is_close(other.b)
     }
 }
@@ -83,7 +83,7 @@ impl IntoIterator for Color {
     type IntoIter = std::array::IntoIter<f32, 3>;
 
     fn into_iter(self) -> Self::IntoIter {
-        std::array::IntoIter::new([self.r, self.g, self.b])
+        [self.r, self.g, self.b].into_iter()
     }
 }
 
@@ -117,11 +117,7 @@ mod test {
 
     #[test]
     fn test_is_close_float() {
-        assert!((EPSILON * 1e-1 + 1.0).is_close(1.0))
-    }
-
-    #[test]
-    fn test_neg_is_close_float() {
+        assert!((EPSILON * 1e-1 + 1.0).is_close(1.0));
         assert!(!(EPSILON + 1.0).is_close(1.0))
     }
 

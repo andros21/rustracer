@@ -20,7 +20,7 @@ pub enum HdrImageErr {
 
 #[derive(Error, Debug)]
 pub enum ConvertErr {
-    #[error("invalid {0}, expected floating-point number")]
+    #[error("invalid {1}, expected floating-point number: {0}")]
     FloatParseFailure(#[source] std::num::ParseFloatError, String),
     #[error("{0}")]
     IoError(#[source] HdrImageErr),

@@ -117,11 +117,7 @@ mod test {
 
     #[test]
     fn test_is_close_float() {
-        assert!((EPSILON * 1e-1 + 1.0).is_close(1.0))
-    }
-
-    #[test]
-    fn test_neg_is_close_float() {
+        assert!((EPSILON * 1e-1 + 1.0).is_close(1.0));
         assert!(!(EPSILON + 1.0).is_close(1.0))
     }
 

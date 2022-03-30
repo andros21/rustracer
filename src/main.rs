@@ -1,7 +1,12 @@
+extern crate core;
+
 mod cli;
 mod color;
 mod error;
 mod hdrimage;
+mod vector;
+mod point;
+mod normal;
 
 use std::env;
 use std::path::Path;

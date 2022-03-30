@@ -338,37 +338,37 @@ mod test {
     fn test_parse_img_shape() {
         let mut line = "10 20";
 
-        assert!(matches!(parse_img_shape(&line), Ok((10, 20))));
+        assert!(matches!(parse_img_shape(line), Ok((10, 20))));
         line = " 10    20  ";
-        assert!(matches!(parse_img_shape(&line), Ok((10, 20))));
+        assert!(matches!(parse_img_shape(line), Ok((10, 20))));
         line = "10 20 30";
         assert!(matches!(
-            parse_img_shape(&line),
+            parse_img_shape(line),
             Err(HdrImageErr::InvalidPfmFileFormat(_))
         ));
         line = "10 ";
         assert!(matches!(
-            parse_img_shape(&line),
+            parse_img_shape(line),
             Err(HdrImageErr::InvalidPfmFileFormat(_))
         ));
         line = "102030";
         assert!(matches!(
-            parse_img_shape(&line),
+            parse_img_shape(line),
             Err(HdrImageErr::InvalidPfmFileFormat(_))
         ));
         line = "10 20.1";
         assert!(matches!(
-            parse_img_shape(&line),
+            parse_img_shape(line),
             Err(HdrImageErr::PfmIntParseFailure(_, msg)) if msg.as_str() == "image height"
         ));
         line = "-10 20";
         assert!(matches!(
-            parse_img_shape(&line),
+            parse_img_shape(line),
             Err(HdrImageErr::PfmIntParseFailure(_, msg)) if msg.as_str() == "image width"
         ));
         line = "abc 20";
         assert!(matches!(
-            parse_img_shape(&line),
+            parse_img_shape(line),
             Err(HdrImageErr::PfmIntParseFailure(_, msg)) if msg.as_str() == "image width"
         ))
     }
@@ -378,19 +378,19 @@ mod test {
         let mut line = "-3.2";
 
         assert!(matches!(
-            parse_endianness(&line),
+            parse_endianness(line),
             Ok(ByteOrder::LittleEndian)
         ));
         line = "1e15";
-        assert!(matches!(parse_endianness(&line), Ok(ByteOrder::BigEndian)));
+        assert!(matches!(parse_endianness(line), Ok(ByteOrder::BigEndian)));
         line = "0";
         assert!(matches!(
-            parse_endianness(&line),
+            parse_endianness(line),
             Err(HdrImageErr::InvalidPfmFileFormat(_))
         ));
         line = "abc";
         assert!(matches!(
-            parse_endianness(&line),
+            parse_endianness(line),
             Err(HdrImageErr::PfmFloatParseFailure(..))
         ));
     }
@@ -599,27 +599,27 @@ mod test {
         let invalid_file = Path::new("/tmp/invalid");
 
         assert!(matches!(
-            hdr_img.write_pfm_file(&reference_file_be, ByteOrder::BigEndian),
+            hdr_img.write_pfm_file(reference_file_be, ByteOrder::BigEndian),
             Ok(())
         ));
         assert!(matches!(
-            hdr_img.write_pfm_file(&reference_file_le, ByteOrder::LittleEndian),
+            hdr_img.write_pfm_file(reference_file_le, ByteOrder::LittleEndian),
             Ok(())
         ));
         assert!(matches!(
-            hdr_img.write_pfm_file(&invalid_path, ByteOrder::LittleEndian),
+            hdr_img.write_pfm_file(invalid_path, ByteOrder::LittleEndian),
             Err(std::io::Error { .. })
         ));
 
-        let hdr_img_result = HdrImage::read_pfm_file(&reference_file_be);
+        let hdr_img_result = HdrImage::read_pfm_file(reference_file_be);
         assert!(matches!(hdr_img_result, Ok(ref img) if img == &hdr_img));
         assert_eq!(hdr_img_result.unwrap(), hdr_img);
 
-        let hdr_img_result = HdrImage::read_pfm_file(&reference_file_le);
+        let hdr_img_result = HdrImage::read_pfm_file(reference_file_le);
         assert!(matches!(hdr_img_result, Ok(ref img) if img == &hdr_img));
         assert_eq!(hdr_img_result.unwrap(), hdr_img);
 
-        let hdr_img_result = HdrImage::read_pfm_file(&invalid_file);
+        let hdr_img_result = HdrImage::read_pfm_file(invalid_file);
         assert!(matches!(
             hdr_img_result,
             Err(HdrImageErr::PfmFileReadFailure(_))
@@ -676,7 +676,7 @@ mod test {
         hdr_img.clamp_image();
         for pixel in hdr_img.pixels.iter() {
             for el in pixel.into_iter() {
-                assert!(el >= 0.0 && el < 1.0);
+                assert!((0.0..1.0).contains(&el));
             }
         }
     }
@@ -703,21 +703,21 @@ mod test {
         let reference_ff = Path::new("/tmp/reference_le.ff");
 
         assert!(matches!(
-            hdr_img.write_ldr_file(&invalid_format, 1.0),
+            hdr_img.write_ldr_file(invalid_format, 1.0),
             Err(HdrImageErr::LdrFileWriteFailure(_))
         ));
         assert!(matches!(
-            hdr_img.write_ldr_file(&unsupported_format, 1.0),
+            hdr_img.write_ldr_file(unsupported_format, 1.0),
             Err(HdrImageErr::UnsupportedLdrFileFormat(format)) if format.as_str() == "jpeg"
         ));
         assert!(matches!(
-            hdr_img.write_ldr_file(&invalid_path, 1.0),
+            hdr_img.write_ldr_file(invalid_path, 1.0),
             Err(HdrImageErr::LdrFileWriteFailure(_))
         ));
         assert!(matches!(
-            hdr_img.write_ldr_file(&reference_png, 1.0),
+            hdr_img.write_ldr_file(reference_png, 1.0),
             Ok(())
         ));
-        assert!(matches!(hdr_img.write_ldr_file(&reference_ff, 1.0), Ok(())))
+        assert!(matches!(hdr_img.write_ldr_file(reference_ff, 1.0), Ok(())))
     }
 }

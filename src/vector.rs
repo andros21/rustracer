@@ -1,8 +1,9 @@
 use crate::color::IsClose;
-use crate::error::VectorErr;
+use crate::error::GeometryErr;
+use crate::point::Point;
 use std::fmt;
 use std::ops::{Add, Mul, Sub};
-use crate::point::Point;
+use crate::normal::Normal;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Vector {
@@ -70,11 +71,15 @@ impl Sub for Vector {
 fn dot_product(lhs: Vector, rhs: Vector) -> f32 {
     lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z
 }
-fn cross_product(lhs: Vector, rhs: Vector) -> Vector {
-    Vector {
-        x: lhs.y * rhs.z - lhs.z * rhs.y,
-        y: lhs.z * rhs.x - lhs.x * rhs.z,
-        z: lhs.x * rhs.y - lhs.y * rhs.x,
+
+impl Mul<Vector> for Vector {
+    type Output = Vector;
+    fn mul(self, rhs: Vector) -> Vector {
+        Vector {
+            x: self.y * rhs.z - self.z * rhs.y,
+            y: self.z * rhs.x - self.x * rhs.z,
+            z: self.x * rhs.y - self.y * rhs.x,
+        }
     }
 }
 
@@ -104,12 +109,11 @@ impl Vector {
     pub fn norm(&self) -> f32 {
         f32::sqrt(self.squared_norm())
     }
-    pub fn normalize(self) -> Result<Vector, VectorErr> {
+    pub fn normalize(self) -> Result<Vector, GeometryErr> {
         if self.norm() > 0_f32 {
             Ok(self * (1_f32 / self.norm()))
-        }
-        else {
-            Err(VectorErr::UnableToNormalize(self.norm()))
+        } else {
+            Err(GeometryErr::UnableToNormalize(self.norm()))
         }
     }
 }
@@ -145,7 +149,7 @@ mod test {
     #[test]
     fn test_cross_product() {
         assert_eq!(
-            cross_product(Vector::from((1.0, 1.0, 1.0)), Vector::from((2.0, 1.0, 2.0))),
+            Vector::from((1.0, 1.0, 1.0)) * Vector::from((2.0, 1.0, 2.0)),
             Vector::from((1.0, 0.0, -1.0))
         )
     }
@@ -185,12 +189,12 @@ mod test {
     }
 
     fn test_normalize() {
-        let vector = Vector::from((1./6., 1./3., 1./6.));
+        let vector = Vector::from((1. / 6., 1. / 3., 1. / 6.));
         assert!(matches!(
             Vector::from((1.0, 2.0, 1.0)).normalize(), Ok(v) if v.is_close(vector)
         ));
         assert!(matches!(
-            Vector::from((0.0, 0.0, 0.0)).normalize(), Err(VectorErr::UnableToNormalize(a)) if a == 0_f32
+            Vector::from((0.0, 0.0, 0.0)).normalize(), Err(GeometryErr::UnableToNormalize(a)) if a == 0_f32
         ))
     }
 }

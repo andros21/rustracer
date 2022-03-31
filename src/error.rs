@@ -27,7 +27,7 @@ pub enum ConvertErr {
 }
 
 #[derive(Error, Debug)]
-pub enum VectorErr{
-    #[error("Vector with norm {0} can't be normalized")]
+pub enum GeometryErr{
+    #[error("Object with norm {0} can't be normalized")]
     UnableToNormalize(f32)
 }

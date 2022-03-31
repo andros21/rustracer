@@ -2,6 +2,7 @@ use crate::color::IsClose;
 use crate::error::VectorErr;
 use std::fmt;
 use std::ops::{Add, Mul, Sub};
+use crate::point::Point;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Vector {
@@ -16,6 +17,16 @@ impl From<(f32, f32, f32)> for Vector {
             x: xyz.0,
             y: xyz.1,
             z: xyz.2,
+        }
+    }
+}
+
+impl From<Point> for Vector {
+    fn from(point: Point) -> Self {
+        Self {
+            x: point.x,
+            y: point.z,
+            z: point.y,
         }
     }
 }

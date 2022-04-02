@@ -7,6 +7,7 @@ mod hdrimage;
 mod vector;
 mod point;
 mod normal;
+mod transformations;
 
 use std::env;
 use std::path::Path;

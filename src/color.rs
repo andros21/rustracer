@@ -1,6 +1,6 @@
 use std::ops::{Add, Mul};
 
-const EPSILON: f32 = 1e-5;
+pub const EPSILON: f32 = 1e-5;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Color {

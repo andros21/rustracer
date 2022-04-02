@@ -80,6 +80,7 @@ mod test{
         )
     }
 
+    #[test]
     fn test_sub_vector() {
         assert_eq!(
             Point::from((1.0, 2.0, 3.0)) - Vector::from((2.0, 2.0, 2.0)),

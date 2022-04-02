@@ -112,6 +112,14 @@ mod test {
     use super::*;
 
     #[test]
+    fn test_is_close() {
+        assert!(
+            (Normal::from((1.23, 4.56, 7.89)) * Normal::from((9.87, 6.54, 3.21)))
+                .is_close(Normal::from((-36.963, 73.926, -36.963)))
+        );
+    }
+
+    #[test]
     fn test_dot_product() {
         assert_eq!(
             dot_product(Vector::from((1.0, 1.0, 1.0)), Normal::from((2.0, 1.0, 2.0))),
@@ -161,10 +169,11 @@ mod test {
         assert_eq!(Normal::from((0.0, -4.0, 3.0)).norm(), 5.0)
     }
 
+    #[test]
     fn test_normalize() {
-        let normal = Normal::from((1. / 6., 1. / 3., 1. / 6.));
+        let normal = Normal::from((2. / 7., 6. / 7., 3. / 7.));
         assert!(matches!(
-            Normal::from((1.0, 2.0, 1.0)).normalize(), Ok(v) if v.is_close(normal)
+            Normal::from((4.0, 12.0, 6.0)).normalize(), Ok(v) if v.is_close(normal)
         ));
         assert!(matches!(
             Normal::from((0.0, 0.0, 0.0)).normalize(), Err(GeometryErr::UnableToNormalize(a)) if a == 0_f32

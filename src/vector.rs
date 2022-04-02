@@ -1,9 +1,9 @@
 use crate::color::IsClose;
 use crate::error::GeometryErr;
+use crate::normal::Normal;
 use crate::point::Point;
 use std::fmt;
 use std::ops::{Add, Mul, Sub};
-use crate::normal::Normal;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Vector {
@@ -121,6 +121,19 @@ impl Vector {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::color::EPSILON;
+
+    #[test]
+    fn test_is_close() {
+        assert!(
+            (Vector::from((1.23, 4.56, 7.89)) * Vector::from((9.87, 6.54, 3.21)))
+                .is_close(Vector::from((-36.963, 73.926, -36.963)))
+        );
+        assert!(
+            (Vector::from((1.0, 2.0, 3.0)) + Vector::from((1.0, 2.0 + EPSILON * 1e-1, 3.0)))
+                .is_close(Vector::from((2.0, 4.0, 6.0)))
+        )
+    }
 
     #[test]
     fn test_add() {
@@ -188,10 +201,11 @@ mod test {
         assert_eq!(Vector::from((0.0, -4.0, 3.0)).norm(), 5.0)
     }
 
+    #[test]
     fn test_normalize() {
-        let vector = Vector::from((1. / 6., 1. / 3., 1. / 6.));
+        let vector = Vector::from((-6. / 7., 2. / 7., -3. / 7.));
         assert!(matches!(
-            Vector::from((1.0, 2.0, 1.0)).normalize(), Ok(v) if v.is_close(vector)
+            Vector::from((-6.0, 2.0, -3.0)).normalize(), Ok(v) if v.is_close(vector)
         ));
         assert!(matches!(
             Vector::from((0.0, 0.0, 0.0)).normalize(), Err(GeometryErr::UnableToNormalize(a)) if a == 0_f32

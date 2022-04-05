@@ -1,6 +1,5 @@
 use crate::color::IsClose;
 use crate::error::GeometryErr;
-use crate::point::Point;
 use crate::vector::Vector;
 use std::fmt;
 use std::ops::Mul;
@@ -12,22 +11,39 @@ pub struct Normal {
     pub z: f32,
 }
 
+impl Normal {
+    pub fn neg(&self) -> Normal {
+        Normal {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+        }
+    }
+    pub fn dot(self, other: Normal) -> f32 {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+    pub fn squared_norm(self) -> f32 {
+        self.dot(self)
+    }
+    pub fn norm(self) -> f32 {
+        f32::sqrt(self.squared_norm())
+    }
+    pub fn normalize(mut self) -> Result<Normal, GeometryErr> {
+        if self.norm() > 0_f32 {
+            self = self * (1_f32 / self.norm());
+            Ok(self)
+        } else {
+            Err(GeometryErr::UnableToNormalize(self.norm()))
+        }
+    }
+}
+
 impl From<(f32, f32, f32)> for Normal {
     fn from(xyz: (f32, f32, f32)) -> Self {
         Self {
             x: xyz.0,
             y: xyz.1,
             z: xyz.2,
-        }
-    }
-}
-
-impl From<Point> for Normal {
-    fn from(point: Point) -> Self {
-        Self {
-            x: point.x,
-            y: point.z,
-            z: point.y,
         }
     }
 }
@@ -42,10 +58,6 @@ impl IsClose for Normal {
     fn is_close(&self, other: Normal) -> bool {
         self.x.is_close(other.x) & self.y.is_close(other.y) & self.z.is_close(other.z)
     }
-}
-
-fn dot_product(lhs: Vector, rhs: Normal) -> f32 {
-    lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z
 }
 
 impl Mul<Vector> for Normal {
@@ -84,52 +96,29 @@ impl Mul<f32> for Normal {
     }
 }
 
-impl Normal {
-    pub fn neg(&self) -> Normal {
-        Normal {
-            x: -self.x,
-            y: -self.y,
-            z: -self.z,
-        }
-    }
-    pub fn squared_norm(&self) -> f32 {
-        self.x * self.x + self.y * self.y + self.z * self.z
-    }
-    pub fn norm(&self) -> f32 {
-        f32::sqrt(self.squared_norm())
-    }
-    pub fn normalize(mut self) -> Result<(), GeometryErr> {
-        if self.norm() > 0_f32 {
-            self = self * (1_f32 / self.norm());
-            Ok(())
-        } else {
-            Err(GeometryErr::UnableToNormalize(self.norm()))
-        }
-    }
-}
-
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::color::EPSILON;
 
     #[test]
     fn test_is_close() {
         assert!(
-            (Normal::from((1.23, 4.56, 7.89)) * Normal::from((9.87, 6.54, 3.21)))
-                .is_close(Normal::from((-36.963, 73.926, -36.963)))
+            Normal::from((1.0, 2.0 + EPSILON * 1e-1, 3.0)).is_close(Normal::from((1.0, 2.0, 3.0)))
         );
+        assert!(!Normal::from((1.0, 2.0 + EPSILON, 3.0)).is_close(Normal::from((1.0, 2.0, 3.0))))
     }
 
     #[test]
-    fn test_dot_product() {
+    fn test_dot() {
         assert_eq!(
-            dot_product(Vector::from((1.0, 1.0, 1.0)), Normal::from((2.0, 1.0, 2.0))),
+            Normal::from((1.0, 1.0, 1.0)).dot(Normal::from((2.0, 1.0, 2.0))),
             5.0
         )
     }
 
     #[test]
-    fn test_cross_product() {
+    fn test_cross() {
         assert_eq!(
             Normal::from((1.0, 1.0, 1.0)) * Normal::from((2.0, 1.0, 2.0)),
             Normal::from((1.0, 0.0, -1.0))
@@ -173,6 +162,7 @@ mod test {
     #[test]
     fn test_normalize() {
         let normal = Normal::from((2. / 7., 6. / 7., 3. / 7.));
+
         assert!(matches!(
             Normal::from((4.0, 12.0, 6.0)).normalize(), Ok(v) if v.is_close(normal)
         ));

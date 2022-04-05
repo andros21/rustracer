@@ -12,6 +12,33 @@ pub struct Vector {
     pub z: f32,
 }
 
+impl Vector {
+    pub fn neg(self) -> Vector {
+        Vector {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+        }
+    }
+    pub fn dot(self, other: Vector) -> f32 {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+    pub fn squared_norm(self) -> f32 {
+        self.dot(self)
+    }
+    pub fn norm(self) -> f32 {
+        f32::sqrt(self.squared_norm())
+    }
+    pub fn normalize(mut self) -> Result<Vector, GeometryErr> {
+        if self.norm() > 0_f32 {
+            self = self * (1_f32 / self.norm());
+            Ok(self)
+        } else {
+            Err(GeometryErr::UnableToNormalize(self.norm()))
+        }
+    }
+}
+
 impl From<(f32, f32, f32)> for Vector {
     fn from(xyz: (f32, f32, f32)) -> Self {
         Self {
@@ -26,8 +53,18 @@ impl From<Point> for Vector {
     fn from(point: Point) -> Self {
         Self {
             x: point.x,
-            y: point.z,
-            z: point.y,
+            y: point.y,
+            z: point.z,
+        }
+    }
+}
+
+impl From<Normal> for Vector {
+    fn from(normal: Normal) -> Self {
+        Self {
+            x: normal.x,
+            y: normal.y,
+            z: normal.z,
         }
     }
 }
@@ -68,10 +105,6 @@ impl Sub for Vector {
     }
 }
 
-fn dot_product(lhs: Vector, rhs: Vector) -> f32 {
-    lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z
-}
-
 impl Mul<Vector> for Vector {
     type Output = Vector;
     fn mul(self, rhs: Vector) -> Self::Output {
@@ -91,30 +124,6 @@ impl Mul<f32> for Vector {
             x: self.x * rhs,
             y: self.y * rhs,
             z: self.z * rhs,
-        }
-    }
-}
-
-impl Vector {
-    pub fn neg(&self) -> Vector {
-        Vector {
-            x: -self.x,
-            y: -self.y,
-            z: -self.z,
-        }
-    }
-    pub fn squared_norm(&self) -> f32 {
-        self.x * self.x + self.y * self.y + self.z * self.z
-    }
-    pub fn norm(&self) -> f32 {
-        f32::sqrt(self.squared_norm())
-    }
-    pub fn normalize(mut self) -> Result<(), GeometryErr> {
-        if self.norm() > 0_f32 {
-            self = self * (1_f32 / self.norm());
-            Ok(())
-        } else {
-            Err(GeometryErr::UnableToNormalize(self.norm()))
         }
     }
 }
@@ -153,15 +162,15 @@ mod test {
     }
 
     #[test]
-    fn test_dot_product() {
+    fn test_dot() {
         assert_eq!(
-            dot_product(Vector::from((1.0, 1.0, 1.0)), Vector::from((2.0, 1.0, 2.0))),
+            Vector::from((1.0, 1.0, 1.0)).dot(Vector::from((2.0, 1.0, 2.0))),
             5.0
         )
     }
 
     #[test]
-    fn test_cross_product() {
+    fn test_cross() {
         assert_eq!(
             Vector::from((1.0, 1.0, 1.0)) * Vector::from((2.0, 1.0, 2.0)),
             Vector::from((1.0, 0.0, -1.0))
@@ -205,6 +214,7 @@ mod test {
     #[test]
     fn test_normalize() {
         let vector = Vector::from((-6. / 7., 2. / 7., -3. / 7.));
+
         assert!(matches!(
             Vector::from((-6.0, 2.0, -3.0)).normalize(), Ok(v) if v.is_close(vector)
         ));

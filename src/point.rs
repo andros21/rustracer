@@ -1,7 +1,7 @@
 use crate::color::IsClose;
 use crate::vector::Vector;
 use std::fmt;
-use std::ops::{Add, Sub};
+use std::ops::{Add, Mul, Sub};
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Point {
@@ -67,9 +67,31 @@ impl Sub<Vector> for Point {
         }
     }
 }
+
+impl Mul<f32> for Point {
+    type Output = Point;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        Point {
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::color::EPSILON;
+
+    #[test]
+    fn test_is_close() {
+        assert!(
+            Point::from((1.0, 2.0 + EPSILON * 1e-1, 3.0)).is_close(Point::from((1.0, 2.0, 3.0)))
+        );
+        assert!(!Point::from((1.0, 2.0 + EPSILON, 3.0)).is_close(Point::from((1.0, 2.0, 3.0))))
+    }
 
     #[test]
     fn test_add_vector() {
@@ -92,6 +114,14 @@ mod test {
         assert_eq!(
             Point::from((1.0, 2.0, 3.0)) - Point::from((2.0, 2.0, 2.0)),
             Vector::from((-1.0, 0.0, 1.0))
+        )
+    }
+
+    #[test]
+    fn test_mul_scalar() {
+        assert_eq!(
+            Point::from((1.0, 1.0, 1.0)) * 2.0,
+            Point::from((2.0, 2.0, 2.0))
         )
     }
 

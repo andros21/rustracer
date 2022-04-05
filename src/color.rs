@@ -29,7 +29,7 @@ impl From<(f32, f32, f32)> for Color {
 impl Add for Color {
     type Output = Color;
 
-    fn add(self, other: Color) -> Color {
+    fn add(self, other: Color) -> Self::Output {
         Color {
             r: self.r + other.r,
             g: self.g + other.g,
@@ -41,7 +41,7 @@ impl Add for Color {
 impl Mul<Color> for Color {
     type Output = Color;
 
-    fn mul(self, rhs: Color) -> Color {
+    fn mul(self, rhs: Color) -> Self::Output {
         Color {
             r: self.r * rhs.r,
             g: self.g * rhs.g,
@@ -53,7 +53,7 @@ impl Mul<Color> for Color {
 impl Mul<f32> for Color {
     type Output = Color;
 
-    fn mul(self, rhs: f32) -> Color {
+    fn mul(self, rhs: f32) -> Self::Output {
         Color {
             r: self.r * rhs,
             g: self.g * rhs,

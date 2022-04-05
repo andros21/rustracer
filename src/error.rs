@@ -28,8 +28,6 @@ pub enum ConvertErr {
 
 #[derive(Error, Debug)]
 pub enum GeometryErr {
-    #[error("Object with norm {0} can't be normalized")]
+    #[error("object with norm {0} can't be normalized")]
     UnableToNormalize(f32),
-    // #[error("invalid element {0:?} for 3x3 matrix")]
-    // OutOfBounds((u32, u32)),
 }

@@ -1,14 +1,13 @@
-use std::fmt;
-use std::ops::{Add, Sub};
 use crate::color::IsClose;
 use crate::vector::Vector;
-
+use std::fmt;
+use std::ops::{Add, Sub};
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
-pub struct Point{
+pub struct Point {
     pub x: f32,
     pub y: f32,
-    pub z: f32
+    pub z: f32,
 }
 
 impl From<(f32, f32, f32)> for Point {
@@ -36,7 +35,7 @@ impl fmt::Display for Point {
 impl Add<Vector> for Point {
     type Output = Point;
 
-    fn add(self, other: Vector) -> Point {
+    fn add(self, other: Vector) -> Self::Output {
         Point {
             x: self.x + other.x,
             y: self.y + other.y,
@@ -48,7 +47,7 @@ impl Add<Vector> for Point {
 impl Sub for Point {
     type Output = Vector;
 
-    fn sub(self, other: Point) -> Vector {
+    fn sub(self, other: Point) -> Self::Output {
         Vector {
             x: self.x - other.x,
             y: self.y - other.y,
@@ -60,7 +59,7 @@ impl Sub for Point {
 impl Sub<Vector> for Point {
     type Output = Point;
 
-    fn sub(self, other: Vector) -> Point {
+    fn sub(self, other: Vector) -> Self::Output {
         Point {
             x: self.x - other.x,
             y: self.y - other.y,
@@ -69,7 +68,7 @@ impl Sub<Vector> for Point {
     }
 }
 #[cfg(test)]
-mod test{
+mod test {
     use super::*;
 
     #[test]

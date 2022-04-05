@@ -47,7 +47,7 @@ impl IsClose for Vector {
 impl Add for Vector {
     type Output = Vector;
 
-    fn add(self, other: Vector) -> Vector {
+    fn add(self, other: Vector) -> Self::Output {
         Vector {
             x: self.x + other.x,
             y: self.y + other.y,
@@ -59,7 +59,7 @@ impl Add for Vector {
 impl Sub for Vector {
     type Output = Vector;
 
-    fn sub(self, other: Vector) -> Vector {
+    fn sub(self, other: Vector) -> Self::Output {
         Vector {
             x: self.x - other.x,
             y: self.y - other.y,
@@ -74,7 +74,7 @@ fn dot_product(lhs: Vector, rhs: Vector) -> f32 {
 
 impl Mul<Vector> for Vector {
     type Output = Vector;
-    fn mul(self, rhs: Vector) -> Vector {
+    fn mul(self, rhs: Vector) -> Self::Output {
         Vector {
             x: self.y * rhs.z - self.z * rhs.y,
             y: self.z * rhs.x - self.x * rhs.z,
@@ -86,7 +86,7 @@ impl Mul<Vector> for Vector {
 impl Mul<f32> for Vector {
     type Output = Vector;
 
-    fn mul(self, rhs: f32) -> Vector {
+    fn mul(self, rhs: f32) -> Self::Output {
         Vector {
             x: self.x * rhs,
             y: self.y * rhs,
@@ -109,9 +109,10 @@ impl Vector {
     pub fn norm(&self) -> f32 {
         f32::sqrt(self.squared_norm())
     }
-    pub fn normalize(self) -> Result<Vector, GeometryErr> {
+    pub fn normalize(mut self) -> Result<(), GeometryErr> {
         if self.norm() > 0_f32 {
-            Ok(self * (1_f32 / self.norm()))
+            self = self * (1_f32 / self.norm());
+            Ok(())
         } else {
             Err(GeometryErr::UnableToNormalize(self.norm()))
         }

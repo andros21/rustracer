@@ -28,7 +28,7 @@ impl Matrix {
 impl std::ops::Index<(usize, usize)> for Matrix {
     type Output = f32;
 
-    fn index(&self, index: (usize, usize)) -> &f32 {
+    fn index(&self, index: (usize, usize)) -> &Self::Output {
         &self.elements[index.0][index.1]
     }
 }
@@ -56,7 +56,7 @@ impl IsClose for Matrix {
 impl Mul<Matrix> for Matrix {
     type Output = Matrix;
 
-    fn mul(self, rhs: Matrix) -> Matrix {
+    fn mul(self, rhs: Matrix) -> Self::Output {
         let mut matrix = Matrix {
             elements: [[0.; 4]; 4],
         };
@@ -276,8 +276,8 @@ impl Mul<Point> for Transformation {
 mod test {
     use super::*;
     use crate::color::EPSILON;
-    use std::f32::consts::PI;
     use crate::point;
+    use std::f32::consts::PI;
 
     #[test]
     fn test_index() {
@@ -370,22 +370,37 @@ mod test {
     }
 
     #[test]
-    fn test_scale(){
+    fn test_scale() {
         assert!(scale(2., -3., 2.2).is_consistent())
     }
 
     #[test]
-    fn test_mul_vector(){
-        assert!((rotation_x(PI/3.)*Vector::from((1., 1., 0.))).is_close(Vector::from((1., 0.5, 3_f32.sqrt()/2.))));
+    fn test_mul_vector() {
+        assert!(
+            (rotation_x(PI / 3.) * Vector::from((1., 1., 0.))).is_close(Vector::from((
+                1.,
+                0.5,
+                3_f32.sqrt() / 2.
+            )))
+        );
     }
 
     #[test]
-    fn test_mul_normal(){
-        assert!((scale(2., -3., 5.)*Normal::from((2., 1., 0.))).is_close(Normal::from((1., -1./3., 0.))))
+    fn test_mul_normal() {
+        assert!(
+            (scale(2., -3., 5.) * Normal::from((2., 1., 0.))).is_close(Normal::from((
+                1.,
+                -1. / 3.,
+                0.
+            )))
+        )
     }
 
     #[test]
-    fn test_mul_point(){
-        assert!((traslation(Vector::from((1., -2., 3.)))*Point::from((-3., 2., 0.))).is_close(Point::from((-2., 0., 3.))))
+    fn test_mul_point() {
+        assert!(
+            (traslation(Vector::from((1., -2., 3.))) * Point::from((-3., 2., 0.)))
+                .is_close(Point::from((-2., 0., 3.)))
+        )
     }
 }

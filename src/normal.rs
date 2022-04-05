@@ -51,7 +51,7 @@ fn dot_product(lhs: Vector, rhs: Normal) -> f32 {
 impl Mul<Vector> for Normal {
     type Output = Normal;
 
-    fn mul(self, rhs: Vector) -> Normal {
+    fn mul(self, rhs: Vector) -> Self::Output {
         Normal {
             x: self.y * rhs.z - self.z * rhs.y,
             y: self.z * rhs.x - self.x * rhs.z,
@@ -63,7 +63,7 @@ impl Mul<Vector> for Normal {
 impl Mul<Normal> for Normal {
     type Output = Normal;
 
-    fn mul(self, rhs: Normal) -> Normal {
+    fn mul(self, rhs: Normal) -> Self::Output {
         Normal {
             x: self.y * rhs.z - self.z * rhs.y,
             y: self.z * rhs.x - self.x * rhs.z,
@@ -75,7 +75,7 @@ impl Mul<Normal> for Normal {
 impl Mul<f32> for Normal {
     type Output = Normal;
 
-    fn mul(self, rhs: f32) -> Normal {
+    fn mul(self, rhs: f32) -> Self::Output {
         Normal {
             x: self.x * rhs,
             y: self.y * rhs,
@@ -98,9 +98,10 @@ impl Normal {
     pub fn norm(&self) -> f32 {
         f32::sqrt(self.squared_norm())
     }
-    pub fn normalize(self) -> Result<Normal, GeometryErr> {
+    pub fn normalize(mut self) -> Result<(), GeometryErr> {
         if self.norm() > 0_f32 {
-            Ok(self * (1_f32 / self.norm()))
+            self = self * (1_f32 / self.norm());
+            Ok(())
         } else {
             Err(GeometryErr::UnableToNormalize(self.norm()))
         }

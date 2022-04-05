@@ -8,6 +8,7 @@ use std::vec::Vec;
 
 use crate::color::Color;
 use crate::error::HdrImageErr;
+use crate::misc::ByteOrder;
 
 const DELTA: f32 = 1e-10;
 
@@ -223,11 +224,6 @@ fn check_eol(eol: bool) -> Result<(), HdrImageErr> {
     }
 }
 
-pub enum ByteOrder {
-    BigEndian,
-    LittleEndian,
-}
-
 fn parse_img_shape(line: &str) -> Result<(u32, u32), HdrImageErr> {
     let shape: Vec<&str> = line.split(' ').filter(|s| s != &"").collect();
     if shape.len() == 2 {
@@ -280,7 +276,7 @@ fn clamp(x: f32) -> f32 {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::color::IsClose;
+    use crate::misc::IsClose;
     use std::io::Cursor;
 
     #[test]

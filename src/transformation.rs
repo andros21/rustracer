@@ -1,4 +1,4 @@
-use crate::color::IsClose;
+use crate::misc::IsClose;
 use crate::normal::Normal;
 use crate::point::Point;
 use crate::vector::Vector;
@@ -288,7 +288,7 @@ pub fn rotation_z(theta: f32) -> Transformation {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::color::EPSILON;
+    use crate::misc::EPSILON;
     use std::f32::consts::PI;
 
     #[test]

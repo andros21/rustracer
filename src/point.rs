@@ -1,4 +1,4 @@
-use crate::color::IsClose;
+use crate::misc::IsClose;
 use crate::vector::Vector;
 use std::fmt;
 use std::ops::{Add, Mul, Sub};
@@ -83,7 +83,7 @@ impl Mul<f32> for Point {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::color::EPSILON;
+    use crate::misc::EPSILON;
 
     #[test]
     fn test_is_close() {

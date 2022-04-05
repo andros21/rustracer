@@ -1,5 +1,5 @@
-use crate::color::IsClose;
 use crate::error::GeometryErr;
+use crate::misc::IsClose;
 use crate::normal::Normal;
 use crate::point::Point;
 use std::fmt;
@@ -131,7 +131,7 @@ impl Mul<f32> for Vector {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::color::EPSILON;
+    use crate::misc::EPSILON;
 
     #[test]
     fn test_is_close() {

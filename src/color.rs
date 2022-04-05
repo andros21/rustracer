@@ -1,6 +1,5 @@
+use crate::misc::IsClose;
 use std::ops::{Add, Mul};
-
-pub const EPSILON: f32 = 1e-5;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Color {
@@ -62,16 +61,6 @@ impl Mul<f32> for Color {
     }
 }
 
-pub trait IsClose<Rhs = Self> {
-    fn is_close(&self, other: Self) -> bool;
-}
-
-impl IsClose for f32 {
-    fn is_close(&self, other: f32) -> bool {
-        (self - other).abs() < EPSILON
-    }
-}
-
 impl IsClose for Color {
     fn is_close(&self, other: Color) -> bool {
         self.r.is_close(other.r) & self.g.is_close(other.g) & self.b.is_close(other.b)
@@ -90,6 +79,7 @@ impl IntoIterator for Color {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::misc::EPSILON;
 
     #[test]
     fn test_add() {

@@ -48,7 +48,7 @@ impl IsClose for Matrix {
                 }
             }
         }
-        return true;
+        true
     }
 }
 
@@ -66,7 +66,7 @@ impl Mul<Matrix> for Matrix {
                 }
             }
         }
-        return matrix;
+        matrix
     }
 }
 

@@ -90,7 +90,7 @@ mod test {
         assert!(
             Point::from((1.0, 2.0 + EPSILON * 1e-1, 3.0)).is_close(Point::from((1.0, 2.0, 3.0)))
         );
-        assert!(!Point::from((1.0, 2.0 + EPSILON, 3.0)).is_close(Point::from((1.0, 2.0, 3.0))))
+        assert!(!Point::from((2.0, 1.0 + EPSILON, 3.0)).is_close(Point::from((2.0, 1.0, 3.0))))
     }
 
     #[test]

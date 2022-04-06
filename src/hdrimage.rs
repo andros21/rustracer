@@ -24,7 +24,7 @@ impl HdrImage {
         HdrImage {
             width,
             height,
-            pixels: vec![Default::default(); (width * height) as usize],
+            pixels: vec![Color::default(); (width * height) as usize],
         }
     }
 
@@ -309,7 +309,7 @@ mod test {
 
     #[test]
     fn test_get_pixel() {
-        let color: Color = Default::default();
+        let color = Color::default();
 
         assert!(matches!(HdrImage::new(3, 3).get_pixel(0, 0), Ok(col) if col == color));
         assert!(matches!(HdrImage::new(3, 3).get_pixel(3, 3),

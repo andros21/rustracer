@@ -4,7 +4,7 @@ use crate::point::Point;
 use crate::vector::Vector;
 use std::ops::Mul;
 
-pub const IDENTITY_MATRIX: [[f32; 4]; 4] = [
+const IDENTITY_MATRIX: [[f32; 4]; 4] = [
     [1., 0., 0., 0.],
     [0., 1., 0., 0.],
     [0., 0., 1., 0.],
@@ -70,31 +70,20 @@ impl Mul<Matrix> for Matrix {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct Transformation {
     m: Matrix,
     invm: Matrix,
 }
 
 impl Transformation {
-    pub fn is_consistent(self) -> bool {
-        (self.m * self.invm).is_close(Matrix {
-            ..Default::default()
-        })
+    fn is_consistent(self) -> bool {
+        (self.m * self.invm).is_close(Matrix::default())
     }
     pub fn inverse(self) -> Transformation {
         Transformation {
             m: self.invm,
             invm: self.m,
-        }
-    }
-}
-
-impl Default for Transformation {
-    fn default() -> Self {
-        Transformation {
-            m: Default::default(),
-            invm: Default::default(),
         }
     }
 }
@@ -293,9 +282,7 @@ mod test {
 
     #[test]
     fn test_index() {
-        let mut matrix = Matrix {
-            ..Default::default()
-        };
+        let mut matrix = Matrix::default();
 
         for i in 0..4 {
             for j in 0..4 {
@@ -312,10 +299,7 @@ mod test {
 
     #[test]
     fn test_is_close_matrix() {
-        assert!(Matrix {
-            ..Default::default()
-        }
-        .is_close(Matrix {
+        assert!(Matrix::default().is_close(Matrix {
             elements: [
                 [1. + EPSILON / 2., 0., 0., 0.],
                 [EPSILON / 2., 1., 0., 0.],
@@ -324,10 +308,7 @@ mod test {
             ]
         }));
         assert!(
-            !(Matrix {
-                ..Default::default()
-            }
-            .is_close(Matrix {
+            !(Matrix::default().is_close(Matrix {
                 elements: [
                     [1. + EPSILON, 0., 0., 0.],
                     [0., 1., 0., 0.],
@@ -371,10 +352,7 @@ mod test {
 
     #[test]
     fn test_is_consistent() {
-        assert!(Transformation {
-            ..Default::default()
-        }
-        .is_consistent())
+        assert!(Transformation::default().is_consistent())
     }
 
     #[test]
@@ -410,7 +388,6 @@ mod test {
     }
 
     #[test]
-    #[ignore]
     fn test_mul_transformation() {
         let m1 = Transformation {
             m: Matrix {
@@ -501,9 +478,7 @@ mod test {
 
         let prod = m1 * m2;
         assert!(prod.is_consistent());
-        assert!(prod.is_close(Transformation {
-            ..Default::default()
-        }))
+        assert!(prod.is_close(Transformation::default()))
     }
 
     #[test]
@@ -527,15 +502,9 @@ mod test {
         assert!(rotation_y(-0.14).is_consistent());
         assert!(rotation_z(1.).is_consistent());
 
-        assert!(rotation_x(2. * PI).m.is_close(Matrix {
-            ..Default::default()
-        }));
-        assert!(rotation_y(-4. * PI).invm.is_close(Matrix {
-            ..Default::default()
-        }));
-        assert!(rotation_z(0.).m.is_close(Matrix {
-            ..Default::default()
-        }))
+        assert!(rotation_x(2. * PI).m.is_close(Matrix::default()));
+        assert!(rotation_y(-4. * PI).invm.is_close(Matrix::default()));
+        assert!(rotation_z(0.).m.is_close(Matrix::default()))
     }
 
     #[test]

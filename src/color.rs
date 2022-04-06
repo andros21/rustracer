@@ -106,12 +106,6 @@ mod test {
     }
 
     #[test]
-    fn test_is_close_float() {
-        assert!((EPSILON * 1e-1 + 1.0).is_close(1.0));
-        assert!(!(EPSILON + 1.0).is_close(1.0))
-    }
-
-    #[test]
     fn test_is_close_color() {
         assert!(
             (Color::from((1.23, 4.56, 7.89)) * Color::from((9.87, 6.54, 3.21)))

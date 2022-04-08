@@ -1,3 +1,6 @@
+//! 3D Vector module.
+//!
+//! Provides [`Vector`](struct@Vector) struct.
 use crate::error::GeometryErr;
 use crate::misc::IsClose;
 use crate::normal::Normal;
@@ -5,14 +8,19 @@ use crate::point::Point;
 use std::fmt;
 use std::ops::{Add, Mul, Sub};
 
+/// 3D Vector struct.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Vector {
+    /// x component
     pub x: f32,
+    /// y component
     pub y: f32,
+    /// z component
     pub z: f32,
 }
 
 impl Vector {
+    /// Return the reversed vector.
     pub fn neg(self) -> Vector {
         Vector {
             x: -self.x,
@@ -20,15 +28,29 @@ impl Vector {
             z: -self.z,
         }
     }
+
+    /// Compute the dot product between two vectors.
     pub fn dot(self, other: Vector) -> f32 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
+
+    /// Return the squared norm (Euclidean length) of a vector.
+    ///
+    /// This is faster than [`norm`](#method.squared_norm) if you just need the squared norm.
     pub fn squared_norm(self) -> f32 {
         self.dot(self)
     }
+
+    /// Return the norm (Euclidean length) of a vector.
     pub fn norm(self) -> f32 {
         f32::sqrt(self.squared_norm())
     }
+
+    /// Modify the vector's norm so that it becomes equal to 1.
+    ///
+    /// And return the normalized vector inside [`std::result::Result`].\
+    /// If the normalization operation wasn't possible result is an
+    /// [`GeometryErr`] error variant.
     pub fn normalize(mut self) -> Result<Vector, GeometryErr> {
         if self.norm() > 0_f32 {
             self = self * (1_f32 / self.norm());
@@ -76,6 +98,7 @@ impl fmt::Display for Vector {
 }
 
 impl IsClose for Vector {
+    /// Return `true` if the three xyz components of two [`Vector`] are [close](trait@IsClose).
     fn is_close(&self, other: Vector) -> bool {
         self.x.is_close(other.x) & self.y.is_close(other.y) & self.z.is_close(other.z)
     }
@@ -107,6 +130,7 @@ impl Sub for Vector {
 
 impl Mul<Vector> for Vector {
     type Output = Vector;
+
     fn mul(self, rhs: Vector) -> Self::Output {
         Vector {
             x: self.y * rhs.z - self.z * rhs.y,

@@ -1,3 +1,7 @@
+//! High Dynamic Range Image module.
+//!
+//! Provides [`HdrImage`](struct@HdrImage) struct.
+
 use byteorder::{ReadBytesExt, WriteBytesExt};
 use image::{DynamicImage, ImageFormat, Rgb, Rgba};
 use std::fs::File;
@@ -12,14 +16,19 @@ use crate::misc::ByteOrder;
 
 const DELTA: f32 = 1e-10;
 
+/// High Dynamic Range Image struct.
 #[derive(Clone, Debug, PartialEq)]
 pub struct HdrImage {
+    /// Number of columns in the 2D matrix of colors.
     width: u32,
+    /// Number of rows in the 2D matrix of colors.
     height: u32,
+    /// The 2D matrix, represented as a 1D [`std::vec::Vec`] of [`Color`].
     pixels: Vec<Color>,
 }
 
 impl HdrImage {
+    /// Create a black image with the specified resolution.
     pub fn new(width: u32, height: u32) -> HdrImage {
         HdrImage {
             width,
@@ -28,14 +37,21 @@ impl HdrImage {
         }
     }
 
+    /// Return the position in the 1D array of the specified pixel.
     fn pixel_offset(&self, x: u32, y: u32) -> usize {
         (y * self.width + x) as usize
     }
 
+    /// Return `true` if `(x, y)` are coordinates within the 2D matrix.
     fn valid_coordinates(&self, x: u32, y: u32) -> bool {
         x < self.width && y < self.height
     }
 
+    /// Return the [`Color`] value for a pixel in the image inside a `std::result::Result`.
+    ///
+    /// For invalid `(x, y)` coordinates the result is an [`HdrImageErr`] error variant.
+    ///
+    /// The pixel at the top-left corner has coordinates `(0, 0)`.
     pub fn get_pixel(&self, x: u32, y: u32) -> Result<Color, HdrImageErr> {
         if self.valid_coordinates(x, y) {
             Ok(self.pixels[self.pixel_offset(x, y)])
@@ -44,6 +60,11 @@ impl HdrImage {
         }
     }
 
+    /// Set the new [`Color`] for a pixel in the image.
+    ///
+    /// For invalid `(x, y)` coordinates the result is an [`HdrImageErr`] error variant.
+    ///
+    /// The pixel at the top-left corner has coordinates `(0, 0)`.
     pub fn set_pixel(&mut self, x: u32, y: u32, new_color: Color) -> Result<(), HdrImageErr> {
         if self.valid_coordinates(x, y) {
             let pixel_offset = self.pixel_offset(x, y);
@@ -54,6 +75,35 @@ impl HdrImage {
         }
     }
 
+    /// Read a pfm image from `buf_reader` with [`std::io::BufRead`] trait implementation.
+    ///
+    /// The expected input buffer must respect pfm format:
+    /// ```text
+    /// PF              # ASCII text, '\n' as line separator
+    /// width height    # ASCII text, '\n' as line separator
+    /// ±1.0            # ASCII text, '\n' as line separator
+    /// pixels matrix   # binary content (float RGB x #pixels)
+    /// ```
+    /// Little description:
+    /// * `PF` - the magic
+    /// * `width` `height` - image shape (**note:** space separated)
+    /// * `±1.0` - endianness (`+1` big endian, `-1` little endian) float codification
+    /// * `pixels matrix` - matrix of RGB float pixels encoded as function of endianness
+    ///
+    /// Possible read failures, in precedence order:
+    /// 1. Lack of first end line ([`check_eol`])
+    /// 2. Invalid magic (no `PF`)
+    /// 3. Lack of second end line ([`check_eol`])
+    /// 4. Invalid image shape ([`parse_img_shape`])
+    /// 5. Lack of third end line ([`check_eol`])
+    /// 6. Invalid endianness ([`parse_endianness`])
+    /// 7. Invalid pixels matrix (error parsing float RGB)
+    /// 8. Invalid EOF (unexpected binary content after pixels matrix read)
+    ///
+    ///  Parse of [`f32`] from binary stream using
+    ///  [`byteorder`](https://github.com/BurntSushi/byteorder) library.\
+    ///  Return a [`HdrImage`] object containing the image inside a [`std::result::Result`].\
+    ///  If an error occurs the result contains an [`HdrImageErr`] error variant.
     fn read_pfm_image<R: BufRead>(buf_reader: &mut R) -> Result<HdrImage, HdrImageErr> {
         let mut line = String::new();
         buf_reader
@@ -102,12 +152,23 @@ impl HdrImage {
         }
     }
 
+    /// Read a pfm image from `path`, wrapper function around
+    /// [`read_pfm_image`](#method.read_pfm_image).
+    ///
+    ///  Return a [`HdrImage`] object containing the image inside a [`std::result::Result`].\
+    ///  If an error occurs the result contains an [`HdrImageErr`] error variant.
     pub fn read_pfm_file(path: &Path) -> Result<HdrImage, HdrImageErr> {
         let file = File::open(path).map_err(HdrImageErr::PfmFileReadFailure)?;
         let mut buf_reader = BufReader::new(file);
         HdrImage::read_pfm_image(&mut buf_reader)
     }
 
+    /// Write a pfm image to `stream` with [`std::io::Write`] trait implementation.
+    ///
+    /// The enum [`endianness`](enum@ByteOrder) specifies the byte endianness
+    /// to be used in the file.
+    ///
+    /// Return a [`std::io::Result`].
     fn write_pfm_image<W: Write>(
         &self,
         stream: &mut W,
@@ -129,12 +190,20 @@ impl HdrImage {
         Ok(())
     }
 
+    /// Write a pfm image to `path`, wrapper function around
+    /// [`write_pfm_image`](#method.write_pfm_image).
+    ///
+    /// Return a [`std::io::Result`].
     pub fn write_pfm_file(&self, path: &Path, endianness: ByteOrder) -> std::io::Result<()> {
         let file = File::create(path)?;
         let mut writer = BufWriter::new(file);
         self.write_pfm_image(&mut writer, endianness)
     }
 
+    /// Return the average luminosity of the image.
+    ///
+    /// The [`DELTA`] constant is used to prevent  numerical problems
+    /// for under illuminated pixels.
     fn average_luminosity(&self) -> f32 {
         let mut sum = 0.0;
         for pixel in self.pixels.iter() {
@@ -143,6 +212,10 @@ impl HdrImage {
         f32::powf(10.0, sum / (self.pixels.len() as f32))
     }
 
+    /// Normalize the image for a given luminosity.
+    ///
+    /// `factor` is normalization factor.\
+    /// Different variants of [`luminosity`](enum@Luminosity) enum can be chosen.
     pub fn normalize_image(&mut self, factor: f32, luminosity: Luminosity) {
         let lum = match luminosity {
             Luminosity::AverageLuminosity => self.average_luminosity(),
@@ -153,6 +226,7 @@ impl HdrImage {
         }
     }
 
+    /// Adjust the color levels of the brightest pixels in the image.
     pub fn clamp_image(&mut self) {
         for pixel in self.pixels.iter_mut() {
             pixel.r = clamp(pixel.r);
@@ -161,6 +235,22 @@ impl HdrImage {
         }
     }
 
+    /// Save the image in a Low Dynamic Range (LDR) format,
+    /// using [`image`](https://github.com/image-rs/image) library.
+    ///
+    /// `gamma` is transfer function parameter.
+    ///
+    /// **Note:** the output format is auto-detected from the file name extension,\
+    /// only two LDR image format are supported `.ff` ([`farbfeld`](https://tools.suckless.org/farbfeld/))
+    /// and `.png` ([`PNG`](https://en.wikipedia.org/wiki/Portable_Network_Graphics)).
+    ///
+    /// **Note:** before calling this function, you should apply a
+    /// tone-mapping algorithm to the image and \
+    /// be sure that the RGB values of the colors in the image are all in the range `[0, 1]`.\
+    /// Use [`normalize_image`](#method.normalize_image)
+    /// and [`clamp_image`](#method.clamp_image) to do this.
+    ///
+    /// In case of errors, `std::result::Result` is an [`HdrImageErr`] error variant.
     pub fn write_ldr_file(&self, path: &Path, gamma: f32) -> Result<(), HdrImageErr> {
         let format = ImageFormat::from_path(&path).map_err(HdrImageErr::LdrFileWriteFailure)?;
         match format {
@@ -214,6 +304,11 @@ impl HdrImage {
     }
 }
 
+/// Boolean check end of line.
+///
+/// Return an [`HdrImageErr::InvalidPfmFileFormat`]
+/// as function of passed boolean `eol`.
+/// Where `eol` is `true` if contain '\n', `false` if not contain `\n`.
 fn check_eol(eol: bool) -> Result<(), HdrImageErr> {
     if eol {
         Ok(())
@@ -224,6 +319,11 @@ fn check_eol(eol: bool) -> Result<(), HdrImageErr> {
     }
 }
 
+/// Parse image shape, [`u32`] tuple, from string.
+///
+/// Width and height inside string must be separated by one (or more spaces).
+///
+/// If parse fails, the [`std::result::Result`] will be an [`HdrImageErr`] error variant.
 fn parse_img_shape(line: &str) -> Result<(u32, u32), HdrImageErr> {
     let shape: Vec<&str> = line.split(' ').filter(|s| s != &"").collect();
     if shape.len() == 2 {
@@ -239,6 +339,11 @@ fn parse_img_shape(line: &str) -> Result<(u32, u32), HdrImageErr> {
     }
 }
 
+/// Parse image endianness from string.
+///
+/// If parse successes a particular variant of [`ByteOrder`] is returned
+/// wrapped around a [`std::result::Result`].\
+/// If parse fails the [`std::result::Result`] will be an [`HdrImageErr`] error variant.
 fn parse_endianness(line: &str) -> Result<ByteOrder, HdrImageErr> {
     let value = f32::from_str(line)
         .map_err(|e| HdrImageErr::PfmFloatParseFailure(e, String::from("endianness")))?;
@@ -253,6 +358,12 @@ fn parse_endianness(line: &str) -> Result<ByteOrder, HdrImageErr> {
     }
 }
 
+/// Write [`f32`] value to stream. \
+///
+/// With `stream` implemented [`std::io::Write`] trait and `value` encoded as function of
+/// [`endianness`](enum@ByteOrder).
+///
+/// Using [`byteorder`](https://github.com/BurntSushi/byteorder) library
 fn write_float<W: Write>(
     stream: &mut W,
     value: f32,
@@ -264,11 +375,17 @@ fn write_float<W: Write>(
     }
 }
 
+/// Luminosity enum.
 pub enum Luminosity {
+    /// Variant for using [`average_luminosity`](../hdrimage/struct.HdrImage.html#method.average_luminosity)
+    /// inside [`normalize_image`](../hdrimage/struct.HdrImage.html#method.normalize_image) method
     AverageLuminosity,
+    /// Variant for setting a constant [`f32`] value for luminosity inside
+    /// [`normalize_image`](../hdrimage/struct.HdrImage.html#method.normalize_image) method.
     FloatValue(f32),
 }
 
+/// Adjust the color levels of the brightest pixels in the image.
 fn clamp(x: f32) -> f32 {
     x / (1.0 + x)
 }

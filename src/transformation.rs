@@ -1,9 +1,13 @@
+//! 3D Homogeneous Transformation module.
+//!
+//! Provides [`Matrix`](struct@Matrix) and [`Transformation`](struct@Transformation) struct.
 use crate::misc::IsClose;
 use crate::normal::Normal;
 use crate::point::Point;
 use crate::vector::Vector;
 use std::ops::Mul;
 
+/// 4D Identity matrix.
 const IDENTITY_MATRIX: [[f32; 4]; 4] = [
     [1., 0., 0., 0.],
     [0., 1., 0., 0.],
@@ -11,12 +15,19 @@ const IDENTITY_MATRIX: [[f32; 4]; 4] = [
     [0., 0., 0., 1.],
 ];
 
+/// 4D Matrix struct.
+///
+/// **Note:** a 4D matrix is used for a 3D [transformation](struct@Transformation)
+/// because this is the dimension needed for homo transformation
+/// in a 3D space.
 #[derive(Clone, Copy, Debug, PartialEq)]
 struct Matrix {
+    /// Matrix elements.
     elements: [[f32; 4]; 4],
 }
 
 impl Default for Matrix {
+    /// Return as default matrix a [`Matrix`] with elements equal to [`IDENTITY_MATRIX`].
     fn default() -> Self {
         Matrix {
             elements: IDENTITY_MATRIX,
@@ -39,6 +50,7 @@ impl std::ops::IndexMut<(usize, usize)> for Matrix {
 }
 
 impl IsClose for Matrix {
+    /// Return `true` if all elements of two [`Matrix`] are [close](trait@IsClose).
     fn is_close(&self, other: Matrix) -> bool {
         for i in 0..4 {
             for j in 0..4 {
@@ -70,16 +82,30 @@ impl Mul<Matrix> for Matrix {
     }
 }
 
+/// 3D Homogeneous Transformation struct.
+///
+/// This class encodes an affine transformation.\
+/// It has been designed with the aim of making the calculation
+/// of the inverse transformation particularly efficient.
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct Transformation {
+    /// Transformation matrix.
     m: Matrix,
+    /// Inverse transformation matrix.
     invm: Matrix,
 }
 
 impl Transformation {
+    /// Check the internal consistency of the transformation.
+    ///
+    /// This method is useful when writing tests.
     fn is_consistent(self) -> bool {
         (self.m * self.invm).is_close(Matrix::default())
     }
+
+    /// Return a [`Transformation`] object representing the inverse affine transformation.
+    ///
+    /// This method is very cheap to call.
     pub fn inverse(self) -> Transformation {
         Transformation {
             m: self.invm,
@@ -89,6 +115,7 @@ impl Transformation {
 }
 
 impl IsClose for Transformation {
+    /// Return `true` if matrix and inverse matrix of two [`Transformation`] are [close](trait@IsClose).
     fn is_close(&self, other: Transformation) -> bool {
         self.m.is_close(other.m) && self.invm.is_close(other.invm)
     }
@@ -169,6 +196,10 @@ impl Mul<Point> for Transformation {
     }
 }
 
+/// Return a [`Transformation`] object encoding a rigid translation.
+///
+/// The parameter [`Vector`] specifies the amount of shift to be
+/// applied along the three axes.
 pub fn translation(vec: Vector) -> Transformation {
     Transformation {
         m: Matrix {
@@ -190,6 +221,10 @@ pub fn translation(vec: Vector) -> Transformation {
     }
 }
 
+/// Return a [`Transformation`] object encoding a scaling.
+///
+/// The parameter [`Vector`] specifies the amount of scaling
+/// along the three directions X, Y, Z.
 pub fn scaling(vec: Vector) -> Transformation {
     Transformation {
         m: Matrix {
@@ -211,6 +246,10 @@ pub fn scaling(vec: Vector) -> Transformation {
     }
 }
 
+/// Return a [`Transformation`] object encoding a rotation around the X axis.
+///
+/// The parameter `theta` specifies the rotation angle (in degrees).\
+/// The positive sign is given by the right-hand rule.
 pub fn rotation_x(theta: f32) -> Transformation {
     Transformation {
         m: Matrix {
@@ -232,6 +271,10 @@ pub fn rotation_x(theta: f32) -> Transformation {
     }
 }
 
+/// Return a [`Transformation`] object encoding a rotation around the Y axis.
+///
+/// The parameter `theta` specifies the rotation angle (in degrees).\
+/// The positive sign is given by the right-hand rule.
 pub fn rotation_y(theta: f32) -> Transformation {
     Transformation {
         m: Matrix {
@@ -253,6 +296,10 @@ pub fn rotation_y(theta: f32) -> Transformation {
     }
 }
 
+/// Return a [`Transformation`] object encoding a rotation around the Z axis.
+///
+/// The parameter `theta` specifies the rotation angle (in degrees).\
+/// The positive sign is given by the right-hand rule.
 pub fn rotation_z(theta: f32) -> Transformation {
     Transformation {
         m: Matrix {

@@ -1,3 +1,5 @@
+#![doc = include_str!("../README.md")]
+
 mod cli;
 mod color;
 mod error;
@@ -16,6 +18,12 @@ use std::str::FromStr;
 use crate::error::ConvertErr;
 use crate::hdrimage::{HdrImage, Luminosity};
 
+/// Crate main function.
+///
+/// * parse subcommands and subcommands arguments
+/// * call subcommands relative function
+/// * check results
+/// * print to stderr and exit 1 if error was detected
 fn main() {
     let cli_m = cli::build_cli().get_matches_from(env::args_os());
     match cli_m.subcommand_name() {
@@ -30,6 +38,9 @@ fn main() {
     }
 }
 
+/// Convert High Dynamic Range (LDR) image to Low Dynamic Range (HDR).
+///
+/// Called when `rustracer-convert` subcommand is used.
 fn convert(sub_m: &clap::ArgMatches) -> Result<(), ConvertErr> {
     let hdr_file = Path::new(sub_m.value_of("HDR").unwrap());
     let ldr_file = Path::new(sub_m.value_of("LDR").unwrap());

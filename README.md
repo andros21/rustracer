@@ -4,7 +4,7 @@
   <a href="https://github.com/andros21/rustracer">
     <img src="https://user-images.githubusercontent.com/58751603/160428859-381f9846-b460-4d9e-bb25-4b111f99fb77.png" alt="Logo" width="70%">
   </a>
-  <h3>cli photorealistic image generator</h3>
+  <h3 style="border-bottom: 0px;">cli photorealistic image generator</h3>
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/workflow/status/andros21/rustracer/CI?style=flat-square&label=ci&logo=github" alt="CI">
   </a>
@@ -66,9 +66,6 @@ Run `rustracer -h` for short help or `rustracer --help` for long help
 Example of `rustracer convert` subcommand:
 
 ```bash
-# convert to png
-$ rustracer convert image.pfm image.png
-
-# convert to farbfeld
-$ rustracer convert image.pfm image.ff
+$ rustracer convert image.pfm image.ff  # convert to farbfeld
+$ rustracer convert image.pfm image.png # convert to png
 ```

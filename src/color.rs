@@ -1,14 +1,22 @@
+//! RGB Color module.
+//!
+//! Provides [`Color`](struct@Color) struct.
 use crate::misc::IsClose;
 use std::ops::{Add, Mul};
 
+/// RGB Color struct.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Color {
+    /// Red.
     pub r: f32,
+    /// Green.
     pub g: f32,
+    /// Blue.
     pub b: f32,
 }
 
 impl Color {
+    /// Return a rough measure of the luminosity associated with the color.
     pub fn luminosity(self) -> f32 {
         (self.into_iter().reduce(f32::max).unwrap() + self.into_iter().reduce(f32::min).unwrap())
             * 0.5
@@ -62,6 +70,7 @@ impl Mul<f32> for Color {
 }
 
 impl IsClose for Color {
+    /// Return `true` if the three RGB components of two [`Color`] are [close](trait@IsClose).
     fn is_close(&self, other: Color) -> bool {
         self.r.is_close(other.r) & self.g.is_close(other.g) & self.b.is_close(other.b)
     }

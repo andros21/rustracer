@@ -2,6 +2,11 @@ mod cli;
 mod color;
 mod error;
 mod hdrimage;
+mod misc;
+mod normal;
+mod point;
+mod transformation;
+mod vector;
 
 use std::env;
 use std::path::Path;

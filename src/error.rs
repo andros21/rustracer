@@ -25,3 +25,9 @@ pub enum ConvertErr {
     #[error("{0}")]
     IoError(#[source] HdrImageErr),
 }
+
+#[derive(Error, Debug)]
+pub enum GeometryErr {
+    #[error("object with norm {0} can't be normalized")]
+    UnableToNormalize(f32),
+}

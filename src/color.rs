@@ -1,6 +1,5 @@
+use crate::misc::IsClose;
 use std::ops::{Add, Mul};
-
-const EPSILON: f32 = 1e-5;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Color {
@@ -29,7 +28,7 @@ impl From<(f32, f32, f32)> for Color {
 impl Add for Color {
     type Output = Color;
 
-    fn add(self, other: Color) -> Color {
+    fn add(self, other: Color) -> Self::Output {
         Color {
             r: self.r + other.r,
             g: self.g + other.g,
@@ -41,7 +40,7 @@ impl Add for Color {
 impl Mul<Color> for Color {
     type Output = Color;
 
-    fn mul(self, rhs: Color) -> Color {
+    fn mul(self, rhs: Color) -> Self::Output {
         Color {
             r: self.r * rhs.r,
             g: self.g * rhs.g,
@@ -53,22 +52,12 @@ impl Mul<Color> for Color {
 impl Mul<f32> for Color {
     type Output = Color;
 
-    fn mul(self, rhs: f32) -> Color {
+    fn mul(self, rhs: f32) -> Self::Output {
         Color {
             r: self.r * rhs,
             g: self.g * rhs,
             b: self.b * rhs,
         }
-    }
-}
-
-pub trait IsClose<Rhs = Self> {
-    fn is_close(&self, other: Self) -> bool;
-}
-
-impl IsClose for f32 {
-    fn is_close(&self, other: f32) -> bool {
-        (self - other).abs() < EPSILON
     }
 }
 
@@ -90,6 +79,7 @@ impl IntoIterator for Color {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::misc::EPSILON;
 
     #[test]
     fn test_add() {
@@ -113,12 +103,6 @@ mod test {
             Color::from((1.0, 1.0, 1.0)) * 2.0,
             Color::from((2.0, 2.0, 2.0))
         )
-    }
-
-    #[test]
-    fn test_is_close_float() {
-        assert!((EPSILON * 1e-1 + 1.0).is_close(1.0));
-        assert!(!(EPSILON + 1.0).is_close(1.0))
     }
 
     #[test]

@@ -8,6 +8,7 @@ use std::vec::Vec;
 
 use crate::color::Color;
 use crate::error::HdrImageErr;
+use crate::misc::ByteOrder;
 
 const DELTA: f32 = 1e-10;
 
@@ -23,7 +24,7 @@ impl HdrImage {
         HdrImage {
             width,
             height,
-            pixels: vec![Default::default(); (width * height) as usize],
+            pixels: vec![Color::default(); (width * height) as usize],
         }
     }
 
@@ -223,11 +224,6 @@ fn check_eol(eol: bool) -> Result<(), HdrImageErr> {
     }
 }
 
-pub enum ByteOrder {
-    BigEndian,
-    LittleEndian,
-}
-
 fn parse_img_shape(line: &str) -> Result<(u32, u32), HdrImageErr> {
     let shape: Vec<&str> = line.split(' ').filter(|s| s != &"").collect();
     if shape.len() == 2 {
@@ -280,7 +276,7 @@ fn clamp(x: f32) -> f32 {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::color::IsClose;
+    use crate::misc::IsClose;
     use std::io::Cursor;
 
     #[test]
@@ -313,7 +309,7 @@ mod test {
 
     #[test]
     fn test_get_pixel() {
-        let color: Color = Default::default();
+        let color = Color::default();
 
         assert!(matches!(HdrImage::new(3, 3).get_pixel(0, 0), Ok(col) if col == color));
         assert!(matches!(HdrImage::new(3, 3).get_pixel(3, 3),

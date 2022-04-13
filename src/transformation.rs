@@ -4,6 +4,7 @@
 use crate::misc::IsClose;
 use crate::normal::Normal;
 use crate::point::Point;
+use crate::ray::Ray;
 use crate::vector::Vector;
 use std::ops::Mul;
 
@@ -192,6 +193,19 @@ impl Mul<Point> for Transformation {
                 y: new_point.y / w,
                 z: new_point.z / w,
             }
+        }
+    }
+}
+
+impl Mul<Ray> for Transformation {
+    type Output = Ray;
+    fn mul(self, ray: Ray) -> Self::Output {
+        Ray {
+            origin: self * ray.origin,
+            dir: self * ray.dir,
+            tmin: ray.tmin,
+            tmax: ray.tmax,
+            depth: ray.depth,
         }
     }
 }

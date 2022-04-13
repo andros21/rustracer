@@ -4,11 +4,11 @@ use crate::vector::Vector;
 
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct Ray {
-    origin: Point,
-    dir: Vector,
-    tmin: f32,
-    tmax: f32,
-    depth: u32,
+    pub origin: Point,
+    pub dir: Vector,
+    pub tmin: f32,
+    pub tmax: f32,
+    pub depth: u32,
 }
 
 impl Ray {
@@ -30,46 +30,22 @@ mod test {
     #[test]
     fn test_is_close() {
         let ray1 = Ray {
-            origin: Point {
-                x: 1.0,
-                y: 2.0,
-                z: 3.0,
-            },
-            dir: Vector {
-                x: 5.0,
-                y: 4.0,
-                z: -1.0,
-            },
+            origin: Point::from((1.0, 2.0, 3.0)),
+            dir: Vector::from((5.0, 4.0, -1.0)),
             tmin: 1e-5,
             tmax: f32::INFINITY,
             depth: 0,
         };
         let ray2 = Ray {
-            origin: Point {
-                x: 1.0,
-                y: 2.0,
-                z: 3.0,
-            },
-            dir: Vector {
-                x: 5.0,
-                y: 4.0,
-                z: -1.0,
-            },
+            origin: Point::from((1.0, 2.0, 3.0)),
+            dir: Vector::from((5.0, 4.0, -1.0)),
             tmin: 1e-5,
             tmax: f32::INFINITY,
             depth: 0,
         };
         let ray3 = Ray {
-            origin: Point {
-                x: 5.0,
-                y: 1.0,
-                z: 4.0,
-            },
-            dir: Vector {
-                x: 3.0,
-                y: 9.0,
-                z: 4.0,
-            },
+            origin: Point::from((5.0, 1.0, 4.0)),
+            dir: Vector::from((3.0, 9.0, 4.0)),
             tmin: 1e-5,
             tmax: f32::INFINITY,
             depth: 0,
@@ -82,35 +58,15 @@ mod test {
     #[test]
     fn test_at() {
         let ray = Ray {
-            origin: Point {
-                x: 1.0,
-                y: 2.0,
-                z: 4.0,
-            },
-            dir: Vector {
-                x: 4.0,
-                y: 2.0,
-                z: 1.0,
-            },
+            origin: Point::from((1.0, 2.0, 4.0)),
+            dir: Vector::from((4.0, 2.0, 1.0)),
             tmin: 1e-5,
             tmax: f32::INFINITY,
             depth: 0,
         };
 
         assert!(ray.at(0.0).is_close(ray.origin));
-        assert!(
-            (ray.at(1.0).is_close(Point {
-                x: 5.0,
-                y: 4.0,
-                z: 5.0
-            }))
-        );
-        assert!(
-            (ray.at(2.0).is_close(Point {
-                x: 9.0,
-                y: 6.0,
-                z: 6.0
-            }))
-        );
+        assert!(ray.at(1.0).is_close(Point::from((5.0, 4.0, 5.0))));
+        assert!(ray.at(2.0).is_close(Point::from((9.0, 6.0, 6.0))));
     }
 }

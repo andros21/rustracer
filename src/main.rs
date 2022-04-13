@@ -1,5 +1,6 @@
 #![doc = include_str!("../README.md")]
 
+mod camera;
 mod cli;
 mod color;
 mod error;

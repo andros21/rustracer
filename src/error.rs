@@ -1,5 +1,11 @@
+//! Error reporting module.
+//!
+//! Provides internal [`rustracer`](..) errors,
+//! using [`thiserror`](https://github.com/dtolnay/thiserror) library
+
 use thiserror::Error;
 
+/// Error enum for [`HdrImage`](../hdrimage) module.
 #[derive(Error, Debug)]
 pub enum HdrImageErr {
     #[error("invalid indexes: {0:?}, expected hdr image shape: {1:?}")]
@@ -18,6 +24,7 @@ pub enum HdrImageErr {
     UnsupportedLdrFileFormat(String),
 }
 
+/// Error enum for [`convert`](../fn.convert.html) function inside [`main`](../fn.main).
 #[derive(Error, Debug)]
 pub enum ConvertErr {
     #[error("invalid {1}, expected floating-point number: {0}")]

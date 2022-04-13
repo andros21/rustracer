@@ -1,17 +1,30 @@
+//! 3D Normal module.
+//!
+//! Provides [`Normal`](struct@Normal) struct.
 use crate::error::GeometryErr;
 use crate::misc::IsClose;
 use crate::vector::Vector;
 use std::fmt;
 use std::ops::Mul;
 
+/// 3D Normal struct.
+///
+/// **Note:** a 3D normal is a 3D vector with norm equal to 1, but
+/// it acts differently when 3D [`transformation`](../transformation) is applied.\
+/// So is better to create 2 two different objects (structs) despite similarity
+/// and doubling the code.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Normal {
+    /// x component.
     pub x: f32,
+    /// y component.
     pub y: f32,
+    /// z component.
     pub z: f32,
 }
 
 impl Normal {
+    /// Return the reversed normal.
     pub fn neg(&self) -> Normal {
         Normal {
             x: -self.x,
@@ -19,15 +32,29 @@ impl Normal {
             z: -self.z,
         }
     }
+
+    /// Compute the dot product between two normals.
     pub fn dot(self, other: Normal) -> f32 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
+
+    /// Return the squared norm (Euclidean length) of a normal.
+    ///
+    /// This is faster than [`norm`](#method.squared_norm) if you just need the squared norm.
     pub fn squared_norm(self) -> f32 {
         self.dot(self)
     }
+
+    /// Return the norm (Euclidean length) of a normal.
     pub fn norm(self) -> f32 {
         f32::sqrt(self.squared_norm())
     }
+
+    /// Modify the normal's norm so that it becomes equal to 1.
+    ///
+    /// And return the normalized normal inside [`std::result::Result`].\
+    /// If the normalization operation wasn't possible result is an
+    /// [`GeometryErr`] error variant.
     pub fn normalize(mut self) -> Result<Normal, GeometryErr> {
         if self.norm() > 0_f32 {
             self = self * (1_f32 / self.norm());
@@ -55,6 +82,7 @@ impl fmt::Display for Normal {
 }
 
 impl IsClose for Normal {
+    /// Return `true` if the three xyz components of two [`Normal`] are [close](trait@IsClose).
     fn is_close(&self, other: Normal) -> bool {
         self.x.is_close(other.x) & self.y.is_close(other.y) & self.z.is_close(other.z)
     }

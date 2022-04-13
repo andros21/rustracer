@@ -1,8 +1,21 @@
+//! Command Line Interface module.
+//!
+//! Provides [`build_cli`] function with all cli
+//! desired subcommands and flags, using [`clap`](https://github.com/clap-rs/clap)
+//! library.
 use clap::{Arg, Command};
 
+/// Default normalization factor.
+///
+/// When no arguments are provided to `--factor` flag of `convert` subcommand.
 const FACTOR: &str = "0.2";
+/// Default transfer function parameter.
+///
+/// When no arguments are provided to `--gamma` flag of `convert` subcommand.
 const GAMMA: &str = "1.0";
 
+/// Build a [`clap::Command`](https://docs.rs/clap/latest/clap/type.Command.html)
+/// for [`rustracer`](..) crate.
 pub fn build_cli() -> Command<'static> {
     let cli = Command::new(env!("CARGO_PKG_NAME"))
         .version(env!("CARGO_PKG_VERSION"))

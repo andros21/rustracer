@@ -1,12 +1,19 @@
+//! 3D Point module.
+//!
+//! Provides [`Point`](struct@Point) struct.
 use crate::misc::IsClose;
 use crate::vector::Vector;
 use std::fmt;
 use std::ops::{Add, Mul, Sub};
 
+/// 3D Point struct.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Point {
+    /// x component.
     pub x: f32,
+    /// y component.
     pub y: f32,
+    /// z component.
     pub z: f32,
 }
 
@@ -21,6 +28,7 @@ impl From<(f32, f32, f32)> for Point {
 }
 
 impl IsClose for Point {
+    /// Return `true` if the three xyz components of two [`Point`] are [close](trait@IsClose).
     fn is_close(&self, other: Point) -> bool {
         self.x.is_close(other.x) & self.y.is_close(other.y) & self.z.is_close(other.z)
     }

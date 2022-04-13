@@ -7,6 +7,7 @@ mod hdrimage;
 mod misc;
 mod normal;
 mod point;
+mod ray;
 mod transformation;
 mod vector;
 

@@ -638,4 +638,20 @@ mod test {
         let expected_n = Normal::from((-8.75, 7.75, -3.0));
         assert!(expected_n.is_close(m * Normal::from((3.0, 2.0, 4.0))))
     }
+
+    #[test]
+    fn test_mul_ray() {
+        let ray = Ray {
+            origin: Point::from((1.0, 2.0, 3.0)),
+            dir: Vector::from((6.0, 5.0, 4.0)),
+            tmin: 10e-5,
+            tmax: f32::INFINITY,
+            depth: 0,
+        };
+        let transformation = translation(Vector::from((10.0, 11.0, 12.0))) * rotation_x(PI / 2.0);
+        let transformed = transformation * ray;
+        println!("{}", transformed.origin);
+        assert!(transformed.origin.is_close(Point::from((11.0, 8.0, 14.0))));
+        assert!(transformed.dir.is_close(Vector::from((6.0, -4.0, 5.0))));
+    }
 }

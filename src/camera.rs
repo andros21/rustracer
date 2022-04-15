@@ -1,5 +1,6 @@
 use crate::point::Point;
 use crate::ray::Ray;
+use crate::transformation::Transformation;
 use crate::vector::Vector;
 
 trait FireRay {
@@ -9,15 +10,26 @@ trait FireRay {
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct OrthogonalCamera {
     aspect_ratio: f32,
+    tranformation: Transformation,
+}
+
+impl OrthogonalCamera {
+    pub fn new(aspect_ratio: f32, tranformation: Transformation) -> OrthogonalCamera {
+        OrthogonalCamera {
+            aspect_ratio,
+            tranformation,
+        }
+    }
 }
 
 impl FireRay for OrthogonalCamera {
     fn fire_ray(&self, u: f32, v: f32) -> Ray {
-        Ray {
-            origin: Point::from((-1.0, (1.0 - 2.0 * u) * self.aspect_ratio, 2.0 * v - 1.0)),
-            dir: Vector::from((1.0, 0.0, 0.0)),
-            ..Default::default()
-        }
+        self.tranformation
+            * Ray {
+                origin: Point::from((-1.0, (1.0 - 2.0 * u) * self.aspect_ratio, 2.0 * v - 1.0)),
+                dir: Vector::from((1.0, 0.0, 0.0)),
+                ..Default::default()
+            }
     }
 }
 
@@ -25,19 +37,35 @@ impl FireRay for OrthogonalCamera {
 pub struct PerspectiveCamera {
     distance: f32,
     aspect_ratio: f32,
+    transformation: Transformation,
+}
+
+impl PerspectiveCamera {
+    pub fn new(
+        aspect_ratio: f32,
+        distance: f32,
+        transformation: Transformation,
+    ) -> PerspectiveCamera {
+        PerspectiveCamera {
+            aspect_ratio,
+            distance,
+            transformation,
+        }
+    }
 }
 
 impl FireRay for PerspectiveCamera {
     fn fire_ray(&self, u: f32, v: f32) -> Ray {
-        Ray {
-            origin: Point::from((-self.distance, 0.0, 0.0)),
-            dir: Vector::from((
-                self.distance,
-                (1.0 - 2.0 * u) * self.aspect_ratio,
-                2.0 * v - 1.0,
-            )),
-            ..Default::default()
-        }
+        self.transformation
+            * Ray {
+                origin: Point::from((-self.distance, 0.0, 0.0)),
+                dir: Vector::from((
+                    self.distance,
+                    (1.0 - 2.0 * u) * self.aspect_ratio,
+                    2.0 * v - 1.0,
+                )),
+                ..Default::default()
+            }
     }
 }
 
@@ -48,7 +76,10 @@ mod test {
 
     #[test]
     fn test_orthogonal_camera() {
-        let cam = OrthogonalCamera { aspect_ratio: 2.0 };
+        let cam = OrthogonalCamera {
+            aspect_ratio: 2.0,
+            ..Default::default()
+        };
         let ray1 = cam.fire_ray(0.0, 0.0);
         let ray2 = cam.fire_ray(1.0, 0.0);
         let ray3 = cam.fire_ray(0.0, 1.0);
@@ -69,6 +100,7 @@ mod test {
         let cam = PerspectiveCamera {
             distance: 1.0,
             aspect_ratio: 2.0,
+            ..Default::default()
         };
         let ray1 = cam.fire_ray(0.0, 0.0);
         let ray2 = cam.fire_ray(1.0, 0.0);

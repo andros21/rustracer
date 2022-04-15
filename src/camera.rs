@@ -16,9 +16,7 @@ impl FireRay for OrthogonalCamera {
         Ray {
             origin: Point::from((-1.0, (1.0 - 2.0 * u) * self.aspect_ratio, 2.0 * v - 1.0)),
             dir: Vector::from((1.0, 0.0, 0.0)),
-            tmin: 1e-5,
-            tmax: f32::INFINITY,
-            depth: 0,
+            ..Default::default()
         }
     }
 }
@@ -38,16 +36,9 @@ impl FireRay for PerspectiveCamera {
                 (1.0 - 2.0 * u) * self.aspect_ratio,
                 2.0 * v - 1.0,
             )),
-            tmin: 1e-5,
-            tmax: f32::INFINITY,
-            depth: 0,
+            ..Default::default()
         }
     }
-}
-
-pub enum Camera {
-    Orthogonal(OrthogonalCamera),
-    Perspective(PerspectiveCamera),
 }
 
 #[cfg(test)]

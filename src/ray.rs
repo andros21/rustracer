@@ -5,7 +5,7 @@ use crate::misc::IsClose;
 use crate::point::Point;
 use crate::vector::Vector;
 
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 /// Light Ray struct.
 pub struct Ray {
     /// Origin point of the light ray.
@@ -36,6 +36,25 @@ impl IsClose for Ray {
     }
 }
 
+impl Default for Ray {
+    /// Return as default ray a [`Ray`] with:
+    ///
+    /// * the origin of axis as `origin`
+    /// * an x-axis oriented unit vector as `dir`
+    /// * `tmin` = 1e-5
+    /// * `tmax` = [`INFINITY`][std::f32::INFINITY]
+    /// * `depth` = 0
+    fn default() -> Self {
+        Ray {
+            origin: Point::default(),
+            dir: Vector::from((1.0, 0.0, 0.0)),
+            tmin: 1e-5,
+            tmax: f32::INFINITY,
+            depth: 0,
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -45,23 +64,17 @@ mod test {
         let ray1 = Ray {
             origin: Point::from((1.0, 2.0, 3.0)),
             dir: Vector::from((5.0, 4.0, -1.0)),
-            tmin: 1e-5,
-            tmax: f32::INFINITY,
-            depth: 0,
+            ..Default::default()
         };
         let ray2 = Ray {
             origin: Point::from((1.0, 2.0, 3.0)),
             dir: Vector::from((5.0, 4.0, -1.0)),
-            tmin: 1e-5,
-            tmax: f32::INFINITY,
-            depth: 0,
+            ..Default::default()
         };
         let ray3 = Ray {
             origin: Point::from((5.0, 1.0, 4.0)),
             dir: Vector::from((3.0, 9.0, 4.0)),
-            tmin: 1e-5,
-            tmax: f32::INFINITY,
-            depth: 0,
+            ..Default::default()
         };
 
         assert!(ray1.is_close(ray2));
@@ -73,9 +86,7 @@ mod test {
         let ray = Ray {
             origin: Point::from((1.0, 2.0, 4.0)),
             dir: Vector::from((4.0, 2.0, 1.0)),
-            tmin: 1e-5,
-            tmax: f32::INFINITY,
-            depth: 0,
+            ..Default::default()
         };
 
         assert!(ray.at(0.0).is_close(ray.origin));

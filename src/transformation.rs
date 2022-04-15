@@ -644,9 +644,7 @@ mod test {
         let ray = Ray {
             origin: Point::from((1.0, 2.0, 3.0)),
             dir: Vector::from((6.0, 5.0, 4.0)),
-            tmin: 10e-5,
-            tmax: f32::INFINITY,
-            depth: 0,
+            ..Default::default()
         };
         let transformation = translation(Vector::from((10.0, 11.0, 12.0))) * rotation_x(PI / 2.0);
         let transformed = transformation * ray;

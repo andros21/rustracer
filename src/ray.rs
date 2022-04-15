@@ -1,23 +1,36 @@
+//! Light Ray module.
+//!
+//! Provides [`Ray`](struct@Ray) struct.
 use crate::misc::IsClose;
 use crate::point::Point;
 use crate::vector::Vector;
 
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
+/// Light Ray struct.
 pub struct Ray {
+    /// Origin point of the light ray.
     pub origin: Point,
+    /// Propagation direction.
     pub dir: Vector,
+    /// Minimum time of propagation.
     pub tmin: f32,
+    /// Maximum time of propagation.
     pub tmax: f32,
+    /// Counts the number of reflection occurred.
+    /// If a ray is produced by a reflection, its `depth` is increased by 1 with respect to the original ray.
     pub depth: u32,
 }
 
 impl Ray {
+    /// Return the position of the `Ray` at time `t`.
+    /// The time is measured in units of `dir` vector's length.
     pub fn at(&self, t: f32) -> Point {
         self.origin + self.dir * t
     }
 }
 
 impl IsClose for Ray {
+    /// Return `true` if all the members of two [`Ray`] are [close][trait@IsClose]
     fn is_close(&self, other: Self) -> bool {
         self.origin.is_close(other.origin) && self.dir.is_close(other.dir)
     }

@@ -8,23 +8,24 @@ use crate::vector::Vector;
 #[derive(Clone, Copy, Debug, PartialEq)]
 /// Light Ray struct.
 pub struct Ray {
-    /// Origin point of the light ray.
+    /// Origin [`Point`] of the light ray.
     pub origin: Point,
-    /// Propagation direction.
+    /// [`Vector`] propagation direction.
     pub dir: Vector,
     /// Minimum time of propagation.
     pub tmin: f32,
     /// Maximum time of propagation.
     pub tmax: f32,
-    /// Counts the number of reflection occurred.
-    /// If a ray is produced by a reflection, its `depth` is increased by 1 with respect to the original ray.
+    /// Counts the number of reflection occurred.\
+    /// If a ray is produced by a reflection,
+    /// its `depth` is increased by 1 with respect to the original ray.
     pub depth: u32,
 }
 
 impl Ray {
-    /// Return the position of the `Ray` at time `t`.
+    /// Return the position of the [`Ray`] at time `t`.
     /// The time is measured in units of `dir` vector's length.
-    pub fn at(&self, t: f32) -> Point {
+    pub fn at(self, t: f32) -> Point {
         self.origin + self.dir * t
     }
 }
@@ -41,9 +42,9 @@ impl Default for Ray {
     ///
     /// * the origin of axis as `origin`
     /// * an x-axis oriented unit vector as `dir`
-    /// * `tmin` = 1e-5
-    /// * `tmax` = [`INFINITY`][std::f32::INFINITY]
-    /// * `depth` = 0
+    /// * `tmin = 1e-5`
+    /// * `tmax = `[`f32::INFINITY`]
+    /// * `depth = 0`
     fn default() -> Self {
         Ray {
             origin: Point::default(),
@@ -91,6 +92,6 @@ mod test {
 
         assert!(ray.at(0.0).is_close(ray.origin));
         assert!(ray.at(1.0).is_close(Point::from((5.0, 4.0, 5.0))));
-        assert!(ray.at(2.0).is_close(Point::from((9.0, 6.0, 6.0))));
+        assert!(ray.at(2.0).is_close(Point::from((9.0, 6.0, 6.0))))
     }
 }

@@ -88,7 +88,7 @@ impl Mul<Matrix> for Matrix {
 /// This class encodes an affine transformation.\
 /// It has been designed with the aim of making the calculation
 /// of the inverse transformation particularly efficient.
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Transformation {
     /// Transformation matrix.
     m: Matrix,

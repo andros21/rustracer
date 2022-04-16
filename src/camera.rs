@@ -1,19 +1,42 @@
+//! Camera module.
+//!
+//! Provides two camera structs:
+//!  * [`OrthogonalCamera`](struct@OrthogonalCamera)
+//!  * [`PerspectiveCamera`](struct@PerspectiveCamera)
+//! that implement [`FireRay`] trait.
 use crate::point::Point;
 use crate::ray::Ray;
 use crate::transformation::Transformation;
 use crate::vector::Vector;
 
-trait FireRay {
+/// Trait for fire a [`Ray`] through a [`camera`](.).
+///
+/// You should redefine it in derived classes.\
+/// Fire a ray that goes through the screen at the position `(u, v)`.\
+/// The exact meaning of these coordinates depend on the projection used by the camera.
+pub trait FireRay {
     fn fire_ray(&self, u: f32, v: f32) -> Ray;
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+/// A camera implementing an orthogonal 3D -> 2D projection.
+///
+/// This class implements an observer seeing the world through an orthogonal projection.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct OrthogonalCamera {
+    /// Aspect Ratio.
     aspect_ratio: f32,
+    /// [`Transformation`] to apply to [`Ray`].
     tranformation: Transformation,
 }
 
 impl OrthogonalCamera {
+    /// Create a new orthographic camera.
+    ///
+    /// The parameter `aspect_ratio` defines how larger than the height is the image.\
+    /// For full screen images, you should probably set `aspect_ratio` to `16/9`,\
+    /// as this is the most used aspect ratio used in modern monitors.
+    ///
+    /// The `transformation` parameter is an instance of the [`Transformation`].
     pub fn new(aspect_ratio: f32, tranformation: Transformation) -> OrthogonalCamera {
         OrthogonalCamera {
             aspect_ratio,
@@ -23,6 +46,25 @@ impl OrthogonalCamera {
 }
 
 impl FireRay for OrthogonalCamera {
+    /// Shoot a [`Ray`] through the camera's screen.
+    ///
+    /// The coordinates `(u, v)` specify the point on the screen where the ray crosses it.\
+    ///
+    /// Coordinates:
+    ///  * `(0, 0)` represent the bottom-left corner
+    ///  * `(0, 1)` the top-left corner
+    ///  * `(1, 0)` the bottom-right corner
+    ///  * `(1, 1)` the top-right corner
+    ///
+    /// ```text
+    ///  (0, 1)                          (1, 1)
+    ///     +------------------------------+
+    ///     |                              |
+    ///     |                              |
+    ///     |                              |
+    ///     +------------------------------+
+    ///  (0, 0)                          (1, 0)
+    /// ```
     fn fire_ray(&self, u: f32, v: f32) -> Ray {
         self.tranformation
             * Ray {
@@ -33,14 +75,31 @@ impl FireRay for OrthogonalCamera {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+/// A camera implementing a perspective 3D -> 2D projection.
+///
+/// This class implements an observer seeing the world through a perspective projection.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct PerspectiveCamera {
+    /// Screen distance.
     distance: f32,
+    /// Aspect ratio.
     aspect_ratio: f32,
+    /// [`Transformation`] to apply to [`Ray`].
     transformation: Transformation,
 }
 
 impl PerspectiveCamera {
+    /// Create a new perspective camera.
+    ///
+    /// The parameter `distance` tells how much far from the eye\
+    /// of the observer is the screen, and it influences the so-called «aperture»\
+    /// (the field-of-view angle along the horizontal direction).
+    ///
+    /// The parameter `aspect_ratio` defines how larger than the height is the image.\
+    /// For fullscreen images, you should probably set `aspect_ratio` to `16/9`,\
+    /// as this is the most used aspect ratio used in modern monitors.
+    ///
+    /// The `transformation` parameter is an instance of the [`Transformation`].
     pub fn new(
         aspect_ratio: f32,
         distance: f32,
@@ -55,6 +114,25 @@ impl PerspectiveCamera {
 }
 
 impl FireRay for PerspectiveCamera {
+    /// Shoot a [`Ray`] through the camera's screen.
+    ///
+    /// The coordinates `(u, v)` specify the point on the screen where the ray crosses it.\
+    ///
+    /// Coordinates:
+    ///  * `(0, 0)` represent the bottom-left corner
+    ///  * `(0, 1)` the top-left corner
+    ///  * `(1, 0)` the bottom-right corner
+    ///  * `(1, 1)` the top-right corner
+    ///
+    /// ```text
+    ///  (0, 1)                          (1, 1)
+    ///     +------------------------------+
+    ///     |                              |
+    ///     |                              |
+    ///     |                              |
+    ///     +------------------------------+
+    ///  (0, 0)                          (1, 0)
+    /// ```
     fn fire_ray(&self, u: f32, v: f32) -> Ray {
         self.transformation
             * Ray {

@@ -37,6 +37,11 @@ impl HdrImage {
         }
     }
 
+    /// Get pixels matrix shape `(width, heigth)`.
+    pub fn shape(&self) -> (u32, u32) {
+        (self.width, self.height)
+    }
+
     /// Return the position in the 1D array of the specified pixel.
     fn pixel_offset(&self, x: u32, y: u32) -> usize {
         (y * self.width + x) as usize

@@ -1,18 +1,19 @@
 [package]
-name        = "rustracer"
-license     = "GPL-3.0"
-version     = "0.1.0"
-edition     = "2021"
-authors     = [
-   "Andrea Rossoni <andros21 at e.email>",
-   "Paolo Azzini <paolo.azzini1 at gmail.com>"
+name         = "rustracer"
+license      = "GPL-3.0"
+version      = "0.1.0"
+edition      = "2021"
+rust-version = "1.60"
+authors      = [
+   "Andrea Rossoni <andrea dot ros.21 at e.email>",
+   "Paolo Azzini <paolo dot azzini1 at gmail.com>"
 ]
-readme      = "README.md"
-repository  = "https://github.com/andros21/rustracer"
-homepage    = "https://github.com/andros21/rustracer"
-categories  = ["command-line-utilities"]
-description = "cli photorealistic image generator"
-keywords    = [
+readme       = "README.md"
+repository   = "https://github.com/andros21/rustracer"
+homepage     = "https://github.com/andros21/rustracer"
+categories   = ["command-line-utilities"]
+description  = "cli photorealistic image generator"
+keywords     = [
    "cli",
    "generator",
    "image",

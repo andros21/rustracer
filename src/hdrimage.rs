@@ -130,19 +130,28 @@ impl HdrImage {
         line.clear();
         let mut buffer = [0_f32; 3];
         let mut hdr_img = HdrImage::new(width, height);
-        for y in (0..height).rev() {
-            for x in 0..width {
-                match endianness {
-                    ByteOrder::LittleEndian => buf_reader
-                        .read_f32_into::<byteorder::LittleEndian>(&mut buffer)
-                        .map_err(HdrImageErr::PfmFileReadFailure)?,
-                    ByteOrder::BigEndian => buf_reader
-                        .read_f32_into::<byteorder::BigEndian>(&mut buffer)
-                        .map_err(HdrImageErr::PfmFileReadFailure)?,
+        match endianness {
+            ByteOrder::LittleEndian => {
+                for y in (0..height).rev() {
+                    for x in 0..width {
+                        buf_reader
+                            .read_f32_into::<byteorder::LittleEndian>(&mut buffer)
+                            .map_err(HdrImageErr::PfmFileReadFailure)?;
+                        hdr_img.set_pixel(x, y, (buffer[0], buffer[1], buffer[2]).into())?;
+                    }
                 }
-                hdr_img.set_pixel(x, y, (buffer[0], buffer[1], buffer[2]).into())?;
             }
-        }
+            ByteOrder::BigEndian => {
+                for y in (0..height).rev() {
+                    for x in 0..width {
+                        buf_reader
+                            .read_f32_into::<byteorder::BigEndian>(&mut buffer)
+                            .map_err(HdrImageErr::PfmFileReadFailure)?;
+                        hdr_img.set_pixel(x, y, (buffer[0], buffer[1], buffer[2]).into())?;
+                    }
+                }
+            }
+        };
         if buf_reader.read_line(&mut line).unwrap_or(1) == 0 {
             Ok(hdr_img)
         } else {

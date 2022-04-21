@@ -17,17 +17,31 @@ name: CI
       - 'Cargo.toml'
       - 'src/**'
 
-permissions: read-all
-
 jobs:
+  pre_ci:
+    name: pre ci
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    outputs:
+      repo: ${{ steps.repo.outputs.repo }}
+    steps:
+      - name: get repo name
+        id: repo
+        run: |
+          REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+          echo "Repo: ${REPO_NAME}"
+          echo "##[set-output name=repo;]${REPO_NAME}"
   lint:
     name: lint ci
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: checkout project
-        uses: actions/checkout@v3
+        uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846
       - name: check cache
-        uses: actions/cache@v3
+        uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514
         id: cache
         with:
           path: |
@@ -39,40 +53,45 @@ jobs:
           key: ${{ runner.os }}-cargo-rustdoc-${{ hashFiles('**/Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@v1.0.7
+        uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
         with:
           toolchain: stable
           default: true
           profile: minimal
           components: rustfmt, clippy, rust-docs
       - name: cargo fmt check
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: fmt
           args: -- --check --verbose
       - name: cargo clippy main
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: clippy
           args: --locked --workspace
       - name: cargo clippy tests
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: clippy
           args: --locked --tests
       - name: cargo rustdoc
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: rustdoc
   test:
     name: test ci
     needs: lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
     steps:
       - name: checkout project
-        uses: actions/checkout@v3
+        uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846
       - name: check cache
-        uses: actions/cache@v3
+        uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514
         id: cache
         with:
           path: |
@@ -82,22 +101,82 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-rustdoc-${{ hashFiles('**/Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@v1.0.7
+        uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
         with:
           toolchain: stable
           default: true
           profile: minimal
+      - name: install llvm-tools-preview
+        run: |
+          rustup toolchain install stable --component llvm-tools-preview
+      - name: install cargo-llvm-cov
+        uses: taiki-e/install-action@977df53448dfb22dd55db0e45022238d245eb72b
+        with:
+          tool: cargo-llvm-cov
       - name: cargo build
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: build
           args: --locked
-      - name: cargo test
-        uses: actions-rs/cargo@v1.0.3
+      - name: cargo test coverage (json)
+        if: ${{ github.event_name == 'push' }}
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
-          command: test
-          args: --locked
+          command: llvm-cov
+          args: --locked --tests --json --summary-only --output-path coverage.json
+      - name: report (total lines) coverage
+        if: ${{ github.event_name == 'push' }}
+        id: coverage
+        run: |
+          COVERAGE=$(cat coverage.json | \
+                     jq -r ".data[0] | .totals | .lines | .percent" | awk '{print int($0)}')
+          echo "##[set-output name=coverage;]${COVERAGE}"
+      - name: cargo test coverage (lcov)
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        with:
+          command: llvm-cov
+          args: --locked --tests --lcov --output-path coverage.lcov.info
+      - name: lcov pr report
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: romeovs/lcov-reporter-action@dda1c9b1fa1622b225e9acd87a248751dbcc6ada
+        with:
+          title: Coverage Report
+          filter-changed-files: true
+          lcov-file: coverage.lcov.info
+  badge:
+    name: coverage badge
+    needs:
+      - pre_ci
+      - test
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      gist_id: 0e20cd331d0800e3299298a3868aab7a
+    steps:
+      - name: generate dynamic badge
+        uses: schneegans/dynamic-badges-action@65787a717d156508eec697fb494ae9291728da0f
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          color: ${{
+            needs.test.outputs.coverage >  90 && 'brightgreen'   ||
+            needs.test.outputs.coverage >  80 && 'green'         ||
+            needs.test.outputs.coverage >  70 && 'yellowgreen'   ||
+            needs.test.outputs.coverage >  60 && 'yellow'        ||
+            needs.test.outputs.coverage >  50 && 'orange'        ||
+            'red' }}
+          filename: ${{ needs.pre_ci.outputs.repo }}__${{ github.ref_name }}.json
+          gistID: ${{ env.gist_id }}
+          label: coverage
+          message: ${{ needs.test.outputs.coverage }}%
+          namedLogo: github
+          style: flat-square
+      - name: badge image url
+        run: |
+          URL="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/${{ github.actor }}/${{ env.gist_id }}/raw/${{ needs.pre_ci.outputs.repo }}__${{ github.ref_name }}.json"
+          MARKDOWN="![Coverage](${URL})"
+          echo "Badge URL: ${URL}"
+          echo "Badge image for Markdown: ${MARKDOWN}"

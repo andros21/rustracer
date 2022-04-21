@@ -150,6 +150,10 @@ mod test {
         assert_eq!(
             Normal::from((1.0, 1.0, 1.0)) * Normal::from((2.0, 1.0, 2.0)),
             Normal::from((1.0, 0.0, -1.0))
+        );
+        assert_eq!(
+            Normal::from((1.0, 1.0, 1.0)) * Vector::from((2.0, 1.0, 2.0)),
+            Normal::from((1.0, 0.0, -1.0))
         )
     }
 

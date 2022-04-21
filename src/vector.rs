@@ -170,6 +170,16 @@ mod test {
     }
 
     #[test]
+    fn test_from() {
+        assert_eq!(
+            Vector::from(Point::from((2.0, 2.0, 2.0))),
+            Vector::from(Normal::from((2.0, 2.0, 2.0)))
+        );
+        assert!(Vector::from(Point::from((2.0 + EPSILON * 1e-1, 2.0, 2.0)))
+            .is_close(Vector::from(Normal::from((2.0, 2.0, 2.0)))))
+    }
+
+    #[test]
     fn test_add() {
         assert_eq!(
             Vector::from((1.0, 1.0, 1.0)) + Vector::from((2.0, 2.0, 2.0)),

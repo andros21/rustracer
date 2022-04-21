@@ -8,6 +8,9 @@
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/workflow/status/andros21/rustracer/CI?style=flat-square&label=ci&logo=github" alt="CI">
   </a>
+  <a href="https://codecov.io/gh/andros21/rustracer">
+    <img src="https://img.shields.io/codecov/c/gh/andros21/rustracer?logo=codecov&style=flat-square" alt="Coverage">
+  </a>
   <a href="https://github.com/andros21/rustracer/releases">
     <img src="https://img.shields.io/github/v/release/andros21/rustracer?color=orange&&sort=semver&style=flat-square" alt="Version">
   </a>
@@ -32,14 +35,17 @@
 * `x86_64-unknown-linux-gnu` (with `glibc>=2.27`)
 * `x86_64-unknown-linux-musl`
 
-**Compiler requirements**
+**Build requirements**
 
 Install [`cargo`](https://github.com/rust-lang/cargo/) stable latest build system, \
-for devel it's advisable to install the entire (stable latest) toolchain using [`rustup`](https://www.rust-lang.org/tools/install)
+for **devel** it's advisable to install the entire (stable latest) toolchain using [`rustup`](https://www.rust-lang.org/tools/install)
+
+> **devel**: `llvm-tools-preview` additional component is required for unit tests coverage and \
+> it's advisable to install [`cargo-llvm-cov`](https://github.com/taiki-e/cargo-llvm-cov) for easily use LLVM source-based code coverage
 
 ### From binary
 
-Install from binary (you can ignore **Compiler requirements**):
+Install from binary (you can ignore **Build requirements**):
 
 ```bash
 $ rustracer="rustracer-$version-$platform"

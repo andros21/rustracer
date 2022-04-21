@@ -17,7 +17,8 @@ name: CI
       - 'Cargo.toml'
       - 'src/**'
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   lint:
@@ -25,9 +26,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout project
-        uses: actions/checkout@v3
+        uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846
       - name: check cache
-        uses: actions/cache@v3
+        uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514
         id: cache
         with:
           path: |
@@ -39,29 +40,29 @@ jobs:
           key: ${{ runner.os }}-cargo-rustdoc-${{ hashFiles('**/Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@v1.0.7
+        uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
         with:
           toolchain: stable
           default: true
           profile: minimal
           components: rustfmt, clippy, rust-docs
       - name: cargo fmt check
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: fmt
           args: -- --check --verbose
       - name: cargo clippy main
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: clippy
           args: --locked --workspace
       - name: cargo clippy tests
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: clippy
           args: --locked --tests
       - name: cargo rustdoc
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: rustdoc
   test:
@@ -70,9 +71,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout project
-        uses: actions/checkout@v3
+        uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846
       - name: check cache
-        uses: actions/cache@v3
+        uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514
         id: cache
         with:
           path: |
@@ -86,18 +87,30 @@ jobs:
             ${{ runner.os }}-cargo-rustdoc-${{ hashFiles('**/Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@v1.0.7
+        uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
         with:
           toolchain: stable
           default: true
           profile: minimal
+      - name: install llvm-tools-preview
+        run: |
+          rustup toolchain install stable --component llvm-tools-preview
+      - name: install cargo-llvm-cov
+        uses: taiki-e/install-action@977df53448dfb22dd55db0e45022238d245eb72b
+        with:
+          tool: cargo-llvm-cov
       - name: cargo build
-        uses: actions-rs/cargo@v1.0.3
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: build
           args: --locked
-      - name: cargo test
-        uses: actions-rs/cargo@v1.0.3
+      - name: cargo test coverage
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
-          command: test
-          args: --locked
+          command: llvm-cov
+          args: --locked --tests --lcov --output-path lcov.info
+      - name: codecov coverage
+        uses: codecov/codecov-action@3ffc51ef27c7ddc5ff57a2472a0c628d0fcb25c9
+        with:
+          files: lcov.info
+          fail_ci_if_error: true

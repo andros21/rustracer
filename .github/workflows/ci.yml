@@ -5,17 +5,9 @@ name: CI
   push:
     branches:
       - master
-    paths:
-      - 'Cargo.lock'
-      - 'Cargo.toml'
-      - 'src/**'
   pull_request:
     branches:
       - master
-    paths:
-      - 'Cargo.lock'
-      - 'Cargo.toml'
-      - 'src/**'
 
 jobs:
   pre_ci:
@@ -32,8 +24,31 @@ jobs:
           REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
           echo "Repo: ${REPO_NAME}"
           echo "##[set-output name=repo;]${REPO_NAME}"
-  lint:
-    name: lint ci
+  changes:
+    name: filter changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      bash: ${{ steps.filter.outputs.bash }}
+      rust: ${{ steps.filter.outputs.rust }}
+    steps:
+      - name: checkout project
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: dorny/paths-filter@b2feaf19c27470162a626bd6fa8438ae5b263721
+        id: filter
+        with:
+          filters: |
+            bash:
+              - '**/*.sh'
+            rust:
+              - '**/*.rs'
+              - 'Cargo.lock'
+              - 'Cargo.toml'
+  lint_rs:
+    name: lint rust ci
+    needs: changes
+    if: ${{ needs.changes.outputs.rust == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -76,9 +91,23 @@ jobs:
         uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: rustdoc
+  lint_sh:
+    name: lint bash ci
+    needs: changes
+    if: ${{ needs.changes.outputs.bash == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: checkout project
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - name: shellcheck bash
+        run: |
+          shopt -s globstar
+          shellcheck -s bash **/*.sh .github/**/*.sh
   test:
     name: test ci
-    needs: lint
+    needs: lint_rs
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -124,8 +153,9 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         id: coverage
         run: |
-          COVERAGE=$(cat coverage.json | \
-                     jq -r ".data[0] | .totals | .lines | .percent" | awk '{print int($0)}')
+          COVERAGE=$(cat coverage.json \
+             | jq -r ".data[0] | .totals | .lines | .percent" \
+             | awk '{print int($0)}')
           echo "##[set-output name=coverage;]${COVERAGE}"
       - name: cargo test coverage (lcov)
         if: ${{ github.event_name == 'pull_request' }}

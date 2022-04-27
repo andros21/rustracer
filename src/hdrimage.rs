@@ -815,7 +815,7 @@ mod test {
         ];
         let mut stream = Cursor::new(reference_bytes_le);
         let mut hdr_img = HdrImage::read_pfm_image(&mut stream).unwrap();
-        hdr_img.normalize_image(1000.0, Luminosity::FloatValue(100.0));
+        hdr_img.normalize_image(1000.0, Luminosity::AverageLuminosity);
         hdr_img.clamp_image();
 
         let invalid_format = Path::new("/tmp/reference_le.mkv");

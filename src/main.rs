@@ -1,12 +1,16 @@
 #![doc = include_str!("../README.md")]
 
+mod camera;
 mod cli;
 mod color;
 mod error;
 mod hdrimage;
+mod imagetracer;
 mod misc;
 mod normal;
 mod point;
+mod ray;
+mod render;
 mod transformation;
 mod vector;
 

@@ -4,6 +4,7 @@
 use crate::misc::IsClose;
 use crate::normal::Normal;
 use crate::point::Point;
+use crate::ray::Ray;
 use crate::vector::Vector;
 use std::ops::Mul;
 
@@ -87,7 +88,7 @@ impl Mul<Matrix> for Matrix {
 /// This class encodes an affine transformation.\
 /// It has been designed with the aim of making the calculation
 /// of the inverse transformation particularly efficient.
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Transformation {
     /// Transformation matrix.
     m: Matrix,
@@ -192,6 +193,19 @@ impl Mul<Point> for Transformation {
                 y: new_point.y / w,
                 z: new_point.z / w,
             }
+        }
+    }
+}
+
+impl Mul<Ray> for Transformation {
+    type Output = Ray;
+    fn mul(self, ray: Ray) -> Self::Output {
+        Ray {
+            origin: self * ray.origin,
+            dir: self * ray.dir,
+            tmin: ray.tmin,
+            tmax: ray.tmax,
+            depth: ray.depth,
         }
     }
 }
@@ -623,5 +637,19 @@ mod test {
 
         let expected_n = Normal::from((-8.75, 7.75, -3.0));
         assert!(expected_n.is_close(m * Normal::from((3.0, 2.0, 4.0))))
+    }
+
+    #[test]
+    fn test_mul_ray() {
+        let ray = Ray {
+            origin: Point::from((1.0, 2.0, 3.0)),
+            dir: Vector::from((6.0, 5.0, 4.0)),
+            ..Default::default()
+        };
+        let transformation = translation(Vector::from((10.0, 11.0, 12.0))) * rotation_x(PI / 2.0);
+        let transformed = transformation * ray;
+        println!("{}", transformed.origin);
+        assert!(transformed.origin.is_close(Point::from((11.0, 8.0, 14.0))));
+        assert!(transformed.dir.is_close(Vector::from((6.0, -4.0, 5.0))));
     }
 }

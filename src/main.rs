@@ -11,6 +11,7 @@ mod normal;
 mod point;
 mod ray;
 mod render;
+mod shape;
 mod transformation;
 mod vector;
 

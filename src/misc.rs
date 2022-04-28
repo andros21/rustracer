@@ -28,6 +28,18 @@ pub enum ByteOrder {
     LittleEndian,
 }
 
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct Vector2D {
+    pub u: f32,
+    pub v: f32,
+}
+
+impl IsClose for Vector2D {
+    fn is_close(&self, other: Self) -> bool {
+        self.u.is_close(other.u) && self.v.is_close(other.v)
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;

@@ -6,17 +6,17 @@ use crate::transformation::Transformation;
 use crate::vector::Vector;
 use std::f32::consts::PI;
 
-trait RayIntersection {
+pub trait RayIntersection {
     fn ray_intersection(&self, ray: Ray) -> Option<HitRecord>;
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
-struct HitRecord {
-    world_point: Point,
-    normal: Normal,
-    surface_point: Vector2D,
-    t: f32,
-    ray: Ray,
+pub struct HitRecord {
+    pub world_point: Point,
+    pub normal: Normal,
+    pub surface_point: Vector2D,
+    pub t: f32,
+    pub ray: Ray,
 }
 
 impl IsClose for HitRecord {
@@ -34,12 +34,18 @@ pub struct Sphere {
     transformation: Transformation,
 }
 
+impl Sphere {
+    pub fn new(transformation: Transformation) -> Self {
+        Sphere { transformation }
+    }
+}
+
 fn sphere_normal(point: Point, ray_dir: Vector) -> Normal {
     let result = Normal::from((point.x, point.y, point.z));
     if Vector::from(point).dot(ray_dir) < 0.0 {
         result
     } else {
-        result * -1.
+        result.neg()
     }
 }
 
@@ -91,6 +97,28 @@ pub struct Plane {
     transformation: Transformation,
 }
 
+impl Plane {
+    pub fn new(transformation: Transformation) -> Self {
+        Plane { transformation }
+    }
+}
+
+fn plane_normal(ray_dir: Vector) -> Normal {
+    let normal = Normal::from((0., 0., 1.));
+    if Vector::from(normal).dot(ray_dir) < 0.0 {
+        normal
+    } else {
+        normal.neg()
+    }
+}
+
+fn plane_point_to_uv(point: Point) -> Vector2D {
+    Vector2D {
+        u: point.x - point.x.floor(),
+        v: point.y - point.y.floor(),
+    }
+}
+
 impl RayIntersection for Plane {
     fn ray_intersection(&self, ray: Ray) -> Option<HitRecord> {
         let inv_ray = self.transformation.inverse() * ray;
@@ -109,22 +137,6 @@ impl RayIntersection for Plane {
             t,
             ray,
         })
-    }
-}
-
-fn plane_normal(ray_dir: Vector) -> Normal {
-    let normal = Normal::from((0., 0., 1.));
-    if Vector::from(normal).dot(ray_dir) < 0.0 {
-        normal
-    } else {
-        normal * -1.
-    }
-}
-
-fn plane_point_to_uv(point: Point) -> Vector2D {
-    Vector2D {
-        u: point.x - point.x.floor(),
-        v: point.y - point.y.floor(),
     }
 }
 
@@ -195,9 +207,7 @@ mod test {
 
     #[test]
     fn test_transform_sphere() {
-        let sphere = Sphere {
-            transformation: translation(Vector::from((10., 0., 0.))),
-        };
+        let sphere = Sphere::new(translation(Vector::from((10., 0., 0.))));
 
         let ray1 = Ray {
             origin: Point::from((10., 0., 2.)),
@@ -246,9 +256,7 @@ mod test {
 
     #[test]
     fn test_sphere_normal() {
-        let sphere1 = Sphere {
-            transformation: scaling(Vector::from((2., 1., 1.))),
-        };
+        let sphere1 = Sphere::new(scaling(Vector::from((2., 1., 1.))));
         let ray1 = Ray {
             origin: Point::from((1., 1., 0.)),
             dir: Vector::from((-1., -1., 0.)),
@@ -263,9 +271,7 @@ mod test {
             .unwrap()
             .is_close(Normal::from((1., 4., 0.)).normalize().unwrap()));
 
-        let sphere2 = Sphere {
-            transformation: scaling(Vector::from((-1., -1., -1.))),
-        };
+        let sphere2 = Sphere::new(scaling(Vector::from((-1., -1., -1.))));
         let ray2 = Ray {
             origin: Point::from((0., 2., 0.)),
             dir: Vector::from((0., -1., 0.)),
@@ -394,9 +400,7 @@ mod test {
 
     #[test]
     fn test_transform_plane() {
-        let plane = Plane {
-            transformation: rotation_y(PI / 2.),
-        };
+        let plane = Plane::new(rotation_y(PI / 2.));
         let ray1 = Ray {
             origin: Point::from((1., 0., 0.)),
             dir: Vector::from((-1., 0., 0.)),

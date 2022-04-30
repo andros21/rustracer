@@ -101,13 +101,13 @@ impl PerspectiveCamera {
     ///
     /// The `transformation` parameter is an instance of the [`Transformation`].
     pub fn new(
-        aspect_ratio: f32,
         distance: f32,
+        aspect_ratio: f32,
         transformation: Transformation,
     ) -> PerspectiveCamera {
         PerspectiveCamera {
-            aspect_ratio,
             distance,
+            aspect_ratio,
             transformation,
         }
     }

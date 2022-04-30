@@ -175,11 +175,7 @@ mod test {
 
     #[test]
     fn test_perspective_camera() {
-        let cam = PerspectiveCamera {
-            distance: 1.0,
-            aspect_ratio: 2.0,
-            ..Default::default()
-        };
+        let cam = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
         let ray1 = cam.fire_ray(0.0, 0.0);
         let ray2 = cam.fire_ray(1.0, 0.0);
         let ray3 = cam.fire_ray(0.0, 1.0);

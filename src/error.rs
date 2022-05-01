@@ -14,6 +14,8 @@ pub enum HdrImageErr {
     InvalidPfmFileFormat(String),
     #[error("impossible to read from pfm file: {0}")]
     PfmFileReadFailure(#[source] std::io::Error),
+    #[error("impossible to write to pfm file: {0}")]
+    PfmFileWriteFailure(#[source] std::io::Error),
     #[error("impossible to parse {1} as integer from pfm file: {0}")]
     PfmIntParseFailure(#[source] std::num::ParseIntError, String),
     #[error("impossible to parse {1} as float from pfm file: {0}")]

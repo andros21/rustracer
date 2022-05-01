@@ -40,3 +40,13 @@ pub enum GeometryErr {
     #[error("object with norm {0} can't be normalized")]
     UnableToNormalize(f32),
 }
+
+#[derive(Error, Debug)]
+pub enum DemoErr {
+    #[error("invalid {1}, expected floating-point number: {0}")]
+    IntParseFailure(#[source] std::num::ParseIntError, String),
+    #[error("invalid {1}, expected floating-point number: {0}")]
+    FloatParseFailure(#[source] std::num::ParseFloatError, String),
+    #[error("{0}")]
+    IoError(#[source] HdrImageErr),
+}

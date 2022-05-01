@@ -21,8 +21,17 @@ use std::path::Path;
 use std::process::exit;
 use std::str::FromStr;
 
-use crate::error::ConvertErr;
+use crate::camera::{OrthogonalCamera, PerspectiveCamera};
+use crate::color::{BLACK, WHITE};
+use crate::error::{ConvertErr, DemoErr};
 use crate::hdrimage::{HdrImage, Luminosity};
+use crate::imagetracer::ImageTracer;
+use crate::misc::ByteOrder;
+use crate::render::OnOffRenderer;
+use crate::shape::Sphere;
+use crate::transformation::{rotation_z, scaling, translation};
+use crate::vector::Vector;
+use crate::world::World;
 
 /// Crate main function.
 ///
@@ -34,6 +43,13 @@ fn main() {
     let cli_m = cli::build_cli().get_matches_from(env::args_os());
     match cli_m.subcommand_name() {
         Some("convert") => match convert(cli_m.subcommand_matches("convert").unwrap()) {
+            Ok(()) => exit(0),
+            Err(e) => {
+                eprintln!("[error] {:#}", e);
+                exit(1)
+            }
+        },
+        Some("demo") => match demo(cli_m.subcommand_matches("demo").unwrap()) {
             Ok(()) => exit(0),
             Err(e) => {
                 eprintln!("[error] {:#}", e);
@@ -63,6 +79,73 @@ fn convert(sub_m: &clap::ArgMatches) -> Result<(), ConvertErr> {
     hdr_img
         .write_ldr_file(ldr_file, gamma)
         .map_err(ConvertErr::IoError)?;
+    if sub_m.is_present("verbose") {
+        println!("[info] {:?} has been written to disk", ldr_file);
+    }
+    Ok(())
+}
+
+fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
+    let ldr_file = Path::new(sub_m.value_of("OUTPUT").unwrap());
+    let factor = f32::from_str(sub_m.value_of("factor").unwrap())
+        .map_err(|e| DemoErr::FloatParseFailure(e, String::from("factor")))?;
+    let gamma = f32::from_str(sub_m.value_of("gamma").unwrap())
+        .map_err(|e| DemoErr::FloatParseFailure(e, String::from("gamma")))?;
+    let width = u32::from_str(sub_m.value_of("width").unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from("width")))?;
+    let height = u32::from_str(sub_m.value_of("height").unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from("height")))?;
+    let angle_deg = f32::from_str(sub_m.value_of("angle-deg").unwrap())
+        .map_err(|e| DemoErr::FloatParseFailure(e, String::from("angle-deg")))?;
+    let mut hdr_img = HdrImage::new(width, height);
+    if sub_m.is_present("verbose") {
+        println!("[info] generating an image ({}, {})", width, height);
+    }
+    let mut world = World::default();
+    for x in [-0.5, 0.5].into_iter() {
+        for y in [-0.5, 0.5].into_iter() {
+            for z in [-0.5, 0.5].into_iter() {
+                world.add(Box::new(Sphere::new(
+                    translation(Vector::from((x, y, z))) * scaling(Vector::from((0.1, 0.1, 0.1))),
+                )));
+            }
+        }
+    }
+    world.add(Box::new(Sphere::new(
+        translation(Vector::from((0.0, 0.0, -0.5))) * scaling(Vector::from((0.1, 0.1, 0.1))),
+    )));
+    world.add(Box::new(Sphere::new(
+        translation(Vector::from((0.0, 0.5, 0.0))) * scaling(Vector::from((0.1, 0.1, 0.1))),
+    )));
+    let camera_tr =
+        rotation_z(f32::to_radians(angle_deg)) * translation(Vector::from((-1.0, 0.0, 0.0)));
+    if sub_m.is_present("orthogonal") {
+        let mut tracer = ImageTracer::new(
+            &mut hdr_img,
+            OrthogonalCamera::new(width as f32 / height as f32, camera_tr),
+        );
+        tracer.fire_all_rays(OnOffRenderer::new(&world, BLACK, WHITE));
+    } else {
+        let mut tracer = ImageTracer::new(
+            &mut hdr_img,
+            PerspectiveCamera::new(1.0, width as f32 / height as f32, camera_tr),
+        );
+        tracer.fire_all_rays(OnOffRenderer::new(&world, BLACK, WHITE));
+    }
+    if sub_m.is_present("output-pfm") {
+        let hdr_file = ldr_file.with_extension("").with_extension("pfm");
+        hdr_img
+            .write_pfm_file(&hdr_file, ByteOrder::LittleEndian)
+            .map_err(DemoErr::IoError)?;
+        if sub_m.is_present("verbose") {
+            println!("[info] {:?} has been written to disk", hdr_file);
+        }
+    }
+    hdr_img.normalize_image(factor, Luminosity::AverageLuminosity);
+    hdr_img.clamp_image();
+    hdr_img
+        .write_ldr_file(ldr_file, gamma)
+        .map_err(DemoErr::IoError)?;
     if sub_m.is_present("verbose") {
         println!("[info] {:?} has been written to disk", ldr_file);
     }

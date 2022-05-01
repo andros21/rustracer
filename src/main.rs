@@ -14,6 +14,7 @@ mod render;
 mod shape;
 mod transformation;
 mod vector;
+mod world;
 
 use std::env;
 use std::path::Path;

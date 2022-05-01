@@ -161,19 +161,15 @@ jobs:
         uses: schneegans/dynamic-badges-action@a6775a64878aca0ec9d4cb5b1a4018cb17d5d297
         with:
           auth: ${{ secrets.GIST_TOKEN }}
-          color: ${{
-            needs.test.outputs.coverage >  90 && 'brightgreen'   ||
-            needs.test.outputs.coverage >  80 && 'green'         ||
-            needs.test.outputs.coverage >  70 && 'yellowgreen'   ||
-            needs.test.outputs.coverage >  60 && 'yellow'        ||
-            needs.test.outputs.coverage >  50 && 'orange'        ||
-            'red' }}
           filename: ${{ needs.pre_ci.outputs.repo }}__${{ github.ref_name }}.json
           gistID: ${{ env.gist_id }}
           label: coverage
           message: ${{ needs.test.outputs.coverage }}%
           namedLogo: github
           style: flat-square
+          valColorRange: ${{ needs.test.outputs.coverage }}
+          maxColorRange: 100
+          minColorRange: 0
       - name: badge image url
         run: |
           URL="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/${{ github.actor }}/${{ env.gist_id }}/raw/${{ needs.pre_ci.outputs.repo }}__${{ github.ref_name }}.json"

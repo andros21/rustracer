@@ -162,15 +162,16 @@ mod test {
             ..Default::default()
         };
         let intersection1 = sphere.ray_intersection(ray1);
-        assert!(intersection1.is_some());
-        assert!(HitRecord {
-            world_point: Point::from((0., 0., 1.)),
-            normal: Normal::from((0., 0., 1.)),
-            surface_point: Vector2D { u: 0., v: 0. },
-            t: 1.,
-            ray: ray1,
-        }
-        .is_close(intersection1.unwrap()));
+
+        assert!(
+            matches!(intersection1, Some(intersection) if intersection.is_close(HitRecord {
+                world_point: Point::from((0., 0., 1.)),
+                normal: Normal::from((0., 0., 1.)),
+                surface_point: Vector2D { u: 0., v: 0. },
+                t: 1.,
+                ray: ray1,
+            }))
+        );
 
         let ray2 = Ray {
             origin: Point::from((3., 0., 0.)),
@@ -178,15 +179,15 @@ mod test {
             ..Default::default()
         };
         let intersection2 = sphere.ray_intersection(ray2);
-        assert!(intersection2.is_some());
-        assert!(HitRecord {
-            world_point: Point::from((1., 0., 0.)),
-            normal: Normal::from((1., 0., 0.)),
-            surface_point: Vector2D { u: 0., v: 0.5 },
-            t: 2.,
-            ray: ray2,
-        }
-        .is_close(intersection2.unwrap()));
+        assert!(
+            matches!(intersection2, Some(intersection) if intersection.is_close(HitRecord {
+                world_point: Point::from((1., 0., 0.)),
+                normal: Normal::from((1., 0., 0.)),
+                surface_point: Vector2D { u: 0., v: 0.5 },
+                t: 2.,
+                ray: ray2,
+            }))
+        );
 
         let ray3 = Ray {
             origin: Point::from((0., 0., 0.)),
@@ -194,15 +195,15 @@ mod test {
             ..Default::default()
         };
         let intersection3 = sphere.ray_intersection(ray3);
-        assert!(intersection3.is_some());
-        assert!(HitRecord {
-            world_point: Point::from((1., 0., 0.)),
-            normal: Normal::from((-1., 0., 0.)),
-            surface_point: Vector2D { u: 0., v: 0.5 },
-            t: 1.,
-            ray: ray3,
-        }
-        .is_close(intersection3.unwrap()))
+        assert!(
+            matches!(intersection3, Some(intersection) if intersection.is_close(HitRecord {
+                world_point: Point::from((1., 0., 0.)),
+                normal: Normal::from((-1., 0., 0.)),
+                surface_point: Vector2D { u: 0., v: 0.5 },
+                t: 1.,
+                ray: ray3,
+            }))
+        )
     }
 
     #[test]
@@ -215,30 +216,30 @@ mod test {
             ..Default::default()
         };
         let intersection1 = sphere.ray_intersection(ray1);
-        assert!(intersection1.is_some());
-        assert!(HitRecord {
-            world_point: Point::from((10.0, 0.0, 1.0)),
-            normal: Normal::from((0.0, 0.0, 1.0)),
-            surface_point: Vector2D { u: 0., v: 0. },
-            t: 1.0,
-            ray: ray1,
-        }
-        .is_close(intersection1.unwrap()));
+        assert!(
+            matches!(intersection1, Some(intersection) if intersection.is_close(HitRecord {
+                world_point: Point::from((10.0, 0.0, 1.0)),
+                normal: Normal::from((0.0, 0.0, 1.0)),
+                surface_point: Vector2D { u: 0., v: 0. },
+                t: 1.0,
+                ray: ray1,
+            }))
+        );
         let ray2 = Ray {
             origin: Point::from((13., 0., 0.)),
             dir: Vector::from((-1., 0., 0.)),
             ..Default::default()
         };
         let intersection2 = sphere.ray_intersection(ray2);
-        assert!(intersection2.is_some());
-        assert!(HitRecord {
-            world_point: Point::from((11.0, 0.0, 0.0)),
-            normal: Normal::from((1.0, 0.0, 0.0)),
-            surface_point: Vector2D { u: 0., v: 0.5 },
-            t: 2.0,
-            ray: ray2,
-        }
-        .is_close(intersection2.unwrap()));
+        assert!(
+            matches!(intersection2, Some(intersection) if intersection.is_close(HitRecord {
+                world_point: Point::from((11.0, 0.0, 0.0)),
+                normal: Normal::from((1.0, 0.0, 0.0)),
+                surface_point: Vector2D { u: 0., v: 0.5 },
+                t: 2.0,
+                ray: ray2,
+            }))
+        );
 
         let ray3 = Ray {
             origin: Point::from((0., 0., 2.)),
@@ -263,13 +264,11 @@ mod test {
             ..Default::default()
         };
         let intersection1 = sphere1.ray_intersection(ray1);
-        assert!(intersection1.is_some());
-        assert!(intersection1
-            .unwrap()
+        assert!(matches!(intersection1, Some(intersection) if intersection
             .normal
             .normalize()
             .unwrap()
-            .is_close(Normal::from((1., 4., 0.)).normalize().unwrap()));
+            .is_close(Normal::from((1., 4., 0.)).normalize().unwrap())));
 
         let sphere2 = Sphere::new(scaling(Vector::from((-1., -1., -1.))));
         let ray2 = Ray {
@@ -278,13 +277,11 @@ mod test {
             ..Default::default()
         };
         let intersection2 = sphere2.ray_intersection(ray2);
-        assert!(intersection2.is_some());
-        assert!(intersection2
-            .unwrap()
+        assert!(matches!(intersection2, Some(intersection) if intersection
             .normal
             .normalize()
             .unwrap()
-            .is_close(Normal::from((0., 1., 0.)).normalize().unwrap()))
+            .is_close(Normal::from((0., 1., 0.)).normalize().unwrap())))
     }
 
     #[test]
@@ -366,15 +363,15 @@ mod test {
             ..Default::default()
         };
         let intersection1 = plane.ray_intersection(ray1);
-        assert!(intersection1.is_some());
-        assert!(HitRecord {
-            world_point: Point::from((0., 0., 0.)),
-            normal: Normal::from((0., 0., 1.)),
-            surface_point: Vector2D { u: 0., v: 0. },
-            t: 1.,
-            ray: ray1,
-        }
-        .is_close(intersection1.unwrap()));
+        assert!(
+            matches!(intersection1, Some(intersection) if intersection.is_close(HitRecord {
+                world_point: Point::from((0., 0., 0.)),
+                normal: Normal::from((0., 0., 1.)),
+                surface_point: Vector2D { u: 0., v: 0. },
+                t: 1.,
+                ray: ray1,
+            }))
+        );
         let ray2 = Ray {
             origin: Point::from((0., 0., 1.)),
             dir: Vector::from((0., 0., 1.)),
@@ -407,15 +404,15 @@ mod test {
             ..Default::default()
         };
         let intersection1 = plane.ray_intersection(ray1);
-        assert!(intersection1.is_some());
-        assert!(HitRecord {
-            world_point: Point::from((0., 0., 0.)),
-            normal: Normal::from((1., 0., 0.)),
-            surface_point: Vector2D { u: 0., v: 0. },
-            t: 1.,
-            ray: ray1,
-        }
-        .is_close(intersection1.unwrap()));
+        assert!(
+            matches!(intersection1, Some(intersection) if intersection.is_close(HitRecord {
+                world_point: Point::from((0., 0., 0.)),
+                normal: Normal::from((1., 0., 0.)),
+                surface_point: Vector2D { u: 0., v: 0. },
+                t: 1.,
+                ray: ray1,
+            }))
+        );
         let ray2 = Ray {
             origin: Point::from((0., 0., 1.)),
             dir: Vector::from((0., 0., 1.)),

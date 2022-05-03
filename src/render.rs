@@ -13,26 +13,38 @@ pub trait Solve {
     fn solve(&self, ray: Ray) -> Color;
 }
 
+/// A on/off renderer.
+///
+/// This renderer is mostly useful for debugging purposes,
+/// as it is really fast, but it produces boring images.
 pub struct OnOffRenderer<'a> {
+    /// A world instance.
     world: &'a World,
-    background_color: Color,
-    color: Color,
+    /// Background color (usually [`BLACK`](../color/constant.BLACK.html)).
+    bg_color: Color,
+    /// Foreground color (usually [`WHITE`](../color/constant.WHITE.html)).
+    fg_color: Color,
 }
 
 impl<'a> OnOffRenderer<'a> {
-    pub fn new(world: &World, background_color: Color, color: Color) -> OnOffRenderer {
+    /// Create a new [`OnOffRenderer`] renderer.
+    pub fn new(world: &World, bg_color: Color, fg_color: Color) -> OnOffRenderer {
         OnOffRenderer {
             world,
-            background_color,
-            color,
+            bg_color,
+            fg_color,
         }
     }
 }
+
 impl<'a> Solve for OnOffRenderer<'a> {
+    /// Solve rendering with on/off strategy.
+    ///
+    /// If intersection happens return `fg_color` otherwise `bg_color`.
     fn solve(&self, ray: Ray) -> Color {
         match self.world.ray_intersection(ray) {
-            Some(_hit) => self.color,
-            None => self.background_color,
+            Some(_hit) => self.fg_color,
+            None => self.bg_color,
         }
     }
 }

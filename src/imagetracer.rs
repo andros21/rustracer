@@ -59,6 +59,7 @@ mod test {
     use crate::camera::PerspectiveCamera;
     use crate::color::Color;
     use crate::misc::IsClose;
+    use crate::point::Point;
     use crate::transformation::Transformation;
 
     struct DummyRenderer;
@@ -70,17 +71,21 @@ mod test {
     }
 
     #[test]
-    fn test_image_tracer() {
+    fn test_uv_sub_mapping() {
         let mut image = HdrImage::new(4, 2);
         let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
-        let mut tracer = ImageTracer {
-            image: &mut image,
-            camera,
-        };
+        let tracer = ImageTracer::new(&mut image, camera);
 
         let ray1 = tracer.fire_ray(0, 0, 2.5, 1.5);
         let ray2 = tracer.fire_ray(2, 1, 0.5, 0.5);
         assert!(ray1.is_close(ray2));
+    }
+
+    #[test]
+    fn test_image_coverage() {
+        let mut image = HdrImage::new(4, 2);
+        let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let mut tracer = ImageTracer::new(&mut image, camera);
 
         tracer.fire_all_rays(DummyRenderer);
         for row in 0..image.shape().1 {
@@ -90,5 +95,23 @@ mod test {
                 );
             }
         }
+    }
+
+    #[test]
+    fn test_orientation() {
+        let mut image = HdrImage::new(4, 2);
+        let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let tracer = ImageTracer {
+            image: &mut image,
+            camera,
+        };
+
+        let top_left_ray = tracer.fire_ray(0, 0, 0., 0.);
+        assert!(top_left_ray.at(1.).is_close(Point::from((0., 2., 1.))));
+
+        let bottom_right_ray = tracer.fire_ray(3, 1, 1., 1.);
+        assert!(bottom_right_ray
+            .at(1.)
+            .is_close(Point::from((0., -2., -1.))));
     }
 }

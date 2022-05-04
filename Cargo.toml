@@ -37,6 +37,6 @@ default-features = false
 features         = ["farbfeld", "png"]
 
 [dependencies.clap]
-version          = "3.1.7"
+version          = "3.1.14"
 default-features = false
 features         = ["std", "suggestions", "wrap_help"]

@@ -32,8 +32,8 @@ impl<'a, C: Copy + FireRay> ImageTracer<'a, C> {
     /// They specify where the ray should cross the pixel; passing `0.5` to both means that\
     /// the ray will pass through the pixel's center.
     fn fire_ray(&self, col: u32, row: u32, u_pixel: f32, v_pixel: f32) -> Ray {
-        let u = (col as f32 + u_pixel) / (self.image.shape().0 - 1) as f32;
-        let v = (row as f32 + v_pixel) / (self.image.shape().1 - 1) as f32;
+        let u = (col as f32 + u_pixel) / self.image.shape().0 as f32;
+        let v = 1. - (row as f32 + v_pixel) / self.image.shape().1 as f32;
         self.camera.fire_ray(u, v)
     }
 
@@ -107,6 +107,7 @@ mod test {
         };
 
         let top_left_ray = tracer.fire_ray(0, 0, 0., 0.);
+        println!("{}", top_left_ray.at(1.));
         assert!(top_left_ray.at(1.).is_close(Point::from((0., 2., 1.))));
 
         let bottom_right_ray = tracer.fire_ray(3, 1, 1., 1.);

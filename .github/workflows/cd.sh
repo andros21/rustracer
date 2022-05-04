@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# `rustracer` continuos deployment workflow (`cd.yml`) helper script,
+# it assemble, checksum and (co)sign artifacts for releases
+
 set -e
 
 GNU="rustracer-${GITHUB_REF_NAME}-x86_64-unknown-linux-gnu"

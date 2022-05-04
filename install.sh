@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# end-user `rustracer` installation script:
+#  * downloads particular release (default `latest+musl`)
+#  * downloads related checksum and signatures
+#  * controls related  checksum and signatures
+#  * installs inside given $PREFIX (default `~/.local`)
+
 set -e
 
 os=$(uname -s)

@@ -19,7 +19,7 @@ pub trait RayIntersection {
     fn ray_intersection(&self, ray: Ray) -> Option<HitRecord>;
 }
 
-/// Struct used to store the results of [`RayIntersection`](trait@RayIntersection)
+/// Struct used to store the results of [`RayIntersection`](trait@RayIntersection).
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct HitRecord {
     /// Coordinates of the point of impact.
@@ -45,11 +45,13 @@ impl IsClose for HitRecord {
     }
 }
 
-/// Geometrical shape corresponding to a sphere
+/// Geometrical shape corresponding to a sphere.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Sphere {
-    /// A generic sphere is defined by means of a [`Transformation`](struct@Transformation) on the
-    /// unit sphere centered at the origin of axis. This means that you can also get an ellipsis
+    /// A generic sphere is defined by means of a
+    /// [`Transformation`](struct@Transformation) on the
+    /// unit sphere centered at the origin of axis.\
+    /// This means that you can also get an ellipsis
     /// using the proper [`scaling`](fn@crate::transformation::scaling).
     transformation: Transformation,
 }
@@ -64,9 +66,9 @@ impl Sphere {
 /// Calculates normals to [`Sphere`](struct@Sphere)'s surface.
 ///
 /// This Function is meant to be used inside [`Sphere`](struct@Sphere)'s
-/// [`RayIntersection`](trait@RayIntersection) implementation. `ray_dir` is the direction of an
-/// impacting [`Ray`](struct@Ray) and is used to determine on which side of the surface the normal
-/// is calculated.
+/// [`RayIntersection`](trait@RayIntersection) implementation.\
+/// `ray_dir` is the direction of an impacting [`Ray`](struct@Ray) and\
+/// is used to determine on which side of the surface the normal is calculated.
 fn sphere_normal(point: Point, ray_dir: Vector) -> Normal {
     let result = Normal::from((point.x, point.y, point.z));
     if Vector::from(point).dot(ray_dir) < 0.0 {
@@ -78,7 +80,8 @@ fn sphere_normal(point: Point, ray_dir: Vector) -> Normal {
 
 /// Returns parametrization coordinates of a point on a sphere.
 ///
-/// The sphere's surface is parametrized by two angles that correspond to latitude and longitude.
+/// The sphere's surface is parametrized by two angles that correspond
+/// to latitude and longitude.
 fn sphere_point_to_uv(point: Point) -> Vector2D {
     let mut u = point.y.atan2(point.x) / (2.0 * PI);
     let v = point.z.acos() / PI;
@@ -123,12 +126,14 @@ impl RayIntersection for Sphere {
     }
 }
 
-/// Geometrical shape corresponding to a plane
+/// Geometrical shape corresponding to a plane.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Plane {
     /// A generic plane is defined by means of a [`Transformation`](struct@Transformation)
-    /// on the X-Y plane. A [`scaling`](fn@crate::transformation::scaling) trnasformation has the
-    /// effect to change the sides length of the basic rectangle in the plane's [parametrization](fn@plane_point_to_uv).
+    /// on the X-Y plane.\
+    /// A [`scaling`](fn@crate::transformation::scaling) transformation has the
+    /// effect to change the sides length of the basic rectangle in the plane's
+    /// [parametrization](fn@plane_point_to_uv).
     transformation: Transformation,
 }
 
@@ -142,9 +147,9 @@ impl Plane {
 /// Calculates normals to [`Plane`](struct@Plane)'s surface.
 ///
 /// This Function is meant to be used inside [`Plane`](struct@Plane)'s
-/// [`RayIntersection`](trait@RayIntersection) implementation. `ray_dir` is the direction of an
-/// impacting [`Ray`](struct@Ray) and is used to determine on which side of the surface the normal
-/// is calculated.
+/// [`RayIntersection`](trait@RayIntersection) implementation.\
+/// `ray_dir` is the direction of an impacting [`Ray`](struct@Ray)
+/// and is used to determine on which side of the surface the normal is calculated.
 fn plane_normal(ray_dir: Vector) -> Normal {
     let normal = Normal::from((0., 0., 1.));
     if Vector::from(normal).dot(ray_dir) < 0.0 {
@@ -156,7 +161,7 @@ fn plane_normal(ray_dir: Vector) -> Normal {
 
 /// Returns parametrization coordinates of a point on a plane.
 ///
-/// The plane is parametrized by the \[0,1]x\[0,1] square with periodic boundary conditions.
+/// The plane is parametrized by the `[0,1]x[0,1]` square with periodic boundary conditions.
 fn plane_point_to_uv(point: Point) -> Vector2D {
     Vector2D {
         u: point.x - point.x.floor(),

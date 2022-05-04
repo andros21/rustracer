@@ -42,20 +42,8 @@ use crate::world::World;
 fn main() {
     let cli_m = cli::build_cli().get_matches_from(env::args_os());
     match cli_m.subcommand_name() {
-        Some("convert") => match convert(cli_m.subcommand_matches("convert").unwrap()) {
-            Ok(()) => exit(0),
-            Err(e) => {
-                eprintln!("[error] {:#}", e);
-                exit(1)
-            }
-        },
-        Some("demo") => match demo(cli_m.subcommand_matches("demo").unwrap()) {
-            Ok(()) => exit(0),
-            Err(e) => {
-                eprintln!("[error] {:#}", e);
-                exit(1)
-            }
-        },
+        Some("convert") => exit!(convert(cli_m.subcommand_matches("convert").unwrap())),
+        Some("demo") => exit!(demo(cli_m.subcommand_matches("demo").unwrap())),
         _ => exit(1),
     }
 }

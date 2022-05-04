@@ -40,6 +40,20 @@ impl IsClose for Vector2D {
     }
 }
 
+/// Macro for wrap exit logic inside [`main`](fn.main.html).
+#[macro_export]
+macro_rules! exit {
+    ($a:expr) => {
+        match $a {
+            Ok(()) => exit(0),
+            Err(e) => {
+                eprintln!("[error] {:#}", e);
+                exit(1)
+            }
+        }
+    };
+}
+
 #[cfg(test)]
 mod test {
     use super::*;

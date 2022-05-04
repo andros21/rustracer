@@ -26,7 +26,7 @@ pub enum HdrImageErr {
     UnsupportedLdrFileFormat(String),
 }
 
-/// Error enum for [`convert`](../fn.convert.html) function inside [`main`](../fn.main).
+/// Error enum for [`convert`](../fn.convert.html) function inside [`main`](../fn.main.html).
 #[derive(Error, Debug)]
 pub enum ConvertErr {
     #[error("invalid {1}, expected floating-point number: {0}")]

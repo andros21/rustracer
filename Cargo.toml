@@ -32,7 +32,7 @@ thiserror = "1.0.30"
 byteorder = "1.4.3"
 
 [dependencies.image]
-version          = "0.24.1"
+version          = "0.24.2"
 default-features = false
 features         = ["farbfeld", "png"]
 

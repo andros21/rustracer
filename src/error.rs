@@ -14,6 +14,8 @@ pub enum HdrImageErr {
     InvalidPfmFileFormat(String),
     #[error("impossible to read from pfm file: {0}")]
     PfmFileReadFailure(#[source] std::io::Error),
+    #[error("impossible to write to pfm file: {0}")]
+    PfmFileWriteFailure(#[source] std::io::Error),
     #[error("impossible to parse {1} as integer from pfm file: {0}")]
     PfmIntParseFailure(#[source] std::num::ParseIntError, String),
     #[error("impossible to parse {1} as float from pfm file: {0}")]
@@ -24,7 +26,7 @@ pub enum HdrImageErr {
     UnsupportedLdrFileFormat(String),
 }
 
-/// Error enum for [`convert`](../fn.convert.html) function inside [`main`](../fn.main).
+/// Error enum for [`convert`](../fn.convert.html) function inside [`main`](../fn.main.html).
 #[derive(Error, Debug)]
 pub enum ConvertErr {
     #[error("invalid {1}, expected floating-point number: {0}")]
@@ -37,4 +39,14 @@ pub enum ConvertErr {
 pub enum GeometryErr {
     #[error("object with norm {0} can't be normalized")]
     UnableToNormalize(f32),
+}
+
+#[derive(Error, Debug)]
+pub enum DemoErr {
+    #[error("invalid {1}, expected floating-point number: {0}")]
+    IntParseFailure(#[source] std::num::ParseIntError, String),
+    #[error("invalid {1}, expected floating-point number: {0}")]
+    FloatParseFailure(#[source] std::num::ParseFloatError, String),
+    #[error("{0}")]
+    IoError(#[source] HdrImageErr),
 }

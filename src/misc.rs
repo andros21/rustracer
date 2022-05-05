@@ -28,6 +28,32 @@ pub enum ByteOrder {
     LittleEndian,
 }
 
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct Vector2D {
+    pub u: f32,
+    pub v: f32,
+}
+
+impl IsClose for Vector2D {
+    fn is_close(&self, other: Self) -> bool {
+        self.u.is_close(other.u) && self.v.is_close(other.v)
+    }
+}
+
+/// Macro for wrap exit logic inside [`main`](fn.main.html).
+#[macro_export]
+macro_rules! exit {
+    ($a:expr) => {
+        match $a {
+            Ok(()) => exit(0),
+            Err(e) => {
+                eprintln!("[error] {:#}", e);
+                exit(1)
+            }
+        }
+    };
+}
+
 #[cfg(test)]
 mod test {
     use super::*;

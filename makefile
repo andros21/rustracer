@@ -1,4 +1,4 @@
-# Makefile
+# makefile
 # --------
 # makefile for development, rules:
 #  + `animation` - create simple gif animation, useful to create
@@ -36,6 +36,7 @@ ccov.pid:
 
 stop: *.pid
 	@printf "stopping http.server ... "
-	@pkill -f "python3 -m http.server -b 127.0.0.1 -d target/"
+	@pkill -F docs.pid 2>/dev/null || exit 0
+	@pkill -F ccov.pid 2>/dev/null || exit 0
 	@rm $^
 	@printf "done\n"

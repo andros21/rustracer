@@ -112,7 +112,7 @@ jobs:
         run: |
           rustup toolchain install stable --component llvm-tools-preview
       - name: install cargo-llvm-cov
-        uses: taiki-e/install-action@74b1a6bda9019d85735d64da0f5b2972701a8b36
+        uses: taiki-e/install-action@04e2194ad0ac22832a5daf406b967ed0d53974a0
         with:
           tool: cargo-llvm-cov
       - name: cargo build

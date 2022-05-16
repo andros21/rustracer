@@ -6,6 +6,7 @@ mod color;
 mod error;
 mod hdrimage;
 mod imagetracer;
+mod material;
 mod misc;
 mod normal;
 mod point;

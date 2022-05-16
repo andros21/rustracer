@@ -3,6 +3,7 @@
 //! Provides [`Pcg`](struct@Pcg) struct.
 
 /// [PCG](https://www.pcg-random.org/index.html) random numbers generator.
+#[derive(Copy, Clone, Debug)]
 pub struct Pcg {
     state: u64,
     inc: u64,

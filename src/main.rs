@@ -9,6 +9,7 @@ mod imagetracer;
 mod misc;
 mod normal;
 mod point;
+mod random;
 mod ray;
 mod render;
 mod shape;

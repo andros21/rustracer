@@ -1,4 +1,4 @@
-//! Image Tracer module.
+//! Render module.
 //!
 //! Provides different renderers that implement [`Solve`] trait.
 use crate::color::Color;

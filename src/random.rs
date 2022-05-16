@@ -12,15 +12,16 @@ pub struct Pcg {
 impl Default for Pcg {
     /// Provides a default constructor for [`Pcg`](struct@Pcg),
     /// the default values for the seed are:
-    /// - `init_state` = 42,
-    /// - `init_seq` = 54.
+    /// - `init_state=42`;
+    /// - `init_seq=54`.
     fn default() -> Self {
         Self::new(42, 54)
     }
 }
 
 impl Pcg {
-    /// Provides a constructor for [`Pcg`](struct@Pcg),
+    /// Provides a constructor for [`Pcg`](struct@Pcg).
+    ///
     /// `init_state` and `init_seq` are the seed of the generator.
     pub fn new(init_state: u64, init_seq: u64) -> Self {
         let state = 0;
@@ -32,7 +33,7 @@ impl Pcg {
         pcg
     }
 
-    /// Generates an integer random number.    
+    /// Generates an integer random number.
     pub fn random(&mut self) -> u32 {
         let old_state = self.state;
         self.state = old_state.wrapping_mul(6364136223846793005) + self.inc;

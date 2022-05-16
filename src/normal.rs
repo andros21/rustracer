@@ -145,6 +145,27 @@ impl Mul<f32> for Normal {
     }
 }
 
+/// Create a orthonormal basis (ONB) from a [`Normal`] representing the z axis.\
+///
+/// Return a tuple containing the three [`Vector`] of the basis.\
+/// **Warning**: `normal` needs to be **normalized**, otherwise this method won't work.
+pub fn create_onb_from_z(normal: Normal) -> (Vector, Vector, Vector) {
+    let sign = if normal.z > 0.0 { 1.0 } else { -1.0 };
+    let a = -1.0 / (sign + normal.z);
+    let b = normal.x * normal.y * a;
+    let e1 = Vector {
+        x: 1.0 + sign * normal.x * normal.x * a,
+        y: sign * b,
+        z: -sign * normal.x,
+    };
+    let e2 = Vector {
+        x: b,
+        y: sign + normal.y * normal.y * a,
+        z: -normal.y,
+    };
+    (e1, e2, Vector::from(normal))
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -222,5 +243,17 @@ mod test {
         assert!(matches!(
             Normal::from((0.0, 0.0, 0.0)).normalize(), Err(GeometryErr::UnableToNormalize(a)) if a == 0_f32
         ))
+    }
+
+    #[test]
+    fn test_create_onb_from_z() {
+        let (e1, e2, e3) = create_onb_from_z(E3);
+
+        assert_eq!(e1.dot(e1), 1.0);
+        assert_eq!(e2.dot(e2), 1.0);
+        assert_eq!(e3.dot(e3), 1.0);
+        assert_eq!(e1.dot(e2), 0.0);
+        assert_eq!(e1.dot(e3), 0.0);
+        assert_eq!(e2.dot(e3), 0.0)
     }
 }

@@ -173,6 +173,18 @@ impl Mul<f32> for Vector {
     }
 }
 
+/// Create a orthonormal basis (ONB) from a [`Vector`] representing the z axis.\
+///
+/// Return a tuple containing the three [`Vector`] of the basis.
+pub fn create_onb_from_z(vector: Vector) -> (Vector, Vector, Vector) {
+    let normal = vector.normalize().unwrap();
+    crate::normal::create_onb_from_z(Normal {
+        x: normal.x,
+        y: normal.y,
+        z: normal.z,
+    })
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -276,5 +288,18 @@ mod test {
         assert!(matches!(
             Vector::from((0.0, 0.0, 0.0)).normalize(), Err(GeometryErr::UnableToNormalize(a)) if a == 0_f32
         ))
+    }
+
+    #[test]
+    fn test_create_onb_from_z() {
+        let vector = E1 + E2 + E3;
+        let (e1, e2, e3) = create_onb_from_z(vector);
+
+        assert!(e1.dot(e1).is_close(1.0));
+        assert!(e2.dot(e2).is_close(1.0));
+        assert!(e3.dot(e3).is_close(1.0));
+        assert_eq!(e1.dot(e2), 0.0);
+        assert_eq!(e1.dot(e3), 0.0);
+        assert_eq!(e2.dot(e3), 0.0)
     }
 }

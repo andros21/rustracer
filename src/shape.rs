@@ -20,7 +20,7 @@ pub trait RayIntersection {
 }
 
 /// Struct used to store the results of [`RayIntersection`](trait@RayIntersection).
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug)]
 pub struct HitRecord {
     /// Coordinates of the point of impact.
     pub world_point: Point,
@@ -46,7 +46,7 @@ impl IsClose for HitRecord {
 }
 
 /// Geometrical shape corresponding to a sphere.
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct Sphere {
     /// A generic sphere is defined by means of a
     /// [`Transformation`](struct@Transformation) on the
@@ -127,7 +127,7 @@ impl RayIntersection for Sphere {
 }
 
 /// Geometrical shape corresponding to a plane.
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct Plane {
     /// A generic plane is defined by means of a [`Transformation`](struct@Transformation)
     /// on the X-Y plane.\

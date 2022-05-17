@@ -13,7 +13,7 @@ use std::ops::Mul;
 /// it acts differently when 3D [`transformation`](../transformation) is applied.\
 /// So is better to create 2 two different objects (structs) despite similarity
 /// and doubling the code.
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Normal {
     /// x component.
     pub x: f32,

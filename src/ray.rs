@@ -47,7 +47,7 @@ impl Default for Ray {
     /// * `depth = 0`
     fn default() -> Self {
         Ray {
-            origin: Point::from((0., 0., 0.)),
+            origin: Point::default(),
             dir: Vector::from((1.0, 0.0, 0.0)),
             tmin: 1e-5,
             tmax: f32::INFINITY,

@@ -8,6 +8,27 @@ use crate::point::Point;
 use std::fmt;
 use std::ops::{Add, Mul, Sub};
 
+/// X-axis vector.
+pub const E1: Vector = Vector {
+    x: 1.0,
+    y: 0.0,
+    z: 0.0,
+};
+
+/// Y-axis vector.
+pub const E2: Vector = Vector {
+    x: 0.0,
+    y: 1.0,
+    z: 0.0,
+};
+
+/// Z-axis vector.
+pub const E3: Vector = Vector {
+    x: 0.0,
+    y: 0.0,
+    z: 1.0,
+};
+
 /// 3D Vector struct.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vector {

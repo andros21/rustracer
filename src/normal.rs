@@ -7,6 +7,27 @@ use crate::vector::Vector;
 use std::fmt;
 use std::ops::Mul;
 
+/// X-axis normal.
+pub const E1: Normal = Normal {
+    x: 1.0,
+    y: 0.0,
+    z: 0.0,
+};
+
+/// Y-axis normal.
+pub const E2: Normal = Normal {
+    x: 0.0,
+    y: 1.0,
+    z: 0.0,
+};
+
+/// Z-axis normal.
+pub const E3: Normal = Normal {
+    x: 0.0,
+    y: 0.0,
+    z: 1.0,
+};
+
 /// 3D Normal struct.
 ///
 /// **Note:** a 3D normal is a 3D vector with norm equal to 1, but

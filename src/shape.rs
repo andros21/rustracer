@@ -241,7 +241,7 @@ mod test {
         );
 
         let ray3 = Ray {
-            origin: Point::from((0., 0., 0.)),
+            origin: Point::default(),
             dir: Vector::from((1., 0., 0.)),
             ..Default::default()
         };
@@ -416,7 +416,7 @@ mod test {
         let intersection1 = plane.ray_intersection(ray1);
         assert!(
             matches!(intersection1, Some(intersection) if intersection.is_close(HitRecord {
-                world_point: Point::from((0., 0., 0.)),
+                world_point: Point::default(),
                 normal: Normal::from((0., 0., 1.)),
                 surface_point: Vector2D { u: 0., v: 0. },
                 t: 1.,
@@ -457,7 +457,7 @@ mod test {
         let intersection1 = plane.ray_intersection(ray1);
         assert!(
             matches!(intersection1, Some(intersection) if intersection.is_close(HitRecord {
-                world_point: Point::from((0., 0., 0.)),
+                world_point: Point::default(),
                 normal: Normal::from((1., 0., 0.)),
                 surface_point: Vector2D { u: 0., v: 0. },
                 t: 1.,

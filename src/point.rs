@@ -7,7 +7,7 @@ use std::fmt;
 use std::ops::{Add, Mul, Sub};
 
 /// 3D Point struct.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Point {
     /// x component.
     pub x: f32,

@@ -112,7 +112,7 @@ jobs:
         run: |
           rustup toolchain install stable --component llvm-tools-preview
       - name: install cargo-llvm-cov
-        uses: taiki-e/install-action@bb135877f4beff3c92d2811499b16e3818fe5c04
+        uses: taiki-e/install-action@04e2194ad0ac22832a5daf406b967ed0d53974a0
         with:
           tool: cargo-llvm-cov
       - name: cargo build
@@ -158,7 +158,7 @@ jobs:
       gist_id: 0e20cd331d0800e3299298a3868aab7a
     steps:
       - name: generate dynamic badge
-        uses: schneegans/dynamic-badges-action@a6775a64878aca0ec9d4cb5b1a4018cb17d5d297
+        uses: schneegans/dynamic-badges-action@54d929a33e7521ab6bf19d323d28fb7b876c53f7
         with:
           auth: ${{ secrets.GIST_TOKEN }}
           filename: ${{ needs.pre_ci.outputs.repo }}__${{ github.ref_name }}.json

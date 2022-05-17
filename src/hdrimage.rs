@@ -182,22 +182,25 @@ impl HdrImage {
     /// The enum [`endianness`](enum@ByteOrder) specifies the byte endianness
     /// to be used in the file.
     ///
-    /// Return a [`std::io::Result`].
+    /// If an error occurs the result contains an [`HdrImageErr`] error variant.
     fn write_pfm_image<W: Write>(
         &self,
         stream: &mut W,
         endianness: ByteOrder,
-    ) -> std::io::Result<()> {
+    ) -> Result<(), HdrImageErr> {
         let mut header = format!("PF\n{} {}\n", self.width, self.height);
         match endianness {
             ByteOrder::BigEndian => header.push_str("1.0\n"),
             ByteOrder::LittleEndian => header.push_str("-1.0\n"),
         }
-        stream.write_all(header.as_bytes())?;
+        stream
+            .write_all(header.as_bytes())
+            .map_err(HdrImageErr::PfmFileWriteFailure)?;
         for y in (0..self.height).rev() {
             for x in 0..self.width {
                 for el in self.get_pixel(x, y).unwrap().into_iter() {
-                    write_float(stream, el, &endianness)?;
+                    write_float(stream, el, &endianness)
+                        .map_err(HdrImageErr::PfmFileWriteFailure)?;
                 }
             }
         }
@@ -207,9 +210,9 @@ impl HdrImage {
     /// Write a pfm image to `path`, wrapper function around
     /// [`write_pfm_image`](#method.write_pfm_image).
     ///
-    /// Return a [`std::io::Result`].
-    pub fn write_pfm_file(&self, path: &Path, endianness: ByteOrder) -> std::io::Result<()> {
-        let file = File::create(path)?;
+    /// If an error occurs the result contains an [`HdrImageErr`] error variant.
+    pub fn write_pfm_file(&self, path: &Path, endianness: ByteOrder) -> Result<(), HdrImageErr> {
+        let file = File::create(path).map_err(HdrImageErr::PfmFileWriteFailure)?;
         let mut writer = BufWriter::new(file);
         self.write_pfm_image(&mut writer, endianness)
     }
@@ -735,7 +738,7 @@ mod test {
         ));
         assert!(matches!(
             hdr_img.write_pfm_file(invalid_path, ByteOrder::LittleEndian),
-            Err(std::io::Error { .. })
+            Err(HdrImageErr::PfmFileWriteFailure(_))
         ));
 
         let hdr_img_result = HdrImage::read_pfm_file(reference_file_be);

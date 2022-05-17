@@ -9,7 +9,7 @@ use std::fmt;
 use std::ops::{Add, Mul, Sub};
 
 /// 3D Vector struct.
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vector {
     /// x component
     pub x: f32,

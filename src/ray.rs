@@ -5,7 +5,7 @@ use crate::misc::IsClose;
 use crate::point::Point;
 use crate::vector::Vector;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug)]
 /// Light Ray struct.
 pub struct Ray {
     /// Origin [`Point`] of the light ray.
@@ -47,7 +47,7 @@ impl Default for Ray {
     /// * `depth = 0`
     fn default() -> Self {
         Ray {
-            origin: Point::default(),
+            origin: Point::from((0., 0., 0.)),
             dir: Vector::from((1.0, 0.0, 0.0)),
             tmin: 1e-5,
             tmax: f32::INFINITY,

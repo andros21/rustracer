@@ -21,7 +21,7 @@ pub trait FireRay {
 /// A camera implementing an orthogonal 3D -> 2D projection.
 ///
 /// This class implements an observer seeing the world through an orthogonal projection.
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct OrthogonalCamera {
     /// Aspect Ratio.
     aspect_ratio: f32,
@@ -78,7 +78,7 @@ impl FireRay for OrthogonalCamera {
 /// A camera implementing a perspective 3D -> 2D projection.
 ///
 /// This class implements an observer seeing the world through a perspective projection.
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct PerspectiveCamera {
     /// Screen distance.
     distance: f32,

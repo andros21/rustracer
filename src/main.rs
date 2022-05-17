@@ -16,6 +16,7 @@ mod transformation;
 mod vector;
 mod world;
 
+use image::ImageFormat;
 use std::env;
 use std::path::Path;
 use std::process::exit;
@@ -23,7 +24,7 @@ use std::str::FromStr;
 
 use crate::camera::{OrthogonalCamera, PerspectiveCamera};
 use crate::color::{BLACK, WHITE};
-use crate::error::{ConvertErr, DemoErr};
+use crate::error::{ConvertErr, DemoErr, HdrImageErr};
 use crate::hdrimage::{HdrImage, Luminosity};
 use crate::imagetracer::ImageTracer;
 use crate::misc::ByteOrder;
@@ -59,6 +60,7 @@ fn convert(sub_m: &clap::ArgMatches) -> Result<(), ConvertErr> {
     let gamma = f32::from_str(sub_m.value_of("gamma").unwrap())
         .map_err(|e| ConvertErr::FloatParseFailure(e, String::from("gamma")))?;
     let mut hdr_img = HdrImage::read_pfm_file(hdr_file).map_err(ConvertErr::IoError)?;
+    check!(ldr_file).map_err(ConvertErr::IoError)?;
     if sub_m.is_present("verbose") {
         println!("[info] {:?} has been read from disk", hdr_file);
     }
@@ -85,6 +87,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("height")))?;
     let angle_deg = f32::from_str(sub_m.value_of("angle-deg").unwrap())
         .map_err(|e| DemoErr::FloatParseFailure(e, String::from("angle-deg")))?;
+    check!(ldr_file).map_err(DemoErr::IoError)?;
     let mut hdr_img = HdrImage::new(width, height);
     if sub_m.is_present("verbose") {
         println!("[info] generating an image ({}, {})", width, height);

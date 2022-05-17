@@ -54,6 +54,26 @@ macro_rules! exit {
     };
 }
 
+/// Macro for fail fast in [`main`](fn.main.html) subcommands
+/// (e.g. inside [`convert`](fn.convert.html)).
+///
+/// When invalid or unsupported ldr file is provided via cli fail immediately.
+///
+/// Re-use of built-in logic inside [`write_ldr_file`](hdrimage/struct.HdrImage.html#method.write_ldr_file).
+#[macro_export]
+macro_rules! check {
+    ($a:expr) => {
+        match ImageFormat::from_path($a).map_err(HdrImageErr::LdrFileWriteFailure) {
+            Ok(ImageFormat::Png) => Ok(()),
+            Ok(ImageFormat::Farbfeld) => Ok(()),
+            Ok(_) => Err(HdrImageErr::UnsupportedLdrFileFormat(String::from(
+                $a.extension().unwrap().to_str().unwrap_or(""),
+            ))),
+            Err(err) => Err(err),
+        }
+    };
+}
+
 #[cfg(test)]
 mod test {
     use super::*;

@@ -18,7 +18,7 @@ use std::f32::consts::PI;
 /// calculate how [light rays](struct@Ray) hit them.
 pub trait RayIntersection<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     fn ray_intersection(&self, ray: Ray) -> Option<HitRecord<B, P>>;
@@ -28,7 +28,7 @@ where
 #[derive(Clone)]
 pub struct HitRecord<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// Coordinates of the point of impact.
@@ -47,7 +47,7 @@ where
 
 impl<B, P> IsClose for HitRecord<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are [close](trait@IsClose).
@@ -63,7 +63,7 @@ where
 /// Geometrical shape corresponding to a sphere.
 pub struct Sphere<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// A generic sphere is defined by means of a
@@ -87,7 +87,7 @@ impl Default for Sphere<DiffuseBRDF<UniformPigment>, UniformPigment> {
 
 impl<B, P> Sphere<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// Provides a constructor for [`Sphere`](struct@Sphere).
@@ -129,7 +129,7 @@ fn sphere_point_to_uv(point: Point) -> Vector2D {
 
 impl<B, P> RayIntersection<B, P> for Sphere<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// Finds intersections between a [`Ray`](struct@Ray) and a [`Sphere`](struct@Sphere).
@@ -170,7 +170,7 @@ where
 /// Geometrical shape corresponding to a plane.
 pub struct Plane<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// A generic plane is defined by means of a [`Transformation`](struct@Transformation)
@@ -194,7 +194,7 @@ impl Default for Plane<DiffuseBRDF<UniformPigment>, UniformPigment> {
 
 impl<B, P> Plane<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// Provides a constructor for [`Plane`](struct@Plane).
@@ -233,7 +233,7 @@ fn plane_point_to_uv(point: Point) -> Vector2D {
 
 impl<B, P> RayIntersection<B, P> for Plane<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// Finds intersections between a [`Ray`](struct@Ray) and a [`Plane`](struct@Plane).

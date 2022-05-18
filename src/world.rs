@@ -14,7 +14,7 @@ use crate::shape::{HitRecord, RayIntersection};
 #[derive(Default)]
 pub struct World<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// A [`std::vec::Vec`] of [`std::boxed::Box`]-ed [`shapes`](../shape)
@@ -25,7 +25,7 @@ where
 
 impl<B, P> World<B, P>
 where
-    B: ScatterRay + Eval + Clone,
+    B: ScatterRay + Eval + GetColor + Clone,
     P: GetColor + Clone,
 {
     /// Append a new boxed shape to this [`World`].

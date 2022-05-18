@@ -2,6 +2,7 @@
 //!
 //! Provides different renderers that implement [`Solve`] trait.
 use crate::color::Color;
+use crate::material::{Eval, GetColor, ScatterRay};
 use crate::ray::Ray;
 use crate::world::World;
 
@@ -17,18 +18,26 @@ pub trait Solve {
 ///
 /// This renderer is mostly useful for debugging purposes,
 /// as it is really fast, but it produces boring images.
-pub struct OnOffRenderer<'a> {
+pub struct OnOffRenderer<'a, B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// A world instance.
-    world: &'a World,
+    world: &'a World<B, P>,
     /// Background color (usually [`BLACK`](../color/constant.BLACK.html)).
     bg_color: Color,
     /// Foreground color (usually [`WHITE`](../color/constant.WHITE.html)).
     fg_color: Color,
 }
 
-impl<'a> OnOffRenderer<'a> {
+impl<'a, B, P> OnOffRenderer<'a, B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Create a new [`OnOffRenderer`] renderer.
-    pub fn new(world: &World, bg_color: Color, fg_color: Color) -> OnOffRenderer {
+    pub fn new(world: &World<B, P>, bg_color: Color, fg_color: Color) -> OnOffRenderer<B, P> {
         OnOffRenderer {
             world,
             bg_color,
@@ -37,7 +46,11 @@ impl<'a> OnOffRenderer<'a> {
     }
 }
 
-impl<'a> Solve for OnOffRenderer<'a> {
+impl<'a, B, P> Solve for OnOffRenderer<'a, B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Solve rendering with on/off strategy.
     ///
     /// If intersection happens return `fg_color` otherwise `bg_color`.

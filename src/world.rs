@@ -1,6 +1,7 @@
 //! World module.
 //!
 //! Provides [`World`](struct@World) struct.
+use crate::material::{Eval, GetColor, ScatterRay};
 use crate::ray::Ray;
 use crate::shape::{HitRecord, RayIntersection};
 
@@ -11,26 +12,35 @@ use crate::shape::{HitRecord, RayIntersection};
 /// Typically, you call [`ray_intersection`](#method.ray_intersection) to check whether
 /// a light ray intersects any of the shapes in the world.
 #[derive(Default)]
-pub struct World {
+pub struct World<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// A [`std::vec::Vec`] of [`std::boxed::Box`]-ed [`shapes`](../shape)
     /// that implement [`RayIntersection`] trait
     /// ([vector of traits](https://doc.rust-lang.org/stable/book/ch17-02-trait-objects.html)).
-    shapes: Vec<Box<dyn RayIntersection>>,
+    shapes: Vec<Box<dyn RayIntersection<B, P>>>,
 }
 
-impl World {
+impl<B, P> World<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Append a new boxed shape to this [`World`].
-    pub fn add(&mut self, shape: Box<dyn RayIntersection>) {
+    pub fn add(&mut self, shape: Box<dyn RayIntersection<B, P>>) {
         self.shapes.push(shape);
     }
 
     /// Determine whether a ray intersects any of the objects in this [`World`].
     ///
     /// Return [`HitRecord`] wrapped inside [`std::option::Option`].
-    pub fn ray_intersection(&self, ray: Ray) -> Option<HitRecord> {
-        let mut closest: Option<HitRecord> = None;
+    pub fn ray_intersection(&self, ray: Ray) -> Option<HitRecord<B, P>> {
+        let mut closest: Option<HitRecord<B, P>> = None;
         for shape in self.shapes.iter() {
-            closest = match (closest, shape.ray_intersection(ray)) {
+            let old_closest = closest;
+            closest = match (old_closest, shape.ray_intersection(ray)) {
                 (Some(closest_hit), Some(shape_hit)) => {
                     if shape_hit.t < closest_hit.t {
                         Some(shape_hit)
@@ -39,7 +49,8 @@ impl World {
                     }
                 }
                 (None, Some(shape_hit)) => Some(shape_hit),
-                _ => closest,
+                (Some(closest_hit), None) => Some(closest_hit),
+                _ => None,
             }
         }
         closest

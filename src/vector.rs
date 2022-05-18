@@ -189,6 +189,7 @@ pub fn create_onb_from_z(vector: Vector) -> (Vector, Vector, Vector) {
 mod test {
     use super::*;
     use crate::misc::EPSILON;
+    use crate::random::Pcg;
 
     #[test]
     fn test_is_close() {
@@ -292,14 +293,21 @@ mod test {
 
     #[test]
     fn test_create_onb_from_z() {
-        let vector = E1 + E2 + E3;
-        let (e1, e2, e3) = create_onb_from_z(vector);
+        let mut pcg = Pcg::default();
+        let mut vector;
+        let (mut e1, mut e2, mut e3);
 
-        assert!(e1.dot(e1).is_close(1.0));
-        assert!(e2.dot(e2).is_close(1.0));
-        assert!(e3.dot(e3).is_close(1.0));
-        assert_eq!(e1.dot(e2), 0.0);
-        assert_eq!(e1.dot(e3), 0.0);
-        assert_eq!(e2.dot(e3), 0.0)
+        for _n in 0..(1e4 as u32) {
+            vector = Vector::from((pcg.random_float(), pcg.random_float(), pcg.random_float()));
+            (e1, e2, e3) = create_onb_from_z(vector);
+
+            assert!(e1.dot(e1).is_close(1.0));
+            assert!(e2.dot(e2).is_close(1.0));
+            assert!(e3.dot(e3).is_close(1.0));
+            assert!(e1.dot(e2).is_close(0.0));
+            assert!(e1.dot(e3).is_close(0.0));
+            assert!(e2.dot(e3).is_close(0.0));
+            assert!((e1 * e2).is_close(e3))
+        }
     }
 }

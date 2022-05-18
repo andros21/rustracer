@@ -151,8 +151,8 @@ impl<P: GetColor> ScatterRay for DiffuseBRDF<P> {
             origin: interaction_point,
             dir: e1 * f32::cos(phi) * cos_theta + e2 * f32::sin(phi) * cos_theta + e3 * sin_theta,
             tmin: 1.0e-3,
-            tmax: f32::INFINITY,
             depth,
+            ..Default::default()
         }
     }
 }
@@ -207,22 +207,15 @@ impl<P: GetColor> ScatterRay for SpecularBRDF<P> {
         normal: Normal,
         depth: u32,
     ) -> Ray {
-        let ray_dir = Vector {
-            x: incoming_dir.x,
-            y: incoming_dir.y,
-            z: incoming_dir.z,
-        }
-        .normalize()
-        .unwrap();
+        let ray_dir = incoming_dir.normalize().unwrap();
         let normal = Vector::from(normal).normalize().unwrap();
         let dot_prod = normal.dot(ray_dir);
 
         Ray {
             origin: interaction_point,
             dir: ray_dir - normal * 2.0 * dot_prod,
-            tmin: 1e-5,
-            tmax: f32::INFINITY,
             depth,
+            ..Default::default()
         }
     }
 }

@@ -42,7 +42,7 @@ impl<'a, C: Copy + FireRay> ImageTracer<'a, C> {
     /// For each pixel in the [`HdrImage`] object fire one [`Ray`],\
     /// and pass it to a [`renderer`](../renderer),
     /// which must implement a [`Solve`] trait.
-    pub fn fire_all_rays<R: Solve>(&mut self, renderer: R) {
+    pub fn fire_all_rays<R: Solve>(&mut self, mut renderer: R) {
         for row in 0..self.image.shape().1 {
             for col in 0..self.image.shape().0 {
                 let ray = self.fire_ray(col, row, 0.5, 0.5);
@@ -65,7 +65,7 @@ mod test {
     struct DummyRenderer;
 
     impl Solve for DummyRenderer {
-        fn solve(&self, _ray: Ray) -> Color {
+        fn solve(&mut self, _ray: Ray) -> Color {
             Color::from((1.0, 2.0, 3.0))
         }
     }

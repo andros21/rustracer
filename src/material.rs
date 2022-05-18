@@ -126,6 +126,12 @@ impl Default for DiffuseBRDF<UniformPigment> {
     }
 }
 
+impl<P: GetColor + Clone> GetColor for DiffuseBRDF<P> {
+    fn get_color(&self, uv: Vector2D) -> Color {
+        self.pigment.get_color(uv)
+    }
+}
+
 impl<P: GetColor + Clone> Eval for DiffuseBRDF<P> {
     fn eval(&self, _normal: Normal, _in_dir: Vector, _out_dir: Vector, uv: Vector2D) -> Color {
         self.pigment.get_color(uv) * (1.0 / PI)
@@ -159,7 +165,8 @@ impl<P: GetColor + Clone> ScatterRay for DiffuseBRDF<P> {
 }
 
 /// A class representing an ideal mirror BRDF.
-pub struct SpecularBRDF<P: GetColor> {
+#[derive(Clone)]
+pub struct SpecularBRDF<P: GetColor + Clone> {
     /// A generic pigment that implement [`GetColor`] trait.
     pub pigment: P,
     /// A threshold angle in radians.
@@ -175,7 +182,13 @@ impl Default for SpecularBRDF<UniformPigment> {
     }
 }
 
-impl<P: GetColor> Eval for SpecularBRDF<P> {
+impl<P: GetColor + Clone> GetColor for SpecularBRDF<P> {
+    fn get_color(&self, uv: Vector2D) -> Color {
+        self.pigment.get_color(uv)
+    }
+}
+
+impl<P: GetColor + Clone> Eval for SpecularBRDF<P> {
     fn eval(&self, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -> Color {
         let theta_in = f32::acos(
             Vector::from(normal)
@@ -198,7 +211,7 @@ impl<P: GetColor> Eval for SpecularBRDF<P> {
     }
 }
 
-impl<P: GetColor> ScatterRay for SpecularBRDF<P> {
+impl<P: GetColor + Clone> ScatterRay for SpecularBRDF<P> {
     /// Perfect mirror behaviour.
     fn scatter_ray(
         &self,

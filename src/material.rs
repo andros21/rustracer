@@ -112,7 +112,8 @@ pub trait ScatterRay {
 }
 
 /// A class representing an ideal diffuse BRDF (also called "Lambertian").
-pub struct DiffuseBRDF<P: GetColor> {
+#[derive(Clone)]
+pub struct DiffuseBRDF<P: GetColor + Clone> {
     /// A generic pigment that implement [`GetColor`].
     pub pigment: P,
 }
@@ -125,13 +126,13 @@ impl Default for DiffuseBRDF<UniformPigment> {
     }
 }
 
-impl<P: GetColor> Eval for DiffuseBRDF<P> {
+impl<P: GetColor + Clone> Eval for DiffuseBRDF<P> {
     fn eval(&self, _normal: Normal, _in_dir: Vector, _out_dir: Vector, uv: Vector2D) -> Color {
         self.pigment.get_color(uv) * (1.0 / PI)
     }
 }
 
-impl<P: GetColor> ScatterRay for DiffuseBRDF<P> {
+impl<P: GetColor + Clone> ScatterRay for DiffuseBRDF<P> {
     /// Random scattering on semi-sphere using [`Pcg`] random generator.
     fn scatter_ray(
         &self,
@@ -221,10 +222,11 @@ impl<P: GetColor> ScatterRay for SpecularBRDF<P> {
 }
 
 /// A material with a particular pigment and BRDF.
+#[derive(Clone)]
 pub struct Material<B, P>
 where
-    B: Eval + ScatterRay,
-    P: GetColor,
+    B: Eval + ScatterRay + Clone,
+    P: GetColor + Clone,
 {
     /// A BRDF that implement both [`Eval`] and [`ScatterRay`] traits.
     pub brdf: B,

@@ -3,6 +3,7 @@
 //! Provides geometrical shape structs that implement the
 //! [`RayIntersection`](trait@RayIntersection) trait.
 
+use crate::material::{DiffuseBRDF, Eval, GetColor, Material, ScatterRay, UniformPigment};
 use crate::misc::{IsClose, Vector2D};
 use crate::normal::Normal;
 use crate::point::Point;
@@ -15,13 +16,21 @@ use std::f32::consts::PI;
 ///
 /// This trait is meant to be implemented by geometrical [shapes](#implementors) in order to
 /// calculate how [light rays](struct@Ray) hit them.
-pub trait RayIntersection {
-    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord>;
+pub trait RayIntersection<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
+    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord<B, P>>;
 }
 
 /// Struct used to store the results of [`RayIntersection`](trait@RayIntersection).
-#[derive(Clone, Copy, Debug)]
-pub struct HitRecord {
+#[derive(Clone)]
+pub struct HitRecord<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Coordinates of the point of impact.
     pub world_point: Point,
     /// Normal of the shape surface on the impact point.
@@ -32,9 +41,15 @@ pub struct HitRecord {
     pub t: f32,
     /// The ray that impacted on the shape.
     pub ray: Ray,
+    /// The [`Material`](struct@Material) of the impacted shape
+    pub material: Material<B, P>,
 }
 
-impl IsClose for HitRecord {
+impl<B, P> IsClose for HitRecord<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are [close](trait@IsClose).
     fn is_close(&self, other: Self) -> bool {
         self.world_point.is_close(other.world_point)
@@ -46,20 +61,41 @@ impl IsClose for HitRecord {
 }
 
 /// Geometrical shape corresponding to a sphere.
-#[derive(Clone, Copy, Debug, Default)]
-pub struct Sphere {
+pub struct Sphere<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// A generic sphere is defined by means of a
     /// [`Transformation`](struct@Transformation) on the
     /// unit sphere centered at the origin of axis.\
     /// This means that you can also get an ellipsis
     /// using the proper [`scaling`](fn@crate::transformation::scaling).
     transformation: Transformation,
+    /// The [`Material`](struct@Material) of the sphere.
+    material: Material<B, P>,
 }
 
-impl Sphere {
+impl Default for Sphere<DiffuseBRDF<UniformPigment>, UniformPigment> {
+    fn default() -> Self {
+        Sphere {
+            transformation: Transformation::default(),
+            material: Material::default(),
+        }
+    }
+}
+
+impl<B, P> Sphere<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Provides a constructor for [`Sphere`](struct@Sphere).
-    pub fn new(transformation: Transformation) -> Self {
-        Sphere { transformation }
+    pub fn new(transformation: Transformation, material: Material<B, P>) -> Self {
+        Sphere {
+            transformation,
+            material,
+        }
     }
 }
 
@@ -91,9 +127,13 @@ fn sphere_point_to_uv(point: Point) -> Vector2D {
     Vector2D { u, v }
 }
 
-impl RayIntersection for Sphere {
+impl<B, P> RayIntersection<B, P> for Sphere<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Finds intersections between a [`Ray`](struct@Ray) and a [`Sphere`](struct@Sphere).
-    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord> {
+    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord<B, P>> {
         let inv_ray = self.transformation.inverse() * ray;
         let origin_vec = Vector::from(inv_ray.origin);
         let a = inv_ray.dir.squared_norm();
@@ -122,25 +162,47 @@ impl RayIntersection for Sphere {
             surface_point: sphere_point_to_uv(hit_point),
             t: first_hit_t,
             ray,
+            material: self.material.clone(),
         })
     }
 }
 
 /// Geometrical shape corresponding to a plane.
-#[derive(Clone, Copy, Debug, Default)]
-pub struct Plane {
+pub struct Plane<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// A generic plane is defined by means of a [`Transformation`](struct@Transformation)
     /// on the X-Y plane.\
     /// A [`scaling`](fn@crate::transformation::scaling) transformation has the
     /// effect to change the sides length of the basic rectangle in the plane's
     /// [parametrization](fn@plane_point_to_uv).
     transformation: Transformation,
+    /// The [`Material`](struct@Material) of the sphere.
+    material: Material<B, P>,
 }
 
-impl Plane {
+impl Default for Plane<DiffuseBRDF<UniformPigment>, UniformPigment> {
+    fn default() -> Self {
+        Plane {
+            transformation: Transformation::default(),
+            material: Material::default(),
+        }
+    }
+}
+
+impl<B, P> Plane<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Provides a constructor for [`Plane`](struct@Plane).
-    pub fn new(transformation: Transformation) -> Self {
-        Plane { transformation }
+    pub fn new(transformation: Transformation, material: Material<B, P>) -> Self {
+        Plane {
+            transformation,
+            material,
+        }
     }
 }
 
@@ -169,9 +231,13 @@ fn plane_point_to_uv(point: Point) -> Vector2D {
     }
 }
 
-impl RayIntersection for Plane {
+impl<B, P> RayIntersection<B, P> for Plane<B, P>
+where
+    B: ScatterRay + Eval + Clone,
+    P: GetColor + Clone,
+{
     /// Finds intersections between a [`Ray`](struct@Ray) and a [`Plane`](struct@Plane).
-    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord> {
+    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord<B, P>> {
         let inv_ray = self.transformation.inverse() * ray;
         if inv_ray.dir.z.abs() < 1e-5 {
             return None;
@@ -187,6 +253,7 @@ impl RayIntersection for Plane {
             surface_point: plane_point_to_uv(hit_point),
             t,
             ray,
+            material: self.material.clone(),
         })
     }
 }
@@ -221,6 +288,7 @@ mod test {
                 surface_point: Vector2D { u: 0., v: 0. },
                 t: 1.,
                 ray: ray1,
+                material: Material::default()
             }))
         );
 
@@ -237,6 +305,7 @@ mod test {
                 surface_point: Vector2D { u: 0., v: 0.5 },
                 t: 2.,
                 ray: ray2,
+                material: Material::default()
             }))
         );
 
@@ -253,13 +322,17 @@ mod test {
                 surface_point: Vector2D { u: 0., v: 0.5 },
                 t: 1.,
                 ray: ray3,
+                material: Material::default()
             }))
         )
     }
 
     #[test]
     fn test_transform_sphere() {
-        let sphere = Sphere::new(translation(Vector::from((10., 0., 0.))));
+        let sphere = Sphere::new(
+            translation(Vector::from((10., 0., 0.))),
+            Material::default(),
+        );
 
         let ray1 = Ray {
             origin: Point::from((10., 0., 2.)),
@@ -274,6 +347,7 @@ mod test {
                 surface_point: Vector2D { u: 0., v: 0. },
                 t: 1.0,
                 ray: ray1,
+                material: Material::default()
             }))
         );
         let ray2 = Ray {
@@ -289,6 +363,7 @@ mod test {
                 surface_point: Vector2D { u: 0., v: 0.5 },
                 t: 2.0,
                 ray: ray2,
+                material: Material::default()
             }))
         );
 
@@ -308,7 +383,7 @@ mod test {
 
     #[test]
     fn test_sphere_normal() {
-        let sphere1 = Sphere::new(scaling(Vector::from((2., 1., 1.))));
+        let sphere1 = Sphere::new(scaling(Vector::from((2., 1., 1.))), Material::default());
         let ray1 = Ray {
             origin: Point::from((1., 1., 0.)),
             dir: Vector::from((-1., -1., 0.)),
@@ -321,7 +396,7 @@ mod test {
             .unwrap()
             .is_close(Normal::from((1., 4., 0.)).normalize().unwrap())));
 
-        let sphere2 = Sphere::new(scaling(Vector::from((-1., -1., -1.))));
+        let sphere2 = Sphere::new(scaling(Vector::from((-1., -1., -1.))), Material::default());
         let ray2 = Ray {
             origin: Point::from((0., 2., 0.)),
             dir: Vector::from((0., -1., 0.)),
@@ -421,6 +496,7 @@ mod test {
                 surface_point: Vector2D { u: 0., v: 0. },
                 t: 1.,
                 ray: ray1,
+                material: Material::default()
             }))
         );
         let ray2 = Ray {
@@ -448,7 +524,7 @@ mod test {
 
     #[test]
     fn test_transform_plane() {
-        let plane = Plane::new(rotation_y(PI / 2.));
+        let plane = Plane::new(rotation_y(PI / 2.), Material::default());
         let ray1 = Ray {
             origin: Point::from((1., 0., 0.)),
             dir: Vector::from((-1., 0., 0.)),
@@ -462,6 +538,7 @@ mod test {
                 surface_point: Vector2D { u: 0., v: 0. },
                 t: 1.,
                 ray: ray1,
+                material: Material::default()
             }))
         );
         let ray2 = Ray {

@@ -45,12 +45,10 @@ jobs:
         id: cache
         with:
           path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
+            ~/.cargo/
+            ~/.rustup/
             target/
-          key: ${{ runner.os }}-cargo-rustdoc-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
@@ -58,7 +56,7 @@ jobs:
           toolchain: stable
           default: true
           profile: minimal
-          components: rustfmt, clippy, rust-docs
+          components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo fmt check
         uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
@@ -95,12 +93,10 @@ jobs:
         id: cache
         with:
           path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
+            ~/.cargo/
+            ~/.rustup/
             target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
@@ -108,9 +104,7 @@ jobs:
           toolchain: stable
           default: true
           profile: minimal
-      - name: install llvm-tools-preview
-        run: |
-          rustup toolchain install stable --component llvm-tools-preview
+          components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: install cargo-llvm-cov
         uses: taiki-e/install-action@04e2194ad0ac22832a5daf406b967ed0d53974a0
         with:

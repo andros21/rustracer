@@ -162,3 +162,47 @@ where
         emitted_radiance + cum_radiance * (1. / (self.num_of_rays as f32))
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::material::{DiffuseBRDF, UniformPigment};
+    use crate::misc::IsClose;
+    use crate::transformation::Transformation;
+    use crate::{Material, Sphere, WHITE};
+
+    #[test]
+    fn test_furnace() {
+        let mut pcg = Pcg::default();
+        for _ in 0..10 {
+            let emitted_radiance = pcg.random_float();
+            let reflectance = pcg.random_float() * 0.9;
+            let furnace_material = Material {
+                brdf: DiffuseBRDF {
+                    pigment: UniformPigment {
+                        color: WHITE * reflectance,
+                    },
+                },
+                emitted_radiance: UniformPigment {
+                    color: WHITE * emitted_radiance,
+                },
+            };
+            let furnace = Sphere::new(Transformation::default(), furnace_material);
+            let mut world = World::default();
+            world.add(Box::new(furnace));
+            let mut path_tracer = PathTracer {
+                pcg,
+                num_of_rays: 1,
+                world: &world,
+                max_depth: 100,
+                russian_roulette_limit: 101,
+                bg_color: Default::default(),
+            };
+            let color = path_tracer.solve(Ray::default());
+            let expected = emitted_radiance / (1. - reflectance);
+            assert!(expected.is_close(color.r));
+            assert!(expected.is_close(color.g));
+            assert!(expected.is_close(color.b));
+        }
+    }
+}

@@ -7,19 +7,19 @@ use crate::ray::Ray;
 use crate::render::Solve;
 
 /// Trace an image by shooting light rays through each of its pixels.
-pub struct ImageTracer<'a, C: Copy + FireRay> {
+pub struct ImageTracer<'a> {
     /// An initialized [`HdrImage`].
     image: &'a mut HdrImage,
-    /// A particular [`camera`](../camera) that implement [`FireRay`] trait.
-    camera: C,
+    /// A [`std::boxed::Box`]-ed [`camera`](../camera) that implement [`FireRay`] trait.
+    camera: Box<dyn FireRay>,
 }
 
-impl<'a, C: Copy + FireRay> ImageTracer<'a, C> {
+impl<'a> ImageTracer<'a> {
     /// Initialize an ImageTracer object.
     ///
     /// The parameter `image` must be a [`HdrImage`] object that has already been initialized.\
-    /// The parameter `camera` must be a [`camera`](../camera) that implement [`FireRay`] trait.
-    pub fn new(image: &mut HdrImage, camera: C) -> ImageTracer<C> {
+    /// The parameter `camera` must be a boxed [`camera`](../camera) that implement [`FireRay`] trait.
+    pub fn new(image: &mut HdrImage, camera: Box<dyn FireRay>) -> ImageTracer {
         ImageTracer { image, camera }
     }
 
@@ -73,7 +73,7 @@ mod test {
     #[test]
     fn test_uv_sub_mapping() {
         let mut image = HdrImage::new(4, 2);
-        let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let camera = Box::new(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let tracer = ImageTracer::new(&mut image, camera);
 
         let ray1 = tracer.fire_ray(0, 0, 2.5, 1.5);
@@ -84,7 +84,7 @@ mod test {
     #[test]
     fn test_image_coverage() {
         let mut image = HdrImage::new(4, 2);
-        let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let camera = Box::new(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let mut tracer = ImageTracer::new(&mut image, camera);
 
         tracer.fire_all_rays(DummyRenderer);
@@ -100,7 +100,7 @@ mod test {
     #[test]
     fn test_orientation() {
         let mut image = HdrImage::new(4, 2);
-        let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let camera = Box::new(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let tracer = ImageTracer {
             image: &mut image,
             camera,

@@ -112,19 +112,21 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
     )));
     let camera_tr =
         rotation_z(f32::to_radians(angle_deg)) * translation(Vector::from((-1.0, 0.0, 0.0)));
-    if sub_m.is_present("orthogonal") {
-        let mut tracer = ImageTracer::new(
-            &mut hdr_img,
-            OrthogonalCamera::new(width as f32 / height as f32, camera_tr),
-        );
-        tracer.fire_all_rays(OnOffRenderer::new(&world, BLACK, WHITE));
-    } else {
-        let mut tracer = ImageTracer::new(
-            &mut hdr_img,
-            PerspectiveCamera::new(1.0, width as f32 / height as f32, camera_tr),
-        );
-        tracer.fire_all_rays(OnOffRenderer::new(&world, BLACK, WHITE));
-    }
+    let mut tracer = ImageTracer::new(&mut hdr_img, {
+        if sub_m.is_present("orthogonal") {
+            Box::new(OrthogonalCamera::new(
+                width as f32 / height as f32,
+                camera_tr,
+            ))
+        } else {
+            Box::new(PerspectiveCamera::new(
+                1.0,
+                width as f32 / height as f32,
+                camera_tr,
+            ))
+        }
+    });
+    tracer.fire_all_rays(OnOffRenderer::new(&world, BLACK, WHITE));
     if sub_m.is_present("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");
         hdr_img

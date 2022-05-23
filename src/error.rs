@@ -43,7 +43,7 @@ pub enum GeometryErr {
 
 #[derive(Error, Debug)]
 pub enum DemoErr {
-    #[error("invalid {1}, expected floating-point number: {0}")]
+    #[error("invalid {1}, expected integer number: {0}")]
     IntParseFailure(#[source] std::num::ParseIntError, String),
     #[error("invalid {1}, expected floating-point number: {0}")]
     FloatParseFailure(#[source] std::num::ParseFloatError, String),

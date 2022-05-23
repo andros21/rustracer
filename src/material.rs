@@ -313,6 +313,15 @@ impl<'a> Default for Material<'a> {
     }
 }
 
+//macro_rules! trait_alias {
+//($name:ident = $base1:ident + $($base2:ident +)+) => {
+//pub trait $name: $base1 $(+ $base2)+ { }
+//impl<T: $base1 $(+ $base2)+> $name for T { }
+//};
+//}
+
+//trait_alias!(Alias = ScatterRay + Eval +);
+
 #[cfg(test)]
 mod test {
     use super::*;

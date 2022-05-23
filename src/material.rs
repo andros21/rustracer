@@ -94,6 +94,23 @@ impl GetColor for CheckeredPigment {
     }
 }
 
+#[derive(Clone, Debug)]
+pub enum Pigment<'a> {
+    Uniform(UniformPigment),
+    Image(ImagePigment<'a>),
+    Checkered(CheckeredPigment),
+}
+
+impl<'a> GetColor for Pigment<'a> {
+    fn get_color(&self, uv: Vector2D) -> Color {
+        match self {
+            Pigment::Uniform(uniform) => uniform.get_color(uv),
+            Pigment::Image(image) => image.get_color(uv),
+            Pigment::Checkered(checkered) => checkered.get_color(uv),
+        }
+    }
+}
+
 /// A trait for evaluating a particular BRDF on a parametric surface `(u,v)`.
 pub trait Eval {
     fn eval(&self, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -> Color;
@@ -112,26 +129,26 @@ pub trait ScatterRay {
 }
 
 /// A class representing an ideal diffuse BRDF (also called "Lambertian").
-pub struct DiffuseBRDF<P: GetColor> {
+pub struct DiffuseBRDF<'a> {
     /// A generic pigment that implement [`GetColor`].
-    pub pigment: P,
+    pub pigment: Pigment<'a>,
 }
 
-impl Default for DiffuseBRDF<UniformPigment> {
+impl<'a> Default for DiffuseBRDF<'a> {
     fn default() -> Self {
         Self {
-            pigment: UniformPigment { color: WHITE },
+            pigment: Pigment::Uniform(UniformPigment { color: WHITE }),
         }
     }
 }
 
-impl<P: GetColor> Eval for DiffuseBRDF<P> {
+impl<'a> Eval for DiffuseBRDF<'a> {
     fn eval(&self, _normal: Normal, _in_dir: Vector, _out_dir: Vector, uv: Vector2D) -> Color {
         self.pigment.get_color(uv) * (1.0 / PI)
     }
 }
 
-impl<P: GetColor> ScatterRay for DiffuseBRDF<P> {
+impl<'a> ScatterRay for DiffuseBRDF<'a> {
     /// Random scattering on semi-sphere using [`Pcg`] random generator.
     fn scatter_ray(
         &self,
@@ -158,23 +175,23 @@ impl<P: GetColor> ScatterRay for DiffuseBRDF<P> {
 }
 
 /// A class representing an ideal mirror BRDF.
-pub struct SpecularBRDF<P: GetColor> {
+pub struct SpecularBRDF<'a> {
     /// A generic pigment that implement [`GetColor`] trait.
-    pub pigment: P,
+    pub pigment: Pigment<'a>,
     /// A threshold angle in radians.
     pub threshold_angle_rad: f32,
 }
 
-impl Default for SpecularBRDF<UniformPigment> {
+impl<'a> Default for SpecularBRDF<'a> {
     fn default() -> Self {
         Self {
-            pigment: UniformPigment { color: WHITE },
+            pigment: Pigment::Uniform(UniformPigment { color: WHITE }),
             threshold_angle_rad: PI / 1800.0,
         }
     }
 }
 
-impl<P: GetColor> Eval for SpecularBRDF<P> {
+impl<'a> Eval for SpecularBRDF<'a> {
     fn eval(&self, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -> Color {
         let theta_in = f32::acos(
             Vector::from(normal)
@@ -197,7 +214,7 @@ impl<P: GetColor> Eval for SpecularBRDF<P> {
     }
 }
 
-impl<P: GetColor> ScatterRay for SpecularBRDF<P> {
+impl<'a> ScatterRay for SpecularBRDF<'a> {
     /// Perfect mirror behaviour.
     fn scatter_ray(
         &self,
@@ -220,23 +237,53 @@ impl<P: GetColor> ScatterRay for SpecularBRDF<P> {
     }
 }
 
-/// A material with a particular pigment and BRDF.
-pub struct Material<B, P>
-where
-    B: Eval + ScatterRay,
-    P: GetColor,
-{
-    /// A BRDF that implement both [`Eval`] and [`ScatterRay`] traits.
-    pub brdf: B,
-    /// A pigment that implement [`GetColor`] trait.
-    pub emitted_radiance: P,
+pub enum BRDF<'a> {
+    Diffuse(DiffuseBRDF<'a>),
+    Specular(SpecularBRDF<'a>),
 }
 
-impl Default for Material<DiffuseBRDF<UniformPigment>, UniformPigment> {
+impl<'a> Eval for BRDF<'a> {
+    fn eval(&self, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -> Color {
+        match self {
+            BRDF::Diffuse(diffuse) => diffuse.eval(normal, in_dir, out_dir, uv),
+            BRDF::Specular(specular) => specular.eval(normal, in_dir, out_dir, uv),
+        }
+    }
+}
+
+impl<'a> ScatterRay for BRDF<'a> {
+    fn scatter_ray(
+        &self,
+        pcg: &mut Pcg,
+        incoming_dir: Vector,
+        interaction_point: Point,
+        normal: Normal,
+        depth: u32,
+    ) -> Ray {
+        match self {
+            BRDF::Diffuse(diffuse) => {
+                diffuse.scatter_ray(pcg, incoming_dir, interaction_point, normal, depth)
+            }
+            BRDF::Specular(specular) => {
+                specular.scatter_ray(pcg, incoming_dir, interaction_point, normal, depth)
+            }
+        }
+    }
+}
+
+/// A material with a particular pigment and BRDF.
+pub struct Material<'a> {
+    /// A BRDF that implement both [`Eval`] and [`ScatterRay`] traits.
+    pub brdf: BRDF<'a>,
+    /// A pigment that implement [`GetColor`] trait.
+    pub emitted_radiance: Pigment<'a>,
+}
+
+impl<'a> Default for Material<'a> {
     fn default() -> Self {
         Self {
-            brdf: DiffuseBRDF::default(),
-            emitted_radiance: UniformPigment::default(),
+            brdf: BRDF::Diffuse(DiffuseBRDF::default()),
+            emitted_radiance: Pigment::Uniform(UniformPigment::default()),
         }
     }
 }
@@ -276,32 +323,22 @@ mod test {
 
     #[test]
     fn test_brdf() {
-        let diff_brdf = DiffuseBRDF::default();
-        let spec_brdf = SpecularBRDF::default();
+        let diff_brdf = BRDF::Diffuse(DiffuseBRDF::default());
+        let spec_brdf = BRDF::Specular(SpecularBRDF::default());
         let mut pcg = Pcg::default();
+        let uv = Vector2D { u: 1., v: 2. };
 
-        assert_eq!(diff_brdf.pigment.color, WHITE);
-        assert_eq!(
-            (spec_brdf.pigment.color, spec_brdf.threshold_angle_rad),
-            (WHITE, PI / 1800.0)
+        assert!(matches!(&diff_brdf, BRDF::Diffuse(diff) if diff.pigment.get_color(uv)==WHITE));
+        assert!(
+            matches!(&spec_brdf, BRDF::Specular(spec) if (spec.pigment.get_color(uv), spec.threshold_angle_rad) == (WHITE, PI/1800.))
         );
+
+        assert_eq!(diff_brdf.eval(E1, vE2, vE3, uv), WHITE * (1.0 / PI));
         assert_eq!(
-            diff_brdf.eval(E1, vE2, vE3, Vector2D { u: 1.0, v: 2.0 }),
-            WHITE * (1.0 / PI)
-        );
-        assert_eq!(
-            spec_brdf.eval(
-                E3,
-                vE1 + vE2 + vE3,
-                vE1 + vE2 + vE3,
-                Vector2D { u: 1.0, v: 2.0 }
-            ),
+            spec_brdf.eval(E3, vE1 + vE2 + vE3, vE1 + vE2 + vE3, uv),
             WHITE
         );
-        assert_eq!(
-            spec_brdf.eval(E2, vE1 + vE2 + vE3, vE1 + vE3, Vector2D { u: 1.0, v: 2.0 }),
-            BLACK
-        );
+        assert_eq!(spec_brdf.eval(E2, vE1 + vE2 + vE3, vE1 + vE3, uv), BLACK);
         assert_eq!(
             spec_brdf
                 .scatter_ray(

@@ -29,6 +29,7 @@ use crate::color::{BLACK, WHITE};
 use crate::error::{ConvertErr, DemoErr, HdrImageErr};
 use crate::hdrimage::{HdrImage, Luminosity};
 use crate::imagetracer::ImageTracer;
+use crate::material::Material;
 use crate::misc::ByteOrder;
 use crate::render::OnOffRenderer;
 use crate::shape::Sphere;
@@ -100,15 +101,18 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
             for z in [-0.5, 0.5].into_iter() {
                 world.add(Box::new(Sphere::new(
                     translation(Vector::from((x, y, z))) * scaling(Vector::from((0.1, 0.1, 0.1))),
+                    Material::default(),
                 )));
             }
         }
     }
     world.add(Box::new(Sphere::new(
         translation(Vector::from((0.0, 0.0, -0.5))) * scaling(Vector::from((0.1, 0.1, 0.1))),
+        Material::default(),
     )));
     world.add(Box::new(Sphere::new(
         translation(Vector::from((0.0, 0.5, 0.0))) * scaling(Vector::from((0.1, 0.1, 0.1))),
+        Material::default(),
     )));
     let camera_tr =
         rotation_z(f32::to_radians(angle_deg)) * translation(Vector::from((-1.0, 0.0, 0.0)));

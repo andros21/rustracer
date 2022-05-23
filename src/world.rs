@@ -1,6 +1,7 @@
 //! World module.
 //!
 //! Provides [`World`](struct@World) struct.
+use crate::material::{Eval, GetColor, ScatterRay};
 use crate::ray::Ray;
 use crate::shape::{HitRecord, RayIntersection};
 
@@ -30,7 +31,8 @@ impl World {
     pub fn ray_intersection(&self, ray: Ray) -> Option<HitRecord> {
         let mut closest: Option<HitRecord> = None;
         for shape in self.shapes.iter() {
-            closest = match (closest, shape.ray_intersection(ray)) {
+            let old_closest = closest;
+            closest = match (old_closest, shape.ray_intersection(ray)) {
                 (Some(closest_hit), Some(shape_hit)) => {
                     if shape_hit.t < closest_hit.t {
                         Some(shape_hit)
@@ -39,7 +41,8 @@ impl World {
                     }
                 }
                 (None, Some(shape_hit)) => Some(shape_hit),
-                _ => closest,
+                (Some(closest_hit), None) => Some(closest_hit),
+                _ => None,
             }
         }
         closest

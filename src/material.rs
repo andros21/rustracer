@@ -129,6 +129,7 @@ pub trait ScatterRay {
 }
 
 /// A class representing an ideal diffuse BRDF (also called "Lambertian").
+#[derive(Clone)]
 pub struct DiffuseBRDF<'a> {
     /// A generic pigment that implement [`GetColor`].
     pub pigment: Pigment<'a>,
@@ -139,6 +140,12 @@ impl<'a> Default for DiffuseBRDF<'a> {
         Self {
             pigment: Pigment::Uniform(UniformPigment { color: WHITE }),
         }
+    }
+}
+
+impl<'a> GetColor for DiffuseBRDF<'a> {
+    fn get_color(&self, uv: Vector2D) -> Color {
+        self.pigment.get_color(uv)
     }
 }
 
@@ -175,6 +182,7 @@ impl<'a> ScatterRay for DiffuseBRDF<'a> {
 }
 
 /// A class representing an ideal mirror BRDF.
+#[derive(Clone)]
 pub struct SpecularBRDF<'a> {
     /// A generic pigment that implement [`GetColor`] trait.
     pub pigment: Pigment<'a>,
@@ -188,6 +196,12 @@ impl<'a> Default for SpecularBRDF<'a> {
             pigment: Pigment::Uniform(UniformPigment { color: WHITE }),
             threshold_angle_rad: PI / 1800.0,
         }
+    }
+}
+
+impl<'a> GetColor for SpecularBRDF<'a> {
+    fn get_color(&self, uv: Vector2D) -> Color {
+        self.pigment.get_color(uv)
     }
 }
 
@@ -237,6 +251,7 @@ impl<'a> ScatterRay for SpecularBRDF<'a> {
     }
 }
 
+#[derive(Clone)]
 pub enum BRDF<'a> {
     Diffuse(DiffuseBRDF<'a>),
     Specular(SpecularBRDF<'a>),
@@ -271,7 +286,17 @@ impl<'a> ScatterRay for BRDF<'a> {
     }
 }
 
+impl<'a> GetColor for BRDF<'a> {
+    fn get_color(&self, uv: Vector2D) -> Color {
+        match self {
+            BRDF::Diffuse(diffuse) => diffuse.get_color(uv),
+            BRDF::Specular(specular) => specular.get_color(uv),
+        }
+    }
+}
+
 /// A material with a particular pigment and BRDF.
+#[derive(Clone)]
 pub struct Material<'a> {
     /// A BRDF that implement both [`Eval`] and [`ScatterRay`] traits.
     pub brdf: BRDF<'a>,
@@ -296,13 +321,13 @@ mod test {
 
     #[test]
     fn test_pigment() {
-        let uniform0 = UniformPigment::default();
-        let uniform1 = UniformPigment { color: WHITE };
-        let checkered = CheckeredPigment {
+        let uniform0 = Pigment::Uniform(UniformPigment::default());
+        let uniform1 = Pigment::Uniform(UniformPigment { color: WHITE });
+        let checkered = Pigment::Checkered(CheckeredPigment {
             color1: BLACK,
             color2: WHITE,
             steps: 10,
-        };
+        });
         let mut hdr_img = HdrImage::new(3, 3);
         hdr_img.set_pixel(0, 2, WHITE).unwrap();
         hdr_img.set_pixel(2, 0, WHITE).unwrap();
@@ -328,9 +353,9 @@ mod test {
         let mut pcg = Pcg::default();
         let uv = Vector2D { u: 1., v: 2. };
 
-        assert!(matches!(&diff_brdf, BRDF::Diffuse(diff) if diff.pigment.get_color(uv)==WHITE));
+        assert!(matches!(&diff_brdf, BRDF::Diffuse(diff) if diff.get_color(uv)==WHITE));
         assert!(
-            matches!(&spec_brdf, BRDF::Specular(spec) if (spec.pigment.get_color(uv), spec.threshold_angle_rad) == (WHITE, PI/1800.))
+            matches!(&spec_brdf, BRDF::Specular(spec) if (spec.get_color(uv), spec.threshold_angle_rad) == (WHITE, PI/1800.))
         );
 
         assert_eq!(diff_brdf.eval(E1, vE2, vE3, uv), WHITE * (1.0 / PI));

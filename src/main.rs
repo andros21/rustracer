@@ -34,9 +34,10 @@ use crate::material::{
     CheckeredPigment, DiffuseBRDF, Material, Pigment, SpecularBRDF, UniformPigment, BRDF,
 };
 use crate::misc::ByteOrder;
-use crate::render::OnOffRenderer;
-use crate::shape::Sphere;
-use crate::transformation::{rotation_z, scaling, translation};
+use crate::random::Pcg;
+use crate::render::{OnOffRenderer, PathTracer};
+use crate::shape::{Plane, Sphere};
+use crate::transformation::{rotation_y, rotation_z, scaling, translation, Transformation};
 use crate::vector::Vector;
 use crate::world::World;
 
@@ -149,6 +150,10 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         translation(Vector::from((0.0, 0.0, 0.4))) * scaling(Vector::from((200.0, 200.0, 200.0))),
         sky_material,
     )));
+    world.add(Box::new(Plane::new(
+        Transformation::default(),
+        ground_material,
+    )));
     world.add(Box::new(Sphere::new(
         translation(Vector::from((0.0, 0.0, 0.1))),
         sphere_material,
@@ -157,20 +162,35 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         translation(Vector::from((1.0, 2.5, 0.0))),
         mirror_material,
     )));
-    let camera_tr =
-        rotation_z(f32::to_radians(angle_deg)) * translation(Vector::from((-1.0, 0.0, 0.0)));
+    let camera_tr = rotation_z(f32::to_radians(angle_deg))
+        * rotation_y(0.5)
+        * translation(Vector::from((-2.0, 0.0, 0.0)));
     if sub_m.is_present("orthogonal") {
         let mut tracer = ImageTracer::new(
             &mut hdr_img,
             OrthogonalCamera::new(width as f32 / height as f32, camera_tr),
         );
-        tracer.fire_all_rays(OnOffRenderer::new(&world, BLACK, WHITE));
+        tracer.fire_all_rays(PathTracer::new(
+            &world,
+            BLACK,
+            Pcg::default(),
+            num_of_rays,
+            max_depth,
+            3,
+        ));
     } else {
         let mut tracer = ImageTracer::new(
             &mut hdr_img,
             PerspectiveCamera::new(1.0, width as f32 / height as f32, camera_tr),
         );
-        tracer.fire_all_rays(OnOffRenderer::new(&world, BLACK, WHITE));
+        tracer.fire_all_rays(PathTracer::new(
+            &world,
+            BLACK,
+            Pcg::default(),
+            num_of_rays,
+            max_depth,
+            3,
+        ));
     }
     if sub_m.is_present("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");

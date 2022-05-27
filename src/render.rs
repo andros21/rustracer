@@ -51,16 +51,16 @@ impl<'a> Solve for OnOffRenderer<'a> {
     }
 }
 
-/// A path tracing renderer,
+/// A path tracing renderer.
 ///
-/// it resolves the rendering equations by means
+/// It resolves the rendering equations by means
 /// of a Monte Carlo numeric integration algorithm.
 pub struct PathTracer<'a> {
     /// A world instance.
     world: &'a World,
     /// Background color (usually [`BLACK`](../color/constant.BLACK.html)).
     bg_color: Color,
-    /// Random number generator used by [`ScatterRay`](http://localhost:8080/material/trait.ScatterRay.html)
+    /// Random number generator used by [`ScatterRay`](../material/trait.ScatterRay.html).
     pcg: Pcg,
     /// Number of scattered rays after every impact.
     num_of_rays: u32,
@@ -96,10 +96,10 @@ impl<'a> PathTracer<'a> {
 impl<'a> Solve for PathTracer<'a> {
     /// Solve the rendering equation using a path tracing algorithm.
     ///
-    /// The algorithm implemented here allows the caller to tune number of
-    /// rays thrown at each iteration, as well as the maximum depth.
-    /// It implements Russian roulette, so in principle it will take a finite
-    /// time to complete the calculation even if you set `max_depth` to infinity.
+    /// The algorithm implemented here allows the caller to tune number of\
+    /// rays thrown at each iteration,as well as the maximum depth.
+    ///
+    /// It implements Russian roulette, to avoid artefacts and speed up computation.
     fn solve(&mut self, ray: Ray) -> Color {
         if ray.depth > self.max_depth {
             return Color::default();
@@ -139,7 +139,9 @@ impl<'a> Solve for PathTracer<'a> {
     }
 }
 
-/// DummyRenderer.
+/// A dummy renderer.
+///
+/// Test purpose and little else.
 pub struct DummyRenderer;
 
 impl Solve for DummyRenderer {

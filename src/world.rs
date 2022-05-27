@@ -1,7 +1,6 @@
 //! World module.
 //!
 //! Provides [`World`](struct@World) struct.
-use crate::material::{Eval, GetColor, ScatterRay};
 use crate::ray::Ray;
 use crate::shape::{HitRecord, RayIntersection};
 

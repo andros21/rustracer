@@ -13,6 +13,7 @@ mod point;
 mod random;
 mod ray;
 mod render;
+mod scene;
 mod shape;
 mod transformation;
 mod vector;

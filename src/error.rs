@@ -3,6 +3,7 @@
 //! Provides internal [`rustracer`](..) errors,
 //! using [`thiserror`](https://github.com/dtolnay/thiserror) library.
 
+use crate::scene::SourceLocation;
 use thiserror::Error;
 
 /// Error enum for [`HdrImage`](../hdrimage) module.
@@ -50,4 +51,24 @@ pub enum DemoErr {
     FloatParseFailure(#[source] std::num::ParseFloatError, String),
     #[error("{0}")]
     IoError(#[source] HdrImageErr),
+}
+
+#[derive(Error, Debug)]
+pub enum SceneErr<'a> {
+    #[error("{}:{}:{}\t{}", .loc.file_name, .loc.line_num, .loc.col_num, msg)]
+    InvalidCharacter {
+        loc: SourceLocation<'a>,
+        msg: String,
+    },
+    #[error("{}:{}:{}\t{}", .loc.file_name, .loc.line_num, .loc.col_num, msg)]
+    UnclosedString {
+        loc: SourceLocation<'a>,
+        msg: String,
+    },
+    #[error("{}:{}:{}\t{}", .loc.file_name, .loc.line_num, .loc.col_num, msg)]
+    FloatParseFailure {
+        loc: SourceLocation<'a>,
+        msg: String,
+        src: std::num::ParseFloatError,
+    },
 }

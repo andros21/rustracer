@@ -82,6 +82,9 @@ fn convert(sub_m: &clap::ArgMatches) -> Result<(), ConvertErr> {
     Ok(())
 }
 
+/// Render a demo scene (hard-coded inside main).
+///
+/// Called when `rustracer-demo` subcommand is used.
 fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
     let ldr_file = Path::new(sub_m.value_of("OUTPUT").unwrap());
     let factor = f32::from_str(sub_m.value_of("factor").unwrap())

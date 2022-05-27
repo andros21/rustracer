@@ -1,10 +1,10 @@
 //! Camera module.
 //!
 //! Provides two camera structs:
-//!  * [`OrthogonalCamera`](struct@OrthogonalCamera)
-//!  * [`PerspectiveCamera`](struct@PerspectiveCamera)\
+//!  * [`OrthogonalCamera`](struct@OrthogonalCamera);
+//!  * [`PerspectiveCamera`](struct@PerspectiveCamera).\
 //!
-//! that implement [`FireRay`] trait.
+//! That implement [`FireRay`] trait.
 //!
 //! And [`Camera`] enum that wrap them.
 use crate::point::Point;

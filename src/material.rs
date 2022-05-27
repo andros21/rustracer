@@ -94,6 +94,7 @@ impl GetColor for CheckeredPigment {
     }
 }
 
+/// Enum of pigments.
 #[derive(Clone, Debug)]
 pub enum Pigment<'a> {
     Uniform(UniformPigment),
@@ -102,6 +103,7 @@ pub enum Pigment<'a> {
 }
 
 impl<'a> GetColor for Pigment<'a> {
+    /// Return a different [`Color`] as function of [`Pigment`] variant.
     fn get_color(&self, uv: Vector2D) -> Color {
         match self {
             Pigment::Uniform(uniform) => uniform.get_color(uv),
@@ -251,6 +253,7 @@ impl<'a> ScatterRay for SpecularBRDF<'a> {
     }
 }
 
+/// Enum of BRDFs.
 #[derive(Clone)]
 pub enum BRDF<'a> {
     Diffuse(DiffuseBRDF<'a>),
@@ -258,6 +261,7 @@ pub enum BRDF<'a> {
 }
 
 impl<'a> Eval for BRDF<'a> {
+    /// Eval a particular [`BRDF`] variant.
     fn eval(&self, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -> Color {
         match self {
             BRDF::Diffuse(diffuse) => diffuse.eval(normal, in_dir, out_dir, uv),
@@ -267,6 +271,7 @@ impl<'a> Eval for BRDF<'a> {
 }
 
 impl<'a> ScatterRay for BRDF<'a> {
+    /// Scatter a [`Ray`] as a particular [`BRDF`] variant.
     fn scatter_ray(
         &self,
         pcg: &mut Pcg,
@@ -287,6 +292,7 @@ impl<'a> ScatterRay for BRDF<'a> {
 }
 
 impl<'a> GetColor for BRDF<'a> {
+    /// Return a different Color as function of Pigment variant.
     fn get_color(&self, uv: Vector2D) -> Color {
         match self {
             BRDF::Diffuse(diffuse) => diffuse.get_color(uv),

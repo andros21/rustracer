@@ -1,7 +1,7 @@
 //! Error reporting module.
 //!
 //! Provides internal [`rustracer`](..) errors,
-//! using [`thiserror`](https://github.com/dtolnay/thiserror) library
+//! using [`thiserror`](https://github.com/dtolnay/thiserror) library.
 
 use thiserror::Error;
 
@@ -41,6 +41,7 @@ pub enum GeometryErr {
     UnableToNormalize(f32),
 }
 
+/// Error enum for [`demo`](../fn.demo.html) function inside [`main`](../fn.main.html).
 #[derive(Error, Debug)]
 pub enum DemoErr {
     #[error("invalid {1}, expected integer number: {0}")]

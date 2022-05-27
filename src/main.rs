@@ -25,7 +25,7 @@ use std::path::Path;
 use std::process::exit;
 use std::str::FromStr;
 
-use crate::camera::{OrthogonalCamera, PerspectiveCamera};
+use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
 use crate::color::{Color, BLACK, WHITE};
 use crate::error::{ConvertErr, DemoErr, HdrImageErr};
 use crate::hdrimage::{HdrImage, Luminosity};
@@ -35,9 +35,9 @@ use crate::material::{
 };
 use crate::misc::ByteOrder;
 use crate::random::Pcg;
-use crate::render::{OnOffRenderer, PathTracer};
+use crate::render::{DummyRenderer, OnOffRenderer, PathTracer, Renderer};
 use crate::shape::{Plane, Sphere};
-use crate::transformation::{rotation_y, rotation_z, scaling, translation, Transformation};
+use crate::transformation::{rotation_z, scaling, translation, Transformation};
 use crate::vector::Vector;
 use crate::world::World;
 
@@ -94,16 +94,16 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("height")))?;
     let angle_deg = f32::from_str(sub_m.value_of("angle-deg").unwrap())
         .map_err(|e| DemoErr::FloatParseFailure(e, String::from("angle-deg")))?;
-    let algorithm = Path::new(sub_m.value_of("algorithm").unwrap());
+    let algorithm = sub_m.value_of("algorithm").unwrap();
     let num_of_rays = u32::from_str(sub_m.value_of("num-of-rays").unwrap())
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("num-of-rays")))?;
     let max_depth = u32::from_str(sub_m.value_of("max-depth").unwrap())
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("max-depth")))?;
-    let init_state = u32::from_str(sub_m.value_of("init-state").unwrap())
+    let init_state = u64::from_str(sub_m.value_of("init-state").unwrap())
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("init-state")))?;
-    let init_seq = u32::from_str(sub_m.value_of("init-seq").unwrap())
+    let init_seq = u64::from_str(sub_m.value_of("init-seq").unwrap())
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("init-seq")))?;
-    let samples_per_pixel = u32::from_str(sub_m.value_of("samples-per-pixel").unwrap())
+    let _samples_per_pixel = u32::from_str(sub_m.value_of("samples-per-pixel").unwrap())
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("samples-per-pixel")))?;
     check!(ldr_file).map_err(DemoErr::IoError)?;
     let sky_material = Material {
@@ -163,35 +163,36 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         mirror_material,
     )));
     let camera_tr = rotation_z(f32::to_radians(angle_deg))
-        * rotation_y(0.5)
-        * translation(Vector::from((-2.0, 0.0, 0.0)));
-    if sub_m.is_present("orthogonal") {
-        let mut tracer = ImageTracer::new(
-            &mut hdr_img,
-            OrthogonalCamera::new(width as f32 / height as f32, camera_tr),
-        );
-        tracer.fire_all_rays(PathTracer::new(
+        * rotation_z(f32::to_radians(angle_deg))
+        * translation(Vector::from((-2.0, 0.0, 0.5)));
+    let mut tracer = ImageTracer::new(
+        &mut hdr_img,
+        if sub_m.is_present("orthogonal") {
+            Camera::Orthogonal(OrthogonalCamera::new(
+                width as f32 / height as f32,
+                camera_tr,
+            ))
+        } else {
+            Camera::Perspective(PerspectiveCamera::new(
+                1.0,
+                width as f32 / height as f32,
+                camera_tr,
+            ))
+        },
+    );
+    tracer.fire_all_rays(match algorithm {
+        "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
+        "pathtracer" => Renderer::PathTracer(PathTracer::new(
             &world,
             BLACK,
-            Pcg::default(),
+            Pcg::new(init_state, init_seq),
             num_of_rays,
             max_depth,
             3,
-        ));
-    } else {
-        let mut tracer = ImageTracer::new(
-            &mut hdr_img,
-            PerspectiveCamera::new(1.0, width as f32 / height as f32, camera_tr),
-        );
-        tracer.fire_all_rays(PathTracer::new(
-            &world,
-            BLACK,
-            Pcg::default(),
-            num_of_rays,
-            max_depth,
-            3,
-        ));
-    }
+        )),
+        // Otherwise dummy behaviour.
+        _ => Renderer::Dummy(DummyRenderer),
+    });
     if sub_m.is_present("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");
         hdr_img

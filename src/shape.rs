@@ -3,7 +3,7 @@
 //! Provides geometrical shape structs that implement the
 //! [`RayIntersection`](trait@RayIntersection) trait.
 
-use crate::material::{DiffuseBRDF, Eval, GetColor, Material, ScatterRay, UniformPigment};
+use crate::material::Material;
 use crate::misc::{IsClose, Vector2D};
 use crate::normal::Normal;
 use crate::point::Point;
@@ -49,6 +49,7 @@ impl<'a> IsClose for HitRecord<'a> {
 }
 
 /// Geometrical shape corresponding to a sphere.
+#[derive(Default)]
 pub struct Sphere<'a> {
     /// A generic sphere is defined by means of a
     /// [`Transformation`](struct@Transformation) on the
@@ -58,15 +59,6 @@ pub struct Sphere<'a> {
     transformation: Transformation,
     /// The [`Material`](struct@Material) of the sphere.
     material: Material<'a>,
-}
-
-impl<'a> Default for Sphere<'a> {
-    fn default() -> Self {
-        Sphere {
-            transformation: Transformation::default(),
-            material: Material::default(),
-        }
-    }
 }
 
 impl<'a> Sphere<'a> {
@@ -144,6 +136,7 @@ impl<'a> RayIntersection for Sphere<'a> {
 }
 
 /// Geometrical shape corresponding to a plane.
+#[derive(Default)]
 pub struct Plane<'a> {
     /// A generic plane is defined by means of a [`Transformation`](struct@Transformation)
     /// on the X-Y plane.\
@@ -153,15 +146,6 @@ pub struct Plane<'a> {
     transformation: Transformation,
     /// The [`Material`](struct@Material) of the sphere.
     material: Material<'a>,
-}
-
-impl<'a> Default for Plane<'a> {
-    fn default() -> Self {
-        Plane {
-            transformation: Transformation::default(),
-            material: Material::default(),
-        }
-    }
 }
 
 impl<'a> Plane<'a> {

@@ -2,7 +2,7 @@
 //!
 //! Provides different renderers that implement [`Solve`] trait.
 use crate::color::Color;
-use crate::material::{Eval, GetColor, ScatterRay};
+use crate::material::{GetColor, ScatterRay};
 use crate::random::Pcg;
 use crate::ray::Ray;
 use crate::world::World;

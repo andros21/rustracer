@@ -110,7 +110,7 @@ pub fn build_cli() -> Command<'static> {
             Command::new("demo")
                 .arg_required_else_help(true)
                 .dont_collapse_args_in_usage(true)
-                .about("Render subcommand demo (devel in progress)")
+                .about("Render a demo scene (hard-coded in main)")
                 .arg(
                     Arg::new("OUTPUT")
                         .required(true)
@@ -245,9 +245,9 @@ pub fn build_cli() -> Command<'static> {
                         .value_name("SAMPLE_PER_PIXEL")
                         .default_value(SAMPLE_PER_PIXEL)
                         .number_of_values(1)
-                        .help("Number of samples per pixel (perfect square)")
+                        .help("[antialiasing not yet implemented] Number of samples per pixel (perfect square)")
                         .long_help(
-                            "Number of samples per pixel (must be a perfect square, e.g. 16)",
+                            "[antialiasing not yet implemented] Number of samples per pixel (must be a perfect square, e.g. 16)",
                         ),
                 ),
         );

@@ -139,6 +139,34 @@ impl<'a> Solve for PathTracer<'a> {
     }
 }
 
+/// DummyRenderer.
+pub struct DummyRenderer;
+
+impl Solve for DummyRenderer {
+    /// Solve nothing! Only return a fixed [`Color`].
+    fn solve(&mut self, _ray: Ray) -> Color {
+        Color::from((1.0, 2.0, 3.0))
+    }
+}
+
+/// Enum of renderers.
+pub enum Renderer<'a> {
+    OnOff(OnOffRenderer<'a>),
+    Dummy(DummyRenderer),
+    PathTracer(PathTracer<'a>),
+}
+
+impl<'a> Solve for Renderer<'a> {
+    /// Render the scene using a particular [`Renderer`] variants.
+    fn solve(&mut self, ray: Ray) -> Color {
+        match self {
+            Renderer::OnOff(onoff) => onoff.solve(ray),
+            Renderer::Dummy(dummy) => dummy.solve(ray),
+            Renderer::PathTracer(pathtracer) => pathtracer.solve(ray),
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -166,14 +194,14 @@ mod test {
             let furnace = Sphere::new(Transformation::default(), furnace_material);
             let mut world = World::default();
             world.add(Box::new(furnace));
-            let mut path_tracer = PathTracer {
+            let mut path_tracer = Renderer::PathTracer(PathTracer {
                 pcg,
                 num_of_rays: 1,
                 world: &world,
                 max_depth: 100,
                 russian_roulette_limit: 101,
                 bg_color: Default::default(),
-            };
+            });
             let color = path_tracer.solve(Ray::default());
             let expected = emitted_radiance / (1. - reflectance);
             assert!(expected.is_close(color.r));

@@ -1,0 +1,123 @@
+---
+name: CD
+
+"on":
+  push:
+    tags:
+      - "[0-9].[0-9].[0-9]+$"
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: checkout project
+        uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846
+      - name: check cargo cache
+        uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514
+        id: rust-cache
+        with:
+          path: |
+            ~/.cargo/
+            ~/.rustup/
+            target/
+          key: ${{ runner.os }}-rust-musl-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
+      - name: install rust toolchain
+        if: steps.rust-cache.outputs.cache-hit != 'true'
+        uses: actions-rs/toolchain@56751392ac172fc3a68fef1413f507767ed5f563
+        with:
+          toolchain: stable
+          default: true
+          profile: minimal
+          target: x86_64-unknown-linux-musl
+      - name: cargo release gnu
+        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        with:
+          command: build
+          args: --locked --release
+      - name: cargo release musl
+        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        with:
+          command: build
+          args: --locked --release --target x86_64-unknown-linux-musl
+      - name: assemble artifacts
+        run: .github/workflows/cd.sh assemble
+      - name: check cosign version
+        id: cosign-version
+        run: |
+          LATEST=$(curl -sL https://api.github.com/repos/sigstore/cosign/releases/latest | jq -r ".tag_name")
+          echo "cosign version: ${LATEST}"
+          echo "##[set-output name=latest;]${LATEST}"
+      - name: check cosign cache
+        uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514
+        id: cosign-cache
+        with:
+          path: ~/.cosign
+          key: ${{ runner.os }}-cosign-${{ steps.cosign-version.outputs.latest }}
+      - name: install cosign
+        if: steps.cosign-cache.outputs.cache-hit != 'true'
+        uses: sigstore/cosign-installer@372f03d876de9bfec5079d00fc6cd2485af9a026
+      - name: cosign artifacts
+        env:
+          COSIGN_EXPERIMENTAL: 1
+        run: .github/workflows/cd.sh cosign
+      - name: release artifacts
+        uses: softprops/action-gh-release@6232f0b438cb856c39d14f8743e3a7c99fc879af
+        with:
+          name: rustracer ${GITHUB_REF_NAME}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            rustracer-${GITHUB_REF_NAME}-x86_64-unknown-linux-*.tar.gz
+            rustracer-${GITHUB_REF_NAME}-x86_64-unknown-linux-*.tar.gz-keyless.pem
+            rustracer-${GITHUB_REF_NAME}-x86_64-unknown-linux-*.tar.gz-keyless.sig
+            rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt
+            rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt-keyless.pem
+            rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt-keyless.sig
+  ghpages:
+    name: ghpages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs:
+      - release
+    steps:
+      - name: checkout project
+        uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846
+      - name: check cache
+        uses: actions/cache@48af2dc4a9e8278b89d7fa154b955c30c6aaab09
+        id: cache
+        with:
+          path: |
+            ~/.cargo/
+            ~/.rustup/
+            target/
+          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
+      - name: install rust toolchain
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
+        with:
+          toolchain: stable
+          default: true
+          profile: minimal
+          components: clippy, llvm-tools-preview, rustfmt, rust-docs
+      - name: cargo rustdoc
+        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        with:
+          command: rustdoc
+      - name: patch docs
+        run: |
+          for file in $(ls -1 target/doc/rustracer)
+          do
+            ln -sf rustracer/$file target/doc/$file
+          done
+          cp install.sh target/doc/
+      - name: publish to gh-pages
+        uses: peaceiris/actions-gh-pages@b24891da2a683970a75ebe54633f084809cc25c0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/doc/

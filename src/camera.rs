@@ -40,8 +40,8 @@ impl OrthogonalCamera {
     /// as this is the most used aspect ratio used in modern monitors.
     ///
     /// The `transformation` parameter is an instance of the [`Transformation`].
-    pub fn new(aspect_ratio: f32, tranformation: Transformation) -> OrthogonalCamera {
-        OrthogonalCamera {
+    pub fn new(aspect_ratio: f32, tranformation: Transformation) -> Self {
+        Self {
             aspect_ratio,
             tranformation,
         }
@@ -103,12 +103,8 @@ impl PerspectiveCamera {
     /// as this is the most used aspect ratio used in modern monitors.
     ///
     /// The `transformation` parameter is an instance of the [`Transformation`].
-    pub fn new(
-        distance: f32,
-        aspect_ratio: f32,
-        transformation: Transformation,
-    ) -> PerspectiveCamera {
-        PerspectiveCamera {
+    pub fn new(distance: f32, aspect_ratio: f32, transformation: Transformation) -> Self {
+        Self {
             distance,
             aspect_ratio,
             transformation,

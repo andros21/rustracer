@@ -29,8 +29,8 @@ pub struct HdrImage {
 
 impl HdrImage {
     /// Create a black image with the specified resolution.
-    pub fn new(width: u32, height: u32) -> HdrImage {
-        HdrImage {
+    pub fn new(width: u32, height: u32) -> Self {
+        Self {
             width,
             height,
             pixels: vec![Color::default(); (width * height) as usize],
@@ -109,7 +109,7 @@ impl HdrImage {
     ///  [`byteorder`](https://github.com/BurntSushi/byteorder) library.\
     ///  Return a [`HdrImage`] object containing the image inside a [`std::result::Result`].\
     ///  If an error occurs the result contains an [`HdrImageErr`] error variant.
-    fn read_pfm_image<R: BufRead>(buf_reader: &mut R) -> Result<HdrImage, HdrImageErr> {
+    fn read_pfm_image<R: BufRead>(buf_reader: &mut R) -> Result<Self, HdrImageErr> {
         let mut line = String::new();
         buf_reader
             .read_line(&mut line)
@@ -171,7 +171,7 @@ impl HdrImage {
     ///
     ///  Return a [`HdrImage`] object containing the image inside a [`std::result::Result`].\
     ///  If an error occurs the result contains an [`HdrImageErr`] error variant.
-    pub fn read_pfm_file(path: &Path) -> Result<HdrImage, HdrImageErr> {
+    pub fn read_pfm_file(path: &Path) -> Result<Self, HdrImageErr> {
         let file = File::open(path).map_err(HdrImageErr::PfmFileReadFailure)?;
         let mut buf_reader = BufReader::new(file);
         HdrImage::read_pfm_image(&mut buf_reader)

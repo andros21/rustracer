@@ -47,3 +47,49 @@ impl World {
         closest
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::material::GetColor;
+    use crate::misc::IsClose;
+    use crate::point::Point;
+    use crate::vector::E1;
+    use crate::{
+        scaling, translation, DiffuseBRDF, Material, Pigment, Sphere, UniformPigment, Vector,
+        BLACK, BRDF, WHITE,
+    };
+
+    #[test]
+    fn test_world() {
+        let mut world = World::default();
+        world.add(Box::new(Sphere::default()));
+        world.add(Box::new(Sphere::new(
+            translation(E1 * 4.) * scaling(Vector::from((2., 2., 2.))),
+            Material {
+                brdf: BRDF::Diffuse(DiffuseBRDF::default()),
+                emitted_radiance: Pigment::Uniform(UniformPigment { color: WHITE }),
+            },
+        )));
+        let ray1 = Ray {
+            origin: Point::from((-2., 3., 0.)),
+            ..Default::default()
+        };
+        let ray2 = Ray {
+            origin: Point::from((-2., 0., 0.)),
+            ..Default::default()
+        };
+        let ray3 = Ray {
+            origin: Point::from((-2., 1.5, 0.)),
+            ..Default::default()
+        };
+
+        assert!(world.ray_intersection(ray1).is_none());
+        assert!(
+            matches!(world.ray_intersection(ray2), Some(hit) if hit.material.emitted_radiance.get_color(hit.surface_point).is_close(BLACK))
+        );
+        assert!(
+            matches!(world.ray_intersection(ray3), Some(hit) if hit.material.emitted_radiance.get_color(hit.surface_point).is_close(WHITE))
+        )
+    }
+}

@@ -174,8 +174,26 @@ mod test {
     use super::*;
     use crate::material::{DiffuseBRDF, Pigment, UniformPigment, BRDF};
     use crate::misc::IsClose;
+    use crate::point::Point;
     use crate::transformation::Transformation;
-    use crate::{Material, Sphere, WHITE};
+    use crate::{Material, Sphere, BLACK, WHITE};
+
+    #[test]
+    fn test_onoff() {
+        let ray1 = Ray {
+            origin: Point::from((-2., 3., 0.)),
+            ..Default::default()
+        };
+        let ray2 = Ray {
+            origin: Point::from((-2., 0., 0.)),
+            ..Default::default()
+        };
+        let mut world = World::default();
+        world.add(Box::new(Sphere::default()));
+        let mut onoff_renderer = OnOffRenderer::new(&world, BLACK, WHITE);
+        assert!(onoff_renderer.solve(ray1).is_close(BLACK));
+        assert!(onoff_renderer.solve(ray2).is_close(WHITE))
+    }
 
     #[test]
     fn test_furnace() {

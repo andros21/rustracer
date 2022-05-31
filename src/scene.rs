@@ -2,7 +2,7 @@ use crate::error::SceneErr;
 use std::io::Read;
 use std::str::FromStr;
 
-const SYMBOLS: [char; 6] = [' ', '-', ':', '[', ',', ']'];
+const SYMBOLS: [char; 7] = ['\n', ' ', '-', ':', '[', ',', ']'];
 
 #[derive(Clone, Copy, Debug)]
 pub struct SourceLocation<'a> {
@@ -106,7 +106,7 @@ impl<'a, R: Read> InputStream<'a, R> {
         self.location = self.saved_location;
     }
 
-    fn skip_eol_and_comments(&mut self) {
+    fn skip_comments(&mut self) {
         let mut ch = self.read_char();
         loop {
             // If a comment ignore until eol or eof.
@@ -117,15 +117,13 @@ impl<'a, R: Read> InputStream<'a, R> {
                         break;
                     }
                 }
-            // Skip eol.
-            } else if ch == '\n' {
-                ch = self.read_char();
+                break;
             } else {
+                // Roll back character.
+                self.unread_char(ch);
                 break;
             }
         }
-        // Roll back character.
-        self.unread_char(ch)
     }
 
     fn parse_string(
@@ -242,8 +240,9 @@ impl<'a, R: Read> InputStream<'a, R> {
             _ => Token::Identifier(token_location, token),
         }
     }
+
     fn read_token(&mut self) -> Result<Token, SceneErr> {
-        self.skip_eol_and_comments();
+        self.skip_comments();
         let ch = self.read_char();
         // Save location where starting to parse the token.
         let token_location = self.location;
@@ -308,7 +307,9 @@ mod test {
         assert_eq!(input.location.line_num, 1);
         assert_eq!(input.location.col_num, 4);
 
-        input.skip_eol_and_comments();
+        assert_eq!(input.read_char(), '\n');
+        assert_eq!(input.location.line_num, 2);
+        assert_eq!(input.location.col_num, 1);
 
         assert_eq!(input.read_char(), 'd');
         assert_eq!(input.location.line_num, 2);
@@ -318,7 +319,7 @@ mod test {
         assert_eq!(input.location.line_num, 3);
         assert_eq!(input.location.col_num, 1);
 
-        input.skip_eol_and_comments();
+        input.skip_comments();
 
         assert_eq!(input.read_char(), 'e');
         assert_eq!(input.location.line_num, 4);
@@ -328,8 +329,9 @@ mod test {
         assert_eq!(input.location.line_num, 4);
         assert_eq!(input.location.col_num, 3);
 
-        assert_eq!(input.read_char(), '\x00');
+        assert_eq!(input.read_char(), '\x00')
     }
+
     #[test]
     fn test_lexer() {
         let mut input = InputStream::new(
@@ -358,6 +360,7 @@ mod test {
             matches!(input.read_token(), Ok(Token::Keyword(_loc, key)) if key == Keywords::Transformations)
         );
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ':'));
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '-'));
@@ -368,6 +371,7 @@ mod test {
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ':'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Identifier(_loc, id)) if id == "camera_tr"));
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
@@ -376,6 +380,7 @@ mod test {
             matches!(input.read_token(), Ok(Token::Keyword(_loc, key)) if key == Keywords::Compose)
         );
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ':'));
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
@@ -390,6 +395,7 @@ mod test {
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ':'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::LiteralNumber(_loc, num)) if num == 1.0));
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
@@ -414,13 +420,17 @@ mod test {
             input.read_token(),
             Err(SceneErr::FloatParseFailure { loc, .. }) if loc.line_num==6 && loc.col_num==35));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ']'));
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(
             input.read_token(),
             Err(SceneErr::InvalidCharacter { loc, .. }) if loc.line_num==8 && loc.col_num==2));
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(
             input.read_token(),
             Err(SceneErr::InvalidCharacter { loc, .. }) if loc.line_num==9 && loc.col_num==2));
-        for _ in 1..31 {
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
+        for _ in 1..35 {
             let _res = input.read_token();
         }
         assert!(
@@ -431,7 +441,7 @@ mod test {
         assert!(
             matches!(input.read_token(), Ok(Token::String(_loc, st)) if st == "path_to_image.pfm")
         );
-        for _ in 1..13 {
+        for _ in 1..15 {
             let _res = input.read_token();
         }
         assert!(

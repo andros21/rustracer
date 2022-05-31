@@ -1,25 +1,25 @@
 //! Image Tracer module.
 //!
 //! Provides [`ImageTracer`](struct@ImageTracer) struct.
-use crate::camera::FireRay;
+use crate::camera::{Camera, FireRay};
 use crate::hdrimage::HdrImage;
 use crate::ray::Ray;
-use crate::render::Solve;
+use crate::render::{Renderer, Solve};
 
 /// Trace an image by shooting light rays through each of its pixels.
-pub struct ImageTracer<'a, C: Copy + FireRay> {
+pub struct ImageTracer<'a> {
     /// An initialized [`HdrImage`].
     image: &'a mut HdrImage,
-    /// A particular [`camera`](../camera) that implement [`FireRay`] trait.
-    camera: C,
+    /// A [`Camera`] enum that implement [`FireRay`] trait.
+    camera: Camera,
 }
 
-impl<'a, C: Copy + FireRay> ImageTracer<'a, C> {
+impl<'a> ImageTracer<'a> {
     /// Initialize an ImageTracer object.
     ///
     /// The parameter `image` must be a [`HdrImage`] object that has already been initialized.\
-    /// The parameter `camera` must be a [`camera`](../camera) that implement [`FireRay`] trait.
-    pub fn new(image: &mut HdrImage, camera: C) -> ImageTracer<C> {
+    /// The parameter `camera` must be a [`Camera`] enum that implement [`FireRay`] trait.
+    pub fn new(image: &mut HdrImage, camera: Camera) -> ImageTracer {
         ImageTracer { image, camera }
     }
 
@@ -40,9 +40,8 @@ impl<'a, C: Copy + FireRay> ImageTracer<'a, C> {
     /// Shoot several light rays crossing each of the pixels in the image.
     ///
     /// For each pixel in the [`HdrImage`] object fire one [`Ray`],\
-    /// and pass it to a [`renderer`](../renderer),
-    /// which must implement a [`Solve`] trait.
-    pub fn fire_all_rays<R: Solve>(&mut self, renderer: R) {
+    /// and pass it to a [`Renderer`] that implement a [`Solve`] trait.
+    pub fn fire_all_rays(&mut self, mut renderer: Renderer) {
         for row in 0..self.image.shape().1 {
             for col in 0..self.image.shape().0 {
                 let ray = self.fire_ray(col, row, 0.5, 0.5);
@@ -60,20 +59,14 @@ mod test {
     use crate::color::Color;
     use crate::misc::IsClose;
     use crate::point::Point;
+    use crate::render::DummyRenderer;
     use crate::transformation::Transformation;
-
-    struct DummyRenderer;
-
-    impl Solve for DummyRenderer {
-        fn solve(&self, _ray: Ray) -> Color {
-            Color::from((1.0, 2.0, 3.0))
-        }
-    }
 
     #[test]
     fn test_uv_sub_mapping() {
         let mut image = HdrImage::new(4, 2);
-        let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let camera =
+            Camera::Perspective(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let tracer = ImageTracer::new(&mut image, camera);
 
         let ray1 = tracer.fire_ray(0, 0, 2.5, 1.5);
@@ -84,10 +77,11 @@ mod test {
     #[test]
     fn test_image_coverage() {
         let mut image = HdrImage::new(4, 2);
-        let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let camera =
+            Camera::Perspective(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let mut tracer = ImageTracer::new(&mut image, camera);
 
-        tracer.fire_all_rays(DummyRenderer);
+        tracer.fire_all_rays(Renderer::Dummy(DummyRenderer));
         for row in 0..image.shape().1 {
             for col in 0..image.shape().0 {
                 assert!(
@@ -100,7 +94,8 @@ mod test {
     #[test]
     fn test_orientation() {
         let mut image = HdrImage::new(4, 2);
-        let camera = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let camera =
+            Camera::Perspective(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let tracer = ImageTracer {
             image: &mut image,
             camera,

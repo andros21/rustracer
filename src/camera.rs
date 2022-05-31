@@ -1,9 +1,12 @@
 //! Camera module.
 //!
 //! Provides two camera structs:
-//!  * [`OrthogonalCamera`](struct@OrthogonalCamera)
-//!  * [`PerspectiveCamera`](struct@PerspectiveCamera)
-//! that implement [`FireRay`] trait.
+//!  * [`OrthogonalCamera`](struct@OrthogonalCamera);
+//!  * [`PerspectiveCamera`](struct@PerspectiveCamera).\
+//!
+//! That implement [`FireRay`] trait.
+//!
+//! And [`Camera`] enum that wrap them.
 use crate::point::Point;
 use crate::ray::Ray;
 use crate::transformation::Transformation;
@@ -147,6 +150,22 @@ impl FireRay for PerspectiveCamera {
     }
 }
 
+/// Enum of cameras.
+pub enum Camera {
+    Orthogonal(OrthogonalCamera),
+    Perspective(PerspectiveCamera),
+}
+
+impl FireRay for Camera {
+    /// Shoot a [`Ray`] through the camera's screen as the variant that [`Camera`] contain will do.
+    fn fire_ray(&self, u: f32, v: f32) -> Ray {
+        match self {
+            Camera::Orthogonal(orthogonal) => orthogonal.fire_ray(u, v),
+            Camera::Perspective(perspective) => perspective.fire_ray(u, v),
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -154,7 +173,7 @@ mod test {
 
     #[test]
     fn test_orthogonal_camera() {
-        let cam = OrthogonalCamera::new(2.0, Transformation::default());
+        let cam = Camera::Orthogonal(OrthogonalCamera::new(2.0, Transformation::default()));
         let ray1 = cam.fire_ray(0.0, 0.0);
         let ray2 = cam.fire_ray(1.0, 0.0);
         let ray3 = cam.fire_ray(0.0, 1.0);
@@ -172,7 +191,7 @@ mod test {
 
     #[test]
     fn test_perspective_camera() {
-        let cam = PerspectiveCamera::new(1.0, 2.0, Transformation::default());
+        let cam = Camera::Perspective(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let ray1 = cam.fire_ray(0.0, 0.0);
         let ray2 = cam.fire_ray(1.0, 0.0);
         let ray3 = cam.fire_ray(0.0, 1.0);

@@ -12,8 +12,8 @@ pub struct Pcg {
 impl Default for Pcg {
     /// Provides a default constructor for [`Pcg`](struct@Pcg),
     /// the default values for the seed are:
-    /// - `init_state=42`;
-    /// - `init_seq=54`.
+    /// - `init_state==42`;
+    /// - `init_seq==54`.
     fn default() -> Self {
         Self::new(42, 54)
     }

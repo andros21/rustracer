@@ -46,7 +46,7 @@ pub struct Normal {
 
 impl Normal {
     /// Return the reversed normal.
-    pub fn neg(&self) -> Normal {
+    pub fn neg(&self) -> Self {
         Normal {
             x: -self.x,
             y: -self.y,
@@ -76,7 +76,7 @@ impl Normal {
     /// And return the normalized normal inside [`std::result::Result`].\
     /// If the normalization operation wasn't possible result is an
     /// [`GeometryErr`] error variant.
-    pub fn normalize(mut self) -> Result<Normal, GeometryErr> {
+    pub fn normalize(mut self) -> Result<Self, GeometryErr> {
         if self.norm() > 0_f32 {
             self = self * (1_f32 / self.norm());
             Ok(self)

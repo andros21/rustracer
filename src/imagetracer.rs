@@ -19,8 +19,8 @@ impl<'a> ImageTracer<'a> {
     ///
     /// The parameter `image` must be a [`HdrImage`] object that has already been initialized.\
     /// The parameter `camera` must be a [`Camera`] enum that implement [`FireRay`] trait.
-    pub fn new(image: &mut HdrImage, camera: Camera) -> ImageTracer {
-        ImageTracer { image, camera }
+    pub fn new(image: &'a mut HdrImage, camera: Camera) -> Self {
+        Self { image, camera }
     }
 
     /// Shot one light [`Ray`] through image pixel `(col, row)`.

@@ -107,7 +107,7 @@ impl Transformation {
     /// Return a [`Transformation`] object representing the inverse affine transformation.
     ///
     /// This method is very cheap to call.
-    pub fn inverse(self) -> Transformation {
+    pub fn inverse(self) -> Self {
         Transformation {
             m: self.invm,
             invm: self.m,

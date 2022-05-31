@@ -31,7 +31,7 @@ pub struct OnOffRenderer<'a> {
 impl<'a> OnOffRenderer<'a> {
     /// Create a new [`OnOffRenderer`] renderer.
     pub fn new(world: &'a World, bg_color: Color, fg_color: Color) -> Self {
-        OnOffRenderer {
+        Self {
             world,
             bg_color,
             fg_color,
@@ -75,13 +75,13 @@ pub struct PathTracer<'a> {
 impl<'a> PathTracer<'a> {
     /// Create a new [`PathTracer`] renderer.
     pub fn new(
-        world: &World,
+        world: &'a World,
         bg_color: Color,
         pcg: Pcg,
         num_of_rays: u32,
         max_depth: u32,
         russian_roulette_limit: u32,
-    ) -> PathTracer {
+    ) -> Self {
         PathTracer {
             world,
             bg_color,

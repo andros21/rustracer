@@ -64,7 +64,7 @@ pub struct Sphere<'a> {
 impl<'a> Sphere<'a> {
     /// Provides a constructor for [`Sphere`](struct@Sphere).
     pub fn new(transformation: Transformation, material: Material<'a>) -> Self {
-        Sphere {
+        Self {
             transformation,
             material,
         }
@@ -151,7 +151,7 @@ pub struct Plane<'a> {
 impl<'a> Plane<'a> {
     /// Provides a constructor for [`Plane`](struct@Plane).
     pub fn new(transformation: Transformation, material: Material<'a>) -> Self {
-        Plane {
+        Self {
             transformation,
             material,
         }

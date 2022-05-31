@@ -42,7 +42,7 @@ pub struct Vector {
 
 impl Vector {
     /// Return the reversed vector.
-    pub fn neg(self) -> Vector {
+    pub fn neg(self) -> Self {
         Vector {
             x: -self.x,
             y: -self.y,

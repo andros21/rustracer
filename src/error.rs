@@ -54,21 +54,33 @@ pub enum DemoErr {
 }
 
 #[derive(Error, Debug)]
-pub enum SceneErr<'a> {
-    #[error("{}:{}:{}\t{}", .loc.file_name, .loc.line_num, .loc.col_num, msg)]
-    InvalidCharacter {
-        loc: SourceLocation<'a>,
-        msg: String,
-    },
-    #[error("{}:{}:{}\t{}", .loc.file_name, .loc.line_num, .loc.col_num, msg)]
-    UnclosedString {
-        loc: SourceLocation<'a>,
-        msg: String,
-    },
-    #[error("{}:{}:{}\t{}", .loc.file_name, .loc.line_num, .loc.col_num, msg)]
+pub enum SceneErr {
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    InvalidCharacter { loc: SourceLocation, msg: String },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    UnclosedString { loc: SourceLocation, msg: String },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
     FloatParseFailure {
-        loc: SourceLocation<'a>,
+        loc: SourceLocation,
         msg: String,
         src: std::num::ParseFloatError,
     },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    NotMatch { loc: SourceLocation, msg: String },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    PfmFileReadFailure {
+        loc: SourceLocation,
+        msg: String,
+        src: HdrImageErr,
+    },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    MaxSpaces { loc: SourceLocation, msg: String },
+    #[error("{0}")]
+    UnexpectedMatch(String),
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    UndefinedIdentifier { loc: SourceLocation, msg: String },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    InvalidCamera { loc: SourceLocation, msg: String },
+    #[error("impossible to read from scene file: {0}")]
+    SceneFileReadFailure(#[source] std::io::Error),
 }

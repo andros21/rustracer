@@ -38,19 +38,19 @@ impl GetColor for UniformPigment {
 ///
 /// The texture is given through a [`HdrImage`], maybe read from pfm file.
 #[derive(Clone, Debug)]
-pub struct ImagePigment<'a> {
+pub struct ImagePigment {
     /// An [`HdrImage`] reference.
-    hdr_img: &'a HdrImage,
+    hdr_img: HdrImage,
 }
 
-impl<'a> ImagePigment<'a> {
+impl ImagePigment {
     /// Create a new [`ImagePigment`] from [`HdrImage`].
-    pub fn new(hdr_img: &'a HdrImage) -> Self {
+    pub fn new(hdr_img: HdrImage) -> Self {
         Self { hdr_img }
     }
 }
 
-impl<'a> GetColor for ImagePigment<'a> {
+impl GetColor for ImagePigment {
     fn get_color(&self, uv: Vector2D) -> Color {
         let mut col = (uv.u * self.hdr_img.shape().0 as f32) as u32;
         let mut row = (uv.v * self.hdr_img.shape().1 as f32) as u32;
@@ -96,13 +96,13 @@ impl GetColor for CheckeredPigment {
 
 /// Enum of pigments.
 #[derive(Clone, Debug)]
-pub enum Pigment<'a> {
+pub enum Pigment {
     Uniform(UniformPigment),
-    Image(ImagePigment<'a>),
+    Image(ImagePigment),
     Checkered(CheckeredPigment),
 }
 
-impl<'a> GetColor for Pigment<'a> {
+impl GetColor for Pigment {
     /// Return a different [`Color`] as function of [`Pigment`] variant.
     fn get_color(&self, uv: Vector2D) -> Color {
         match self {
@@ -131,13 +131,13 @@ pub trait ScatterRay {
 }
 
 /// A class representing an ideal diffuse BRDF (also called "Lambertian").
-#[derive(Clone)]
-pub struct DiffuseBRDF<'a> {
+#[derive(Clone, Debug)]
+pub struct DiffuseBRDF {
     /// A generic pigment that implement [`GetColor`].
-    pub pigment: Pigment<'a>,
+    pub pigment: Pigment,
 }
 
-impl<'a> Default for DiffuseBRDF<'a> {
+impl Default for DiffuseBRDF {
     fn default() -> Self {
         Self {
             pigment: Pigment::Uniform(UniformPigment { color: WHITE }),
@@ -145,19 +145,19 @@ impl<'a> Default for DiffuseBRDF<'a> {
     }
 }
 
-impl<'a> GetColor for DiffuseBRDF<'a> {
+impl GetColor for DiffuseBRDF {
     fn get_color(&self, uv: Vector2D) -> Color {
         self.pigment.get_color(uv)
     }
 }
 
-impl<'a> Eval for DiffuseBRDF<'a> {
+impl Eval for DiffuseBRDF {
     fn eval(&self, _normal: Normal, _in_dir: Vector, _out_dir: Vector, uv: Vector2D) -> Color {
         self.pigment.get_color(uv) * (1.0 / PI)
     }
 }
 
-impl<'a> ScatterRay for DiffuseBRDF<'a> {
+impl ScatterRay for DiffuseBRDF {
     /// Random scattering on semi-sphere using [`Pcg`] random generator.
     fn scatter_ray(
         &self,
@@ -184,15 +184,15 @@ impl<'a> ScatterRay for DiffuseBRDF<'a> {
 }
 
 /// A class representing an ideal mirror BRDF.
-#[derive(Clone)]
-pub struct SpecularBRDF<'a> {
+#[derive(Clone, Debug)]
+pub struct SpecularBRDF {
     /// A generic pigment that implement [`GetColor`] trait.
-    pub pigment: Pigment<'a>,
+    pub pigment: Pigment,
     /// A threshold angle in radians.
     pub threshold_angle_rad: f32,
 }
 
-impl<'a> Default for SpecularBRDF<'a> {
+impl Default for SpecularBRDF {
     fn default() -> Self {
         Self {
             pigment: Pigment::Uniform(UniformPigment { color: WHITE }),
@@ -201,13 +201,13 @@ impl<'a> Default for SpecularBRDF<'a> {
     }
 }
 
-impl<'a> GetColor for SpecularBRDF<'a> {
+impl GetColor for SpecularBRDF {
     fn get_color(&self, uv: Vector2D) -> Color {
         self.pigment.get_color(uv)
     }
 }
 
-impl<'a> Eval for SpecularBRDF<'a> {
+impl Eval for SpecularBRDF {
     fn eval(&self, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -> Color {
         let theta_in = f32::acos(
             Vector::from(normal)
@@ -230,7 +230,7 @@ impl<'a> Eval for SpecularBRDF<'a> {
     }
 }
 
-impl<'a> ScatterRay for SpecularBRDF<'a> {
+impl ScatterRay for SpecularBRDF {
     /// Perfect mirror behaviour.
     fn scatter_ray(
         &self,
@@ -254,13 +254,13 @@ impl<'a> ScatterRay for SpecularBRDF<'a> {
 }
 
 /// Enum of BRDFs.
-#[derive(Clone)]
-pub enum BRDF<'a> {
-    Diffuse(DiffuseBRDF<'a>),
-    Specular(SpecularBRDF<'a>),
+#[derive(Clone, Debug)]
+pub enum BRDF {
+    Diffuse(DiffuseBRDF),
+    Specular(SpecularBRDF),
 }
 
-impl<'a> Eval for BRDF<'a> {
+impl Eval for BRDF {
     /// Eval a particular [`BRDF`] variant.
     fn eval(&self, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -> Color {
         match self {
@@ -270,7 +270,7 @@ impl<'a> Eval for BRDF<'a> {
     }
 }
 
-impl<'a> ScatterRay for BRDF<'a> {
+impl ScatterRay for BRDF {
     /// Scatter a [`Ray`] as a particular [`BRDF`] variant.
     fn scatter_ray(
         &self,
@@ -291,7 +291,7 @@ impl<'a> ScatterRay for BRDF<'a> {
     }
 }
 
-impl<'a> GetColor for BRDF<'a> {
+impl GetColor for BRDF {
     /// Return a different Color as function of Pigment variant.
     fn get_color(&self, uv: Vector2D) -> Color {
         match self {
@@ -302,15 +302,15 @@ impl<'a> GetColor for BRDF<'a> {
 }
 
 /// A material with a particular pigment and BRDF.
-#[derive(Clone)]
-pub struct Material<'a> {
+#[derive(Clone, Debug)]
+pub struct Material {
     /// A BRDF that implement both [`Eval`] and [`ScatterRay`] traits.
-    pub brdf: BRDF<'a>,
+    pub brdf: BRDF,
     /// A pigment that implement [`GetColor`] trait.
-    pub emitted_radiance: Pigment<'a>,
+    pub emitted_radiance: Pigment,
 }
 
-impl<'a> Default for Material<'a> {
+impl Default for Material {
     fn default() -> Self {
         Self {
             brdf: BRDF::Diffuse(DiffuseBRDF::default()),
@@ -338,7 +338,7 @@ mod test {
         hdr_img.set_pixel(0, 2, WHITE).unwrap();
         hdr_img.set_pixel(2, 0, WHITE).unwrap();
         hdr_img.set_pixel(2, 2, WHITE).unwrap();
-        let image = ImagePigment::new(&hdr_img);
+        let image = ImagePigment::new(hdr_img);
 
         assert_eq!(uniform0.get_color(Vector2D { u: 0.1, v: 3.0 }), BLACK);
         assert_eq!(uniform1.get_color(Vector2D { u: 0.5, v: 0.3 }), WHITE);

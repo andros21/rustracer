@@ -78,13 +78,50 @@ jobs:
             rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt
             rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt-keyless.pem
             rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt-keyless.sig
+  #cratesio:
+    #name: cratesio
+    #runs-on: ubuntu-latest
+    #environment:
+      #name: cratesio
+      #url: https://crates.io/crates/rustracer
+    #permissions:
+      #contents: read
+    #needs:
+      #- release
+    #steps:
+      #- name: checkout project
+        #uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846
+      #- name: check cache
+        #uses: actions/cache@48af2dc4a9e8278b89d7fa154b955c30c6aaab09
+        #id: cache
+        #with:
+          #path: |
+            #~/.cargo/
+            #~/.rustup/
+            #target/
+          #key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
+      #- name: install rust toolchain
+        #if: steps.cache.outputs.cache-hit != 'true'
+        #uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
+        #with:
+          #toolchain: stable
+          #default: true
+          #profile: minimal
+          #components: clippy, llvm-tools-preview, rustfmt, rust-docs
+      #- name: cargo publish
+        #uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        #with:
+          #command: publish
+          #args: --locked
+        #env:
+          #CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
   ghpages:
     name: ghpages
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    needs:
-      - release
+    #needs:
+      #- cratesio
     steps:
       - name: checkout project
         uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846

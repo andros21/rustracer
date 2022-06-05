@@ -84,3 +84,16 @@ pub enum SceneErr {
     #[error("impossible to read from scene file: {0}")]
     SceneFileReadFailure(#[source] std::io::Error),
 }
+
+/// Error enum for [`render`](../fn.render.html) function inside [`main`](../fn.main.html).
+#[derive(Error, Debug)]
+pub enum RenderErr {
+    #[error("invalid {1}, expected integer number: {0}")]
+    IntParseFailure(#[source] std::num::ParseIntError, String),
+    #[error("invalid {1}, expected floating-point number: {0}")]
+    FloatParseFailure(#[source] std::num::ParseFloatError, String),
+    #[error("{0}")]
+    IoError(#[source] HdrImageErr),
+    #[error("({1}) {0}")]
+    SceneError(#[source] SceneErr, String),
+}

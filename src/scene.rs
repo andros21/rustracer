@@ -1,4 +1,5 @@
 use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
+use crate::cli::Cli;
 use crate::color::{Color, BLACK, WHITE};
 use crate::error::SceneErr;
 use crate::hdrimage::HdrImage;
@@ -481,6 +482,22 @@ impl<R: Read> InputStream<R> {
             _ => not_matches!(token, "number"),
         }
     }
+    fn match_number_cli(&mut self, cli: Cli) -> Result<f32, SceneErr> {
+        let token = self.read_token()?;
+        match token {
+            Token::LiteralNumber(_, num) => Ok(num),
+            Token::Identifier(_, ref id) => {
+                if id == "RATIO" {
+                    Ok(cli.aspect_ratio)
+                } else if id == "DISTANCE" {
+                    Ok(1.0)
+                } else {
+                    not_matches!(token, "number")
+                }
+            }
+            _ => not_matches!(token, "number"),
+        }
+    }
 
     fn parse_color(&mut self, var: &Var) -> Result<Color, SceneErr> {
         let token = self.read_token()?;
@@ -909,7 +926,7 @@ impl<R: Read> InputStream<R> {
         Ok(shapes)
     }
 
-    fn parse_camera(&mut self, var: &Var) -> Result<Camera, SceneErr> {
+    fn parse_camera(&mut self, var: &Var, cli: Cli) -> Result<Camera, SceneErr> {
         // The keyword `Keywords::Camera` is parsed inside `parse_scene`.
         // After 'camera:' can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
@@ -933,7 +950,7 @@ impl<R: Read> InputStream<R> {
         self.match_spaces(0, 0)?;
         self.match_keyword(Keywords::Ratio)?;
         self.match_symbol(' ')?;
-        let ratio = self.match_number()?;
+        let ratio = self.match_number_cli(cli)?;
         // Can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
         // Init a default distance.
@@ -945,7 +962,7 @@ impl<R: Read> InputStream<R> {
             self.match_spaces(0, 0)?;
             self.match_keyword(Keywords::Distance)?;
             self.match_symbol(' ')?;
-            distance = self.match_number()?;
+            distance = self.match_number_cli(cli)?;
             // Can only be a eol or inline comment.
             self.match_eol_or_inline_comment()?;
         }
@@ -959,7 +976,7 @@ impl<R: Read> InputStream<R> {
                 loc: self.location,
                 msg: format!("{} not defined", transformation_id),
             },
-        )?;
+        )? * rotation_z(f32::to_radians(cli.angle_deg));
         match camera.as_str() {
             "orthogonal" => Ok(Camera::Orthogonal(OrthogonalCamera::new(
                 ratio,
@@ -975,7 +992,7 @@ impl<R: Read> InputStream<R> {
         }
     }
 
-    fn parse_scene(&mut self) -> Result<Scene, SceneErr> {
+    fn parse_scene(&mut self, cli: Cli) -> Result<Scene, SceneErr> {
         let mut block;
         let mut var = Var::default();
         let mut scene = Scene::default();
@@ -997,7 +1014,7 @@ impl<R: Read> InputStream<R> {
                     // Build a `Camera` in `scene` using `var`.
                     // And remove it from `blocks`, because was found.
                     Keywords::Camera => {
-                        scene.camera = Some(self.parse_camera(&var)?);
+                        scene.camera = Some(self.parse_camera(&var, cli)?);
                         blocks.remove(blocks.iter().position(|&k| k == Keywords::Camera).unwrap());
                     }
                     // Update colors in `var` if colors block is found.
@@ -1076,11 +1093,11 @@ pub struct Scene {
 }
 
 impl Scene {
-    pub fn read_scene_file(path: &Path) -> Result<Self, SceneErr> {
+    pub fn read_scene_file(path: &Path, cli: Cli) -> Result<Self, SceneErr> {
         let file = File::open(path).map_err(SceneErr::SceneFileReadFailure)?;
         let reader = BufReader::new(file);
         let mut input = InputStream::new(reader);
-        input.parse_scene()
+        input.parse_scene(cli)
     }
 }
 
@@ -1278,30 +1295,34 @@ mod test {
             "camera:\n",
             "   type: 'perspective'\n",
             "   ratio: 0.5\n",
-            "   distance: 1.0\n",
+            "   distance: DISTANCE\n",
             "   transformation: IDENTITY\n",
         )));
-        let mut var: Var = Var::default();
+        let mut var = Var::default();
+        let cli = Cli {
+            aspect_ratio: 0.5,
+            angle_deg: 0.0,
+        };
         var.transformations
             .insert(String::from("camera"), Transformation::default());
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Camera).is_ok());
         assert!(
-            matches!(input.parse_camera(&var), Ok(Camera::Perspective(cam)) if cam==PerspectiveCamera::new(1.0, 0.5, Transformation::default()))
+            matches!(input.parse_camera(&var, cli), Ok(Camera::Perspective(cam)) if cam==PerspectiveCamera::new(1.0, 0.5, Transformation::default()))
         );
 
         let mut input = InputStream::new(Cursor::new(concat!(
             "camera:\n",
             "  type: \"orthogonal\" # This is an inline comment\n",
-            "  ratio: 0.3\n",
+            "  ratio: RATIO\n",
             "  transformation: camera\n",
         )));
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Camera).is_ok());
         assert!(
-            matches!(input.parse_camera(&var), Ok(Camera::Orthogonal(cam)) if cam==OrthogonalCamera::new(0.3, Transformation::default()))
+            matches!(input.parse_camera(&var, cli), Ok(Camera::Orthogonal(cam)) if cam==OrthogonalCamera::new(0.5, Transformation::default()))
         );
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1318,7 +1339,7 @@ mod test {
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Camera).is_ok());
         assert!(matches!(
-            input.parse_camera(&var),
+            input.parse_camera(&var, cli),
             Err(SceneErr::InvalidCamera { loc, .. }) if loc.line_num==5 && loc.col_num==19
         ));
 
@@ -1334,7 +1355,7 @@ mod test {
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Camera).is_ok());
         assert!(matches!(
-            input.parse_camera(&var),
+            input.parse_camera(&var, cli),
             Err(SceneErr::UndefinedIdentifier { loc, .. }) if loc.line_num==6 && loc.col_num==26
         ));
 
@@ -1349,7 +1370,7 @@ mod test {
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Camera).is_ok());
         assert!(matches!(
-            input.parse_camera(&var),
+            input.parse_camera(&var, cli),
             Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==3 && loc.col_num==3
         ))
     }
@@ -1738,7 +1759,7 @@ mod test {
             "\n",
             "camera:\n",
             "  type: \"perspective\" # This is an inline comment\n",
-            "  ratio: 0.3333333\n",
+            "  ratio: RATIO\n",
             "  distance: 2.0\n",
             "  transformation: camera\n",
             "\n",
@@ -1753,6 +1774,11 @@ mod test {
             "    material: from_image\n",
             "    transformation: rot_y\n",
         )));
+        // Build a cli
+        let cli = Cli {
+            aspect_ratio: 640. / 480.,
+            angle_deg: 0.0,
+        };
         // Build a reference hdrimage to use with image pigment
         let pfm_reference_bytes = vec![
             0x50, 0x46, 0x0a, 0x33, 0x20, 0x32, 0x0a, 0x2d, 0x31, 0x2e, 0x30, 0x0a, 0x00, 0x00,
@@ -1774,7 +1800,7 @@ mod test {
         let mut world = World::default();
         let camera = Camera::Perspective(PerspectiveCamera::new(
             2.0,
-            0.3333333,
+            cli.aspect_ratio,
             rotation_z(f32::to_radians(270.)),
         ));
         let sphere = Material {
@@ -1817,7 +1843,7 @@ mod test {
         scene_ref.camera = Some(camera);
         scene_ref.shapes = Some(world);
 
-        let scene = input.parse_scene();
+        let scene = input.parse_scene(cli);
         assert!(scene.is_ok());
         assert_eq!(format!("{:?}", scene.unwrap()), format!("{:?}", scene_ref));
 
@@ -1859,7 +1885,7 @@ mod test {
         )));
 
         assert!(
-            matches!(input.parse_scene(), Err(SceneErr::NotMatch{ loc, .. }) if loc.line_num==35)
+            matches!(input.parse_scene(cli), Err(SceneErr::NotMatch{ loc, .. }) if loc.line_num==35)
         );
     }
 }

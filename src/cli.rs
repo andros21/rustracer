@@ -400,8 +400,14 @@ pub fn build_cli() -> Command<'static> {
     cli
 }
 
+/// Inherits some useful cli parameters.
+///
+/// Use it inside [`read_scene_file`](../../scene/struct.Scene.html#method.read_scene_file) to
+/// set some standard [`f32`] values.
 #[derive(Copy, Clone)]
 pub struct Cli {
+    // Aspect ratio usually `width/height`.
     pub aspect_ratio: f32,
+    // View angle (in degrees) of the scene.
     pub angle_deg: f32,
 }

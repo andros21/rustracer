@@ -53,6 +53,7 @@ pub enum DemoErr {
     IoError(#[source] HdrImageErr),
 }
 
+/// Error enum for [`Scene`](../scene) module.
 #[derive(Error, Debug)]
 pub enum SceneErr {
     #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]

@@ -1,3 +1,6 @@
+//! Scene parsing module.
+//!
+//! Provides `Scene` struct parsed from scene file (**yaml** formatted).
 use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
 use crate::cli::Cli;
 use crate::color::{Color, BLACK, WHITE};
@@ -20,14 +23,21 @@ use std::io::{BufReader, Read};
 use std::path::Path;
 use std::str::FromStr;
 
+/// Chars that must be considered special when parsed.
+///
+/// Because usually are separators or delimiters in the scene file.
 const SYMBOLS: [char; 8] = ['\n', ' ', '-', ':', '[', ',', ']', '#'];
 
+/// A specific position in a scene file.
 #[derive(Clone, Copy, Debug)]
 pub struct SourceLocation {
+    /// Number of the line.
     pub line_num: u32,
+    /// Number of the column.
     pub col_num: u32,
 }
 
+/// Enum for all the possible keywords of [`Token::Keyword`].
 #[derive(Clone, Copy, Debug, PartialEq)]
 enum Keywords {
     Camera,
@@ -57,6 +67,7 @@ enum Keywords {
     Uniform,
 }
 
+/// Enum for all tokens recognized by the lexer.
 #[derive(Debug, Clone)]
 enum Token {
     Identifier(SourceLocation, String),
@@ -67,6 +78,7 @@ enum Token {
     Symbol(SourceLocation, char),
 }
 
+/// Support macro when there is a token mismatch.
 #[macro_export]
 macro_rules! not_match {
     ($a:expr,$b:expr,$c:expr) => {
@@ -77,6 +89,7 @@ macro_rules! not_match {
     };
 }
 
+/// Support macro to check what type of token mismatch occurs.
 #[macro_export]
 macro_rules! not_matches {
     ($a:expr,$c:expr) => {
@@ -91,17 +104,31 @@ macro_rules! not_matches {
     };
 }
 
+/// A high-level wrapper around a stream, used to parse scene files (**yaml** formatted).
+///
+/// This class implements a wrapper around a stream,\
+/// with the following additional capabilities:
+///   * It tracks the line number and column number;
+///   * It permits to "unread" characters and tokens;
+///   * It tracks the number of spaces that build up a indent block.
 #[derive(Clone)]
 struct InputStream<R: Read> {
+    /// A stream that implement [`Read`] trait.
     reader: R,
+    /// A location pointer.
     location: SourceLocation,
+    /// Last saved char.
     saved_ch: char,
+    /// Last saved location.
     saved_location: SourceLocation,
+    /// Last saved token.
     saved_token: Option<Token>,
+    /// Spaces that build up an indent block.
     spaces: u32,
 }
 
 impl<R: Read> InputStream<R> {
+    /// Create a new [`InputStream`] from a stream that implement [`Read`] trait.
     pub fn new(reader: R) -> Self {
         Self {
             reader,
@@ -119,6 +146,7 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Update location after having read char from the stream.
     fn update_pos(&mut self, ch: char) {
         if ch == '\n' {
             self.location.line_num += 1;
@@ -128,6 +156,7 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Read a new character from the stream.
     fn read_char(&mut self) -> char {
         // Empty bytes buffer (only 1 byte).
         let mut ch = [0; 1];
@@ -144,15 +173,16 @@ impl<R: Read> InputStream<R> {
         ch[0] as char
     }
 
+    /// Push a character back to the stream.
     fn unread_char(&mut self, ch: char) {
         self.saved_ch = ch;
         self.location = self.saved_location;
     }
 
+    /// If a comment character (for **yaml** is `#`) is found,\
+    /// skip all the next ones until an end-of-line (`\n`) or end-of-file (`\x00`).
     fn skip_comment(&mut self) {
         let mut ch = self.read_char();
-        //loop {
-        // If a comment ignore until eol or eof.
         if ch == '#' {
             loop {
                 ch = self.read_char();
@@ -160,15 +190,12 @@ impl<R: Read> InputStream<R> {
                     break;
                 }
             }
-            //break;
         } else {
-            // Roll back character.
             self.unread_char(ch);
-            //break;
         }
-        //}
     }
 
+    /// Keep reading characters until a non-whitespace/non-comment character is found.
     fn skip_whitespaces_and_comments(&mut self) {
         let mut ch = self.read_char();
         loop {
@@ -191,11 +218,13 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Count spaces that build up a particular indent block.\
+    /// See [`parse_colors`](#method.parse_colors) for example of usage.
     fn count_spaces(&mut self) -> Result<(), SceneErr> {
         self.spaces = 1;
         let mut ch = self.read_char();
         loop {
-            // Count multiple spaces occurences.
+            // Count multiple spaces occurrences.
             if ch == ' ' {
                 self.spaces += 1;
                 ch = self.read_char();
@@ -216,6 +245,7 @@ impl<R: Read> InputStream<R> {
         Ok(())
     }
 
+    /// Parse string token [`Token::String`].
     fn parse_string(
         &mut self,
         token_location: SourceLocation,
@@ -235,14 +265,12 @@ impl<R: Read> InputStream<R> {
                     msg: format!("unclosed `{}`, untermineted string", delimiter),
                 });
             }
-            //else {
-            //();
-            //}
             token.push(ch);
         }
         Ok(Token::String(token_location, token))
     }
 
+    /// Parse literal number (always as `f32`) token [`Token::LiteralNumber`].
     fn parse_float(
         &mut self,
         first_char: char,
@@ -285,6 +313,7 @@ impl<R: Read> InputStream<R> {
         Ok(Token::LiteralNumber(token_location, value))
     }
 
+    /// Parse a keyword token [`Token::Keyword`] or an identifier token [`Token::Identifier`].
     fn parse_keyword_or_identifier(
         &mut self,
         first_char: char,
@@ -332,6 +361,10 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Read a [`Token`] from the stream.
+    ///
+    /// If successful return a particular variant of [`Token`] enum wrapped inside [`Result`].\
+    /// Otherwise return an error of type [`SceneErr::InvalidCharacter`].
     fn read_token(&mut self) -> Result<Token, SceneErr> {
         // If some saved token, use it.
         if self.saved_token.is_some() {
@@ -370,10 +403,13 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Make as if `token` were never read from stream.
     fn unread_token(&mut self, token: Token) {
         self.saved_token = Some(token)
     }
 
+    /// Read a token from stream and check that it matches [`Token::Symbol`].\
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_symbol(&mut self, symbol: char) -> Result<(), SceneErr> {
         let token = self.read_token()?;
         if matches!(token, Token::Symbol(_, sym) if sym==symbol) {
@@ -383,6 +419,7 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Match an eof-of-inline or an inline comment, othewise return [`SceneErr::NotMatch`] error.
     fn match_eol_or_inline_comment(&mut self) -> Result<(), SceneErr> {
         let token = self.read_token()?;
         // Two possibility: eol or inline comment.
@@ -396,6 +433,8 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Match whitespaces or an comments, othewise return [`SceneErr::NotMatch`] error.\
+    /// Unread the `token`, and skip nothing only if `Token::Keyword` was parsed.
     fn match_whitespaces_and_comments(&mut self) -> Result<(), SceneErr> {
         let token = self.read_token()?;
         // If there is keyword, make it available for the next block.
@@ -414,6 +453,8 @@ impl<R: Read> InputStream<R> {
         Ok(())
     }
 
+    /// Match the correct number of spaces for the current indent block.\
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_spaces(&mut self, level: u32, nested: u32) -> Result<(), SceneErr> {
         // Match a particular number of spaces.
         // * `level` is intended for key alignment, incremented by 2 spaces.
@@ -424,6 +465,9 @@ impl<R: Read> InputStream<R> {
         Ok(())
     }
 
+    /// Read a token from stream and check that it matches [`Token::Keyword`] and\
+    /// a particular `keywords` [`Keywords`].
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_keyword(&mut self, keyword: Keywords) -> Result<(), SceneErr> {
         // Match a particular keyword plus ':'.
         let token = self.read_token()?;
@@ -439,6 +483,9 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Read a token from stream and check that it matches [`Token::Keyword`] and\
+    /// a particular range of `keywords` [`Keywords`].
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_keywords(&mut self, keywords: &Vec<Keywords>) -> Result<Keywords, SceneErr> {
         // Match a potential vector of keywords plus ':'.
         let token = self.read_token()?;
@@ -455,6 +502,8 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Read a token from stream and check that it matches [`Token::Identifier`].\
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_identifier(&mut self) -> Result<String, SceneErr> {
         // Match a ' ' plus an identifier.
         self.match_symbol(' ')?;
@@ -467,6 +516,8 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Read a token from stream and check that it matches [`Token::String`].\
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_string(&mut self) -> Result<String, SceneErr> {
         let token = self.read_token()?;
         match token {
@@ -475,6 +526,8 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Read a token from stream and check that it matches [`Token::LiteralNumber`].\
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_number(&mut self) -> Result<f32, SceneErr> {
         let token = self.read_token()?;
         match token {
@@ -482,6 +535,12 @@ impl<R: Read> InputStream<R> {
             _ => not_matches!(token, "number"),
         }
     }
+
+    /// Read a token from stream and check that it matches [`Token::LiteralNumber`] or
+    /// a [`Token::Identifier`]\
+    /// with a particular string instance, that if match means
+    /// that [`f32`] number must be read from `cli`.\
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_number_cli(&mut self, cli: Cli) -> Result<f32, SceneErr> {
         let token = self.read_token()?;
         match token {
@@ -499,6 +558,10 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Parse a rgb color [`Color`] from stream combining previous match methods.\
+    /// A color could be also read from a [`Token::Identifier`]
+    /// if its string match a particular key of `var.colors` map.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_color(&mut self, var: &Var) -> Result<Color, SceneErr> {
         let token = self.read_token()?;
         match token {
@@ -538,6 +601,8 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Parse an xyz vector [`Vector`] from stream combining previous match methods.\
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn parse_vector(&mut self) -> Result<Vector, SceneErr> {
         self.match_symbol('[')?;
         let x = self.match_number()?;
@@ -548,10 +613,12 @@ impl<R: Read> InputStream<R> {
         self.match_symbol(' ')?;
         let z = self.match_number()?;
         self.match_symbol(']')?;
-
         Ok(Vector::from((x, y, z)))
     }
 
+    /// Parse a color from colors block combining [`parse_color`](#method.parse_color)
+    /// and put it inside `var.colors` map.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_color_name(
         &mut self,
         colors: &mut BTreeMap<String, Color>,
@@ -569,6 +636,9 @@ impl<R: Read> InputStream<R> {
         Ok(())
     }
 
+    /// Parse colors inside colors block iterating [`parse_color_name`](#method.parse_color_name)
+    /// until the block end.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_colors(&mut self, var: &Var) -> Result<BTreeMap<String, Color>, SceneErr> {
         let mut colors = BTreeMap::new();
         // The keyword `Keywords::Colors` is parsed inside `parse_scene`.
@@ -607,6 +677,8 @@ impl<R: Read> InputStream<R> {
         Ok(colors)
     }
 
+    /// Parse a `pigment` [`Pigment`] from stream combining previous match and parse methods.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_pigment(&mut self, nested: u32, var: &Var) -> Result<Pigment, SceneErr> {
         // Match indent with materials block spaces + 1 level (2 spaces) +
         // + nested * (materials block spaces).
@@ -651,6 +723,8 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Parse a `brdf` [`BRDF`] from stream combining previous match methods.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_brdf(&mut self, var: &Var) -> Result<BRDF, SceneErr> {
         // Match indent with materials block spaces + 1 level (2 spaces).
         self.match_spaces(1, 0)?;
@@ -670,6 +744,10 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Parse a `material` [`Material`] inside materials block combining
+    /// [`parse_pigment`](#method.parse_pigment) and [`parse_brdf`](#method.parse_brdf).\
+    /// And put it inside `var.materials` map.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_material(
         &mut self,
         materials: &mut BTreeMap<String, Material>,
@@ -693,6 +771,9 @@ impl<R: Read> InputStream<R> {
         Ok(())
     }
 
+    /// Parse materials inside materials block iterating [`parse_material`](#method.parse_material)
+    /// until the block end.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_materials(&mut self, var: &Var) -> Result<BTreeMap<String, Material>, SceneErr> {
         let mut materials = BTreeMap::new();
         // The keyword `Keywords::Materials` is parsed inside `parse_scene`.
@@ -730,6 +811,8 @@ impl<R: Read> InputStream<R> {
         Ok(materials)
     }
 
+    /// Parse a `transformation` [`Transformation`] from stream combining previous match methods.\
+    /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn parse_transformation(&mut self) -> Result<Transformation, SceneErr> {
         let transformation_key = self.match_keywords(&vec![
             Keywords::RotationX,
@@ -750,6 +833,10 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Compose multiple `transformation` [`Transformation`] into one iterating over
+    /// [`parse_transformation`](#method.parse_transformation).\
+    /// And put it inside `var.transformations` map.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_composed_transformation(
         &mut self,
         transformations: &mut BTreeMap<String, Transformation>,
@@ -819,6 +906,10 @@ impl<R: Read> InputStream<R> {
         Ok(())
     }
 
+    /// Parse transformations inside transformations block iterating
+    /// [`parse_composed_transformation`](#method.parse_composed_transformation)
+    /// until the block end.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_transformations(&mut self) -> Result<BTreeMap<String, Transformation>, SceneErr> {
         let mut transformations = BTreeMap::new();
         // The keyword `Keywords::Transformations` is parsed inside `parse_scene`.
@@ -849,6 +940,8 @@ impl<R: Read> InputStream<R> {
         Ok(transformations)
     }
 
+    /// Parse shape inside shapes block using `var.materials` and `var.transformations`.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_shape(&mut self, var: &Var) -> Result<Box<dyn RayIntersection>, SceneErr> {
         let shape = self.match_keywords(&vec![Keywords::Plane, Keywords::Sphere])?;
         // Can only be a eol or inline comment.
@@ -887,6 +980,9 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Parse shapes inside shapes block iterating
+    /// [`parse_shape`](#method.parse_shape) until the block end.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_shapes(&mut self, var: &Var) -> Result<World, SceneErr> {
         // Init an empty world object.
         let mut shapes = World::default();
@@ -926,6 +1022,9 @@ impl<R: Read> InputStream<R> {
         Ok(shapes)
     }
 
+    /// Parse camera inside camera block using `var.materials` and `var.transformations`,\
+    /// and optionally for particular identifiers read standard values from `cli`.\
+    /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_camera(&mut self, var: &Var, cli: Cli) -> Result<Camera, SceneErr> {
         // The keyword `Keywords::Camera` is parsed inside `parse_scene`.
         // After 'camera:' can only be a eol or inline comment.
@@ -992,6 +1091,20 @@ impl<R: Read> InputStream<R> {
         }
     }
 
+    /// Parse a scene in all its entirety.
+    ///
+    /// Blocks that must exist:
+    ///  * camera;
+    ///  * materials;
+    ///  * shapes.
+    ///
+    /// Optionals:
+    ///  * colors;
+    ///  * transformations.
+    ///
+    /// Blocks can be separated by multiple break line.
+    ///
+    /// When a camera and world (list of shapes) is parsed stop scene parsing.
     fn parse_scene(&mut self, cli: Cli) -> Result<Scene, SceneErr> {
         let mut block;
         let mut var = Var::default();
@@ -1063,14 +1176,24 @@ impl<R: Read> InputStream<R> {
     }
 }
 
+/// Variables object, useful to store when parsing.
+///
+/// Struct that wrap different [`BTreeMap`] for each of scene blocks.
+/// Ready to be used when parsing a [`Token::Identifier`]
+/// with a key that exist for the particular block.
 #[derive(Clone)]
 struct Var {
+    /// Map of colors.
     colors: BTreeMap<String, Color>,
+    /// Map of materials.
     materials: BTreeMap<String, Material>,
+    /// Map of transformations.
     transformations: BTreeMap<String, Transformation>,
 }
 
 impl Default for Var {
+    /// Initialize a variables object with some useful predefined keys.\
+    /// E.g. "BLACK" and "WHITE" keys for [`BLACK`] and [`WHITE`] colors.
     fn default() -> Self {
         let mut colors = BTreeMap::new();
         colors.insert(String::from("BLACK"), BLACK);
@@ -1086,6 +1209,9 @@ impl Default for Var {
     }
 }
 
+/// Scene to render.
+///
+/// Usually parsed from a scene file.
 #[derive(Debug, Default)]
 pub struct Scene {
     pub camera: Option<Camera>,
@@ -1093,6 +1219,10 @@ pub struct Scene {
 }
 
 impl Scene {
+    /// Build up scene from a scene file (**yaml** formatted).
+    ///
+    /// Wrapper around [`parse_scene`](../scene/struct.InputStream.html#method.parse_scene)
+    /// method of [`InputStream`].
     pub fn read_scene_file(path: &Path, cli: Cli) -> Result<Self, SceneErr> {
         let file = File::open(path).map_err(SceneErr::SceneFileReadFailure)?;
         let reader = BufReader::new(file);

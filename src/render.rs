@@ -174,8 +174,27 @@ mod test {
     use super::*;
     use crate::material::{DiffuseBRDF, Pigment, UniformPigment, BRDF};
     use crate::misc::IsClose;
+    use crate::point::Point;
     use crate::transformation::Transformation;
-    use crate::{Material, Sphere, WHITE};
+    use crate::vector::E1;
+    use crate::{translation, Material, Sphere, BLACK, WHITE};
+
+    #[test]
+    fn test_onoff() {
+        let ray1 = Ray {
+            origin: Point::from((-2., 3., 0.)),
+            ..Default::default()
+        };
+        let ray2 = Ray {
+            origin: Point::from((-2., 0., 0.)),
+            ..Default::default()
+        };
+        let mut world = World::default();
+        world.add(Box::new(Sphere::default()));
+        let mut onoff_renderer = Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE));
+        assert!(onoff_renderer.solve(ray1).is_close(BLACK));
+        assert!(onoff_renderer.solve(ray2).is_close(WHITE))
+    }
 
     #[test]
     fn test_furnace() {
@@ -196,19 +215,24 @@ mod test {
             let furnace = Sphere::new(Transformation::default(), furnace_material);
             let mut world = World::default();
             world.add(Box::new(furnace));
-            let mut path_tracer = Renderer::PathTracer(PathTracer {
-                pcg,
-                num_of_rays: 1,
-                world: &world,
-                max_depth: 100,
-                russian_roulette_limit: 101,
-                bg_color: Default::default(),
-            });
+            let mut path_tracer =
+                Renderer::PathTracer(PathTracer::new(&world, BLACK, pcg, 1, 100, 101));
             let color = path_tracer.solve(Ray::default());
             let expected = emitted_radiance / (1. - reflectance);
             assert!(expected.is_close(color.r));
             assert!(expected.is_close(color.g));
             assert!(expected.is_close(color.b));
         }
+    }
+
+    #[test]
+    fn test_background() {
+        let mut pcg = Pcg::default();
+        let sphere = Sphere::new(translation(E1 * 2.), Material::default());
+        let mut world = World::default();
+        world.add(Box::new(sphere));
+        let mut path_tracer =
+            Renderer::PathTracer(PathTracer::new(&world, BLACK, pcg, 1000, 1000, 0));
+        assert!(path_tracer.solve(Ray::default()).is_close(BLACK))
     }
 }

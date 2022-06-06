@@ -41,7 +41,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
       - name: check cache
-        uses: actions/cache@48af2dc4a9e8278b89d7fa154b955c30c6aaab09
+        uses: actions/cache@30f413bfed0a2bc738fdfd409e5a9e96b24545fd
         id: cache
         with:
           path: |
@@ -89,7 +89,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
       - name: check cache
-        uses: actions/cache@48af2dc4a9e8278b89d7fa154b955c30c6aaab09
+        uses: actions/cache@30f413bfed0a2bc738fdfd409e5a9e96b24545fd
         id: cache
         with:
           path: |

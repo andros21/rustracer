@@ -14,7 +14,7 @@ use crate::shape::{Plane, RayIntersection, Sphere};
 use crate::transformation::{
     rotation_x, rotation_y, rotation_z, scaling, translation, Transformation,
 };
-use crate::vector::Vector;
+use crate::vector::{Vector, E1, E2, E3};
 use crate::world::World;
 use std::collections::BTreeMap;
 use std::f32::consts::PI;
@@ -603,17 +603,34 @@ impl<R: Read> InputStream<R> {
 
     /// Parse an xyz vector [`Vector`] from stream combining previous match methods.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
-    fn parse_vector(&mut self) -> Result<Vector, SceneErr> {
-        self.match_symbol('[')?;
-        let x = self.match_number()?;
-        self.match_symbol(',')?;
-        self.match_symbol(' ')?;
-        let y = self.match_number()?;
-        self.match_symbol(',')?;
-        self.match_symbol(' ')?;
-        let z = self.match_number()?;
-        self.match_symbol(']')?;
-        Ok(Vector::from((x, y, z)))
+    fn parse_vector(&mut self, var: &Var) -> Result<Vector, SceneErr> {
+        let token = self.read_token()?;
+        match token {
+            // Match a raw vector xyz.
+            Token::Symbol(_, '[') => {
+                let x = self.match_number()?;
+                self.match_symbol(',')?;
+                self.match_symbol(' ')?;
+                let y = self.match_number()?;
+                self.match_symbol(',')?;
+                self.match_symbol(' ')?;
+                let z = self.match_number()?;
+                self.match_symbol(']')?;
+                Ok(Vector::from((x, y, z)))
+            }
+            // Match vector from variables `var`.
+            Token::Identifier(_, vector) => {
+                Ok(var
+                    .vectors
+                    .get(&vector)
+                    .copied()
+                    .ok_or(SceneErr::UndefinedIdentifier {
+                        loc: self.location,
+                        msg: format!("{} not defined", vector),
+                    })?)
+            }
+            _ => not_matches!(token, "[ or identifier"),
+        }
     }
 
     /// Parse a color from colors block combining [`parse_color`](#method.parse_color)
@@ -813,23 +830,44 @@ impl<R: Read> InputStream<R> {
 
     /// Parse a `transformation` [`Transformation`] from stream combining previous match methods.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
-    fn parse_transformation(&mut self) -> Result<Transformation, SceneErr> {
-        let transformation_key = self.match_keywords(&vec![
-            Keywords::RotationX,
-            Keywords::RotationY,
-            Keywords::RotationZ,
-            Keywords::Scaling,
-            Keywords::Translation,
-        ])?;
-        self.match_symbol(' ')?;
-        match transformation_key {
-            Keywords::RotationX => Ok(rotation_x(f32::to_radians(self.match_number()?))),
-            Keywords::RotationY => Ok(rotation_y(f32::to_radians(self.match_number()?))),
-            Keywords::RotationZ => Ok(rotation_z(f32::to_radians(self.match_number()?))),
-            Keywords::Scaling => Ok(scaling(self.parse_vector()?)),
-            Keywords::Translation => Ok(translation(self.parse_vector()?)),
-            // This branch should never be triggered (a dummy error).
-            _ => Err(SceneErr::UnexpectedMatch(String::from("unexpected match"))),
+    fn parse_transformation(
+        &mut self,
+        transformations: &BTreeMap<String, Transformation>,
+        var: &Var,
+    ) -> Result<Transformation, SceneErr> {
+        let transformation_tk = self.read_token()?;
+        match transformation_tk {
+            // Match from transformation [`Token::Keywords`].
+            Token::Keyword(_, key) => {
+                self.match_symbol(':')?;
+                self.match_symbol(' ')?;
+                match key {
+                    Keywords::RotationX => Ok(rotation_x(f32::to_radians(self.match_number()?))),
+                    Keywords::RotationY => Ok(rotation_y(f32::to_radians(self.match_number()?))),
+                    Keywords::RotationZ => Ok(rotation_z(f32::to_radians(self.match_number()?))),
+                    Keywords::Scaling => Ok(scaling(self.parse_vector(var)?)),
+                    Keywords::Translation => Ok(translation(self.parse_vector(var)?)),
+                    // Match inside `transformations` [`BTreeMap`].
+                    key => Ok(transformations
+                        .get(&format!("{:?}", key).to_lowercase())
+                        .copied()
+                        .ok_or(SceneErr::UndefinedIdentifier {
+                            loc: self.location,
+                            msg: format!("{} not defined", format!("{:?}", key).to_lowercase()),
+                        })?),
+                }
+            }
+            // Match inside `transformations` [`BTreeMap`].
+            Token::Identifier(_, id) => {
+                transformations
+                    .get(&id)
+                    .copied()
+                    .ok_or(SceneErr::UndefinedIdentifier {
+                        loc: self.location,
+                        msg: format!("{} not defined", id),
+                    })
+            }
+            _ => not_matches!(transformation_tk, String::from("transformation")),
         }
     }
 
@@ -840,6 +878,7 @@ impl<R: Read> InputStream<R> {
     fn parse_composed_transformation(
         &mut self,
         transformations: &mut BTreeMap<String, Transformation>,
+        var: &Var,
     ) -> Result<(), SceneErr> {
         // Init a identity translation to compose.
         let mut transformation = Transformation::default();
@@ -857,7 +896,7 @@ impl<R: Read> InputStream<R> {
         self.match_spaces(1, 1)?;
         self.match_symbol('-')?;
         self.match_symbol(' ')?;
-        transformation = transformation * self.parse_transformation()?;
+        transformation = transformation * self.parse_transformation(transformations, var)?;
         loop {
             // Can only be a eol or inline comment.
             self.match_eol_or_inline_comment()?;
@@ -881,7 +920,8 @@ impl<R: Read> InputStream<R> {
                         self.match_spaces(1, 0)?;
                         self.match_symbol('-')?;
                         self.match_symbol(' ')?;
-                        transformation = transformation * self.parse_transformation()?;
+                        transformation =
+                            transformation * self.parse_transformation(transformations, var)?;
                         Ok(())
                     }
                     // Otherwise stop with compose transformation block.
@@ -910,7 +950,10 @@ impl<R: Read> InputStream<R> {
     /// [`parse_composed_transformation`](#method.parse_composed_transformation)
     /// until the block end.\
     /// Otherwise return a variant of [`SceneErr`] error.
-    fn parse_transformations(&mut self) -> Result<BTreeMap<String, Transformation>, SceneErr> {
+    fn parse_transformations(
+        &mut self,
+        var: &Var,
+    ) -> Result<BTreeMap<String, Transformation>, SceneErr> {
         let mut transformations = BTreeMap::new();
         // The keyword `Keywords::Transformations` is parsed inside `parse_scene`.
         // After 'transformations:' can only be a eol or inline comment.
@@ -921,7 +964,7 @@ impl<R: Read> InputStream<R> {
         self.count_spaces()?;
         self.match_symbol('-')?;
         self.match_symbol(' ')?;
-        self.parse_composed_transformation(&mut transformations)?;
+        self.parse_composed_transformation(&mut transformations, var)?;
         loop {
             // Condition token: read a new transformation or not?
             let tk_nx = self.read_token()?;
@@ -930,7 +973,7 @@ impl<R: Read> InputStream<R> {
             // No other suppositions are made! To reduce grammar complexity.
             if matches!(tk_nx, Token::Symbol(_, sym) if sym=='-') {
                 self.match_symbol(' ')?;
-                self.parse_composed_transformation(&mut transformations)?;
+                self.parse_composed_transformation(&mut transformations, var)?;
             } else {
                 // Unread condition token.
                 self.unread_token(tk_nx);
@@ -1104,7 +1147,7 @@ impl<R: Read> InputStream<R> {
     ///
     /// Blocks can be separated by multiple break line.
     ///
-    /// When a camera and world (list of shapes) is parsed stop scene parsing.
+    /// When a camera and world (list of shapes) are parsed stop scene parsing.
     fn parse_scene(&mut self, cli: Cli) -> Result<Scene, SceneErr> {
         let mut block;
         let mut var = Var::default();
@@ -1157,7 +1200,7 @@ impl<R: Read> InputStream<R> {
                     // And remove it from `blocks`, because was found.
                     Keywords::Transformations => {
                         var.transformations
-                            .append(&mut self.parse_transformations()?);
+                            .append(&mut self.parse_transformations(&var)?);
                         blocks.remove(
                             blocks
                                 .iter()
@@ -1189,6 +1232,8 @@ struct Var {
     materials: BTreeMap<String, Material>,
     /// Map of transformations.
     transformations: BTreeMap<String, Transformation>,
+    /// Map of vectors.
+    vectors: BTreeMap<String, Vector>,
 }
 
 impl Default for Var {
@@ -1201,10 +1246,15 @@ impl Default for Var {
         let materials = BTreeMap::new();
         let mut transformations = BTreeMap::new();
         transformations.insert(String::from("IDENTITY"), Transformation::default());
+        let mut vectors = BTreeMap::new();
+        vectors.insert(String::from("E1"), E1);
+        vectors.insert(String::from("E2"), E2);
+        vectors.insert(String::from("E3"), E3);
         Self {
             colors,
             materials,
             transformations,
+            vectors,
         }
     }
 }
@@ -1677,13 +1727,14 @@ mod test {
             "    - rotation_z: +1\n",
             "    - translation: [-.3, 1E-02, -1E+1]\n",
         )));
+        let var: Var = Var::default();
         let camera =
             rotation_z(f32::to_radians(1.0)) * translation(Vector::from((-0.3, 1e-2, -1e1)));
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
         assert!(
-            matches!(input.parse_transformations(), Ok(trs) if matches!(trs.get("camera"), Some(cam) if *cam==camera)
+            matches!(input.parse_transformations(&var), Ok(trs) if matches!(trs.get("camera"), Some(cam) if *cam==camera)
             )
         );
 
@@ -1705,11 +1756,46 @@ mod test {
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
-        let transformations = input.parse_transformations();
+        let transformations = input.parse_transformations(&var);
         assert!(transformations.is_ok());
         assert!(matches!(transformations.as_ref().unwrap().get("rot_x"), Some(rx) if *rx==rot_x));
         assert!(matches!(transformations.as_ref().unwrap().get("rot_y"), Some(ry) if *ry==rot_y));
         assert!(matches!(transformations.as_ref().unwrap().get("rot_z"), Some(rz) if *rz==rot_z));
+
+        let mut input = InputStream::new(Cursor::new(concat!(
+            "transformations:\n",
+            "  - name: rotation_x\n",
+            "    compose:\n",
+            "      - rotation_x: 90\n",
+            "  - name: rotation_y\n",
+            "    compose:\n",
+            "      - rotation_y: 180\n",
+            "  - name: rotation_z\n",
+            "    compose:\n",
+            "      - rotation_z: 270\n",
+            "  - name: rotation_tot\n",
+            "    compose:\n",
+            "      - rotationx\n",
+            "      - rotationy\n",
+            "      - rotationz\n",
+            "  - name: rotation_translation\n",
+            "    compose:\n",
+            "      - rotation_tot\n",
+            "      - translation: E3\n",
+        )));
+        let rot_tot = rot_x * rot_y * rot_z;
+        let rot_tra = rot_tot * translation(E3);
+
+        assert!(input.match_whitespaces_and_comments().is_ok());
+        assert!(input.match_keyword(Keywords::Transformations).is_ok());
+        let transformations = input.parse_transformations(&var);
+        assert!(transformations.is_ok());
+        assert!(
+            matches!(transformations.as_ref().unwrap().get("rotation_tot"), Some(rt) if *rt==rot_tot)
+        );
+        assert!(
+            matches!(transformations.as_ref().unwrap().get("rotation_translation"), Some(rt) if *rt==rot_tra)
+        );
 
         let mut input = InputStream::new(Cursor::new(concat!(
             "transformations:\n",
@@ -1726,7 +1812,7 @@ mod test {
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
         assert!(
-            matches!(input.parse_transformations(), Ok(trs) if matches!(trs.get("rot_scl"), Some(rs) if *rs==rot_scl)
+            matches!(input.parse_transformations(&var), Ok(trs) if matches!(trs.get("rot_scl"), Some(rs) if *rs==rot_scl)
             )
         );
 
@@ -1744,8 +1830,8 @@ mod test {
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
         assert!(matches!(
-            input.parse_transformations(),
-            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==5 && loc.col_num==10
+            input.parse_transformations(&var),
+            Err(SceneErr::UndefinedIdentifier { loc, .. }) if loc.line_num==5 && loc.col_num==18
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1759,7 +1845,7 @@ mod test {
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
         assert!(matches!(
-            input.parse_transformations(),
+            input.parse_transformations(&var),
             Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==4 && loc.col_num==6
         ))
     }

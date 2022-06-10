@@ -111,8 +111,8 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("init-state")))?;
     let init_seq = u64::from_str(sub_m.value_of("init-seq").unwrap())
         .map_err(|e| DemoErr::IntParseFailure(e, String::from("init-seq")))?;
-    let _samples_per_pixel = u32::from_str(sub_m.value_of("samples-per-pixel").unwrap())
-        .map_err(|e| DemoErr::IntParseFailure(e, String::from("samples-per-pixel")))?;
+    let antialiasing_level = u32::from_str(sub_m.value_of("anti-aliasing").unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from("anti-aliasing")))?;
     check!(ldr_file).map_err(DemoErr::IoError)?;
     let sky_material = Material {
         brdf: BRDF::Diffuse(DiffuseBRDF {
@@ -188,20 +188,23 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
             ))
         },
     );
-    tracer.fire_all_rays(match algorithm {
-        "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
-        "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
-        "pathtracer" => Renderer::PathTracer(PathTracer::new(
-            &world,
-            BLACK,
-            Pcg::new(init_state, init_seq),
-            num_of_rays,
-            max_depth,
-            3,
-        )),
-        // This branch should not be triggered (dummy behaviour).
-        _ => Renderer::Dummy(DummyRenderer),
-    });
+    tracer.fire_all_rays(
+        match algorithm {
+            "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
+            "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
+            "pathtracer" => Renderer::PathTracer(PathTracer::new(
+                &world,
+                BLACK,
+                Pcg::new(init_state, init_seq),
+                num_of_rays,
+                max_depth,
+                3,
+            )),
+            // This branch should not be triggered (dummy behaviour).
+            _ => Renderer::Dummy(DummyRenderer),
+        },
+        antialiasing_level,
+    );
     if sub_m.is_present("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");
         hdr_img
@@ -247,8 +250,8 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
         .map_err(|e| RenderErr::IntParseFailure(e, String::from("init-state")))?;
     let init_seq = u64::from_str(sub_m.value_of("init-seq").unwrap())
         .map_err(|e| RenderErr::IntParseFailure(e, String::from("init-seq")))?;
-    let _samples_per_pixel = u32::from_str(sub_m.value_of("samples-per-pixel").unwrap())
-        .map_err(|e| RenderErr::IntParseFailure(e, String::from("samples-per-pixel")))?;
+    let antialiasing_level = u32::from_str(sub_m.value_of("anti-aliasing").unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from("anti-aliasing")))?;
     check!(ldr_file).map_err(RenderErr::IoError)?;
     if sub_m.is_present("verbose") {
         println!("[info] reading scene from file {:?}", scene_file);
@@ -267,20 +270,23 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
     let mut hdr_img = HdrImage::new(width, height);
     let mut tracer = ImageTracer::new(&mut hdr_img, scene.camera.unwrap());
     let world = scene.shapes.unwrap();
-    tracer.fire_all_rays(match algorithm {
-        "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
-        "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
-        "pathtracer" => Renderer::PathTracer(PathTracer::new(
-            &world,
-            BLACK,
-            Pcg::new(init_state, init_seq),
-            num_of_rays,
-            max_depth,
-            3,
-        )),
-        // This branch should not be triggered (dummy behaviour).
-        _ => Renderer::Dummy(DummyRenderer),
-    });
+    tracer.fire_all_rays(
+        match algorithm {
+            "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
+            "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
+            "pathtracer" => Renderer::PathTracer(PathTracer::new(
+                &world,
+                BLACK,
+                Pcg::new(init_state, init_seq),
+                num_of_rays,
+                max_depth,
+                3,
+            )),
+            // This branch should not be triggered (dummy behaviour).
+            _ => Renderer::Dummy(DummyRenderer),
+        },
+        antialiasing_level,
+    );
     if sub_m.is_present("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");
         hdr_img

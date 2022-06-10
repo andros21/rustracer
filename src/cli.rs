@@ -45,10 +45,10 @@ const INIT_STATE: &str = "45";
 ///
 /// When no arguments are provided to `--init-seq` flag
 const INIT_SEQ: &str = "45";
-/// Default sample per pixel.
+/// Default anti-aliasing level.
 ///
-/// When no arguments are provided to `--sample-per-pixel` flag
-const SAMPLE_PER_PIXEL: &str = "1";
+/// When no arguments are provided to `--anti-aliasing` flag
+const ANTI_ALIASING: &str = "1";
 
 /// Build a [`clap::Command`](https://docs.rs/clap/latest/clap/type.Command.html)
 /// for [`rustracer`](..) crate.
@@ -239,15 +239,14 @@ pub fn build_cli() -> Command<'static> {
                         ),
                 )
                 .arg(
-                    Arg::new("samples-per-pixel")
-                        .short('s')
-                        .long("--samples-per-pixel")
-                        .value_name("SAMPLE_PER_PIXEL")
-                        .default_value(SAMPLE_PER_PIXEL)
+                    Arg::new("anti-aliasing")
+                        .long("--anti-aliasing")
+                        .value_name("ANTI_ALIASING")
+                        .default_value(ANTI_ALIASING)
                         .number_of_values(1)
-                        .help("[antialiasing not yet implemented] Number of samples per pixel (perfect square)")
+                        .help("Anti-aliasing level")
                         .long_help(
-                            "[antialiasing not yet implemented] Number of samples per pixel (must be a perfect square, e.g. 16)",
+                            "Anti-aliasing level, corresponds to the square-root of the number of samples per pixel",
                         ),
                 ),
         )
@@ -384,15 +383,14 @@ pub fn build_cli() -> Command<'static> {
                         ),
                 )
                 .arg(
-                    Arg::new("samples-per-pixel")
-                        .short('s')
-                        .long("--samples-per-pixel")
-                        .value_name("SAMPLE_PER_PIXEL")
-                        .default_value(SAMPLE_PER_PIXEL)
+                    Arg::new("anti-aliasing")
+                        .long("--anti-aliasing")
+                        .value_name("ANTI_ALIASING")
+                        .default_value(ANTI_ALIASING)
                         .number_of_values(1)
-                        .help("[antialiasing not yet implemented] Number of samples per pixel (perfect square)")
+                        .help("Anti-aliasing level")
                         .long_help(
-                            "[antialiasing not yet implemented] Number of samples per pixel (must be a perfect square, e.g. 16)",
+                            "Anti-aliasing level, corresponds to the square-root of the number of samples per pixel",
                         ),
                 ),
         );

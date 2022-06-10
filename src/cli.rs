@@ -190,9 +190,9 @@ pub fn build_cli() -> Command<'static> {
                         .value_name("ALGORITHM")
                         .default_value(ALGORITHM)
                         .number_of_values(1)
-                        .possible_values(["onoff", "pathtracer"])
+                        .possible_values(["onoff", "flat", "pathtracer"])
                         .help("Rendering algorithm")
-                        .long_help("Algorithm to use for render the scene: [onoff, pathtracer]"),
+                        .long_help("Algorithm to use for render the scene: [onoff, flat, pathtracer]"),
                 )
                 .arg(
                     Arg::new("num-of-rays")
@@ -335,9 +335,9 @@ pub fn build_cli() -> Command<'static> {
                         .value_name("ALGORITHM")
                         .default_value(ALGORITHM)
                         .number_of_values(1)
-                        .possible_values(["onoff", "pathtracer"])
+                        .possible_values(["onoff", "flat", "pathtracer"])
                         .help("Rendering algorithm")
-                        .long_help("Algorithm to use for render the scene: [onoff, pathtracer]"),
+                        .long_help("Algorithm to use for render the scene: [onoff, flat, pathtracer]"),
                 )
                 .arg(
                     Arg::new("num-of-rays")

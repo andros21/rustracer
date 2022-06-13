@@ -28,6 +28,7 @@ pub enum ByteOrder {
     LittleEndian,
 }
 
+/// 2D point struct used for shape's surface parametrization
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Vector2D {
     pub u: f32,
@@ -35,6 +36,7 @@ pub struct Vector2D {
 }
 
 impl IsClose for Vector2D {
+    /// Return `true` if the three xyz components of two [`Vector2D`] are [close](trait@IsClose).
     fn is_close(&self, other: Self) -> bool {
         self.u.is_close(other.u) && self.v.is_close(other.v)
     }
@@ -82,5 +84,14 @@ mod test {
     fn test_is_close_float() {
         assert!((EPSILON * 1e-1 + 1.0).is_close(1.0));
         assert!(!(EPSILON + 1.0).is_close(1.0))
+    }
+
+    #[test]
+    fn test_is_close_vector2d() {
+        assert!(Vector2D {
+            u: EPSILON * 1e-1 + 1.0,
+            v: 1.0,
+        }
+        .is_close(Vector2D { u: 1.0, v: 1.0 }))
     }
 }

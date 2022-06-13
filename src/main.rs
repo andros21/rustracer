@@ -13,6 +13,7 @@ mod point;
 mod random;
 mod ray;
 mod render;
+mod scene;
 mod shape;
 mod transformation;
 mod vector;
@@ -26,8 +27,9 @@ use std::process::exit;
 use std::str::FromStr;
 
 use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
+use crate::cli::Cli;
 use crate::color::{Color, BLACK, WHITE};
-use crate::error::{ConvertErr, DemoErr, HdrImageErr};
+use crate::error::{ConvertErr, DemoErr, HdrImageErr, RenderErr};
 use crate::hdrimage::{HdrImage, Luminosity};
 use crate::imagetracer::ImageTracer;
 use crate::material::{
@@ -36,6 +38,7 @@ use crate::material::{
 use crate::misc::ByteOrder;
 use crate::random::Pcg;
 use crate::render::{DummyRenderer, OnOffRenderer, PathTracer, Renderer};
+use crate::scene::Scene;
 use crate::shape::{Plane, Sphere};
 use crate::transformation::{rotation_z, scaling, translation, Transformation};
 use crate::vector::Vector;
@@ -52,6 +55,8 @@ fn main() {
     match cli_m.subcommand_name() {
         Some("convert") => exit!(convert(cli_m.subcommand_matches("convert").unwrap())),
         Some("demo") => exit!(demo(cli_m.subcommand_matches("demo").unwrap())),
+        Some("render") => exit!(render(cli_m.subcommand_matches("render").unwrap())),
+        // This branch should not be triggered (exit 1).
         _ => exit(1),
     }
 }
@@ -144,10 +149,10 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         }),
         emitted_radiance: Pigment::Uniform(UniformPigment::default()),
     };
-    let mut hdr_img = HdrImage::new(width, height);
     if sub_m.is_present("verbose") {
         println!("[info] generating an image ({}, {})", width, height);
     }
+    let mut hdr_img = HdrImage::new(width, height);
     let mut world = World::default();
     world.add(Box::new(Sphere::new(
         translation(Vector::from((0.0, 0.0, 0.4))) * scaling(Vector::from((200.0, 200.0, 200.0))),
@@ -193,7 +198,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
             max_depth,
             3,
         )),
-        // Otherwise dummy behaviour.
+        // This branch should not be triggered (dummy behaviour).
         _ => Renderer::Dummy(DummyRenderer),
     });
     if sub_m.is_present("output-pfm") {
@@ -210,6 +215,84 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
     hdr_img
         .write_ldr_file(ldr_file, gamma)
         .map_err(DemoErr::IoError)?;
+    if sub_m.is_present("verbose") {
+        println!("[info] {:?} has been written to disk", ldr_file);
+    }
+    Ok(())
+}
+
+/// Render a scene from file.
+///
+/// Called when `rustracer-render` subcommand is used.
+fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
+    let scene_file = Path::new(sub_m.value_of("INPUT").unwrap());
+    let ldr_file = Path::new(sub_m.value_of("OUTPUT").unwrap());
+    let factor = f32::from_str(sub_m.value_of("factor").unwrap())
+        .map_err(|e| RenderErr::FloatParseFailure(e, String::from("factor")))?;
+    let gamma = f32::from_str(sub_m.value_of("gamma").unwrap())
+        .map_err(|e| RenderErr::FloatParseFailure(e, String::from("gamma")))?;
+    let width = u32::from_str(sub_m.value_of("width").unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from("width")))?;
+    let height = u32::from_str(sub_m.value_of("height").unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from("height")))?;
+    let angle_deg = f32::from_str(sub_m.value_of("angle-deg").unwrap())
+        .map_err(|e| RenderErr::FloatParseFailure(e, String::from("angle-deg")))?;
+    let algorithm = sub_m.value_of("algorithm").unwrap();
+    let num_of_rays = u32::from_str(sub_m.value_of("num-of-rays").unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from("num-of-rays")))?;
+    let max_depth = u32::from_str(sub_m.value_of("max-depth").unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from("max-depth")))?;
+    let init_state = u64::from_str(sub_m.value_of("init-state").unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from("init-state")))?;
+    let init_seq = u64::from_str(sub_m.value_of("init-seq").unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from("init-seq")))?;
+    let _samples_per_pixel = u32::from_str(sub_m.value_of("samples-per-pixel").unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from("samples-per-pixel")))?;
+    check!(ldr_file).map_err(RenderErr::IoError)?;
+    if sub_m.is_present("verbose") {
+        println!("[info] reading scene from file {:?}", scene_file);
+    }
+    let scene = Scene::read_scene_file(
+        scene_file,
+        Cli {
+            aspect_ratio: width as f32 / height as f32,
+            angle_deg,
+        },
+    )
+    .map_err(|err| RenderErr::SceneError(err, String::from(sub_m.value_of("INPUT").unwrap())))?;
+    if sub_m.is_present("verbose") {
+        println!("[info] generating an image ({}, {})", width, height);
+    }
+    let mut hdr_img = HdrImage::new(width, height);
+    let mut tracer = ImageTracer::new(&mut hdr_img, scene.camera.unwrap());
+    let world = scene.shapes.unwrap();
+    tracer.fire_all_rays(match algorithm {
+        "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
+        "pathtracer" => Renderer::PathTracer(PathTracer::new(
+            &world,
+            BLACK,
+            Pcg::new(init_state, init_seq),
+            num_of_rays,
+            max_depth,
+            3,
+        )),
+        // This branch should not be triggered (dummy behaviour).
+        _ => Renderer::Dummy(DummyRenderer),
+    });
+    if sub_m.is_present("output-pfm") {
+        let hdr_file = ldr_file.with_extension("").with_extension("pfm");
+        hdr_img
+            .write_pfm_file(&hdr_file, ByteOrder::LittleEndian)
+            .map_err(RenderErr::IoError)?;
+        if sub_m.is_present("verbose") {
+            println!("[info] {:?} has been written to disk", hdr_file);
+        }
+    }
+    hdr_img.normalize_image(factor, Luminosity::AverageLuminosity);
+    hdr_img.clamp_image();
+    hdr_img
+        .write_ldr_file(ldr_file, gamma)
+        .map_err(RenderErr::IoError)?;
     if sub_m.is_present("verbose") {
         println!("[info] {:?} has been written to disk", ldr_file);
     }

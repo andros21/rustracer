@@ -16,13 +16,13 @@ use std::f32::consts::PI;
 ///
 /// This trait is meant to be implemented by geometrical [shapes](#implementors) in order to
 /// calculate how [light rays](struct@Ray) hit them.
-pub trait RayIntersection {
+pub trait RayIntersection: std::fmt::Debug {
     fn ray_intersection(&self, ray: Ray) -> Option<HitRecord>;
 }
 
 /// Struct used to store the results of [`RayIntersection`](trait@RayIntersection).
 #[derive(Clone)]
-pub struct HitRecord<'a> {
+pub struct HitRecord {
     /// Coordinates of the point of impact.
     pub world_point: Point,
     /// Normal of the shape surface on the impact point.
@@ -34,10 +34,10 @@ pub struct HitRecord<'a> {
     /// The ray that impacted on the shape.
     pub ray: Ray,
     /// The [`Material`](struct@Material) of the impacted shape
-    pub material: Material<'a>,
+    pub material: Material,
 }
 
-impl<'a> IsClose for HitRecord<'a> {
+impl IsClose for HitRecord {
     /// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are [close](trait@IsClose).
     fn is_close(&self, other: Self) -> bool {
         self.world_point.is_close(other.world_point)
@@ -49,8 +49,8 @@ impl<'a> IsClose for HitRecord<'a> {
 }
 
 /// Geometrical shape corresponding to a sphere.
-#[derive(Default)]
-pub struct Sphere<'a> {
+#[derive(Debug, Default)]
+pub struct Sphere {
     /// A generic sphere is defined by means of a
     /// [`Transformation`](struct@Transformation) on the
     /// unit sphere centered at the origin of axis.\
@@ -58,13 +58,13 @@ pub struct Sphere<'a> {
     /// using the proper [`scaling`](fn@crate::transformation::scaling).
     transformation: Transformation,
     /// The [`Material`](struct@Material) of the sphere.
-    material: Material<'a>,
+    material: Material,
 }
 
-impl<'a> Sphere<'a> {
+impl Sphere {
     /// Provides a constructor for [`Sphere`](struct@Sphere).
-    pub fn new(transformation: Transformation, material: Material<'a>) -> Self {
-        Self {
+    pub fn new(transformation: Transformation, material: Material) -> Self {
+        Sphere {
             transformation,
             material,
         }
@@ -99,9 +99,9 @@ fn sphere_point_to_uv(point: Point) -> Vector2D {
     Vector2D { u, v }
 }
 
-impl<'a> RayIntersection for Sphere<'a> {
+impl RayIntersection for Sphere {
     /// Finds intersections between a [`Ray`](struct@Ray) and a [`Sphere`](struct@Sphere).
-    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord<'a>> {
+    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord> {
         let inv_ray = self.transformation.inverse() * ray;
         let origin_vec = Vector::from(inv_ray.origin);
         let a = inv_ray.dir.squared_norm();
@@ -136,8 +136,8 @@ impl<'a> RayIntersection for Sphere<'a> {
 }
 
 /// Geometrical shape corresponding to a plane.
-#[derive(Default)]
-pub struct Plane<'a> {
+#[derive(Debug, Default)]
+pub struct Plane {
     /// A generic plane is defined by means of a [`Transformation`](struct@Transformation)
     /// on the X-Y plane.\
     /// A [`scaling`](fn@crate::transformation::scaling) transformation has the
@@ -145,13 +145,13 @@ pub struct Plane<'a> {
     /// [parametrization](fn@plane_point_to_uv).
     transformation: Transformation,
     /// The [`Material`](struct@Material) of the sphere.
-    material: Material<'a>,
+    material: Material,
 }
 
-impl<'a> Plane<'a> {
+impl Plane {
     /// Provides a constructor for [`Plane`](struct@Plane).
-    pub fn new(transformation: Transformation, material: Material<'a>) -> Self {
-        Self {
+    pub fn new(transformation: Transformation, material: Material) -> Self {
+        Plane {
             transformation,
             material,
         }
@@ -183,9 +183,9 @@ fn plane_point_to_uv(point: Point) -> Vector2D {
     }
 }
 
-impl<'a> RayIntersection for Plane<'a> {
+impl RayIntersection for Plane {
     /// Finds intersections between a [`Ray`](struct@Ray) and a [`Plane`](struct@Plane).
-    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord<'a>> {
+    fn ray_intersection(&self, ray: Ray) -> Option<HitRecord> {
         let inv_ray = self.transformation.inverse() * ray;
         if inv_ray.dir.z.abs() < 1e-5 {
             return None;

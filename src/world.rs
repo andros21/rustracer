@@ -10,7 +10,7 @@ use crate::shape::{HitRecord, RayIntersection};
 /// You can add shapes to a world using [`add`](#method.add).\
 /// Typically, you call [`ray_intersection`](#method.ray_intersection) to check whether
 /// a light ray intersects any of the shapes in the world.
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct World {
     /// A [`std::vec::Vec`] of [`std::boxed::Box`]-ed [`shapes`](../shape)
     /// that implement [`RayIntersection`] trait

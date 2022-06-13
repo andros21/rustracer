@@ -3,6 +3,7 @@
 //! Provides internal [`rustracer`](..) errors,
 //! using [`thiserror`](https://github.com/dtolnay/thiserror) library.
 
+use crate::scene::SourceLocation;
 use thiserror::Error;
 
 /// Error enum for [`HdrImage`](../hdrimage) module.
@@ -50,4 +51,50 @@ pub enum DemoErr {
     FloatParseFailure(#[source] std::num::ParseFloatError, String),
     #[error("{0}")]
     IoError(#[source] HdrImageErr),
+}
+
+/// Error enum for [`Scene`](../scene) module.
+#[derive(Error, Debug)]
+pub enum SceneErr {
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    InvalidCharacter { loc: SourceLocation, msg: String },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    UnclosedString { loc: SourceLocation, msg: String },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    FloatParseFailure {
+        loc: SourceLocation,
+        msg: String,
+        src: std::num::ParseFloatError,
+    },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    NotMatch { loc: SourceLocation, msg: String },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    PfmFileReadFailure {
+        loc: SourceLocation,
+        msg: String,
+        src: HdrImageErr,
+    },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    MaxSpaces { loc: SourceLocation, msg: String },
+    #[error("{0}")]
+    UnexpectedMatch(String),
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    UndefinedIdentifier { loc: SourceLocation, msg: String },
+    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
+    InvalidCamera { loc: SourceLocation, msg: String },
+    #[error("impossible to read from scene file: {0}")]
+    SceneFileReadFailure(#[source] std::io::Error),
+}
+
+/// Error enum for [`render`](../fn.render.html) function inside [`main`](../fn.main.html).
+#[derive(Error, Debug)]
+pub enum RenderErr {
+    #[error("invalid {1}, expected integer number: {0}")]
+    IntParseFailure(#[source] std::num::ParseIntError, String),
+    #[error("invalid {1}, expected floating-point number: {0}")]
+    FloatParseFailure(#[source] std::num::ParseFloatError, String),
+    #[error("{0}")]
+    IoError(#[source] HdrImageErr),
+    #[error("({1}) {0}")]
+    SceneError(#[source] SceneErr, String),
 }

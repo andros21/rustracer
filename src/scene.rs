@@ -183,10 +183,21 @@ impl<R: Read> InputStream<R> {
     /// skip all the next ones until an end-of-line (`\n`) or end-of-file (`\x00`).
     fn skip_comment(&mut self) {
         let mut ch = self.read_char();
+        // Strip all whitespaces before `#`.
+        loop {
+            if ch == ' ' {
+                ch = self.read_char();
+            } else {
+                self.unread_char(ch);
+                break;
+            }
+        }
+        // Ignore inline comment.
         if ch == '#' {
             loop {
                 ch = self.read_char();
                 if ['\n', '\x00'].contains(&ch) {
+                    self.unread_char(ch);
                     break;
                 }
             }
@@ -427,6 +438,7 @@ impl<R: Read> InputStream<R> {
             Ok(())
         } else if matches!(token, Token::Symbol(_, sym) if sym==' ') {
             self.skip_comment();
+            self.match_symbol('\n')?;
             Ok(())
         } else {
             not_matches!(token, "inline comment or \n")
@@ -1494,7 +1506,7 @@ mod test {
 
         let mut input = InputStream::new(Cursor::new(concat!(
             "camera:\n",
-            "  type: \"orthogonal\" # This is an inline comment\n",
+            "  type: \"orthogonal\"    # This is an inline comment\n",
             "  ratio: RATIO\n",
             "  transformation: camera\n",
         )));
@@ -1944,14 +1956,14 @@ mod test {
             " - name: green\n",
             "   color: [0.0, 1., 0]\n",
             " - name: blue\n",
-            "   color: [0.0, 0., 1] # This is an inline comment\n",
+            "   color: [0.0, 0., 1]                 # This is an inline comment\n",
             "# This is a comment\n",
             "\n",
             "materials:\n",
             "  - name: sky\n",
             "    specular:\n",
             "      uniform: [1.2, 0.9, 3.7]\n",
-            "    uniform: blue # This is an inline comment\n",
+            "    uniform: blue                      # This is an inline comment\n",
             "  - name: sphere\n",
             "    diffuse:\n",
             "      checkered: [BLACK, WHITE, 7.]\n",
@@ -1974,7 +1986,7 @@ mod test {
             "        - rotation_z: 270\n",
             "\n",
             "camera:\n",
-            "  type: \"perspective\" # This is an inline comment\n",
+            "  type: \"perspective\"                # This is an inline comment\n",
             "  ratio: RATIO\n",
             "  distance: 2.0\n",
             "  transformation: camera\n",

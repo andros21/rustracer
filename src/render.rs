@@ -227,7 +227,7 @@ mod test {
 
     #[test]
     fn test_background() {
-        let mut pcg = Pcg::default();
+        let pcg = Pcg::default();
         let sphere = Sphere::new(translation(E1 * 2.), Material::default());
         let mut world = World::default();
         world.add(Box::new(sphere));

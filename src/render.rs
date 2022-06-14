@@ -39,6 +39,17 @@ impl<'a> OnOffRenderer<'a> {
     }
 }
 
+/// A flat renderer.
+///
+/// This renderer is mostly useful for debugging purposes,
+/// as it is fast, but it does not take into account light reflection and shadows.
+pub struct FlatRenderer<'a> {
+    /// A world instance.
+    world: &'a World,
+    /// Background color (usually [`BLACK`](../color/constant.BLACK.html)).
+    bg_color: Color,
+}
+
 impl<'a> Solve for OnOffRenderer<'a> {
     /// Solve rendering with on/off strategy.
     ///
@@ -46,6 +57,28 @@ impl<'a> Solve for OnOffRenderer<'a> {
     fn solve(&mut self, ray: Ray) -> Color {
         match self.world.ray_intersection(ray) {
             Some(_hit) => self.fg_color,
+            None => self.bg_color,
+        }
+    }
+}
+
+impl<'a> FlatRenderer<'a> {
+    /// Create a new [`FlatRenderer`] renderer.
+    pub fn new(world: &'a World, bg_color: Color) -> Self {
+        Self { world, bg_color }
+    }
+}
+
+impl<'a> Solve for FlatRenderer<'a> {
+    /// Solve rendering with flat colors.
+    ///
+    /// If intersection happens return the color of the hit shape, otherwise `bg_color`.
+    fn solve(&mut self, ray: Ray) -> Color {
+        match self.world.ray_intersection(ray) {
+            Some(hit) => {
+                hit.material.emitted_radiance.get_color(hit.surface_point)
+                    + hit.material.brdf.get_color(hit.surface_point)
+            }
             None => self.bg_color,
         }
     }
@@ -156,6 +189,7 @@ pub enum Renderer<'a> {
     OnOff(OnOffRenderer<'a>),
     Dummy(DummyRenderer),
     PathTracer(PathTracer<'a>),
+    Flat(FlatRenderer<'a>),
 }
 
 impl<'a> Solve for Renderer<'a> {
@@ -165,6 +199,7 @@ impl<'a> Solve for Renderer<'a> {
             Renderer::OnOff(onoff) => onoff.solve(ray),
             Renderer::Dummy(dummy) => dummy.solve(ray),
             Renderer::PathTracer(pathtracer) => pathtracer.solve(ray),
+            Renderer::Flat(flat) => flat.solve(ray),
         }
     }
 }
@@ -177,7 +212,45 @@ mod test {
     use crate::point::Point;
     use crate::transformation::Transformation;
     use crate::vector::E1;
-    use crate::{translation, Material, Sphere, BLACK, WHITE};
+    use crate::{translation, CheckeredPigment, Material, Sphere, BLACK, WHITE};
+
+    #[test]
+    fn test_flat() {
+        let ray1 = Ray {
+            origin: Point::from((-2., 3., 0.)),
+            ..Default::default()
+        };
+        let ray_r = Ray {
+            origin: Point::from((-2., 0.5, 0.5)),
+            ..Default::default()
+        };
+        let ray_l = Ray {
+            origin: Point::from((-2., -0.5, 0.5)),
+            ..Default::default()
+        };
+        let red = Color::from((1., 0., 0.));
+        let green = Color::from((0., 1., 0.));
+        let blue = Color::from((0., 0., 1.));
+        let mut world = World::default();
+        let sphere_material = Material {
+            brdf: BRDF::Diffuse(DiffuseBRDF {
+                pigment: Pigment::Checkered(CheckeredPigment {
+                    color1: red,
+                    color2: blue,
+                    steps: 2,
+                }),
+            }),
+            emitted_radiance: Pigment::Uniform(UniformPigment { color: green }),
+        };
+        world.add(Box::new(Sphere::new(
+            Transformation::default(),
+            sphere_material,
+        )));
+        let mut flat_renderer = Renderer::Flat(FlatRenderer::new(&world, BLACK));
+        assert!(flat_renderer.solve(ray1).is_close(BLACK));
+        assert!(flat_renderer.solve(ray_r).is_close(red + green));
+        assert!(flat_renderer.solve(ray_l).is_close(blue + green));
+    }
 
     #[test]
     fn test_onoff() {

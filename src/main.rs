@@ -37,7 +37,7 @@ use crate::material::{
 };
 use crate::misc::ByteOrder;
 use crate::random::Pcg;
-use crate::render::{DummyRenderer, OnOffRenderer, PathTracer, Renderer};
+use crate::render::{DummyRenderer, FlatRenderer, OnOffRenderer, PathTracer, Renderer};
 use crate::scene::Scene;
 use crate::shape::{Plane, Sphere};
 use crate::transformation::{rotation_z, scaling, translation, Transformation};
@@ -190,6 +190,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
     );
     tracer.fire_all_rays(match algorithm {
         "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
+        "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
         "pathtracer" => Renderer::PathTracer(PathTracer::new(
             &world,
             BLACK,
@@ -268,6 +269,7 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
     let world = scene.shapes.unwrap();
     tracer.fire_all_rays(match algorithm {
         "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
+        "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
         "pathtracer" => Renderer::PathTracer(PathTracer::new(
             &world,
             BLACK,

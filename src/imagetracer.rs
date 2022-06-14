@@ -5,6 +5,7 @@ use crate::camera::{Camera, FireRay};
 use crate::hdrimage::HdrImage;
 use crate::ray::Ray;
 use crate::render::{Renderer, Solve};
+use crate::{Pcg, BLACK};
 
 /// Trace an image by shooting light rays through each of its pixels.
 pub struct ImageTracer<'a> {
@@ -39,13 +40,31 @@ impl<'a> ImageTracer<'a> {
 
     /// Shoot several light rays crossing each of the pixels in the image.
     ///
-    /// For each pixel in the [`HdrImage`] object fire one [`Ray`],\
-    /// and pass it to a [`Renderer`] that implement a [`Solve`] trait.
-    pub fn fire_all_rays(&mut self, mut renderer: Renderer) {
+    /// If `antialiasing_level` is one, for each pixel in the [`HdrImage`] object fire one [`Ray`],\
+    /// and pass it to a [`Renderer`] that implement a [`Solve`] trait to determine the `Color` of the pixel.
+    ///
+    /// If `antialiasing_level` is greater than one, then each pixel is divided in a N by N grid,\
+    /// where N is the anti-aliasing level, and a [`Ray`] is thrown for each sub-pixel;\
+    /// the color of the pixel in this case is obtained as the mean color of the N*N samples.
+    pub fn fire_all_rays(&mut self, mut renderer: Renderer, antialiasing_level: u32) {
+        let step = 1. / antialiasing_level as f32;
+        let mut pcg = Pcg::default();
         for row in 0..self.image.shape().1 {
             for col in 0..self.image.shape().0 {
-                let ray = self.fire_ray(col, row, 0.5, 0.5);
-                let color = renderer.solve(ray);
+                let mut color = BLACK;
+                for sub_row in 0..antialiasing_level {
+                    for sub_col in 0..antialiasing_level {
+                        let (sub_u, sub_v) = (pcg.random_float(), pcg.random_float());
+                        let ray = self.fire_ray(
+                            col,
+                            row,
+                            (sub_row as f32 + sub_u) * step,
+                            (sub_col as f32 + sub_v) * step,
+                        );
+                        color = color + renderer.solve(ray);
+                    }
+                }
+                color = color * (1. / antialiasing_level.pow(2) as f32);
                 self.image.set_pixel(col, row, color).unwrap()
             }
         }
@@ -81,7 +100,7 @@ mod test {
             Camera::Perspective(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let mut tracer = ImageTracer::new(&mut image, camera);
 
-        tracer.fire_all_rays(Renderer::Dummy(DummyRenderer));
+        tracer.fire_all_rays(Renderer::Dummy(DummyRenderer), 1);
         for row in 0..image.shape().1 {
             for col in 0..image.shape().0 {
                 assert!(

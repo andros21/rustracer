@@ -38,12 +38,6 @@ pub enum ConvertErr {
     IoError(#[source] HdrImageErr),
 }
 
-#[derive(Error, Debug)]
-pub enum GeometryErr {
-    #[error("object with norm {0} can't be normalized")]
-    UnableToNormalize(f32),
-}
-
 /// Error enum for [`demo`](../fn.demo.html) function inside [`main`](../fn.main.html).
 #[derive(Error, Debug)]
 pub enum DemoErr {

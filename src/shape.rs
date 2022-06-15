@@ -16,7 +16,12 @@ use std::f32::consts::PI;
 ///
 /// This trait is meant to be implemented by geometrical [shapes](#implementors) in order to
 /// calculate how [light rays](struct@Ray) hit them.
-pub trait RayIntersection: std::fmt::Debug {
+///
+/// All objects that implement [`RayIntersection`] must implement also:
+///   * [`Debug`];
+///   * [`Send`];
+///   * [`Sync`].
+pub trait RayIntersection: std::fmt::Debug + Send + Sync {
     fn ray_intersection(&self, ray: Ray) -> Option<HitRecord>;
 }
 

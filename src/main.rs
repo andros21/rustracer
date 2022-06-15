@@ -36,7 +36,6 @@ use crate::material::{
     CheckeredPigment, DiffuseBRDF, Material, Pigment, SpecularBRDF, UniformPigment, BRDF,
 };
 use crate::misc::ByteOrder;
-use crate::random::Pcg;
 use crate::render::{DummyRenderer, FlatRenderer, OnOffRenderer, PathTracer, Renderer};
 use crate::scene::Scene;
 use crate::shape::{Plane, Sphere};
@@ -188,23 +187,16 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
             ))
         },
     );
-    tracer.fire_all_rays(
-        match algorithm {
-            "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
-            "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
-            "pathtracer" => Renderer::PathTracer(PathTracer::new(
-                &world,
-                BLACK,
-                Pcg::new(init_state, init_seq),
-                num_of_rays,
-                max_depth,
-                3,
-            )),
-            // This branch should not be triggered (dummy behaviour).
-            _ => Renderer::Dummy(DummyRenderer),
-        },
-        antialiasing_level,
-    );
+    let renderer = match algorithm {
+        "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
+        "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
+        "pathtracer" => {
+            Renderer::PathTracer(PathTracer::new(&world, BLACK, num_of_rays, max_depth, 3))
+        }
+        // This branch should not be triggered (dummy behaviour).
+        _ => Renderer::Dummy(DummyRenderer),
+    };
+    tracer.fire_all_rays(&renderer, init_state, init_seq, antialiasing_level);
     if sub_m.is_present("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");
         hdr_img
@@ -270,23 +262,16 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
     let mut hdr_img = HdrImage::new(width, height);
     let mut tracer = ImageTracer::new(&mut hdr_img, scene.camera.unwrap());
     let world = scene.shapes.unwrap();
-    tracer.fire_all_rays(
-        match algorithm {
-            "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
-            "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
-            "pathtracer" => Renderer::PathTracer(PathTracer::new(
-                &world,
-                BLACK,
-                Pcg::new(init_state, init_seq),
-                num_of_rays,
-                max_depth,
-                3,
-            )),
-            // This branch should not be triggered (dummy behaviour).
-            _ => Renderer::Dummy(DummyRenderer),
-        },
-        antialiasing_level,
-    );
+    let renderer = match algorithm {
+        "onoff" => Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE)),
+        "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
+        "pathtracer" => {
+            Renderer::PathTracer(PathTracer::new(&world, BLACK, num_of_rays, max_depth, 3))
+        }
+        // This branch should not be triggered (dummy behaviour).
+        _ => Renderer::Dummy(DummyRenderer),
+    };
+    tracer.fire_all_rays(&renderer, init_state, init_seq, antialiasing_level);
     if sub_m.is_present("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");
         hdr_img

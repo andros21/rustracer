@@ -2,10 +2,12 @@
 //!
 //! Provides [`ImageTracer`](struct@ImageTracer) struct.
 use crate::camera::{Camera, FireRay};
+use crate::color::Color;
 use crate::hdrimage::HdrImage;
+use crate::random::Pcg;
 use crate::ray::Ray;
 use crate::render::{Renderer, Solve};
-use crate::{Pcg, BLACK};
+use rayon::prelude::*;
 
 /// Trace an image by shooting light rays through each of its pixels.
 pub struct ImageTracer<'a> {
@@ -13,6 +15,20 @@ pub struct ImageTracer<'a> {
     image: &'a mut HdrImage,
     /// A [`Camera`] enum that implement [`FireRay`] trait.
     camera: Camera,
+}
+
+/// Appo struct for [`all_rays`](../imagetracer/struct.ImageTracer.html#method.all_rays) that will store
+/// for each pixel in [`image`](../imagetracer/struct.ImageTracer.html#fields):
+///   * a [`Vec`] of [`Ray`]s, the length of this vector\
+///     will be greater than one when `antialiasing_level!=1`;
+///   * a [`u64`] random integer generated from [`Pcg`], that will be used\
+///     to init an independent [`Pcg`] when rendering equation solution
+///     (avoiding artefacts).
+struct Rays {
+    /// [`Pcg`] `init_seq` for each pixel.
+    seq: u64,
+    /// Rays for each pixel.
+    rays: Vec<Ray>,
 }
 
 impl<'a> ImageTracer<'a> {
@@ -38,6 +54,34 @@ impl<'a> ImageTracer<'a> {
         self.camera.fire_ray(u, v)
     }
 
+    /// Generate a [`Vec`] of [`Rays`].
+    ///
+    /// Appo method for parallelized [`fire_all_rays`](#method.fire_all_rays).
+    fn all_rays(&self, init_state: u64, init_seq: u64, antialiasing_level: u32) -> Vec<Rays> {
+        let mut all_rays = Vec::new();
+        let mut pcg = Pcg::new(init_state, init_seq);
+        for row in 0..self.image.shape().1 {
+            for col in 0..self.image.shape().0 {
+                let mut rays = Vec::new();
+                for sub_row in 0..antialiasing_level {
+                    for sub_col in 0..antialiasing_level {
+                        rays.push(self.fire_ray(
+                            col,
+                            row,
+                            (sub_row as f32 + pcg.random_float()) / (antialiasing_level as f32),
+                            (sub_col as f32 + pcg.random_float()) / (antialiasing_level as f32),
+                        ));
+                    }
+                }
+                all_rays.push(Rays {
+                    rays,
+                    seq: pcg.random() as u64,
+                })
+            }
+        }
+        all_rays
+    }
+
     /// Shoot several light rays crossing each of the pixels in the image.
     ///
     /// If `antialiasing_level` is one, for each pixel in the [`HdrImage`] object fire one [`Ray`],\
@@ -46,28 +90,36 @@ impl<'a> ImageTracer<'a> {
     /// If `antialiasing_level` is greater than one, then each pixel is divided in a N by N grid,\
     /// where N is the anti-aliasing level, and a [`Ray`] is thrown for each sub-pixel;\
     /// the color of the pixel in this case is obtained as the mean color of the N*N samples.
-    pub fn fire_all_rays(&mut self, mut renderer: Renderer, antialiasing_level: u32) {
-        let step = 1. / antialiasing_level as f32;
-        let mut pcg = Pcg::default();
-        for row in 0..self.image.shape().1 {
-            for col in 0..self.image.shape().0 {
-                let mut color = BLACK;
-                for sub_row in 0..antialiasing_level {
-                    for sub_col in 0..antialiasing_level {
-                        let (sub_u, sub_v) = (pcg.random_float(), pcg.random_float());
-                        let ray = self.fire_ray(
-                            col,
-                            row,
-                            (sub_row as f32 + sub_u) * step,
-                            (sub_col as f32 + sub_v) * step,
-                        );
-                        color = color + renderer.solve(ray);
-                    }
+    ///
+    /// This function is **parallelized** for each pixel that compose
+    /// [`image`](#fields) pixels matrix,\
+    /// thanks to high-level API [`rayon::iter::IntoParallelRefIterator::par_iter`].\
+    /// So for each available thread an independent
+    /// pixel rendering equation resolution is computed,\
+    /// using particular [`Renderer`] that implement [`Solve`] trait.
+    ///
+    /// **Note:** to avoid artefacts each [`Pcg`] used by each thread is created from
+    /// a different sequence, thanks to [`all_rays`](#method.all_rays) method.
+    pub fn fire_all_rays(
+        &mut self,
+        renderer: &Renderer,
+        init_state: u64,
+        init_seq: u64,
+        antialiasing_level: u32,
+    ) {
+        let pixels: Vec<Color> = self
+            .all_rays(init_state, init_seq, antialiasing_level)
+            .par_iter()
+            .map(|ray| {
+                let mut color = Color::default();
+                let mut pcg = Pcg::new(init_state, ray.seq);
+                for ray in ray.rays.iter() {
+                    color = color + renderer.solve(*ray, &mut pcg);
                 }
-                color = color * (1. / antialiasing_level.pow(2) as f32);
-                self.image.set_pixel(col, row, color).unwrap()
-            }
-        }
+                color * (1. / antialiasing_level.pow(2) as f32)
+            })
+            .collect();
+        self.image.set_pixels(pixels).unwrap_or(())
     }
 }
 
@@ -100,7 +152,7 @@ mod test {
             Camera::Perspective(PerspectiveCamera::new(1.0, 2.0, Transformation::default()));
         let mut tracer = ImageTracer::new(&mut image, camera);
 
-        tracer.fire_all_rays(Renderer::Dummy(DummyRenderer), 1);
+        tracer.fire_all_rays(&Renderer::Dummy(DummyRenderer), 0, 0, 1);
         for row in 0..image.shape().1 {
             for col in 0..image.shape().0 {
                 assert!(

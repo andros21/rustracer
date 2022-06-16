@@ -18,6 +18,7 @@ use crate::vector::{Vector, E1, E2, E3};
 use crate::world::World;
 use std::collections::BTreeMap;
 use std::f32::consts::PI;
+use std::fmt;
 use std::fs::File;
 use std::io::{BufReader, Read};
 use std::path::Path;
@@ -67,6 +68,12 @@ enum Keywords {
     Uniform,
 }
 
+impl fmt::Display for Keywords {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", format!("{:?}", self).to_lowercase())
+    }
+}
+
 /// Enum for all tokens recognized by the lexer.
 #[derive(Debug, Clone)]
 enum Token {
@@ -84,7 +91,11 @@ macro_rules! not_match {
     ($a:expr,$b:expr,$c:expr) => {
         Err(SceneErr::NotMatch {
             loc: $a,
-            msg: format!("got `{:?}` instead of `{:?}`", $b, $c),
+            msg: format!(
+                "found {:?} expected {}",
+                format!("{}", $b),
+                format!("{:?}", $c).to_lowercase().trim_matches('"')
+            ),
         })
     };
 }
@@ -97,7 +108,7 @@ macro_rules! not_matches {
             Token::Identifier(loc, id) => not_match!(loc, id, $c),
             Token::Keyword(loc, key) => not_match!(loc, key, $c),
             Token::LiteralNumber(loc, num) => not_match!(loc, num, $c),
-            Token::Stop(loc) => not_match!(loc, "stop", $c),
+            Token::Stop(loc) => not_match!(loc, '\x00', $c),
             Token::String(loc, st) => not_match!(loc, st, $c),
             Token::Symbol(loc, sym) => not_match!(loc, sym, $c),
         }
@@ -244,14 +255,6 @@ impl<R: Read> InputStream<R> {
                 self.unread_char(ch);
                 break;
             }
-            // Limit the number of spaces for an indent block.
-            if self.spaces >= 7 {
-                self.unread_char(ch);
-                return Err(SceneErr::MaxSpaces {
-                    loc: self.location,
-                    msg: String::from("indent block limited to 7 spaces"),
-                });
-            }
         }
         Ok(())
     }
@@ -269,11 +272,12 @@ impl<R: Read> InputStream<R> {
             // If string delimiter `'` or `"` found, stop.
             if ch == delimiter {
                 break;
-                // If eof reached finding delimiter `'` or `"`, error.
-            } else if ch == '\x00' {
+                // If eof or eol reached finding delimiter `'` or `"`, error.
+            } else if ['\x00', '\n'].contains(&ch) {
+                self.unread_char(ch);
                 return Err(SceneErr::UnclosedString {
-                    loc: token_location,
-                    msg: format!("unclosed `{}`, untermineted string", delimiter),
+                    loc: self.location,
+                    msg: format!("unclosed `{}` untermineted string", delimiter),
                 });
             }
             token.push(ch);
@@ -318,7 +322,7 @@ impl<R: Read> InputStream<R> {
         }
         let value = f32::from_str(token.as_str()).map_err(|err| SceneErr::FloatParseFailure {
             loc: token_location,
-            msg: format!("{} is an invalid floating point", token),
+            msg: format!("{:?} is an invalid floating-point number", token),
             src: err,
         })?;
         Ok(Token::LiteralNumber(token_location, value))
@@ -356,9 +360,9 @@ impl<R: Read> InputStream<R> {
             "name" => Token::Keyword(token_location, Keywords::Name),
             "plane" => Token::Keyword(token_location, Keywords::Plane),
             "ratio" => Token::Keyword(token_location, Keywords::Ratio),
-            "rotation_x" => Token::Keyword(token_location, Keywords::RotationX),
-            "rotation_y" => Token::Keyword(token_location, Keywords::RotationY),
-            "rotation_z" => Token::Keyword(token_location, Keywords::RotationZ),
+            "rotationx" => Token::Keyword(token_location, Keywords::RotationX),
+            "rotationy" => Token::Keyword(token_location, Keywords::RotationY),
+            "rotationz" => Token::Keyword(token_location, Keywords::RotationZ),
             "scaling" => Token::Keyword(token_location, Keywords::Scaling),
             "shapes" => Token::Keyword(token_location, Keywords::Shapes),
             "specular" => Token::Keyword(token_location, Keywords::Specular),
@@ -383,9 +387,9 @@ impl<R: Read> InputStream<R> {
             self.saved_token = None;
             return Ok(saved_token);
         };
-        let ch = self.read_char();
         // Save location where starting to parse token.
         let token_location = self.location;
+        let ch = self.read_char();
         if ch == '\x00' {
             Ok(Token::Stop(token_location))
         } else if SYMBOLS.contains(&ch) {
@@ -407,8 +411,9 @@ impl<R: Read> InputStream<R> {
         } else if ch.is_ascii_alphabetic() || ch == '_' {
             Ok(self.parse_keyword_or_identifier(ch, token_location))
         } else {
+            //self.unread_char(ch);
             Err(SceneErr::InvalidCharacter {
-                loc: self.location,
+                loc: token_location,
                 msg: format!("{} invalid character", ch),
             })
         }
@@ -441,7 +446,7 @@ impl<R: Read> InputStream<R> {
             self.match_symbol('\n')?;
             Ok(())
         } else {
-            not_matches!(token, "inline comment or \n")
+            not_matches!(token, "inline comment or '\n'")
         }
     }
 
@@ -449,9 +454,9 @@ impl<R: Read> InputStream<R> {
     /// Unread the `token`, and skip nothing only if `Token::Keyword` was parsed.
     fn match_whitespaces_and_comments(&mut self) -> Result<(), SceneErr> {
         let token = self.read_token()?;
-        // If there is keyword, make it available for the next block.
+        // If there is keyword or stop token (aka EOF), make it available for the next block.
         // So unread it.
-        if matches!(token, Token::Keyword(_, _)) {
+        if matches!(token, Token::Keyword(_, _)) || matches!(token, Token::Stop(_)) {
             self.unread_token(token);
         // If there is comment symbol, unread the char '#',
         // and run `skip_whitespaces_and_comments`.
@@ -497,6 +502,7 @@ impl<R: Read> InputStream<R> {
 
     /// Read a token from stream and check that it matches [`Token::Keyword`] and\
     /// a particular range of `keywords` [`Keywords`].
+    /// Return, wrapped inside a [`Result`], the keyword.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_keywords(&mut self, keywords: &Vec<Keywords>) -> Result<Keywords, SceneErr> {
         // Match a potential vector of keywords plus ':'.
@@ -515,36 +521,39 @@ impl<R: Read> InputStream<R> {
     }
 
     /// Read a token from stream and check that it matches [`Token::Identifier`].\
+    /// Return, wrapped inside a [`Result`], the identifier location and value.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
-    fn match_identifier(&mut self) -> Result<String, SceneErr> {
+    fn match_identifier(&mut self) -> Result<(SourceLocation, String), SceneErr> {
         // Match a ' ' plus an identifier.
         self.match_symbol(' ')?;
         let token = self.read_token()?;
         match token {
-            Token::Identifier(_, id) => Ok(id),
+            Token::Identifier(loc, id) => Ok((loc, id)),
             // If identifier is named as a keywords, no problem, use it as identifier.
-            Token::Keyword(_, key) => Ok(format!("{:?}", key).to_lowercase()),
+            Token::Keyword(loc, key) => Ok((loc, format!("{:?}", key).to_lowercase())),
             _ => not_matches!(token, "identifier"),
         }
     }
 
     /// Read a token from stream and check that it matches [`Token::String`].\
+    /// Return, wrapped inside a [`Result`], the string value and its location.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
-    fn match_string(&mut self) -> Result<String, SceneErr> {
+    fn match_string(&mut self) -> Result<(SourceLocation, String), SceneErr> {
         let token = self.read_token()?;
         match token {
-            Token::String(_, st) => Ok(st),
+            Token::String(loc, st) => Ok((loc, st)),
             _ => not_matches!(token, "string"),
         }
     }
 
     /// Read a token from stream and check that it matches [`Token::LiteralNumber`].\
+    /// Return, wrapped inside a [`Result`], the number value.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_number(&mut self) -> Result<f32, SceneErr> {
         let token = self.read_token()?;
         match token {
             Token::LiteralNumber(_, num) => Ok(num),
-            _ => not_matches!(token, "number"),
+            _ => not_matches!(token, "floating-point number"),
         }
     }
 
@@ -552,21 +561,28 @@ impl<R: Read> InputStream<R> {
     /// a [`Token::Identifier`]\
     /// with a particular string instance, that if match means
     /// that [`f32`] number must be read from `cli`.\
+    /// Return, wrapped inside a [`Result`], the number value.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
     fn match_number_cli(&mut self, cli: Cli) -> Result<f32, SceneErr> {
         let token = self.read_token()?;
         match token {
             Token::LiteralNumber(_, num) => Ok(num),
-            Token::Identifier(_, ref id) => {
+            Token::Identifier(loc, ref id) => {
                 if id == "RATIO" {
                     Ok(cli.aspect_ratio)
                 } else if id == "DISTANCE" {
                     Ok(1.0)
                 } else {
-                    not_matches!(token, "number")
+                    Err(SceneErr::UndefinedIdentifier {
+                        loc,
+                        msg: format!(
+                            "{:?} floating-point number not defined, available [DISTANCE, RATIO]",
+                            id
+                        ),
+                    })
                 }
             }
-            _ => not_matches!(token, "number"),
+            _ => not_matches!(token, "floating-point number"),
         }
     }
 
@@ -590,26 +606,26 @@ impl<R: Read> InputStream<R> {
                 Ok(Color::from((r, g, b)))
             }
             // Match color from variables `var`.
-            Token::Identifier(_, color) => {
+            Token::Identifier(loc, color) => {
                 Ok(var
                     .colors
                     .get(&color)
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
-                        loc: self.location,
-                        msg: format!("{} not defined", color),
+                        loc,
+                        msg: format!("{:?} color not defined", color),
                     })?)
             }
             // Match color from variables `var`.
-            Token::Keyword(_, key) => Ok(var
+            Token::Keyword(loc, key) => Ok(var
                 .colors
                 .get(&format!("{:?}", key).to_lowercase())
                 .copied()
                 .ok_or(SceneErr::UndefinedIdentifier {
-                    loc: self.location,
-                    msg: format!("{} not defined", format!("{:?}", key).to_lowercase()),
+                    loc,
+                    msg: format!("\"{:?}\" color not defined", key),
                 })?),
-            _ => not_matches!(token, "[ or identifier"),
+            _ => not_matches!(token, "rgb color"),
         }
     }
 
@@ -631,17 +647,17 @@ impl<R: Read> InputStream<R> {
                 Ok(Vector::from((x, y, z)))
             }
             // Match vector from variables `var`.
-            Token::Identifier(_, vector) => {
+            Token::Identifier(loc, vector) => {
                 Ok(var
                     .vectors
                     .get(&vector)
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
-                        loc: self.location,
-                        msg: format!("{} not defined", vector),
+                        loc,
+                        msg: format!("{:?} vector not defined, available [E1, E2, E3]", vector),
                     })?)
             }
-            _ => not_matches!(token, "[ or identifier"),
+            _ => not_matches!(token, "xyz vector"),
         }
     }
 
@@ -654,7 +670,7 @@ impl<R: Read> InputStream<R> {
         var: &Var,
     ) -> Result<(), SceneErr> {
         self.match_keyword(Keywords::Name)?;
-        let name = self.match_identifier()?;
+        let (_, name) = self.match_identifier()?;
         // Can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
         // Match indent with colors block spaces + 1 level (2 spaces)
@@ -722,15 +738,18 @@ impl<R: Read> InputStream<R> {
             Keywords::Uniform => Ok(Pigment::Uniform(UniformPigment {
                 color: self.parse_color(var)?,
             })),
-            Keywords::Image => Ok(Pigment::Image(ImagePigment::new(
-                HdrImage::read_pfm_file(Path::new(&self.match_string()?)).map_err(|err| {
-                    SceneErr::PfmFileReadFailure {
-                        loc: self.location,
-                        msg: String::from("pfm file read failure"),
-                        src: err,
-                    }
-                })?,
-            ))),
+            Keywords::Image => {
+                let (loc, pfm_file) = self.match_string()?;
+                Ok(Pigment::Image(ImagePigment::new(
+                    HdrImage::read_pfm_file(Path::new(&pfm_file)).map_err(|err| {
+                        SceneErr::PfmFileReadFailure {
+                            loc,
+                            msg: format!("{:?} pfm file read failure", pfm_file),
+                            src: err,
+                        }
+                    })?,
+                )))
+            }
             Keywords::Checkered => {
                 self.match_symbol('[')?;
                 let color1 = self.parse_color(var)?;
@@ -748,7 +767,9 @@ impl<R: Read> InputStream<R> {
                 }))
             }
             // This branch should never be triggered (a dummy error).
-            _ => Err(SceneErr::UnexpectedMatch(String::from("unexpected match"))),
+            _ => Err(SceneErr::UnexpectedMatch(String::from(
+                "unexpected match (report it to devel)",
+            ))),
         }
     }
 
@@ -769,7 +790,9 @@ impl<R: Read> InputStream<R> {
                 threshold_angle_rad: PI / 1800.0,
             })),
             // This branch should never be triggered (a dummy error).
-            _ => Err(SceneErr::UnexpectedMatch(String::from("unexpected match"))),
+            _ => Err(SceneErr::UnexpectedMatch(String::from(
+                "unexpected match (report it to devel)",
+            ))),
         }
     }
 
@@ -783,7 +806,7 @@ impl<R: Read> InputStream<R> {
         var: &Var,
     ) -> Result<(), SceneErr> {
         self.match_keyword(Keywords::Name)?;
-        let name = self.match_identifier()?;
+        let (_, name) = self.match_identifier()?;
         // Can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
         let brdf = self.parse_brdf(var)?;
@@ -849,37 +872,71 @@ impl<R: Read> InputStream<R> {
     ) -> Result<Transformation, SceneErr> {
         let transformation_tk = self.read_token()?;
         match transformation_tk {
-            // Match from transformation [`Token::Keywords`].
-            Token::Keyword(_, key) => {
-                self.match_symbol(':')?;
-                self.match_symbol(' ')?;
-                match key {
-                    Keywords::RotationX => Ok(rotation_x(f32::to_radians(self.match_number()?))),
-                    Keywords::RotationY => Ok(rotation_y(f32::to_radians(self.match_number()?))),
-                    Keywords::RotationZ => Ok(rotation_z(f32::to_radians(self.match_number()?))),
-                    Keywords::Scaling => Ok(scaling(self.parse_vector(var)?)),
-                    Keywords::Translation => Ok(translation(self.parse_vector(var)?)),
-                    // Match inside `transformations` [`BTreeMap`].
-                    key => Ok(transformations
+            Token::Keyword(loc, key) => {
+                let ch = self.read_char();
+                // Match from transformation [`Token::Keywords`].
+                if ch == ':' {
+                    self.unread_char(':');
+                    match key {
+                        Keywords::RotationX => {
+                            self.match_symbol(':')?;
+                            self.match_symbol(' ')?;
+                            Ok(rotation_x(f32::to_radians(self.match_number()?)))
+                        }
+                        Keywords::RotationY => {
+                            self.match_symbol(':')?;
+                            self.match_symbol(' ')?;
+                            Ok(rotation_y(f32::to_radians(self.match_number()?)))
+                        }
+                        Keywords::RotationZ => {
+                            self.match_symbol(':')?;
+                            self.match_symbol(' ')?;
+                            Ok(rotation_z(f32::to_radians(self.match_number()?)))
+                        }
+                        Keywords::Scaling => {
+                            self.match_symbol(':')?;
+                            self.match_symbol(' ')?;
+                            Ok(scaling(self.parse_vector(var)?))
+                        }
+                        Keywords::Translation => {
+                            self.match_symbol(':')?;
+                            self.match_symbol(' ')?;
+                            Ok(translation(self.parse_vector(var)?))
+                        }
+                        _ => not_matches!(
+                            transformation_tk,
+                            vec![
+                                Keywords::RotationX,
+                                Keywords::RotationY,
+                                Keywords::RotationZ,
+                                Keywords::Scaling,
+                                Keywords::Translation
+                            ]
+                        ),
+                    }
+                // Match inside `transformations` [`BTreeMap`].
+                } else {
+                    self.unread_char(ch);
+                    Ok(transformations
                         .get(&format!("{:?}", key).to_lowercase())
                         .copied()
                         .ok_or(SceneErr::UndefinedIdentifier {
-                            loc: self.location,
-                            msg: format!("{} not defined", format!("{:?}", key).to_lowercase()),
-                        })?),
+                            loc,
+                            msg: format!("\"{:?}\" transformation not defined", key),
+                        })?)
                 }
             }
             // Match inside `transformations` [`BTreeMap`].
-            Token::Identifier(_, id) => {
+            Token::Identifier(loc, id) => {
                 transformations
                     .get(&id)
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
-                        loc: self.location,
-                        msg: format!("{} not defined", id),
+                        loc,
+                        msg: format!("{:?} transformation not defined", id),
                     })
             }
-            _ => not_matches!(transformation_tk, String::from("transformation")),
+            _ => not_matches!(transformation_tk, "transformation"),
         }
     }
 
@@ -895,7 +952,7 @@ impl<R: Read> InputStream<R> {
         // Init a identity translation to compose.
         let mut transformation = Transformation::default();
         self.match_keyword(Keywords::Name)?;
-        let name = self.match_identifier()?;
+        let (_, name) = self.match_identifier()?;
         // Can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
         // Match indent with transformations block spaces + 1 level (2 spaces).
@@ -946,7 +1003,7 @@ impl<R: Read> InputStream<R> {
                         break;
                     }
                     // No other suppositions are made! To reduce grammar complexity.
-                    _ => not_matches!(tk_nx_nx, "' ' or '-'"),
+                    _ => not_matches!(tk_nx_nx, "[' ', '-']"),
                 }?;
             } else {
                 // Unread the condition token.
@@ -1004,34 +1061,36 @@ impl<R: Read> InputStream<R> {
         // Match indent with shapes block spaces + 1 level (2 spaces).
         self.match_spaces(1, 0)?;
         self.match_keyword(Keywords::Material)?;
-        let material_id = self.match_identifier()?;
+        let (loc, material_id) = self.match_identifier()?;
         // Match `material_id` from variables `var`.
         let material =
             var.materials
                 .get(&material_id)
                 .cloned()
                 .ok_or(SceneErr::UndefinedIdentifier {
-                    loc: self.location,
-                    msg: format!("{} not defined", material_id),
+                    loc,
+                    msg: format!("{:?} material not defined", material_id),
                 })?;
         // Can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
         // Match indent with shapes block spaces + 1 level (2 spaces).
         self.match_spaces(1, 0)?;
         self.match_keyword(Keywords::Transformation)?;
-        let transformation_id = self.match_identifier()?;
+        let (loc, transformation_id) = self.match_identifier()?;
         // Match `transformation_id` from variables `var`.
         let transformation = var.transformations.get(&transformation_id).copied().ok_or(
             SceneErr::UndefinedIdentifier {
-                loc: self.location,
-                msg: format!("{} not defined", transformation_id),
+                loc,
+                msg: format!("{:?} transformation not defined", transformation_id),
             },
         )?;
         match shape {
             Keywords::Plane => Ok(Box::new(Plane::new(transformation, material))),
             Keywords::Sphere => Ok(Box::new(Sphere::new(transformation, material))),
             // This branch should never be triggered (a dummy error).
-            _ => Err(SceneErr::UnexpectedMatch(String::from("unexpected match"))),
+            _ => Err(SceneErr::UnexpectedMatch(String::from(
+                "unexpected match (report it to devel)",
+            ))),
         }
     }
 
@@ -1090,14 +1149,17 @@ impl<R: Read> InputStream<R> {
         self.count_spaces()?;
         self.match_keyword(Keywords::Type)?;
         self.match_symbol(' ')?;
-        let camera = self.match_string()?;
         // Fail fast if invalid camera type parsed.
+        let (loc, camera) = self.match_string()?;
         if !(camera == "orthogonal" || camera == "perspective") {
             return Err(SceneErr::InvalidCamera {
-                loc: self.location,
-                msg: format!("invalid camera type {0}", camera),
+                loc,
+                msg: format!(
+                    "found {:?} camera expected [\"orthogonal\", \"perspective\"]",
+                    camera
+                ),
             });
-        };
+        }
         // Can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
         // Match indent with camera block spaces.
@@ -1123,12 +1185,12 @@ impl<R: Read> InputStream<R> {
         // Match indent with camera block spaces.
         self.match_spaces(0, 0)?;
         self.match_keyword(Keywords::Transformation)?;
-        let transformation_id = self.match_identifier()?;
+        let (loc, transformation_id) = self.match_identifier()?;
         // Match `transformation_id` from variables `var`.
         let transformation = var.transformations.get(&transformation_id).copied().ok_or(
             SceneErr::UndefinedIdentifier {
-                loc: self.location,
-                msg: format!("{} not defined", transformation_id),
+                loc,
+                msg: format!("{:?} transformation not defined", transformation_id),
             },
         )? * rotation_z(f32::to_radians(cli.angle_deg));
         match camera.as_str() {
@@ -1142,7 +1204,9 @@ impl<R: Read> InputStream<R> {
                 transformation,
             ))),
             // This branch should never be triggered (a dummy error).
-            _ => Err(SceneErr::UnexpectedMatch(String::from("unexpected match"))),
+            _ => Err(SceneErr::UnexpectedMatch(String::from(
+                "unexpected match (report it to devel)",
+            ))),
         }
     }
 
@@ -1355,8 +1419,8 @@ mod test {
             "transformations:\n",
             "  - name: camera_tr\n",
             "    compose:\n",
-            "      - rotation_z: +1\n",
-            "      - rotation_y: .5\n",
+            "      - rotationz: +1\n",
+            "      - rotationy: .5\n",
             "      - translation: [-.3, 1E-02, 1E+1.5]\n",
             "\n",
             "\n",
@@ -1446,14 +1510,14 @@ mod test {
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
         assert!(matches!(
         input.read_token(),
-        Err(SceneErr::FloatParseFailure { loc, .. }) if loc.line_num==9 && loc.col_num==36));
+        Err(SceneErr::FloatParseFailure { loc, .. }) if loc.line_num==9 && loc.col_num==35));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ']'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         assert!(matches!(
         input.read_token(),
-        Err(SceneErr::InvalidCharacter { loc, .. }) if loc.line_num==12 && loc.col_num==2));
+        Err(SceneErr::InvalidCharacter { loc, .. }) if loc.line_num==12 && loc.col_num==1));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
         for _ in 1..=25 {
             let _res = input.read_token();
@@ -1474,10 +1538,15 @@ mod test {
         );
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ':'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
+        //println!("{:?}", input.read_token());
+        //assert!(false);
         assert!(matches!(
         input.read_token(),
-        Err(SceneErr::UnclosedString { loc, .. }) if loc.line_num==17 && loc.col_num==13));
-        assert!(matches!(input.read_token(), Ok(Token::Stop(loc)) if loc.line_num==18))
+        Err(SceneErr::UnclosedString { loc, .. }) if loc.line_num==17 && loc.col_num==31));
+        assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == '\n'));
+        assert!(
+            matches!(input.read_token(), Ok(Token::Stop(loc)) if loc.line_num==18 && loc.col_num==1)
+        )
     }
 
     #[test]
@@ -1532,7 +1601,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Camera).is_ok());
         assert!(matches!(
             input.parse_camera(&var, cli),
-            Err(SceneErr::InvalidCamera { loc, .. }) if loc.line_num==5 && loc.col_num==19
+            Err(SceneErr::InvalidCamera { loc, .. }) if loc.line_num==5 && loc.col_num==9
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1548,7 +1617,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Camera).is_ok());
         assert!(matches!(
             input.parse_camera(&var, cli),
-            Err(SceneErr::UndefinedIdentifier { loc, .. }) if loc.line_num==6 && loc.col_num==26
+            Err(SceneErr::UndefinedIdentifier { loc, .. }) if loc.line_num==6 && loc.col_num==19
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1563,7 +1632,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Camera).is_ok());
         assert!(matches!(
             input.parse_camera(&var, cli),
-            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==3 && loc.col_num==3
+            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==3 && loc.col_num==2
         ))
     }
 
@@ -1607,7 +1676,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Colors).is_ok());
         assert!(matches!(
             input.parse_colors(&var),
-            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==6 && loc.col_num==6
+            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==6 && loc.col_num==5
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1622,11 +1691,7 @@ mod test {
         )));
 
         assert!(input.match_whitespaces_and_comments().is_ok());
-        assert!(input.match_keyword(Keywords::Colors).is_ok());
-        assert!(matches!(
-            input.parse_colors(&var),
-            Err(SceneErr::MaxSpaces { loc, .. }) if loc.line_num==3 && loc.col_num==8
-        ))
+        assert!(input.match_keyword(Keywords::Colors).is_ok())
     }
 
     #[test]
@@ -1677,7 +1742,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Materials).is_ok());
         assert!(matches!(
         input.parse_materials(&var),
-        Err(SceneErr::PfmFileReadFailure { loc, .. }) if loc.line_num==4 && loc.col_num==29
+        Err(SceneErr::PfmFileReadFailure { loc, .. }) if loc.line_num==4 && loc.col_num==14
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1692,7 +1757,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Materials).is_ok());
         assert!(matches!(
             input.parse_materials(&var),
-            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==3 && loc.col_num==6
+            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==3 && loc.col_num==5
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1707,7 +1772,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Materials).is_ok());
         assert!(matches!(
             input.parse_materials(&var),
-            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==5 && loc.col_num==6
+            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==5 && loc.col_num==5
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1726,7 +1791,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Materials).is_ok());
         assert!(matches!(
             input.parse_materials(&var),
-            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==4 && loc.col_num==10
+            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==4 && loc.col_num==9
         ))
     }
 
@@ -1736,7 +1801,7 @@ mod test {
             "transformations:\n",
             " - name: camera\n",
             "   compose:\n",
-            "    - rotation_z: +1\n",
+            "    - rotationz: +1\n",
             "    - translation: [-.3, 1E-02, -1E+1]\n",
         )));
         let var: Var = Var::default();
@@ -1754,13 +1819,13 @@ mod test {
             "transformations:\n",
             "  - name: rot_x\n",
             "    compose:\n",
-            "      - rotation_x: 90\n",
+            "      - rotationx: 90\n",
             "  - name: rot_y\n",
             "    compose:\n",
-            "      - rotation_y: 180\n",
+            "      - rotationy: 180\n",
             "  - name: rot_z\n",
             "    compose:\n",
-            "      - rotation_z: 270\n",
+            "      - rotationz: 270\n",
         )));
         let rot_x = rotation_x(f32::to_radians(90.));
         let rot_y = rotation_y(f32::to_radians(180.));
@@ -1776,15 +1841,15 @@ mod test {
 
         let mut input = InputStream::new(Cursor::new(concat!(
             "transformations:\n",
-            "  - name: rotation_x\n",
+            "  - name: rotationx\n",
             "    compose:\n",
-            "      - rotation_x: 90\n",
-            "  - name: rotation_y\n",
+            "      - rotationx: 90\n",
+            "  - name: rotationy\n",
             "    compose:\n",
-            "      - rotation_y: 180\n",
-            "  - name: rotation_z\n",
+            "      - rotationy: 180\n",
+            "  - name: rotationz\n",
             "    compose:\n",
-            "      - rotation_z: 270\n",
+            "      - rotationz: 270\n",
             "  - name: rotation_tot\n",
             "    compose:\n",
             "      - rotationx\n",
@@ -1813,11 +1878,11 @@ mod test {
             "transformations:\n",
             "  - name: rot_scl\n",
             "    compose:\n",
-            "      - rotation_x: 90\n",
+            "      - rotationx: 90\n",
             "      - scaling: [2.1, 1.7, 0.5]\n",
             "  - name: rot_y\n",
             "    compose:\n",
-            "      - rotation_y: 180\n",
+            "      - rotationy: 180\n",
         )));
         let rot_scl = rotation_x(f32::to_radians(90.)) * scaling(Vector::from((2.1, 1.7, 0.5)));
 
@@ -1832,25 +1897,25 @@ mod test {
             "transformations:\n",
             "  - name: invalid\n",
             "    compose:\n",
-            "      - rotation_x: 90\n",
+            "      - rotationx: 90\n",
             "      - mirroring: [2.1, 1.7, 0.5]\n",
             "  - name: rot_y\n",
             "    compose:\n",
-            "      - rotation_y: 180\n",
+            "      - rotationy: 180\n",
         )));
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
         assert!(matches!(
             input.parse_transformations(&var),
-            Err(SceneErr::UndefinedIdentifier { loc, .. }) if loc.line_num==5 && loc.col_num==18
+            Err(SceneErr::UndefinedIdentifier { loc, .. }) if loc.line_num==5 && loc.col_num==9
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
             "transformations:\n",
             " - name: camera\n",
             "   compose:\n",
-            "     - rotation_z: +1\n",
+            "     - rotationz: +1\n",
             "      - translation: [-.3, 1E-02, -1E+1]\n",
         )));
 
@@ -1858,7 +1923,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
         assert!(matches!(
             input.parse_transformations(&var),
-            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==4 && loc.col_num==6
+            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==4 && loc.col_num==5
         ))
     }
 
@@ -1872,7 +1937,7 @@ mod test {
             "       transformation: IDENTITY\n",
             "     - plane:\n",
             "       material: sky\n",
-            "       transformation: rotation_x\n",
+            "       transformation: rotationx\n",
         )));
         let mut var: Var = Var::default();
         let mut world = World::default();
@@ -1916,14 +1981,14 @@ mod test {
             "    transformation: IDENTITY\n",
             "  - plane:\n",
             "    material: sky\n",
-            "    transformation: rotation_x\n",
+            "    transformation: rotationx\n",
         )));
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Shapes).is_ok());
         assert!(matches!(
             input.parse_shapes(&var),
-            Err(SceneErr::UndefinedIdentifier { loc, .. }) if loc.line_num==4 && loc.col_num==22
+            Err(SceneErr::UndefinedIdentifier { loc, .. }) if loc.line_num==4 && loc.col_num==15
         ));
 
         let mut input = InputStream::new(Cursor::new(concat!(
@@ -1934,14 +1999,14 @@ mod test {
             "    transformation: IDENTITY\n",
             "   - plane:\n",
             "     material: sky\n",
-            "     transformation: rotation_x\n",
+            "     transformation: rotationx\n",
         )));
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Shapes).is_ok());
         assert!(matches!(
             input.parse_shapes(&var),
-            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==6 && loc.col_num==4
+            Err(SceneErr::NotMatch { loc, .. }) if loc.line_num==6 && loc.col_num==3
         ));
     }
 
@@ -1975,15 +2040,15 @@ mod test {
             "\n",
             "\n",
             "transformations:\n",
-            "   - name: rotation_x\n",
+            "   - name: rotationx\n",
             "     compose:\n",
-            "        - rotation_x: 90\n",
+            "        - rotationx: 90\n",
             "   - name: rot_y\n",
             "     compose:\n",
-            "        - rotation_y: 180\n",
+            "        - rotationy: 180\n",
             "   - name: camera\n",
             "     compose:\n",
-            "        - rotation_z: 270\n",
+            "        - rotationz: 270\n",
             "\n",
             "camera:\n",
             "  type: \"perspective\"                # This is an inline comment\n",
@@ -1997,7 +2062,7 @@ mod test {
             "    transformation: IDENTITY\n",
             "  - plane:\n",
             "    material: sky\n",
-            "    transformation: rotation_x\n",
+            "    transformation: rotationx\n",
             "  - sphere:\n",
             "    material: from_image\n",
             "    transformation: rot_y\n",
@@ -2095,15 +2160,15 @@ mod test {
             "\n",
             "\n",
             "transformations:\n",
-            "   - name: rotation_x\n",
+            "   - name: rotationx\n",
             "     compose:\n",
-            "        - rotation_x: 90\n",
+            "        - rotationx: 90\n",
             "   - name: rot_y\n",
             "     compose:\n",
-            "        - rotation_y: 180\n",
+            "        - rotationy: 180\n",
             "   - name: camera\n",
             "     compose:\n",
-            "        - rotation_z: 270\n",
+            "        - rotationz: 270\n",
             "\n",
             "\n",
             "shapes:\n",
@@ -2113,7 +2178,7 @@ mod test {
         )));
 
         assert!(
-            matches!(input.parse_scene(cli), Err(SceneErr::NotMatch{ loc, .. }) if loc.line_num==35)
+            matches!(input.parse_scene(cli), Err(SceneErr::NotMatch{ loc, .. }) if loc.line_num==35&& loc.col_num==1)
         );
     }
 }

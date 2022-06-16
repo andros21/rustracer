@@ -74,8 +74,6 @@ pub enum SceneErr {
         msg: String,
         src: HdrImageErr,
     },
-    #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]
-    MaxSpaces { loc: SourceLocation, msg: String },
     #[error("{0}")]
     UnexpectedMatch(String),
     #[error("<{}:{}> {}", .loc.line_num, .loc.col_num, msg)]

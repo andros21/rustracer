@@ -32,6 +32,7 @@ path = "src/main.rs"
 [dependencies]
 thiserror = "1.0.31"
 byteorder = "1.4.3"
+rayon     = "1.5.3"
 
 [dependencies.image]
 version          = "0.24.2"

@@ -9,10 +9,12 @@ use crate::world::World;
 
 /// A trait for solving rendering equation.
 ///
-/// Must accept a [`Ray`] as its only parameter and must return a [`Color`] instance telling the
+/// Must accept a [`Ray`] and a [`Pcg`], and must return a [`Color`] instance telling the
 /// color to assign to a pixel in the image.
+///
+/// **Note:** [`Pcg`] parameter will be used only with [`Renderer::PathTracer`].
 pub trait Solve {
-    fn solve(&mut self, ray: Ray) -> Color;
+    fn solve(&self, ray: Ray, pcg: &mut Pcg) -> Color;
 }
 
 /// A on/off renderer.
@@ -54,7 +56,7 @@ impl<'a> Solve for OnOffRenderer<'a> {
     /// Solve rendering with on/off strategy.
     ///
     /// If intersection happens return `fg_color` otherwise `bg_color`.
-    fn solve(&mut self, ray: Ray) -> Color {
+    fn solve(&self, ray: Ray, _pcg: &mut Pcg) -> Color {
         match self.world.ray_intersection(ray) {
             Some(_hit) => self.fg_color,
             None => self.bg_color,
@@ -73,7 +75,7 @@ impl<'a> Solve for FlatRenderer<'a> {
     /// Solve rendering with flat colors.
     ///
     /// If intersection happens return the color of the hit shape, otherwise `bg_color`.
-    fn solve(&mut self, ray: Ray) -> Color {
+    fn solve(&self, ray: Ray, _pcg: &mut Pcg) -> Color {
         match self.world.ray_intersection(ray) {
             Some(hit) => {
                 hit.material.emitted_radiance.get_color(hit.surface_point)
@@ -93,8 +95,6 @@ pub struct PathTracer<'a> {
     world: &'a World,
     /// Background color (usually [`BLACK`](../color/constant.BLACK.html)).
     bg_color: Color,
-    /// Random number generator used by [`ScatterRay`](../material/trait.ScatterRay.html).
-    pcg: Pcg,
     /// Number of scattered rays after every impact.
     num_of_rays: u32,
     /// Maximum depth of scattered rays,
@@ -110,7 +110,6 @@ impl<'a> PathTracer<'a> {
     pub fn new(
         world: &'a World,
         bg_color: Color,
-        pcg: Pcg,
         num_of_rays: u32,
         max_depth: u32,
         russian_roulette_limit: u32,
@@ -118,7 +117,6 @@ impl<'a> PathTracer<'a> {
         PathTracer {
             world,
             bg_color,
-            pcg,
             num_of_rays,
             max_depth,
             russian_roulette_limit,
@@ -133,7 +131,7 @@ impl<'a> Solve for PathTracer<'a> {
     /// rays thrown at each iteration,as well as the maximum depth.
     ///
     /// It implements Russian roulette, to avoid artefacts and speed up computation.
-    fn solve(&mut self, ray: Ray) -> Color {
+    fn solve(&self, ray: Ray, pcg: &mut Pcg) -> Color {
         if ray.depth > self.max_depth {
             return Color::default();
         }
@@ -148,7 +146,7 @@ impl<'a> Solve for PathTracer<'a> {
         let hit_color_lum = hit_color.r.max(hit_color.g.max(hit_color.b));
         if ray.depth >= self.russian_roulette_limit {
             let q = (1. - hit_color_lum).max(0.05);
-            if self.pcg.random_float() > q {
+            if pcg.random_float() > q {
                 hit_color = hit_color * (1.0 / (1. - q));
             } else {
                 return emitted_radiance;
@@ -158,13 +156,13 @@ impl<'a> Solve for PathTracer<'a> {
         if hit_color_lum > 0. {
             for _ in 0..self.num_of_rays {
                 let new_ray = hit_material.brdf.scatter_ray(
-                    &mut self.pcg,
+                    (pcg.random_float(), pcg.random_float()),
                     hit.ray.dir,
                     hit.world_point,
                     hit.normal,
                     ray.depth + 1,
                 );
-                let new_radiance = Self::solve(self, new_ray);
+                let new_radiance = Self::solve(self, new_ray, pcg);
                 cum_radiance = cum_radiance + (hit_color * new_radiance);
             }
         }
@@ -179,7 +177,7 @@ pub struct DummyRenderer;
 
 impl Solve for DummyRenderer {
     /// Solve nothing! Only return a fixed [`Color`].
-    fn solve(&mut self, _ray: Ray) -> Color {
+    fn solve(&self, _ray: Ray, _pcg: &mut Pcg) -> Color {
         Color::from((1.0, 2.0, 3.0))
     }
 }
@@ -194,12 +192,12 @@ pub enum Renderer<'a> {
 
 impl<'a> Solve for Renderer<'a> {
     /// Render the scene using a particular [`Renderer`] variants.
-    fn solve(&mut self, ray: Ray) -> Color {
+    fn solve(&self, ray: Ray, pcg: &mut Pcg) -> Color {
         match self {
-            Renderer::OnOff(onoff) => onoff.solve(ray),
-            Renderer::Dummy(dummy) => dummy.solve(ray),
-            Renderer::PathTracer(pathtracer) => pathtracer.solve(ray),
-            Renderer::Flat(flat) => flat.solve(ray),
+            Renderer::OnOff(onoff) => onoff.solve(ray, pcg),
+            Renderer::Dummy(dummy) => dummy.solve(ray, pcg),
+            Renderer::PathTracer(pathtracer) => pathtracer.solve(ray, pcg),
+            Renderer::Flat(flat) => flat.solve(ray, pcg),
         }
     }
 }
@@ -216,6 +214,7 @@ mod test {
 
     #[test]
     fn test_flat() {
+        let mut pcg = Pcg::default();
         let ray1 = Ray {
             origin: Point::from((-2., 3., 0.)),
             ..Default::default()
@@ -246,14 +245,15 @@ mod test {
             Transformation::default(),
             sphere_material,
         )));
-        let mut flat_renderer = Renderer::Flat(FlatRenderer::new(&world, BLACK));
-        assert!(flat_renderer.solve(ray1).is_close(BLACK));
-        assert!(flat_renderer.solve(ray_r).is_close(red + green));
-        assert!(flat_renderer.solve(ray_l).is_close(blue + green));
+        let flat_renderer = Renderer::Flat(FlatRenderer::new(&world, BLACK));
+        assert!(flat_renderer.solve(ray1, &mut pcg).is_close(BLACK));
+        assert!(flat_renderer.solve(ray_r, &mut pcg).is_close(red + green));
+        assert!(flat_renderer.solve(ray_l, &mut pcg).is_close(blue + green));
     }
 
     #[test]
     fn test_onoff() {
+        let mut pcg = Pcg::default();
         let ray1 = Ray {
             origin: Point::from((-2., 3., 0.)),
             ..Default::default()
@@ -264,9 +264,9 @@ mod test {
         };
         let mut world = World::default();
         world.add(Box::new(Sphere::default()));
-        let mut onoff_renderer = Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE));
-        assert!(onoff_renderer.solve(ray1).is_close(BLACK));
-        assert!(onoff_renderer.solve(ray2).is_close(WHITE))
+        let onoff_renderer = Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE));
+        assert!(onoff_renderer.solve(ray1, &mut pcg).is_close(BLACK));
+        assert!(onoff_renderer.solve(ray2, &mut pcg).is_close(WHITE))
     }
 
     #[test]
@@ -288,9 +288,8 @@ mod test {
             let furnace = Sphere::new(Transformation::default(), furnace_material);
             let mut world = World::default();
             world.add(Box::new(furnace));
-            let mut path_tracer =
-                Renderer::PathTracer(PathTracer::new(&world, BLACK, pcg, 1, 100, 101));
-            let color = path_tracer.solve(Ray::default());
+            let path_tracer = Renderer::PathTracer(PathTracer::new(&world, BLACK, 1, 100, 101));
+            let color = path_tracer.solve(Ray::default(), &mut pcg);
             let expected = emitted_radiance / (1. - reflectance);
             assert!(expected.is_close(color.r));
             assert!(expected.is_close(color.g));
@@ -300,12 +299,11 @@ mod test {
 
     #[test]
     fn test_background() {
-        let pcg = Pcg::default();
+        let mut pcg = Pcg::default();
         let sphere = Sphere::new(translation(E1 * 2.), Material::default());
         let mut world = World::default();
         world.add(Box::new(sphere));
-        let mut path_tracer =
-            Renderer::PathTracer(PathTracer::new(&world, BLACK, pcg, 1000, 1000, 0));
-        assert!(path_tracer.solve(Ray::default()).is_close(BLACK))
+        let path_tracer = Renderer::PathTracer(PathTracer::new(&world, BLACK, 1000, 1000, 0));
+        assert!(path_tracer.solve(Ray::default(), &mut pcg).is_close(BLACK))
     }
 }

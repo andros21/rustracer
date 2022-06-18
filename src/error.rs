@@ -11,6 +11,8 @@ use thiserror::Error;
 pub enum HdrImageErr {
     #[error("invalid indexes: {0:?}, expected hdr image shape: {1:?}")]
     OutOfBounds((u32, u32), (u32, u32)),
+    #[error("invalid pixels vector size: {0}, expected size: {1}")]
+    InvalidPixelsSize(u32, u32),
     #[error("invalid pfm file format: {0}")]
     InvalidPfmFileFormat(String),
     #[error("impossible to read from pfm file: {0}")]

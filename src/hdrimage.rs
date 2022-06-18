@@ -80,6 +80,21 @@ impl HdrImage {
         }
     }
 
+    /// Set pixels matrix, from underlying [`Vec`] structure, of the correct size.
+    ///
+    /// Otherwise return [`HdrImageErr::InvalidPixelsSize`] variant.
+    pub fn set_pixels(&mut self, pixels: Vec<Color>) -> Result<(), HdrImageErr> {
+        if self.pixels.len() == pixels.len() {
+            self.pixels = pixels;
+            Ok(())
+        } else {
+            Err(HdrImageErr::InvalidPixelsSize(
+                pixels.len() as u32,
+                self.pixels.len() as u32,
+            ))
+        }
+    }
+
     /// Read a pfm image from `buf_reader` with [`std::io::BufRead`] trait implementation.
     ///
     /// The expected input buffer must respect pfm format:
@@ -410,6 +425,7 @@ fn clamp(x: f32) -> f32 {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::color::WHITE;
     use crate::misc::IsClose;
     use std::io::Cursor;
 
@@ -451,7 +467,7 @@ mod test {
     }
 
     #[test]
-    fn test_set_pixel() {
+    fn test_set_pixels() {
         let color1 = Color::from((1.0, 1.0, 1.0));
         let color2 = Color::from((1.23, 4.56, 7.89));
 
@@ -461,7 +477,12 @@ mod test {
         assert!(matches!(hdr_img.get_pixel(0, 0), Ok(col1) if col1 == color1));
         assert!(hdr_img.get_pixel(2, 2).unwrap().is_close(color2));
         assert!(matches!(hdr_img.set_pixel(5, 5, color1),
-            Err(HdrImageErr::OutOfBounds(a, b)) if a == (5, 5) && b == (3, 3)))
+            Err(HdrImageErr::OutOfBounds(a, b)) if a == (5, 5) && b == (3, 3)));
+        assert!(matches!(hdr_img.set_pixels(vec![WHITE; 9]), Ok(())));
+        assert!(hdr_img.get_pixel(2, 2).unwrap().is_close(WHITE));
+        assert!(matches!(
+            hdr_img.set_pixels(vec![Color::default(); 11]),
+            Err(HdrImageErr::InvalidPixelsSize(a, b)) if a == 11 && b == 9))
     }
 
     #[test]

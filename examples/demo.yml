@@ -1,0 +1,84 @@
+# This file is used to define a scene,
+# the scene can be rendered with `rustracer render demo.yml output-image.png`,
+# for further information please visit https://github.com/andros21/rustracer.
+
+# Transformations are defined here to be used afterwards
+transformations:
+  - name: camera_tr
+    compose:
+      - translation: [-2, 0, 0.5]
+  - name: raise_sky
+    compose:
+      - scaling: [200, 200, 200]
+      - translation: [0, 0, 0.4]
+  - name: raise_sphere
+    compose:
+      - translation: [0, 0, 0.1]
+  - name: move_mirror
+    compose:
+      - translation: [1.0, 2.5, 0.0]
+#  - name: <transformation-name>
+#    compose:
+#      - list of transformations...
+
+
+# The characteristics of the camera are defined here
+camera:
+  type: "perspective"
+  ratio: RATIO
+  distance: DISTANCE
+  transformation: camera_tr
+
+
+# Colors can be defined in this way, but can also be specified in-line as [r,g,b] vectors
+colors:
+  - name: green
+    color: [0.3, 0.5, 0.1]
+  - name: blue
+    color: [0.1, 0.2, 0.5]
+#  - name: <color-name>
+#    color: [<r>, <g>, <b>]
+
+
+# Transformations are defined here to be used afterwards
+materials:
+  - name: sky
+    diffuse:
+      uniform: BLACK
+    uniform: [1, 0.9, 0.5]
+  - name: ground
+    diffuse:
+      checkered: [green, blue, 4]
+    uniform: BLACK
+  - name: red_mirror
+    specular:
+      uniform: [0.6, 0.2, 0.3]
+    uniform: BLACK
+  - name: light_blue
+    diffuse:
+      uniform: [0.3, 0.4, 0.8]
+    uniform: BLACK
+#  - name: <material-name>
+#    <diffuse/specular>:
+#      <uniform/checkered/image>: <color> for uniform, [<color>, <color>, <step>] for checkered, "path-to-file.pfm" for image
+#    <uniform/checkered/image>: same as before, this is the emitted light
+
+
+# Here the scene is composed by adding shapes with the respective material and transformation
+shapes:
+  - sphere:  # Sky
+    material: sky
+    transformation: raise_sky
+  - plane:  # Ground
+    material: ground
+    transformation: IDENTITY
+  - sphere: # Opaque sphere
+    material: light_blue
+    transformation: raise_sphere
+  - sphere: # Mirror sphere
+    material: red_mirror
+    transformation: move_mirror
+#  - <kind-of-shape>:
+#      material: <material>
+#      transformations: <transformation>
+

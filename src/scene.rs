@@ -1538,8 +1538,6 @@ mod test {
         );
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ':'));
         assert!(matches!(input.read_token(), Ok(Token::Symbol(_loc, sym)) if sym == ' '));
-        //println!("{:?}", input.read_token());
-        //assert!(false);
         assert!(matches!(
         input.read_token(),
         Err(SceneErr::UnclosedString { loc, .. }) if loc.line_num==17 && loc.col_num==31));

@@ -19,17 +19,20 @@ mod transformation;
 mod vector;
 mod world;
 
+use clap_complete::{generate, Shell};
 use image::ImageFormat;
-use std::env;
 use std::f32::consts::PI;
+use std::fs::{File, OpenOptions};
+use std::io::{BufWriter, Write};
 use std::path::Path;
 use std::process::exit;
 use std::str::FromStr;
+use std::{env, io};
 
 use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
 use crate::cli::Cli;
 use crate::color::{Color, BLACK, WHITE};
-use crate::error::{ConvertErr, DemoErr, HdrImageErr, RenderErr};
+use crate::error::{CompletionsErr, ConvertErr, DemoErr, HdrImageErr, RenderErr};
 use crate::hdrimage::{HdrImage, Luminosity};
 use crate::imagetracer::ImageTracer;
 use crate::material::{
@@ -56,6 +59,11 @@ fn main() {
         Some("convert") => exit!(convert(cli_m.subcommand_matches("convert").unwrap())),
         Some("demo") => exit!(demo(cli_m.subcommand_matches("demo").unwrap())),
         Some("render") => exit!(render(cli_m.subcommand_matches("render").unwrap())),
+        Some("completions") => {
+            exit!(completions(
+                cli_m.subcommand_matches("completions").unwrap()
+            ))
+        }
         // This branch should not be triggered (exit 1).
         _ => exit(1),
     }
@@ -327,6 +335,63 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
             "[info]".green(),
             ldr_file
         );
+    }
+    Ok(())
+}
+
+/// Generate shell completions file for `rustracer` command and its subcommands.
+///
+/// Called when `rustracer-completions` subcommand is used.
+fn completions(sub_m: &clap::ArgMatches) -> Result<(), CompletionsErr> {
+    let completions_path = Path::new(sub_m.value_of("OUTPUT").unwrap());
+    let completions_file = if completions_path.exists() {
+        OpenOptions::new()
+            .write(true)
+            .append(true)
+            .open(completions_path)
+            .map_err(|e| CompletionsErr::WriteCompletionsFailure(e, completions_path))?
+    } else {
+        File::create(completions_path)
+            .map_err(|e| CompletionsErr::WriteCompletionsFailure(e, completions_path))?
+    };
+    let mut buf = &mut BufWriter::new(completions_file);
+    let shell = sub_m.get_one::<Shell>("SHELL").unwrap();
+    let mut answer = std::string::String::new();
+    loop {
+        answer = std::string::String::new();
+        print!(
+            "[info] writing completions for {shell} into {:?}, continue? [Y/n] ",
+            completions_path
+        );
+        io::stdout().flush().unwrap();
+        match io::stdin().read_line(&mut answer) {
+            Ok(1) => {
+                generate(
+                    *shell,
+                    &mut cli::build_cli(),
+                    env!("CARGO_PKG_NAME"),
+                    &mut buf,
+                );
+                break;
+            }
+            Ok(2) => {
+                if answer.eq_ignore_ascii_case("n\n") {
+                    println!("[info] shell completions not generated.");
+                    break;
+                } else if answer.eq_ignore_ascii_case("y\n") {
+                    generate(
+                        *shell,
+                        &mut cli::build_cli(),
+                        env!("CARGO_PKG_NAME"),
+                        &mut buf,
+                    );
+                    break;
+                } else {
+                    continue;
+                }
+            }
+            _ => continue,
+        }
     }
     Ok(())
 }

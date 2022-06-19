@@ -5,6 +5,7 @@
 
 use crate::scene::SourceLocation;
 use colored::Colorize;
+use std::path::Path;
 use thiserror::Error;
 
 /// Error enum for [`HdrImage`](../hdrimage) module.
@@ -115,4 +116,11 @@ pub enum RenderErr {
                                            .to_str().unwrap().yellow(),
             src = .0))]
     SceneError(#[source] SceneErr, String),
+}
+
+/// Error enum for [`completions`](../fn.completions.html) function inside [`main`](../fn.main.html).
+#[derive(Error, Debug)]
+pub enum CompletionsErr<'a> {
+    #[error("impossible to write to {1:?}: {0}")]
+    WriteCompletionsFailure(#[source] std::io::Error, &'a Path),
 }

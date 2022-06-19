@@ -3,7 +3,8 @@
 //! Provides [`build_cli`] function with all cli
 //! desired subcommands and flags, using [`clap`](https://github.com/clap-rs/clap)
 //! library.
-use clap::{Arg, Command};
+use clap::{value_parser, Arg, Command};
+use clap_complete::Shell;
 
 /// Default normalization factor.
 ///
@@ -392,6 +393,23 @@ pub fn build_cli() -> Command<'static> {
                         .long_help(
                             "Anti-aliasing level, corresponds to the square-root of the number of samples per pixel",
                         ),
+                ),
+        )
+        .subcommand(
+            Command::new("completions")
+                .arg_required_else_help(true)
+                .about("Generate shell completions file")
+                .arg(
+                    Arg::new("SHELL")
+                        .required(true)
+                        .value_parser(value_parser!(Shell))
+                )
+                .arg(
+                    Arg::new("OUTPUT")
+                        .value_name("OUTPUT")
+                        .required(true)
+                        .help("Output completions file")
+                        .long_help("Output file for shell completions"),
                 ),
         );
 

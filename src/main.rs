@@ -22,7 +22,7 @@ mod world;
 use clap_complete::{generate, Shell};
 use image::ImageFormat;
 use std::f32::consts::PI;
-use std::fs::{File, OpenOptions};
+use std::fs::{File};
 use std::io::{BufWriter, Write};
 use std::path::Path;
 use std::process::exit;
@@ -59,10 +59,8 @@ fn main() {
         Some("convert") => exit!(convert(cli_m.subcommand_matches("convert").unwrap())),
         Some("demo") => exit!(demo(cli_m.subcommand_matches("demo").unwrap())),
         Some("render") => exit!(render(cli_m.subcommand_matches("render").unwrap())),
-        Some("completions") => {
-            exit!(completions(
-                cli_m.subcommand_matches("completions").unwrap()
-            ))
+        Some("completion") => {
+            exit!(completion(cli_m.subcommand_matches("completion").unwrap()))
         }
         // This branch should not be triggered (exit 1).
         _ => exit(1),
@@ -342,20 +340,30 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
 /// Generate shell completions file for `rustracer` command and its subcommands.
 ///
 /// Called when `rustracer-completions` subcommand is used.
-fn completions(sub_m: &clap::ArgMatches) -> Result<(), CompletionsErr> {
-    let completions_path = Path::new(sub_m.value_of("OUTPUT").unwrap());
-    let completions_file = if completions_path.exists() {
-        OpenOptions::new()
-            .write(true)
-            .append(true)
-            .open(completions_path)
-            .map_err(|e| CompletionsErr::WriteCompletionsFailure(e, completions_path))?
-    } else {
-        File::create(completions_path)
-            .map_err(|e| CompletionsErr::WriteCompletionsFailure(e, completions_path))?
-    };
-    let mut buf = &mut BufWriter::new(completions_file);
+fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionsErr> {
     let shell = sub_m.get_one::<Shell>("SHELL").unwrap();
+    let home_dir = std::env::var("HOME").unwrap();
+    let bash_path = [
+        &home_dir,
+        "/.local/share/bash-completion/completions/rustracer.bash",
+    ]
+    .concat();
+    let fish_path = [&home_dir, "/.config/fish/completions/rustracer.fish"].concat();
+    let zsh_path = [&home_dir, "/.zfunc/_rustracer.zsh"].concat();
+    let path = if sub_m.is_present("output") {
+        Ok(sub_m.value_of("output").unwrap())
+    } else {
+        match shell {
+            Shell::Bash => Ok(bash_path.as_str()),
+            Shell::Fish => Ok(fish_path.as_str()),
+            Shell::Zsh => Ok(zsh_path.as_str()),
+            _ => Err(CompletionsErr::NoDefaultPath(shell)),
+        }
+    };
+    let completions_path = path?;
+    let completions_file = File::create(completions_path)
+        .map_err(|e| CompletionsErr::WriteCompletionsFailure(e, completions_path.to_owned()))?;
+    let mut buf = &mut BufWriter::new(completions_file);
     let mut answer = std::string::String::new();
     loop {
         answer = std::string::String::new();

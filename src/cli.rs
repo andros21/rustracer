@@ -396,21 +396,24 @@ pub fn build_cli() -> Command<'static> {
                 ),
         )
         .subcommand(
-            Command::new("completions")
+            Command::new("completion")
                 .arg_required_else_help(true)
                 .about("Generate shell completions file")
                 .arg(
                     Arg::new("SHELL")
                         .required(true)
                         .value_parser(value_parser!(Shell))
+                        .number_of_values(1)
                 )
                 .arg(
-                    Arg::new("OUTPUT")
+                    Arg::new("output")
+                        .short('o')
+                        .long("output")
                         .value_name("OUTPUT")
-                        .required(true)
-                        .help("Output completions file")
-                        .long_help("Output file for shell completions"),
-                ),
+                        .number_of_values(1)
+                        .help("Specify output file")
+                        .long_help("Specify an output file for shell completions"),
+                )
         );
 
     cli

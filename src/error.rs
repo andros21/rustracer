@@ -124,6 +124,6 @@ pub enum RenderErr {
 pub enum CompletionsErr<'a> {
     #[error("impossible to write to {1:?}: {0}")]
     WriteCompletionsFailure(#[source] std::io::Error, String),
-    #[error("please specify output file for {0} completions: use `--output` flag")]
-    NoDefaultPath(&'a Shell),
+    #[error("Completions for {0} aren't supported")]
+    NotSupported(&'a str),
 }

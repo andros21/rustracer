@@ -3,8 +3,8 @@
 //! Provides [`build_cli`] function with all cli
 //! desired subcommands and flags, using [`clap`](https://github.com/clap-rs/clap)
 //! library.
-use clap::{value_parser, Arg, Command};
-use clap_complete::Shell;
+use clap::{Arg, Command};
+
 
 /// Default normalization factor.
 ///
@@ -402,8 +402,9 @@ pub fn build_cli() -> Command<'static> {
                 .arg(
                     Arg::new("SHELL")
                         .required(true)
-                        .value_parser(value_parser!(Shell))
+                        .possible_values(["bash", "fish", "zsh"])
                         .number_of_values(1)
+                        .long_help("Specify for which shell completions should be generated")
                 )
                 .arg(
                     Arg::new("output")

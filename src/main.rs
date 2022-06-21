@@ -22,7 +22,7 @@ mod world;
 use clap_complete::{generate, Shell};
 use image::ImageFormat;
 use std::f32::consts::PI;
-use std::fs::{File};
+use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::path::Path;
 use std::process::exit;
@@ -341,8 +341,9 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
 ///
 /// Called when `rustracer-completions` subcommand is used.
 fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionsErr> {
-    let shell = sub_m.get_one::<Shell>("SHELL").unwrap();
-    let home_dir = std::env::var("HOME").unwrap();
+    let shell_name = sub_m.value_of("SHELL").unwrap();
+    let shell = Shell::from_str(shell_name).unwrap();
+    let home_dir = std::env::var("HOME").unwrap_or("".to_string());
     let bash_path = [
         &home_dir,
         "/.local/share/bash-completion/completions/rustracer.bash",
@@ -357,7 +358,7 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionsErr> {
             Shell::Bash => Ok(bash_path.as_str()),
             Shell::Fish => Ok(fish_path.as_str()),
             Shell::Zsh => Ok(zsh_path.as_str()),
-            _ => Err(CompletionsErr::NoDefaultPath(shell)),
+            _ => Err(CompletionsErr::NotSupported(shell_name)),
         }
     };
     let completions_path = path?;
@@ -368,14 +369,14 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionsErr> {
     loop {
         answer = std::string::String::new();
         print!(
-            "[info] writing completions for {shell} into {:?}, continue? [Y/n] ",
+            "[info] writing completions for {shell_name} into {:?}, continue? [Y/n] ",
             completions_path
         );
         io::stdout().flush().unwrap();
         match io::stdin().read_line(&mut answer) {
             Ok(1) => {
                 generate(
-                    *shell,
+                    shell,
                     &mut cli::build_cli(),
                     env!("CARGO_PKG_NAME"),
                     &mut buf,
@@ -388,7 +389,7 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionsErr> {
                     break;
                 } else if answer.eq_ignore_ascii_case("y\n") {
                     generate(
-                        *shell,
+                        shell,
                         &mut cli::build_cli(),
                         env!("CARGO_PKG_NAME"),
                         &mut buf,

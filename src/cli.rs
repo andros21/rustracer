@@ -5,7 +5,6 @@
 //! library.
 use clap::{Arg, Command};
 
-
 /// Default normalization factor.
 ///
 /// When no arguments are provided to `--factor` flag
@@ -397,13 +396,15 @@ pub fn build_cli() -> Command<'static> {
         )
         .subcommand(
             Command::new("completion")
+                .hide(true)
                 .arg_required_else_help(true)
-                .about("Generate shell completions file")
+                .about("Generate shell completion script")
                 .arg(
                     Arg::new("SHELL")
                         .required(true)
                         .possible_values(["bash", "fish", "zsh"])
                         .number_of_values(1)
+                        .help("Shell to generate script for")
                         .long_help("Specify for which shell completions should be generated")
                 )
                 .arg(
@@ -412,7 +413,7 @@ pub fn build_cli() -> Command<'static> {
                         .long("output")
                         .value_name("OUTPUT")
                         .number_of_values(1)
-                        .help("Specify output file")
+                        .help("Specify output script file")
                         .long_help("Specify an output file for shell completions"),
                 )
         );

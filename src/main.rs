@@ -22,7 +22,7 @@ mod world;
 use clap_complete::{generate, Shell};
 use image::ImageFormat;
 use std::f32::consts::PI;
-use std::fs::File;
+use std::fs::{create_dir_all, File};
 use std::io::{BufWriter, Write};
 use std::path::Path;
 use std::process::exit;
@@ -32,7 +32,7 @@ use std::{env, io};
 use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
 use crate::cli::Cli;
 use crate::color::{Color, BLACK, WHITE};
-use crate::error::{CompletionsErr, ConvertErr, DemoErr, HdrImageErr, RenderErr};
+use crate::error::{CompletionErr, ConvertErr, DemoErr, HdrImageErr, RenderErr};
 use crate::hdrimage::{HdrImage, Luminosity};
 use crate::imagetracer::ImageTracer;
 use crate::material::{
@@ -339,61 +339,70 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
 
 /// Generate shell completions file for `rustracer` command and its subcommands.
 ///
-/// Called when `rustracer-completions` subcommand is used.
-fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionsErr> {
-    let shell_name = sub_m.value_of("SHELL").unwrap();
-    let shell = Shell::from_str(shell_name).unwrap();
-    let home_dir = std::env::var("HOME").unwrap_or("".to_string());
-    let bash_path = [
-        &home_dir,
-        "/.local/share/bash-completion/completions/rustracer.bash",
-    ]
-    .concat();
-    let fish_path = [&home_dir, "/.config/fish/completions/rustracer.fish"].concat();
-    let zsh_path = [&home_dir, "/.zfunc/_rustracer.zsh"].concat();
-    let path = if sub_m.is_present("output") {
-        Ok(sub_m.value_of("output").unwrap())
-    } else {
-        match shell {
-            Shell::Bash => Ok(bash_path.as_str()),
-            Shell::Fish => Ok(fish_path.as_str()),
-            Shell::Zsh => Ok(zsh_path.as_str()),
-            _ => Err(CompletionsErr::NotSupported(shell_name)),
+/// Called when `rustracer-completion` subcommand is used.
+fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
+    let shell = Shell::from_str(sub_m.value_of("SHELL").unwrap()).unwrap();
+    let home = std::env::var("HOME").unwrap_or_else(|_| "".to_string());
+    if home.is_empty() {
+        println!("[info] HOME env variable is empty!");
+    }
+    let mut path_buf = match shell {
+        Shell::Bash => {
+            Path::new(&home).join(".local/share/bash-completion/completions/rustracer.bash")
         }
+        Shell::Fish => Path::new(&home).join(".config/fish/completions/rustracer.fish"),
+        Shell::Zsh => Path::new(&home).join(".zfunc/_rustracer.zsh"),
+        // This branch should not be triggered (empty PathBuf).
+        _ => Path::new("").to_path_buf(),
     };
-    let completions_path = path?;
-    let completions_file = File::create(completions_path)
-        .map_err(|e| CompletionsErr::WriteCompletionsFailure(e, completions_path.to_owned()))?;
-    let mut buf = &mut BufWriter::new(completions_file);
-    let mut answer = std::string::String::new();
+    if sub_m.is_present("output") {
+        path_buf = Path::new(sub_m.value_of("output").unwrap()).to_path_buf();
+    }
+    let mut answer;
+    print!(
+        "[info] writing completions for {} shell, continue? [Y/n] ",
+        sub_m.value_of("SHELL").unwrap()
+    );
     loop {
         answer = std::string::String::new();
-        print!(
-            "[info] writing completions for {shell_name} into {:?}, continue? [Y/n] ",
-            completions_path
-        );
         io::stdout().flush().unwrap();
         match io::stdin().read_line(&mut answer) {
-            Ok(1) => {
-                generate(
-                    shell,
-                    &mut cli::build_cli(),
-                    env!("CARGO_PKG_NAME"),
-                    &mut buf,
-                );
-                break;
-            }
-            Ok(2) => {
-                if answer.eq_ignore_ascii_case("n\n") {
-                    println!("[info] shell completions not generated.");
-                    break;
-                } else if answer.eq_ignore_ascii_case("y\n") {
+            Ok(n) => {
+                if n == 1 || (n == 2 && answer.eq_ignore_ascii_case("y\n")) {
+                    create_dir_all(&path_buf.parent().unwrap()).map_err(|e| {
+                        CompletionErr::WriteCompletionFailure(
+                            e,
+                            String::from(
+                                path_buf
+                                    .as_path()
+                                    .parent()
+                                    .unwrap_or_else(|| Path::new(""))
+                                    .as_os_str()
+                                    .to_str()
+                                    .unwrap_or(""),
+                            ),
+                        )
+                    })?;
                     generate(
                         shell,
                         &mut cli::build_cli(),
                         env!("CARGO_PKG_NAME"),
-                        &mut buf,
+                        &mut BufWriter::new(File::create(&path_buf).map_err(|e| {
+                            CompletionErr::WriteCompletionFailure(
+                                e,
+                                String::from(path_buf.as_path().as_os_str().to_str().unwrap_or("")),
+                            )
+                        })?),
                     );
+                    println!(
+                        "[info] shell completions generated at\n{:tab$}{:?}",
+                        "",
+                        path_buf,
+                        tab = 7
+                    );
+                    break;
+                } else if n == 2 && answer.eq_ignore_ascii_case("n\n") {
+                    println!("[info] shell completions not generated");
                     break;
                 } else {
                     continue;

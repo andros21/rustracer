@@ -344,7 +344,7 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
     let shell = Shell::from_str(sub_m.value_of("SHELL").unwrap()).unwrap();
     let home = std::env::var("HOME").unwrap_or_else(|_| "".to_string());
     if home.is_empty() {
-        println!("[info] HOME env variable is empty!");
+        println!("{} HOME env variable is empty!", "[warn]".yellow());
     }
     let mut path_buf = match shell {
         Shell::Bash => {
@@ -360,8 +360,9 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
     }
     let mut answer;
     print!(
-        "[info] writing completions for {} shell, continue? [Y/n] ",
-        sub_m.value_of("SHELL").unwrap()
+        "{} writing completions for {} shell, continue? [Y/n] ",
+        "[info]".green(),
+        sub_m.value_of("SHELL").unwrap().bold()
     );
     loop {
         answer = std::string::String::new();
@@ -395,14 +396,15 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
                         })?),
                     );
                     println!(
-                        "[info] shell completions generated at\n{:tab$}{:?}",
+                        "{} shell completions generated at\n{:tab$}{:?}",
+                        "[info]".green(),
                         "",
                         path_buf,
                         tab = 7
                     );
                     break;
                 } else if n == 2 && answer.eq_ignore_ascii_case("n\n") {
-                    println!("[info] shell completions not generated");
+                    println!("{} shell completions not generated", "[warn]".yellow());
                     break;
                 } else {
                     continue;

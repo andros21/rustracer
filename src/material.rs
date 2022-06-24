@@ -209,18 +209,8 @@ impl GetColor for SpecularBRDF {
 
 impl Eval for SpecularBRDF {
     fn eval(&self, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -> Color {
-        let theta_in = f32::acos(
-            Vector::from(normal)
-                .normalize()
-                .unwrap()
-                .dot(in_dir.normalize().unwrap()),
-        );
-        let theta_out = f32::acos(
-            Vector::from(normal)
-                .normalize()
-                .unwrap()
-                .dot(out_dir.normalize().unwrap()),
-        );
+        let theta_in = f32::acos(Vector::from(normal).normalize().dot(in_dir.normalize()));
+        let theta_out = f32::acos(Vector::from(normal).normalize().dot(out_dir.normalize()));
 
         if (theta_in - theta_out).abs() < self.threshold_angle_rad {
             self.pigment.get_color(uv)
@@ -240,8 +230,8 @@ impl ScatterRay for SpecularBRDF {
         normal: Normal,
         depth: u32,
     ) -> Ray {
-        let ray_dir = incoming_dir.normalize().unwrap();
-        let normal = Vector::from(normal).normalize().unwrap();
+        let ray_dir = incoming_dir.normalize();
+        let normal = Vector::from(normal).normalize();
         let dot_prod = normal.dot(ray_dir);
 
         Ray {
@@ -381,7 +371,7 @@ mod test {
                     10
                 )
                 .dir,
-            Vector::from((-1.0, 0.0, 1.0)).normalize().unwrap()
+            Vector::from((-1.0, 0.0, 1.0)).normalize()
         );
 
         let mut sum = Vector {
@@ -403,7 +393,6 @@ mod test {
                     )
                     .dir
                     .normalize()
-                    .unwrap()
         }
         sum = sum * (1.0 / num);
         assert!(

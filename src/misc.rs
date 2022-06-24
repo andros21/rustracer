@@ -49,7 +49,7 @@ macro_rules! exit {
         match $a {
             Ok(()) => exit(0),
             Err(e) => {
-                eprintln!("[error] {:#}", e);
+                eprintln!("{} {:#}", "[error]".red().bold(), e);
                 exit(1)
             }
         }

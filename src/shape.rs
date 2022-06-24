@@ -346,8 +346,7 @@ mod test {
         assert!(matches!(intersection1, Some(intersection) if intersection
             .normal
             .normalize()
-            .unwrap()
-            .is_close(Normal::from((1., 4., 0.)).normalize().unwrap())));
+            .is_close(Normal::from((1., 4., 0.)).normalize())));
 
         let sphere2 = Sphere::new(scaling(Vector::from((-1., -1., -1.))), Material::default());
         let ray2 = Ray {
@@ -359,8 +358,7 @@ mod test {
         assert!(matches!(intersection2, Some(intersection) if intersection
             .normal
             .normalize()
-            .unwrap()
-            .is_close(Normal::from((0., 1., 0.)).normalize().unwrap())))
+            .is_close(Normal::from((0., 1., 0.)).normalize())))
     }
 
     #[test]

@@ -42,6 +42,7 @@ use crate::shape::{Plane, Sphere};
 use crate::transformation::{rotation_z, scaling, translation, Transformation};
 use crate::vector::Vector;
 use crate::world::World;
+use colored::Colorize;
 
 /// Crate main function.
 ///
@@ -73,7 +74,11 @@ fn convert(sub_m: &clap::ArgMatches) -> Result<(), ConvertErr> {
     let mut hdr_img = HdrImage::read_pfm_file(hdr_file).map_err(ConvertErr::IoError)?;
     check!(ldr_file).map_err(ConvertErr::IoError)?;
     if sub_m.is_present("verbose") {
-        println!("[info] {:?} has been read from disk", hdr_file);
+        println!(
+            "{} {:?} has been read from disk",
+            "[info]".green(),
+            hdr_file
+        );
     }
     hdr_img.normalize_image(factor, Luminosity::AverageLuminosity);
     hdr_img.clamp_image();
@@ -81,7 +86,11 @@ fn convert(sub_m: &clap::ArgMatches) -> Result<(), ConvertErr> {
         .write_ldr_file(ldr_file, gamma)
         .map_err(ConvertErr::IoError)?;
     if sub_m.is_present("verbose") {
-        println!("[info] {:?} has been written to disk", ldr_file);
+        println!(
+            "{} {:?} has been written to disk",
+            "[info]".green(),
+            ldr_file
+        );
     }
     Ok(())
 }
@@ -149,7 +158,12 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         emitted_radiance: Pigment::Uniform(UniformPigment::default()),
     };
     if sub_m.is_present("verbose") {
-        println!("[info] generating an image ({}, {})", width, height);
+        println!(
+            "{} generating an image ({}, {})",
+            "[info]".green(),
+            width,
+            height
+        );
     }
     let mut hdr_img = HdrImage::new(width, height);
     let mut world = World::default();
@@ -203,7 +217,11 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
             .write_pfm_file(&hdr_file, ByteOrder::LittleEndian)
             .map_err(DemoErr::IoError)?;
         if sub_m.is_present("verbose") {
-            println!("[info] {:?} has been written to disk", hdr_file);
+            println!(
+                "{} {:?} has been written to disk",
+                "[info]".green(),
+                hdr_file
+            );
         }
     }
     hdr_img.normalize_image(factor, Luminosity::AverageLuminosity);
@@ -212,7 +230,11 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         .write_ldr_file(ldr_file, gamma)
         .map_err(DemoErr::IoError)?;
     if sub_m.is_present("verbose") {
-        println!("[info] {:?} has been written to disk", ldr_file);
+        println!(
+            "{} {:?} has been written to disk",
+            "[info]".green(),
+            ldr_file
+        );
     }
     Ok(())
 }
@@ -246,7 +268,11 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
         .map_err(|e| RenderErr::IntParseFailure(e, String::from("anti-aliasing")))?;
     check!(ldr_file).map_err(RenderErr::IoError)?;
     if sub_m.is_present("verbose") {
-        println!("[info] reading scene from file {:?}", scene_file);
+        println!(
+            "{} reading scene from file {:?}",
+            "[info]".green(),
+            scene_file
+        );
     }
     let scene = Scene::read_scene_file(
         scene_file,
@@ -257,7 +283,12 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
     )
     .map_err(|err| RenderErr::SceneError(err, String::from(sub_m.value_of("INPUT").unwrap())))?;
     if sub_m.is_present("verbose") {
-        println!("[info] generating an image ({}, {})", width, height);
+        println!(
+            "{} generating an image ({}, {})",
+            "[info]".green(),
+            width,
+            height
+        );
     }
     let mut hdr_img = HdrImage::new(width, height);
     let mut tracer = ImageTracer::new(&mut hdr_img, scene.camera.unwrap());
@@ -278,7 +309,11 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
             .write_pfm_file(&hdr_file, ByteOrder::LittleEndian)
             .map_err(RenderErr::IoError)?;
         if sub_m.is_present("verbose") {
-            println!("[info] {:?} has been written to disk", hdr_file);
+            println!(
+                "{} {:?} has been written to disk",
+                "[info]".green(),
+                hdr_file
+            );
         }
     }
     hdr_img.normalize_image(factor, Luminosity::AverageLuminosity);
@@ -287,7 +322,11 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
         .write_ldr_file(ldr_file, gamma)
         .map_err(RenderErr::IoError)?;
     if sub_m.is_present("verbose") {
-        println!("[info] {:?} has been written to disk", ldr_file);
+        println!(
+            "{} {:?} has been written to disk",
+            "[info]".green(),
+            ldr_file
+        );
     }
     Ok(())
 }

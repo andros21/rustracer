@@ -1,7 +1,6 @@
 //! 3D Normal module.
 //!
 //! Provides [`Normal`](struct@Normal) struct.
-use crate::error::GeometryErr;
 use crate::misc::IsClose;
 use crate::vector::Vector;
 use std::fmt;
@@ -73,16 +72,10 @@ impl Normal {
 
     /// Modify the normal's norm so that it becomes equal to 1.
     ///
-    /// And return the normalized normal inside [`std::result::Result`].\
-    /// If the normalization operation wasn't possible result is an
-    /// [`GeometryErr`] error variant.
-    pub fn normalize(mut self) -> Result<Self, GeometryErr> {
-        if self.norm() > 0_f32 {
-            self = self * (1_f32 / self.norm());
-            Ok(self)
-        } else {
-            Err(GeometryErr::UnableToNormalize(self.norm()))
-        }
+    /// And return the normalized normal.
+    pub fn normalize(mut self) -> Self {
+        self = self * (1_f32 / self.norm());
+        self
     }
 }
 
@@ -238,12 +231,7 @@ mod test {
     fn test_normalize() {
         let normal = Normal::from((2. / 7., 6. / 7., 3. / 7.));
 
-        assert!(matches!(
-            Normal::from((4.0, 12.0, 6.0)).normalize(), Ok(v) if v.is_close(normal)
-        ));
-        assert!(matches!(
-            Normal::from((0.0, 0.0, 0.0)).normalize(), Err(GeometryErr::UnableToNormalize(a)) if a == 0_f32
-        ))
+        assert!(Normal::from((4.0, 12.0, 6.0)).normalize().is_close(normal))
     }
 
     #[test]
@@ -254,8 +242,7 @@ mod test {
 
         for _n in 0..(1e4 as u32) {
             normal = Normal::from((pcg.random_float(), pcg.random_float(), pcg.random_float()))
-                .normalize()
-                .unwrap();
+                .normalize();
             (e1, e2, e3) = create_onb_from_z(normal);
 
             assert!(e1.dot(e1).is_close(1.0));

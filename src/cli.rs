@@ -393,6 +393,29 @@ pub fn build_cli() -> Command<'static> {
                             "Anti-aliasing level, corresponds to the square-root of the number of samples per pixel",
                         ),
                 ),
+        )
+        .subcommand(
+            Command::new("completion")
+                .hide(true)
+                .arg_required_else_help(true)
+                .about("Generate shell completion script")
+                .arg(
+                    Arg::new("SHELL")
+                        .required(true)
+                        .possible_values(["bash", "fish", "zsh"])
+                        .number_of_values(1)
+                        .help("Shell to generate script for")
+                        .long_help("Specify for which shell completions should be generated")
+                )
+                .arg(
+                    Arg::new("output")
+                        .short('o')
+                        .long("output")
+                        .value_name("OUTPUT")
+                        .number_of_values(1)
+                        .help("Specify output script file")
+                        .long_help("Specify an output file for shell completions"),
+                )
         );
 
     cli

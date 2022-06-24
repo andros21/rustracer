@@ -19,17 +19,20 @@ mod transformation;
 mod vector;
 mod world;
 
+use clap_complete::{generate, Shell};
 use image::ImageFormat;
-use std::env;
 use std::f32::consts::PI;
+use std::fs::{create_dir_all, File};
+use std::io::{BufWriter, Write};
 use std::path::Path;
 use std::process::exit;
 use std::str::FromStr;
+use std::{env, io};
 
 use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
 use crate::cli::Cli;
 use crate::color::{Color, BLACK, WHITE};
-use crate::error::{ConvertErr, DemoErr, HdrImageErr, RenderErr};
+use crate::error::{CompletionErr, ConvertErr, DemoErr, HdrImageErr, RenderErr};
 use crate::hdrimage::{HdrImage, Luminosity};
 use crate::imagetracer::ImageTracer;
 use crate::material::{
@@ -56,6 +59,9 @@ fn main() {
         Some("convert") => exit!(convert(cli_m.subcommand_matches("convert").unwrap())),
         Some("demo") => exit!(demo(cli_m.subcommand_matches("demo").unwrap())),
         Some("render") => exit!(render(cli_m.subcommand_matches("render").unwrap())),
+        Some("completion") => {
+            exit!(completion(cli_m.subcommand_matches("completion").unwrap()))
+        }
         // This branch should not be triggered (exit 1).
         _ => exit(1),
     }
@@ -327,6 +333,85 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
             "[info]".green(),
             ldr_file
         );
+    }
+    Ok(())
+}
+
+/// Generate shell completions file for `rustracer` command and its subcommands.
+///
+/// Called when `rustracer-completion` subcommand is used.
+fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
+    let shell = Shell::from_str(sub_m.value_of("SHELL").unwrap()).unwrap();
+    let home = std::env::var("HOME").unwrap_or_else(|_| "".to_string());
+    if home.is_empty() {
+        println!("{} HOME env variable is empty!", "[warn]".yellow());
+    }
+    let mut path_buf = match shell {
+        Shell::Bash => {
+            Path::new(&home).join(".local/share/bash-completion/completions/rustracer.bash")
+        }
+        Shell::Fish => Path::new(&home).join(".config/fish/completions/rustracer.fish"),
+        Shell::Zsh => Path::new(&home).join(".zfunc/_rustracer.zsh"),
+        // This branch should not be triggered (empty PathBuf).
+        _ => Path::new("").to_path_buf(),
+    };
+    if sub_m.is_present("output") {
+        path_buf = Path::new(sub_m.value_of("output").unwrap()).to_path_buf();
+    }
+    let mut answer;
+    print!(
+        "{} writing completions for {} shell, continue? [Y/n] ",
+        "[info]".green(),
+        sub_m.value_of("SHELL").unwrap().bold()
+    );
+    loop {
+        answer = std::string::String::new();
+        io::stdout().flush().unwrap();
+        match io::stdin().read_line(&mut answer) {
+            Ok(n) => {
+                if n == 1 || (n == 2 && answer.eq_ignore_ascii_case("y\n")) {
+                    create_dir_all(&path_buf.parent().unwrap()).map_err(|e| {
+                        CompletionErr::WriteCompletionFailure(
+                            e,
+                            String::from(
+                                path_buf
+                                    .as_path()
+                                    .parent()
+                                    .unwrap_or_else(|| Path::new(""))
+                                    .as_os_str()
+                                    .to_str()
+                                    .unwrap_or(""),
+                            ),
+                        )
+                    })?;
+                    generate(
+                        shell,
+                        &mut cli::build_cli(),
+                        env!("CARGO_PKG_NAME"),
+                        &mut BufWriter::new(File::create(&path_buf).map_err(|e| {
+                            CompletionErr::WriteCompletionFailure(
+                                e,
+                                String::from(path_buf.as_path().as_os_str().to_str().unwrap_or("")),
+                            )
+                        })?),
+                    );
+                    println!(
+                        "{} shell completions generated at\n{:tab$}{:?}",
+                        "[info]".green(),
+                        "",
+                        path_buf,
+                        tab = 7
+                    );
+                    break;
+                } else if n == 2 && answer.eq_ignore_ascii_case("n\n") {
+                    println!("{} shell completions not generated", "[warn]".yellow());
+                    break;
+                } else {
+                    continue;
+                }
+            }
+            _ => continue,
+        }
     }
     Ok(())
 }

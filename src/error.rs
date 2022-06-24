@@ -116,3 +116,12 @@ pub enum RenderErr {
             src = .0))]
     SceneError(#[source] SceneErr, String),
 }
+
+/// Error enum for [`completion`](../fn.completion.html) function inside [`main`](../fn.main.html).
+#[derive(Error, Debug)]
+pub enum CompletionErr {
+    #[error("{}\n\tsource: {}",
+        format!("impossible to create {:?}", .1).bold(),
+        format!("{}", .0).to_lowercase())]
+    WriteCompletionFailure(#[source] std::io::Error, String),
+}

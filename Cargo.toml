@@ -30,10 +30,11 @@ name = "rustracer"
 path = "src/main.rs"
 
 [dependencies]
-thiserror = "1.0.31"
-byteorder = "1.4.3"
-rayon     = "1.5.3"
-colored   = "2.0.0"
+thiserror     = "1.0.31"
+byteorder     = "1.4.3"
+rayon         = "1.5.3"
+colored       = "2.0.0"
+clap_complete = "3.2.2"
 
 [dependencies.image]
 version          = "0.24.2"

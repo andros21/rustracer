@@ -33,6 +33,7 @@ path = "src/main.rs"
 thiserror = "1.0.31"
 byteorder = "1.4.3"
 rayon     = "1.5.3"
+colored   = "2.0.0"
 
 [dependencies.image]
 version          = "0.24.2"
@@ -41,5 +42,5 @@ features         = ["farbfeld", "png"]
 
 [dependencies.clap]
 version          = "3.1.18"
-default-features = false
-features         = ["std", "suggestions", "wrap_help"]
+default-features = true
+features         = ["wrap_help"]

@@ -1,7 +1,6 @@
 //! 3D Vector module.
 //!
 //! Provides [`Vector`](struct@Vector) struct.
-use crate::error::GeometryErr;
 use crate::misc::IsClose;
 use crate::normal::Normal;
 use crate::point::Point;
@@ -69,16 +68,10 @@ impl Vector {
 
     /// Modify the vector's norm so that it becomes equal to 1.
     ///
-    /// And return the normalized vector inside [`std::result::Result`].\
-    /// If the normalization operation wasn't possible result is an
-    /// [`GeometryErr`] error variant.
-    pub fn normalize(mut self) -> Result<Vector, GeometryErr> {
-        if self.norm() > 0_f32 {
-            self = self * (1_f32 / self.norm());
-            Ok(self)
-        } else {
-            Err(GeometryErr::UnableToNormalize(self.norm()))
-        }
+    /// And return the normalized vector.
+    pub fn normalize(mut self) -> Self {
+        self = self * (1_f32 / self.norm());
+        self
     }
 }
 
@@ -177,7 +170,7 @@ impl Mul<f32> for Vector {
 ///
 /// Return a tuple containing the three [`Vector`] of the basis.
 pub fn create_onb_from_z(vector: Vector) -> (Vector, Vector, Vector) {
-    let normal = vector.normalize().unwrap();
+    let normal = vector.normalize();
     crate::normal::create_onb_from_z(Normal {
         x: normal.x,
         y: normal.y,
@@ -283,12 +276,7 @@ mod test {
     fn test_normalize() {
         let vector = Vector::from((-6. / 7., 2. / 7., -3. / 7.));
 
-        assert!(matches!(
-            Vector::from((-6.0, 2.0, -3.0)).normalize(), Ok(v) if v.is_close(vector)
-        ));
-        assert!(matches!(
-            Vector::from((0.0, 0.0, 0.0)).normalize(), Err(GeometryErr::UnableToNormalize(a)) if a == 0_f32
-        ))
+        assert!(Vector::from((-6.0, 2.0, -3.0)).normalize().is_close(vector))
     }
 
     #[test]

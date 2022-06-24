@@ -16,11 +16,14 @@ examples/demo:
 	@ffmpeg -loglevel panic -f image2 -framerate 25 -i $@/frames/frame-%03d.png $@/demo.gif
 	@printf "done\n"
 
-docs: docs.pid
+docs: patch_docs docs.pid
 ccov: ccov.pid
 
-docs.pid:
+patch_docs:
 	@for f in `ls -1 target/doc/rustracer`; do ln -sf rustracer/$$f target/doc/$$f; done;
+	@cp install.sh target/doc/
+
+docs.pid:
 	@printf "starting http.server ... "
 	@{ python3 -m http.server -b 127.0.0.1 -d target/doc/ 8080 >/dev/null 2>&1 \
 		& echo $$! >$@; }

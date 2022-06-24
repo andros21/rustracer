@@ -147,12 +147,7 @@ jobs:
         with:
           command: rustdoc
       - name: patch docs
-        run: |
-          for file in $(ls -1 target/doc/rustracer)
-          do
-            ln -sf rustracer/$file target/doc/$file
-          done
-          cp install.sh target/doc/
+        run: make patch_docs
       - name: publish to gh-pages
         uses: peaceiris/actions-gh-pages@b24891da2a683970a75ebe54633f084809cc25c0
         with:

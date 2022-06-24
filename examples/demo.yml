@@ -1,0 +1,165 @@
+# demo.yml
+# ========
+# scene composition of `demo` subcommand formatted as yaml,
+# ready to be parsed by `render` subcommand
+#
+# a scene can be composed by different blocks:
+#  + camera
+#  + colors
+#  + materials
+#  + transformations
+#  + shapes
+# also
+#  * same block repetition is not permitted
+#  * camera, shapes (and so materials) blocks
+#    are mandatory to create a scene
+#  * colors and transformations for simple scene
+#    (e.g. IDENTITY transformation, BLACK and WHITE color)
+#    could be an optional
+#
+# **warning:** between infra-blocks an arbitrary
+#              number of break lines ('\n') are allowed,
+#              instead per-block,
+#              between the defined elements of a block,
+#              white spaces are not allowed
+
+
+# camera block
+# ------------
+# the characteristics of the camera are defined here,
+# default available camera types:
+#  + "perspective" (string)
+#  + "orthogonal"  (string)
+#
+# **note:** distance field make sense only with "perspective" camera,
+#           so remove relative line when "orthogonal" camera is chosen
+#
+# **note:** RATIO and DISTANCE are special keywords that will tell
+#           parser to look at cli parameters to set ratio and distance field
+#           otherwise for both a float number can be specified
+camera:
+  type: "perspective"
+  ratio: RATIO
+  distance: DISTANCE
+  transformation: camera_tr
+
+
+# colors block
+# ------------
+# colors are defined here to be used afterwards,
+# default available colors:
+#  + BLACK
+#  + WHITE
+# otherwise a raw rgb color [r, g, b] [float; 3]
+#
+# **note**: it's possible to use a previously defined colors
+#           in a new color block
+colors:
+  - name: green
+    color: [0.3, 0.5, 0.1]
+  - name: blue
+    color: [0.1, 0.2, 0.5]
+#  - name: <color-name>
+#    color: [r, g, b]
+#  - ...
+
+
+# materials block
+# ---------------
+# materials are defined here to be used afterwards
+# default available material types:
+#  + diffuse
+#  + specular
+# default available material scattered pigments:
+#  + uniform:   <color-name>
+#  + checkered: [<color-name>, <color-name>, steps (integer)]
+#  + image:    "pfm-image-path" (string)
+# default available material emitted pigments:
+#  + uniform:   <color-name>
+#  + checkered: [<color-name>, <color-name>, steps (integer)]
+#  + image:    "pfm-image-path" (string)
+materials:
+  - name: sky
+    diffuse:
+      uniform: BLACK
+    uniform: [1, 0.9, 0.5]
+  - name: ground
+    diffuse:
+      checkered: [green, blue, 4]
+    uniform: BLACK
+  - name: red_mirror
+    specular:
+      uniform: [0.6, 0.2, 0.3]
+    uniform: BLACK
+  - name: light_blue
+    diffuse:
+      uniform: [0.3, 0.4, 0.8]
+    uniform: BLACK
+#  - name: <material-name>
+#    <material-type>:
+#      <scattered-pigment>: ...
+#    <emitted-pigment>: ...
+
+
+# transformations block
+# ---------------------
+# transformations are defined here to be used afterwards,
+# default available transformations to compose:
+#  + IDENTITY
+#  + rotationx:     angle_deg   (float)
+#  + rotationy:     angle_deg   (float)
+#  + rotationz:     angle_deg   (float)
+#  + translation:   [x, y, z]   [float; 3]
+#  + scaling:       [x, y, z]   [float; 3]
+#
+# **note**: it's possible to use a previously defined transformation
+#           in a new transformation compose block
+#
+# **note:** it's possible to name a new transformation as a default one
+#           (e.g. rotationx), this will not override the default one, but
+#           obviously will only override an already user-defined transformation
+#           with the same name (to maintain unicity)
+transformations:
+  - name: camera_tr
+    compose:
+      - translation: [-2, 0, 0.5]
+  - name: raise_sky
+    compose:
+      - scaling: [200, 200, 200]
+      - translation: [0, 0, 0.4]
+  - name: raise_sphere
+    compose:
+      - translation: [0, 0, 0.1]
+  - name: move_mirror
+    compose:
+      - translation: [1.0, 2.5, 0.0]
+#  - name: <transformation-name>
+#    compose:
+#      - ...
+#      - ...
+#      - ...
+
+
+# shapes block
+# ------------
+# here where the scene is composed by adding shapes
+# with the respective material and transformation,
+# default available shape types:
+#  + plane
+#  + sphere
+shapes:
+  - sphere:                        # sky
+    material: sky                  # .
+    transformation: raise_sky      # .
+  - plane:                         # ground
+    material: ground               # .
+    transformation: IDENTITY       # .
+  - sphere:                        # opaque sphere
+    material: light_blue           # .
+    transformation: raise_sphere   # .
+  - sphere:                        # mirror sphere
+    material: red_mirror           # .
+    transformation: move_mirror    # .
+#  - <shape-type>:
+#      material: <material>
+#      transformations: <transformation>

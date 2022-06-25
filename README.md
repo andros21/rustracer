@@ -79,5 +79,5 @@ $ rustracer convert image.pfm image.png # convert to png
 Example of `rustracer demo` subcommand:
 
 ```bash
-$ rustracer demo image.png # demo scene with on/off renderer
+$ rustracer demo image.png # demo scene with path-tracing algorithm
 ```

@@ -24,26 +24,6 @@
 #              white spaces are not allowed
 
 
-# camera block
-# ------------
-# the characteristics of the camera are defined here,
-# default available camera types:
-#  + "perspective" (string)
-#  + "orthogonal"  (string)
-#
-# **note:** distance field make sense only with "perspective" camera,
-#           so remove relative line when "orthogonal" camera is chosen
-#
-# **note:** RATIO and DISTANCE are special keywords that will tell
-#           parser to look at cli parameters to set ratio and distance field
-#           otherwise for both a float number can be specified
-camera:
-  type: "perspective"
-  ratio: RATIO
-  distance: DISTANCE
-  transformation: camera_tr
-
-
 # colors block
 # ------------
 # colors are defined here to be used afterwards,
@@ -138,6 +118,26 @@ transformations:
 #      - ...
 #      - ...
 #      - ...
+
+
+# camera block
+# ------------
+# the characteristics of the camera are defined here,
+# default available camera types:
+#  + "perspective" (string)
+#  + "orthogonal"  (string)
+#
+# **note:** distance field make sense only with "perspective" camera,
+#           so remove relative line when "orthogonal" camera is chosen
+#
+# **note:** RATIO and DISTANCE are special keywords that will tell
+#           parser to look at cli parameters to set ratio and distance field
+#           otherwise for both a float number can be specified
+camera:
+  type: "perspective"
+  ratio: RATIO
+  distance: DISTANCE
+  transformation: camera_tr
 
 
 # shapes block

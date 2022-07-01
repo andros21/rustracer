@@ -965,7 +965,7 @@ impl<R: Read> InputStream<R> {
         self.match_spaces(1, 1)?;
         self.match_symbol('-')?;
         self.match_symbol(' ')?;
-        transformation = transformation * self.parse_transformation(transformations, var)?;
+        transformation = self.parse_transformation(transformations, var)? * transformation;
         loop {
             // Can only be a eol or inline comment.
             self.match_eol_or_inline_comment()?;
@@ -990,7 +990,7 @@ impl<R: Read> InputStream<R> {
                         self.match_symbol('-')?;
                         self.match_symbol(' ')?;
                         transformation =
-                            transformation * self.parse_transformation(transformations, var)?;
+                            self.parse_transformation(transformations, var)? * transformation;
                         Ok(())
                     }
                     // Otherwise stop with compose transformation block.
@@ -1187,12 +1187,13 @@ impl<R: Read> InputStream<R> {
         self.match_keyword(Keywords::Transformation)?;
         let (loc, transformation_id) = self.match_identifier()?;
         // Match `transformation_id` from variables `var`.
-        let transformation = var.transformations.get(&transformation_id).copied().ok_or(
-            SceneErr::UndefinedIdentifier {
-                loc,
-                msg: format!("{:?} transformation not defined", transformation_id),
-            },
-        )? * rotation_z(f32::to_radians(cli.angle_deg));
+        let transformation = rotation_z(f32::to_radians(cli.angle_deg))
+            * var.transformations.get(&transformation_id).copied().ok_or(
+                SceneErr::UndefinedIdentifier {
+                    loc,
+                    msg: format!("{:?} transformation not defined", transformation_id),
+                },
+            )?;
         match camera.as_str() {
             "orthogonal" => Ok(Camera::Orthogonal(OrthogonalCamera::new(
                 ratio,
@@ -1804,7 +1805,7 @@ mod test {
         )));
         let var: Var = Var::default();
         let camera =
-            rotation_z(f32::to_radians(1.0)) * translation(Vector::from((-0.3, 1e-2, -1e1)));
+            translation(Vector::from((-0.3, 1e-2, -1e1))) * rotation_z(f32::to_radians(1.0));
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
@@ -1858,8 +1859,8 @@ mod test {
             "      - rotation_tot\n",
             "      - translation: E3\n",
         )));
-        let rot_tot = rot_x * rot_y * rot_z;
-        let rot_tra = rot_tot * translation(E3);
+        let rot_tot = rot_z * rot_y * rot_x;
+        let rot_tra = translation(E3) * rot_tot;
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());
@@ -1882,7 +1883,7 @@ mod test {
             "    compose:\n",
             "      - rotationy: 180\n",
         )));
-        let rot_scl = rotation_x(f32::to_radians(90.)) * scaling(Vector::from((2.1, 1.7, 0.5)));
+        let rot_scl = scaling(Vector::from((2.1, 1.7, 0.5))) * rotation_x(f32::to_radians(90.));
 
         assert!(input.match_whitespaces_and_comments().is_ok());
         assert!(input.match_keyword(Keywords::Transformations).is_ok());

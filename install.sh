@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# install.sh
+# ==========
 # end-user `rustracer` installation script:
 #  * downloads particular release (default `latest+musl`)
 #  * downloads related checksum and signatures

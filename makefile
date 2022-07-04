@@ -1,19 +1,21 @@
 # makefile
 # --------
 # makefile for development, rules:
-#  + `animation` - create simple gif animation, useful to create
-#                  rustracer usage examples (`ffmpeg` needed)
-#  + `docs`      - preview `rustracer` documentation locally
-#  + `ccov`      - preview `rustracer` code-coverage html report locally
+#  + `demo.gif` - create demo scene gif animation (`ffmpeg` needed)
+#  + `docs`     - preview `rustracer` documentation locally
+#  + `ccov`     - preview `rustracer` code-coverage html report locally
 
-animation: examples/demo
+demo.gif: examples/demo.gif
 
-examples/demo:
+examples/demo.gif:
 	@printf "[info] create demo gif animation ... "
-	@mkdir -p $@/frames
+	@mkdir -p examples/demo/frames
 	@for a in `seq 0 359`; do \
-		rustracer demo --width 320 --height 240 --angle-deg $$a $@/frames/frame-`printf '%03d' $$a`.png; done;
-	@ffmpeg -loglevel panic -f image2 -framerate 25 -i $@/frames/frame-%03d.png $@/demo.gif
+		rustracer demo --width 500 --height 375 --anti-aliasing 3 -f 1 --angle-deg $$a \
+		examples/demo/frames/frame-`printf '%03d' $$a`.png; done;
+	@ffmpeg -loglevel panic -f image2 -framerate 10 \
+		-i examples/demo/frames/frame-%03d.png examples/demo.gif
+	@rm -fr examples/demo
 	@printf "done\n"
 
 docs: patch_docs docs.pid

@@ -7,7 +7,7 @@
       <img src="https://user-images.githubusercontent.com/58751603/176992080-d96e1e43-5309-45cd-968e-76c4ea132dde.png" alt="Logo" width="470">
     </picture>
   </a>
-  <h3 style="border-bottom: 0px;">cli photorealistic image generator</h3>
+  <h3 style="border-bottom: 0px;">a multi-threaded raytracer in pure rust</h3>
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/workflow/status/andros21/rustracer/CI?style=flat-square&label=ci&logo=github" alt="CI">
   </a>
@@ -58,8 +58,11 @@
 
 Install from binary:
 
-#### `curl -sSf https://andros21.github.io/rustracer/install.sh | bash` <a href="#note2"><sup>(2)</sup></a>
+<h4>
+<code>curl -sSf https://andros21.github.io/rustracer/install.sh | bash</code>&nbsp;&nbsp;<a href="#note2"><sup>(2)</sup></a>
+</h4>
 
+<br>
 <details>
 <summary>click to show other installation options</summary>
 
@@ -80,8 +83,11 @@ curl -sSf https://andros21.github.io/rustracer/install.sh | bash -s -- musl 0.4.
 
 Install from source code, a template could be:
 
-#### `cargo install rustracer` <a href="#note3"><sup>(3)</sup></a>
+<h4>
+   <code> cargo install rustracer</code>&nbsp;&nbsp;<a href="#note3"><sup>(3)</sup></a>
+</h4>
 
+<br>
 <details>
 <summary>click to show other installation options</summary>
 
@@ -103,19 +109,20 @@ cargo install --root $PREFIX --version $VER rustracer
 
 ### rustracer
 
-Available subcommands:
+| **subcommands**                                   | **description**                               |
+| :------------------------------------------------ | :-------------------------------------------- |
+| [**rustracer-convert**](#rustracer-convert)       | convert an hdr image into ldr image           |
+| [**rustracer-demo**](#rustracer-demo)             | render a simple demo scene (example purpose)  |
+| [**rustracer-render**](#rustracer-render)         | render a scene from file (yaml formatted)     |
+| [**rustracer-completion**](#rustracer-completion) | generate shell completion script (hidden)     |
 
-* [**rustracer-convert**](#rustracer-convert) - convert an hdr image into ldr image
-* [**rustracer-demo**](#rustracer-demo) - render a simple demo scene (example purpose)
-* [**rustracer-render**](#rustracer-render) - render a scene from file (yaml formatted)
-* [**rustracer-completion**](#rustracer-completion) - generate shell completion script (hidden)
-
+<br>
 <details>
-<summary>click to show <strong>rustracer</strong> help</summary>
+<summary>click to show <strong>rustracer -h </strong></summary>
 
 ```console
 rustracer 0.4.0
-cli photorealistic image generator
+a multi-threaded raytracer in pure rust
 
 USAGE:
     rustracer <SUBCOMMAND>
@@ -135,12 +142,15 @@ SUBCOMMANDS:
 
 ### rustracer-convert
 
-An example could be:
+Convert a pfm file to png:
 
-#### `rustracer convert image.pfm image.png`
+<h5>
+   <code>rustracer convert image.pfm image.png</code>
+</h5>
 
+<br>
 <details>
-<summary>click to show <strong>rustracer-convert</strong> help</summary>
+<summary>click to show <strong>rustracer-convert -h </strong></summary>
 
 ```console
 rustracer-convert 0.4.0
@@ -166,16 +176,32 @@ OPTIONS:
 
 ### rustracer-demo
 
-An example could be:
+Rendering demo scene:
 
-#### `rustracer demo --anti-aliasing 3 -f 1 demo.png` <a href="#note4"><sup>(4)</sup></a>
+<div align="center">
+   <h5>
+      <code>
+         rustracer demo --width 1920 --height 1080 --anti-aliasing 3 -f 1 demo.png
+      </code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
+   </h5>
+   <img src="https://github.com/andros21/rustracer/raw/for-1.0.0/examples/demo.png" width="500" alt="rustracer-demo-png"/>
+   <p><sub><strong>demo.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~35s
+</div>
 
-360 degree view of demo scene (see [`makefile`](https://github.com/andros21/rustracer/blob/master/makefile)):
+\
+demo scene 360 degree (see [`makefile`](https://github.com/andros21/rustracer/blob/master/makefile)):
 
-#### `make demo.gif`
+<div align="center">
+  <h5>
+      <code>make demo.gif</code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
+  </h5>
+  <img src="https://github.com/andros21/rustracer/raw/for-1.0.0/examples/demo.gif" width="500" alt="rustracer-demo-gif"/>
+  <p><sub><strong>demo.gif:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~15m
+</div>
 
+<br>
 <details>
-<summary>click to show <strong>rustracer-demo</strong> help</summary>
+<summary>click to show <strong>rustracer-demo -h </strong></summary>
 
 ```console
 rustracer-demo 0.4.0
@@ -188,15 +214,16 @@ ARGS:
     <OUTPUT>    Output image [possible formats: ff, png]
 
 OPTIONS:
-    -a, --algorithm <ALGORITHM>            Rendering algorithm [default: pathtracer] [possible values: onoff, flat,
-                                           pathtracer]
+    -a, --algorithm <ALGORITHM>            Rendering algorithm [default: pathtracer]
+                                           [possible values: onoff, flat, pathtracer]
         --angle-deg <ANGLE_DEG>            View angle (in degrees) [default: 0.0]
         --anti-aliasing <ANTI_ALIASING>    Anti-aliasing level [default: 1]
     -f, --factor <FACTOR>                  Normalization factor [default: 0.2]
     -g, --gamma <GAMMA>                    Gamma parameter [default: 1.0]
     -h, --help                             Print help information
         --height <HEIGHT>                  Image height [default: 480]
-        --init-seq <INIT_SEQ>              Identifier of the random sequence (positive number) [default: 45]
+        --init-seq <INIT_SEQ>              Identifier of the random sequence (positive number)
+                                           [default: 45]
         --init-state <INIT_STATE>          Initial random seed (positive number) [default: 45]
     -m, --max-depth <MAX_DEPTH>            Maximum depth [default: 3]
     -n, --num-of-rays <NUM_OF_RAYS>        Number of rays [default: 10]
@@ -215,9 +242,9 @@ OPTIONS:
 
 ### rustracer-render
 
-An example could be rendering demo scene from scene [`examples/demo.yml`](https://github.com/andros21/rustracer/blob/master/examples/demo.yml):
+Rendering demo scene from scene file [`examples/demo.yml`](https://github.com/andros21/rustracer/blob/master/examples/demo.yml):
 
-#### `rustracer render --anti-aliasing 3 -f 1 examples/demo.yml` <a href="#note5"><sup>(5)</sup></a>
+<h5><code>rustracer render --anti-aliasing 3 -f 1 examples/demo.yml</code> <a href="#note5"><sup>(5)</sup></a></h5>
 
 you can use this example scene to learn how to write your custom scene, ready to be rendered!
 
@@ -228,19 +255,22 @@ Let's try to render a 3D fractal, a [sphere-flake](https://en.wikipedia.org/wiki
 we can automatic genererate it from [`examples/flake.cue`](https://github.com/andros21/rustracer/blob/master/examples/flake.cue)
 
 ```bash
-cue eval flake.cue -e "flake" -f flake.cue.yml # generate yml from cue
-cat flake.cue.yml | sed "s/'//g" > flake.yml   # little tweaks
-wc -l flake.cue flake.yml                      # compare lines number
-   92 flake.cue                                # .
-32666 flake.yml                                # .
+cue eval flake.cue -e "flake" -f flake.cue.yml   # generate yml from cue
+cat flake.cue.yml | sed "s/'//g" > flake.yml     # little tweaks
+wc -l flake.cue flake.yml                        # compare lines number
+   92 flake.cue                                  # .
+32666 flake.yml                                  # .
 ```
-so with this trick we've been able to condense a scene info from 32666 to 92 lines, x350 shrink! :sunglasses:\
+so with this trick we've been able to condense a scene info from 32666 to 92 lines, x350 shrink! 😎\
 and the generated `flake.yml` can be simple parsed
 
-#### `rustracer render --anti-aliasing 3 -f 1 flake.yml flake.png` <a href="#note5"><sup>(5)</sup></a>
+<div align="center">
+<h5><code>rustracer render --anti-aliasing 3 -f 1 flake.yml flake.png</code> <a href="#note5"><sup>(5)</sup></a></h5>
+</div>
 
+<br>
 <details>
-<summary>click to show <strong>rustracer-render</strong> help</summary>
+<summary>click to show <strong>rustracer-render -h </strong></summary>
 
 ```console
 rustracer-render 0.4.0
@@ -254,15 +284,16 @@ ARGS:
     <OUTPUT>    Output image [possible formats: ff, png]
 
 OPTIONS:
-    -a, --algorithm <ALGORITHM>            Rendering algorithm [default: pathtracer] [possible values: onoff, flat,
-                                           pathtracer]
+    -a, --algorithm <ALGORITHM>            Rendering algorithm [default: pathtracer]
+                                           [possible values: onoff, flat, pathtracer]
         --angle-deg <ANGLE_DEG>            View angle (in degrees) [default: 0.0]
         --anti-aliasing <ANTI_ALIASING>    Anti-aliasing level [default: 1]
     -f, --factor <FACTOR>                  Normalization factor [default: 0.2]
     -g, --gamma <GAMMA>                    Gamma parameter [default: 1.0]
     -h, --help                             Print help information
         --height <HEIGHT>                  Image height [default: 480]
-        --init-seq <INIT_SEQ>              Identifier of the random sequence (positive number) [default: 45]
+        --init-seq <INIT_SEQ>              Identifier of the random sequence (positive number)
+                                           [default: 45]
         --init-state <INIT_STATE>          Initial random seed (positive number) [default: 45]
     -m, --max-depth <MAX_DEPTH>            Maximum depth [default: 3]
     -n, --num-of-rays <NUM_OF_RAYS>        Number of rays [default: 10]
@@ -287,7 +318,7 @@ Simple generate completion script for `bash` shell:
 close-open your shell, and here we go, tab completions now available!
 
 <details>
-<summary>click to show <strong>rustracer-completion</strong> help</summary>
+<summary>click to show <strong>rustracer-completion -h </strong></summary>
 
 ```console
 rustracer-completion 0.4.0

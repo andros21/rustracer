@@ -58,6 +58,7 @@ enum Keywords {
     RotationY,
     RotationZ,
     Scaling,
+    Shape,
     Shapes,
     Specular,
     Sphere,
@@ -364,6 +365,7 @@ impl<R: Read> InputStream<R> {
             "rotationy" => Token::Keyword(token_location, Keywords::RotationY),
             "rotationz" => Token::Keyword(token_location, Keywords::RotationZ),
             "scaling" => Token::Keyword(token_location, Keywords::Scaling),
+            "shape" => Token::Keyword(token_location, Keywords::Shape),
             "shapes" => Token::Keyword(token_location, Keywords::Shapes),
             "specular" => Token::Keyword(token_location, Keywords::Specular),
             "sphere" => Token::Keyword(token_location, Keywords::Sphere),
@@ -1055,7 +1057,21 @@ impl<R: Read> InputStream<R> {
     /// Parse shape inside shapes block using `var.materials` and `var.transformations`.\
     /// Otherwise return a variant of [`SceneErr`] error.
     fn parse_shape(&mut self, var: &Var) -> Result<Box<dyn RayIntersection>, SceneErr> {
-        let shape = self.match_keywords(&vec![Keywords::Plane, Keywords::Sphere])?;
+        self.match_keyword(Keywords::Shape)?;
+        self.match_symbol(' ')?;
+        // Shape type e.g. sphere, plane.
+        let shapes = vec![Keywords::Plane, Keywords::Sphere];
+        let token = self.read_token()?;
+        let shape = match token {
+            Token::Keyword(loc, key) => {
+                if shapes.contains(&key) {
+                    Ok(key)
+                } else {
+                    not_match!(loc, key, &shapes)
+                }
+            }
+            _ => not_matches!(token, &shapes),
+        }?;
         // Can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
         // Match indent with shapes block spaces + 1 level (2 spaces).
@@ -1930,10 +1946,10 @@ mod test {
         let mut input = InputStream::new(Cursor::new(concat!(
             "# This is a comment\n",
             "shapes:\n",
-            "     - sphere:\n",
+            "     - shape: sphere\n",
             "       material: sphere\n",
             "       transformation: IDENTITY\n",
-            "     - plane:\n",
+            "     - shape: plane\n",
             "       material: sky\n",
             "       transformation: rotationx\n",
         )));
@@ -1974,10 +1990,10 @@ mod test {
         let mut input = InputStream::new(Cursor::new(concat!(
             "# This is a comment\n",
             "shapes:\n",
-            "  - sphere:\n",
+            "  - shape: sphere\n",
             "    material: invalid\n",
             "    transformation: IDENTITY\n",
-            "  - plane:\n",
+            "  - shape: plane\n",
             "    material: sky\n",
             "    transformation: rotationx\n",
         )));
@@ -1992,10 +2008,10 @@ mod test {
         let mut input = InputStream::new(Cursor::new(concat!(
             "# This is a comment\n",
             "shapes:\n",
-            "  - sphere:\n",
+            "  - shape: sphere\n",
             "    material: sphere\n",
             "    transformation: IDENTITY\n",
-            "   - plane:\n",
+            "   - shape: plane\n",
             "     material: sky\n",
             "     transformation: rotationx\n",
         )));
@@ -2055,13 +2071,13 @@ mod test {
             "  transformation: camera\n",
             "\n",
             "shapes:\n",
-            "  - sphere:\n",
+            "  - shape: sphere\n",
             "    material: sphere\n",
             "    transformation: IDENTITY\n",
-            "  - plane:\n",
+            "  - shape: plane\n",
             "    material: sky\n",
             "    transformation: rotationx\n",
-            "  - sphere:\n",
+            "  - shape: sphere\n",
             "    material: from_image\n",
             "    transformation: rot_y\n",
         )));
@@ -2170,7 +2186,7 @@ mod test {
             "\n",
             "\n",
             "shapes:\n",
-            "  - sphere:\n",
+            "  - shape: sphere\n",
             "    material: sphere\n",
             "    transformation: IDENTITY\n",
         )));

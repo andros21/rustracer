@@ -148,16 +148,16 @@ camera:
 #  + plane
 #  + sphere
 shapes:
-  - sphere:                        # sky
+  - shape: sphere                  # sky
     material: sky                  # .
     transformation: raise_sky      # .
-  - plane:                         # ground
+  - shape: plane                   # ground
     material: ground               # .
     transformation: IDENTITY       # .
-  - sphere:                        # opaque sphere
+  - shape: sphere                  # opaque sphere
     material: light_blue           # .
     transformation: raise_sphere   # .
-  - sphere:                        # mirror sphere
+  - shape: sphere                  # mirror sphere
     material: red_mirror           # .
     transformation: move_mirror    # .
 #  - <shape-type>:

@@ -13,7 +13,7 @@ repository    = "https://github.com/andros21/rustracer"
 homepage      = "https://github.com/andros21/rustracer"
 documentation = "https://andros21.github.io/rustracer"
 categories    = ["command-line-utilities"]
-description   = "cli photorealistic image generator"
+description   = "a multi-threaded raytracer in pure rust"
 exclude       = [".github/*", ".gitignore", "makefile"]
 keywords      = [
    "cli",

@@ -121,7 +121,7 @@ cargo install --root $PREFIX --version $VER rustracer
 <summary>click to show <strong>rustracer -h </strong></summary>
 
 ```console
-rustracer 0.4.0
+rustracer 1.0.0
 a multi-threaded raytracer in pure rust
 
 USAGE:
@@ -153,7 +153,7 @@ Convert a pfm file to png:
 <summary>click to show <strong>rustracer-convert -h </strong></summary>
 
 ```console
-rustracer-convert 0.4.0
+rustracer-convert 1.0.0
 Convert HDR (pfm) image to LDR (ff|png) image
 
 USAGE:
@@ -204,7 +204,7 @@ demo scene 360 degree (see [`makefile`](https://github.com/andros21/rustracer/bl
 <summary>click to show <strong>rustracer-demo -h </strong></summary>
 
 ```console
-rustracer-demo 0.4.0
+rustracer-demo 1.0.0
 Render a demo scene (hard-coded in main)
 
 USAGE:
@@ -279,7 +279,7 @@ and the generated `flake.yml` can be simple parsed
 <summary>click to show <strong>rustracer-render -h </strong></summary>
 
 ```console
-rustracer-render 0.4.0
+rustracer-render 1.0.0
 Render a scene from file
 
 USAGE:
@@ -332,7 +332,7 @@ Simple generate completion script for `bash` shell (same for `fish` and `zsh`):
 <summary>click to show <strong>rustracer-completion -h </strong></summary>
 
 ```console
-rustracer-completion 0.4.0
+rustracer-completion 1.0.0
 Generate shell completion script
 
 USAGE:

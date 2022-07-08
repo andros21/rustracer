@@ -65,7 +65,7 @@ materials:
     uniform: [1, 0.9, 0.5]
   - name: ground
     diffuse:
-      checkered: [green, blue, 4]
+      checkered: [green, blue, 10]
     uniform: BLACK
   - name: red_mirror
     specular:
@@ -102,7 +102,8 @@ materials:
 transformations:
   - name: camera_tr
     compose:
-      - translation: [-2, 0, 0.5]
+      - translation: [-3.5, 0, 0.7]
+      - rotationz: 230
   - name: raise_sky
     compose:
       - scaling: [200, 200, 200]

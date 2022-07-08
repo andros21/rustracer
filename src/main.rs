@@ -189,9 +189,8 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         translation(Vector::from((1.0, 2.5, 0.0))),
         mirror_material,
     )));
-    let camera_tr = rotation_z(f32::to_radians(angle_deg))
-        * rotation_z(f32::to_radians(angle_deg))
-        * translation(Vector::from((-2.0, 0.0, 0.5)));
+    let camera_tr = rotation_z(f32::to_radians(angle_deg + 230.0))
+        * translation(Vector::from((-3.5, 0.0, 0.7)));
     let mut tracer = ImageTracer::new(
         &mut hdr_img,
         if sub_m.is_present("orthogonal") {

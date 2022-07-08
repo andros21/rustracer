@@ -57,9 +57,16 @@ jobs:
         with:
           path: ~/.cosign
           key: ${{ runner.os }}-cosign-${{ steps.cosign-version.outputs.latest }}
+      - name: add cosign to path
+        if: steps.cosign-cache.outputs.cache-hit == 'true'
+        run: |
+          echo "HOME=$HOME" >> $GITHUB_ENV
+          echo "PATH=$PATH:$HOME/.cosign" >> $GITHUB_ENV
       - name: install cosign
         if: steps.cosign-cache.outputs.cache-hit != 'true'
         uses: sigstore/cosign-installer@372f03d876de9bfec5079d00fc6cd2485af9a026
+        with:
+          cosign-release: ${{ steps.cosign-version.outputs.latest }}
       - name: cosign artifacts
         env:
           COSIGN_EXPERIMENTAL: 1
@@ -67,17 +74,13 @@ jobs:
       - name: release artifacts
         uses: softprops/action-gh-release@6232f0b438cb856c39d14f8743e3a7c99fc879af
         with:
-          name: rustracer ${GITHUB_REF_NAME}
-          token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
           fail_on_unmatched_files: true
           files: |
-            rustracer-${GITHUB_REF_NAME}-x86_64-unknown-linux-*.tar.gz
-            rustracer-${GITHUB_REF_NAME}-x86_64-unknown-linux-*.tar.gz-keyless.pem
-            rustracer-${GITHUB_REF_NAME}-x86_64-unknown-linux-*.tar.gz-keyless.sig
-            rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt
-            rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt-keyless.pem
-            rustracer-${GITHUB_REF_NAME}_checksums_sha256.txt-keyless.sig
+            rustracer-*.tar.gz
+            rustracer-*.txt
+            rustracer-*.pem
+            rustracer-*.sig
   #cratesio:
     #name: cratesio
     #runs-on: ubuntu-latest

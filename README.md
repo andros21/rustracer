@@ -184,7 +184,7 @@ Rendering demo scene:
          rustracer demo --width 1920 --height 1080 --anti-aliasing 3 -f 1 demo.png
       </code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
    </h5>
-   <img src="https://github.com/andros21/rustracer/raw/for-1.0.0/examples/demo.png" width="500" alt="rustracer-demo-png"/>
+   <img src="https://github.com/andros21/rustracer/raw/master/examples/demo.png" width="500" alt="rustracer-demo-png"/>
    <p><sub><strong>demo.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~35s
 </div>
 
@@ -195,7 +195,7 @@ demo scene 360 degree (see [`makefile`](https://github.com/andros21/rustracer/bl
   <h5>
       <code>make demo.gif</code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
   </h5>
-  <img src="https://github.com/andros21/rustracer/raw/for-1.0.0/examples/demo.gif" width="500" alt="rustracer-demo-gif"/>
+  <img src="https://github.com/andros21/rustracer/raw/master/examples/demo.gif" width="500" alt="rustracer-demo-gif"/>
   <p><sub><strong>demo.gif:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~15m
 </div>
 
@@ -254,7 +254,7 @@ But let's unleash the power of a scene encoded in data-serialization language su
 Well repetitive scenes could be nightmare to be written, but for these (and more) there is [`cue`](https://github.com/cue-lang/cue)
 
 Let's try to render a 3D fractal, a [sphere-flake](https://en.wikipedia.org/wiki/Koch_snowflake), but without manually write a yaml scene file\
-we can automatic generate it from [`examples/flake.cue`](https://github.com/andros21/rustracer/blob/for-1.0.0/examples/flake.cue)
+we can automatic generate it from [`examples/flake.cue`](https://github.com/andros21/rustracer/blob/master/examples/flake.cue)
 
 ```bash
 cue eval flake.cue -e "flake" -f flake.cue.yml   # generate yml from cue
@@ -270,7 +270,7 @@ and the generated `flake.yml` can be simple parsed
    <h5>
    <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 -f 1 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
    </h5>
-  <img src="https://github.com/andros21/rustracer/raw/for-1.0.0/examples/flake.png" width="500" alt="rustracer-flake"/>
+  <img src="https://github.com/andros21/rustracer/raw/master/examples/flake.png" width="500" alt="rustracer-flake"/>
   <p><sub><strong>flake.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~7h
 </div>
 

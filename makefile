@@ -18,19 +18,34 @@ examples/demo.gif:
 	@rm -fr examples/demo
 	@printf "done\n"
 
-docs: patch_docs docs.pid
-ccov: ccov.pid
+docs: rust_docs docs.pid
+ccov: rust_ccov ccov.pid
 
-patch_docs:
-	@for f in `ls -1 target/doc/rustracer`; do ln -sf rustracer/$$f target/doc/$$f; done;
+rust_docs:
+	@mv README.md README.orig.md
+	@grep -v "<hr" README.orig.md > README.md
+	@sed -i 's/<h5>/<h6>/;s/<\/h5>/<\/h6>/' README.md
+	@sed -zi 's/<\/h6>/<\/h6><br>/2;s/<\/h6>/<\/h6><br>/3' README.md
+	@sed -zi 's/<\/h6>/<\/h6><br>/5' README.md
+	@sed -zi 's/<\/h6>/<\/h6><br>/6' README.md
+	@sed -i 's/<h4>/<h5>/;s/<\/h4>/<\/h5>/' README.md
+	@cargo rustdoc --locked
+	@rm -f README.md
+	@mv README.orig.md README.md
+	@mv target/doc/rustracer/ target/doc/docs
+	@find target/doc/ -name "*.html" -exec sed -i 's/\.\.\/rustracer\//\.\.\/docs\//g' {} \;
+	@sed -i 's/href]/href.replace("rustracer","docs")]/' target/doc/search.js
 	@cp install.sh target/doc/
 
 docs.pid:
 	@printf "starting http.server ... "
-	@{ python3 -m http.server -b 127.0.0.1 -d target/doc/ 8080 >/dev/null 2>&1 \
+	@{ python3 -m http.server -b 127.0.0.1 -d target/doc 8080 >/dev/null 2>&1 \
 		& echo $$! >$@; }
 	@printf "done\n"
-	@printf "docs url: http://localhost:8080/\n"
+	@printf "docs url: http://localhost:8080/docs\n"
+
+rust_ccov:
+	@cargo llvm-cov --html --locked
 
 ccov.pid:
 	@printf "starting http.server ... "

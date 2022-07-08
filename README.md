@@ -244,7 +244,9 @@ OPTIONS:
 
 Rendering demo scene from scene file [`examples/demo.yml`](https://github.com/andros21/rustracer/blob/master/examples/demo.yml):
 
-<h5><code>rustracer render --anti-aliasing 3 -f 1 examples/demo.yml</code> <a href="#note5"><sup>(5)</sup></a></h5>
+<h5>
+   <code>rustracer render --anti-aliasing 3 -f 1 examples/demo.yml demo.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
+</h5>
 
 you can use this example scene to learn how to write your custom scene, ready to be rendered!
 
@@ -252,20 +254,24 @@ But let's unleash the power of a scene encoded in data-serialization language su
 Well repetitive scenes could be nightmare to be written, but for these (and more) there is [`cue`](https://github.com/cue-lang/cue)
 
 Let's try to render a 3D fractal, a [sphere-flake](https://en.wikipedia.org/wiki/Koch_snowflake), but without manually write a yaml scene file\
-we can automatic genererate it from [`examples/flake.cue`](https://github.com/andros21/rustracer/blob/master/examples/flake.cue)
+we can automatic generate it from [`examples/flake.cue`](https://github.com/andros21/rustracer/blob/for-1.0.0/examples/flake.cue)
 
 ```bash
 cue eval flake.cue -e "flake" -f flake.cue.yml   # generate yml from cue
 cat flake.cue.yml | sed "s/'//g" > flake.yml     # little tweaks
 wc -l flake.cue flake.yml                        # compare lines number
    92 flake.cue                                  # .
-32666 flake.yml                                  # .
+ 2750 flake.yml                                  # .
 ```
-so with this trick we've been able to condense a scene info from 32666 to 92 lines, x350 shrink! 😎\
+so with this trick we've been able to condense a scene info from 2750 to 92 lines, x30 shrink! 😎\
 and the generated `flake.yml` can be simple parsed
 
 <div align="center">
-<h5><code>rustracer render --anti-aliasing 3 -f 1 flake.yml flake.png</code> <a href="#note5"><sup>(5)</sup></a></h5>
+   <h5>
+   <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 -f 1 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
+   </h5>
+  <img src="https://github.com/andros21/rustracer/raw/for-1.0.0/examples/flake.png" width="500" alt="rustracer-flake"/>
+  <p><sub><strong>flake.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~7h
 </div>
 
 <br>
@@ -311,12 +317,17 @@ OPTIONS:
 
 ### rustracer-completion
 
-Simple generate completion script for `bash` shell:
+Simple generate completion script for `bash` shell (same for `fish` and `zsh`):
 
-#### `rustracer completion bash` <a href="#note6"><sup>(6)</sup></a>
+<div align="center">
+   <h5>
+      <code>rustracer completion bash</code> <a href="#note6"><sup>(6)</sup></a>
+   </h5>
+   <a href="https://asciinema.org/a/1lqL4683WLvXPfOo5W608je6V?autoplay=1&speed1.5" target="_blank"><img src="https://asciinema.org/a/1lqL4683WLvXPfOo5W608je6V.svg" width="500" /></a>
+   <p><sub><strong>note:</strong> close-open your shell, and here we go, tab completions now available!
+</div>
 
-close-open your shell, and here we go, tab completions now available!
-
+<br>
 <details>
 <summary>click to show <strong>rustracer-completion -h </strong></summary>
 

@@ -119,9 +119,9 @@ jobs:
     name: ghpages
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-    #needs:
-      #- cratesio
+      contents: write
+    needs:
+      - release
     steps:
       - name: checkout project
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
@@ -142,12 +142,8 @@ jobs:
           default: true
           profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
-      - name: cargo rustdoc
-        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
-        with:
-          command: rustdoc
-      - name: patch docs
-        run: make patch_docs
+      - name: patch and cargo rustdoc
+        run: make rust_docs
       - name: publish to gh-pages
         uses: peaceiris/actions-gh-pages@b24891da2a683970a75ebe54633f084809cc25c0
         with:

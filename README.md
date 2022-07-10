@@ -14,6 +14,10 @@
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/andros21/0e20cd331d0800e3299298a3868aab7a/raw/rustracer__master.json" alt="Coverage">
   </a>
+  <a href="https://github.com/andros21/rustracer/actions/workflows/cd.yml">
+    <img src="https://img.shields.io/github/workflow/status/andros21/rustracer/CD?style=flat-square&label=cd&logo=github" alt="CD">
+  </a>
+  <br>
   <a href="https://github.com/andros21/rustracer/releases">
     <img src="https://img.shields.io/github/v/release/andros21/rustracer?color=orange&&sort=semver&style=flat-square" alt="Version">
   </a>

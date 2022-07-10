@@ -168,7 +168,7 @@ ARGS:
     <LDR>    Output image [possible formats: ff, png]
 
 OPTIONS:
-    -f, --factor <FACTOR>    Normalization factor [default: 0.2]
+    -f, --factor <FACTOR>    Normalization factor [default: 1.0]
     -g, --gamma <GAMMA>      Gamma parameter [default: 1.0]
     -h, --help               Print help information
     -v, --verbose            Print stdout information
@@ -222,13 +222,13 @@ OPTIONS:
                                            [possible values: onoff, flat, pathtracer]
         --angle-deg <ANGLE_DEG>            View angle (in degrees) [default: 0.0]
         --anti-aliasing <ANTI_ALIASING>    Anti-aliasing level [default: 1]
-    -f, --factor <FACTOR>                  Normalization factor [default: 0.2]
+    -f, --factor <FACTOR>                  Normalization factor [default: 1.0]
     -g, --gamma <GAMMA>                    Gamma parameter [default: 1.0]
     -h, --help                             Print help information
         --height <HEIGHT>                  Image height [default: 480]
         --init-seq <INIT_SEQ>              Identifier of the random sequence (positive number)
-                                           [default: 45]
-        --init-state <INIT_STATE>          Initial random seed (positive number) [default: 45]
+                                           [default: 54]
+        --init-state <INIT_STATE>          Initial random seed (positive number) [default: 42]
     -m, --max-depth <MAX_DEPTH>            Maximum depth [default: 3]
     -n, --num-of-rays <NUM_OF_RAYS>        Number of rays [default: 10]
         --orthogonal                       Use orthogonal camera instead of perspective camera
@@ -284,7 +284,7 @@ and the generated `flake.yml` can be simple parsed
 
 ```console
 rustracer-render 1.0.0
-Render a scene from file
+Render a scene from file (yaml formatted)
 
 USAGE:
     rustracer render [OPTIONS] <INPUT> <OUTPUT>
@@ -298,13 +298,13 @@ OPTIONS:
                                            [possible values: onoff, flat, pathtracer]
         --angle-deg <ANGLE_DEG>            View angle (in degrees) [default: 0.0]
         --anti-aliasing <ANTI_ALIASING>    Anti-aliasing level [default: 1]
-    -f, --factor <FACTOR>                  Normalization factor [default: 0.2]
+    -f, --factor <FACTOR>                  Normalization factor [default: 1.0]
     -g, --gamma <GAMMA>                    Gamma parameter [default: 1.0]
     -h, --help                             Print help information
         --height <HEIGHT>                  Image height [default: 480]
         --init-seq <INIT_SEQ>              Identifier of the random sequence (positive number)
-                                           [default: 45]
-        --init-state <INIT_STATE>          Initial random seed (positive number) [default: 45]
+                                           [default: 54]
+        --init-state <INIT_STATE>          Initial random seed (positive number) [default: 42]
     -m, --max-depth <MAX_DEPTH>            Maximum depth [default: 3]
     -n, --num-of-rays <NUM_OF_RAYS>        Number of rays [default: 10]
         --output-pfm                       Output also hdr image

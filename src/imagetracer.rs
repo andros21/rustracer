@@ -1,12 +1,14 @@
 //! Image Tracer module.
 //!
 //! Provides [`ImageTracer`](struct@ImageTracer) struct.
-use crate::camera::{Camera, FireRay};
-use crate::color::Color;
-use crate::hdrimage::HdrImage;
-use crate::random::Pcg;
-use crate::ray::Ray;
-use crate::render::{Renderer, Solve};
+use crate::{
+    camera::{Camera, FireRay},
+    color::Color,
+    hdrimage::HdrImage,
+    random::Pcg,
+    ray::Ray,
+    render::{Renderer, Solve},
+};
 use rayon::prelude::*;
 
 /// Trace an image by shooting light rays through each of its pixels.
@@ -17,13 +19,12 @@ pub struct ImageTracer<'a> {
     camera: Camera,
 }
 
-/// Appo struct for [`all_rays`](../imagetracer/struct.ImageTracer.html#method.all_rays) that will store
-/// for each pixel in [`image`](../imagetracer/struct.ImageTracer.html#fields):
-///   * a [`Vec`] of [`Ray`]s, the length of this vector\
-///     will be greater than one when `antialiasing_level!=1`;
-///   * a [`u64`] random integer generated from [`Pcg`], that will be used\
-///     to init an independent [`Pcg`] when rendering equation solution
-///     (avoiding artefacts).
+/// Appo struct for [`all_rays`](../imagetracer/struct.ImageTracer.html#method.all_rays) that will
+/// store for each pixel in [`image`](../imagetracer/struct.ImageTracer.html#fields):
+///   * a [`Vec`] of [`Ray`]s, the length of this vector\ will be greater than one when
+///     `antialiasing_level!=1`;
+///   * a [`u64`] random integer generated from [`Pcg`], that will be used\ to init an independent
+///     [`Pcg`] when rendering equation solution (avoiding artefacts).
 struct Rays {
     /// [`Pcg`] `init_seq` for each pixel.
     seq: u64,
@@ -85,7 +86,8 @@ impl<'a> ImageTracer<'a> {
     /// Shoot several light rays crossing each of the pixels in the image.
     ///
     /// If `antialiasing_level` is one, for each pixel in the [`HdrImage`] object fire one [`Ray`],\
-    /// and pass it to a [`Renderer`] that implement a [`Solve`] trait to determine the `Color` of the pixel.
+    /// and pass it to a [`Renderer`] that implement a [`Solve`] trait to determine the `Color` of
+    /// the pixel.
     ///
     /// If `antialiasing_level` is greater than one, then each pixel is divided in a N by N grid,\
     /// where N is the anti-aliasing level, and a [`Ray`] is thrown for each sub-pixel;\
@@ -126,12 +128,10 @@ impl<'a> ImageTracer<'a> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::camera::PerspectiveCamera;
-    use crate::color::Color;
-    use crate::misc::IsClose;
-    use crate::point::Point;
-    use crate::render::DummyRenderer;
-    use crate::transformation::Transformation;
+    use crate::{
+        camera::PerspectiveCamera, color::Color, misc::IsClose, point::Point,
+        render::DummyRenderer, transformation::Transformation,
+    };
 
     #[test]
     fn test_uv_sub_mapping() {

@@ -1,11 +1,7 @@
 //! 3D Homogeneous Transformation module.
 //!
 //! Provides [`Matrix`](struct@Matrix) and [`Transformation`](struct@Transformation) struct.
-use crate::misc::IsClose;
-use crate::normal::Normal;
-use crate::point::Point;
-use crate::ray::Ray;
-use crate::vector::Vector;
+use crate::{misc::IsClose, normal::Normal, point::Point, ray::Ray, vector::Vector};
 use std::ops::Mul;
 
 /// 4D Identity matrix.
@@ -116,7 +112,8 @@ impl Transformation {
 }
 
 impl IsClose for Transformation {
-    /// Return `true` if matrix and inverse matrix of two [`Transformation`] are [close](trait@IsClose).
+    /// Return `true` if matrix and inverse matrix of two [`Transformation`] are
+    /// [close](trait@IsClose).
     fn is_close(&self, other: Transformation) -> bool {
         self.m.is_close(other.m) && self.invm.is_close(other.invm)
     }
@@ -199,6 +196,7 @@ impl Mul<Point> for Transformation {
 
 impl Mul<Ray> for Transformation {
     type Output = Ray;
+
     fn mul(self, ray: Ray) -> Self::Output {
         Ray {
             origin: self * ray.origin,

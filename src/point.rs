@@ -1,10 +1,11 @@
 //! 3D Point module.
 //!
 //! Provides [`Point`](struct@Point) struct.
-use crate::misc::IsClose;
-use crate::vector::Vector;
-use std::fmt;
-use std::ops::{Add, Mul, Sub};
+use crate::{misc::IsClose, vector::Vector};
+use std::{
+    fmt,
+    ops::{Add, Mul, Sub},
+};
 
 /// 3D Point struct.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]

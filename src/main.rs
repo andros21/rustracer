@@ -21,30 +21,35 @@ mod world;
 
 use clap_complete::{generate, Shell};
 use image::ImageFormat;
-use std::f32::consts::PI;
-use std::fs::{create_dir_all, File};
-use std::io::{BufWriter, Write};
-use std::path::Path;
-use std::process::exit;
-use std::str::FromStr;
-use std::{env, io};
-
-use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
-use crate::cli::Cli;
-use crate::color::{Color, BLACK, WHITE};
-use crate::error::{CompletionErr, ConvertErr, DemoErr, HdrImageErr, RenderErr};
-use crate::hdrimage::{HdrImage, Luminosity};
-use crate::imagetracer::ImageTracer;
-use crate::material::{
-    CheckeredPigment, DiffuseBRDF, Material, Pigment, SpecularBRDF, UniformPigment, BRDF,
+use std::{
+    env,
+    f32::consts::PI,
+    fs::{create_dir_all, File},
+    io,
+    io::{BufWriter, Write},
+    path::Path,
+    process::exit,
+    str::FromStr,
 };
-use crate::misc::ByteOrder;
-use crate::render::{DummyRenderer, FlatRenderer, OnOffRenderer, PathTracer, Renderer};
-use crate::scene::Scene;
-use crate::shape::{Plane, Sphere};
-use crate::transformation::{rotation_z, scaling, translation, Transformation};
-use crate::vector::Vector;
-use crate::world::World;
+
+use crate::{
+    camera::{Camera, OrthogonalCamera, PerspectiveCamera},
+    cli::Cli,
+    color::{Color, BLACK, WHITE},
+    error::{CompletionErr, ConvertErr, DemoErr, HdrImageErr, RenderErr},
+    hdrimage::{HdrImage, Luminosity},
+    imagetracer::ImageTracer,
+    material::{
+        CheckeredPigment, DiffuseBRDF, Material, Pigment, SpecularBRDF, UniformPigment, BRDF,
+    },
+    misc::ByteOrder,
+    render::{DummyRenderer, FlatRenderer, OnOffRenderer, PathTracer, Renderer},
+    scene::Scene,
+    shape::{Plane, Sphere},
+    transformation::{rotation_z, scaling, translation, Transformation},
+    vector::Vector,
+    world::World,
+};
 use colored::Colorize;
 
 /// Crate main function.
@@ -61,7 +66,7 @@ fn main() {
         Some("render") => exit!(render(cli_m.subcommand_matches("render").unwrap())),
         Some("completion") => {
             exit!(completion(cli_m.subcommand_matches("completion").unwrap()))
-        }
+        },
         // This branch should not be triggered (exit 1).
         _ => exit(1),
     }
@@ -211,7 +216,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
         "pathtracer" => {
             Renderer::PathTracer(PathTracer::new(&world, BLACK, num_of_rays, max_depth, 3))
-        }
+        },
         // This branch should not be triggered (dummy behaviour).
         _ => Renderer::Dummy(DummyRenderer),
     };
@@ -303,7 +308,7 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
         "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
         "pathtracer" => {
             Renderer::PathTracer(PathTracer::new(&world, BLACK, num_of_rays, max_depth, 3))
-        }
+        },
         // This branch should not be triggered (dummy behaviour).
         _ => Renderer::Dummy(DummyRenderer),
     };
@@ -348,7 +353,7 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
     let mut path_buf = match shell {
         Shell::Bash => {
             Path::new(&home).join(".local/share/bash-completion/completions/rustracer.bash")
-        }
+        },
         Shell::Fish => Path::new(&home).join(".config/fish/completions/rustracer.fish"),
         Shell::Zsh => Path::new(&home).join(".zfunc/_rustracer.zsh"),
         // This branch should not be triggered (empty PathBuf).
@@ -408,7 +413,7 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
                 } else {
                     continue;
                 }
-            }
+            },
             _ => continue,
         }
     }

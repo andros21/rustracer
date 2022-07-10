@@ -4,15 +4,15 @@
 
 use byteorder::{ReadBytesExt, WriteBytesExt};
 use image::{DynamicImage, ImageFormat, Rgb, Rgba};
-use std::fs::File;
-use std::io::{BufRead, BufReader, BufWriter, Write};
-use std::path::Path;
-use std::str::FromStr;
-use std::vec::Vec;
+use std::{
+    fs::File,
+    io::{BufRead, BufReader, BufWriter, Write},
+    path::Path,
+    str::FromStr,
+    vec::Vec,
+};
 
-use crate::color::Color;
-use crate::error::HdrImageErr;
-use crate::misc::ByteOrder;
+use crate::{color::Color, error::HdrImageErr, misc::ByteOrder};
 
 const DELTA: f32 = 1e-10;
 
@@ -160,7 +160,7 @@ impl HdrImage {
                         hdr_img.set_pixel(x, y, (buffer[0], buffer[1], buffer[2]).into())?;
                     }
                 }
-            }
+            },
             ByteOrder::BigEndian => {
                 for y in (0..height).rev() {
                     for x in 0..width {
@@ -170,7 +170,7 @@ impl HdrImage {
                         hdr_img.set_pixel(x, y, (buffer[0], buffer[1], buffer[2]).into())?;
                     }
                 }
-            }
+            },
         };
         if buf_reader.read_line(&mut line).unwrap_or(1) == 0 {
             Ok(hdr_img)
@@ -306,7 +306,7 @@ impl HdrImage {
                 ldr_img
                     .save_with_format(&path, format)
                     .map_err(HdrImageErr::LdrFileWriteFailure)
-            }
+            },
             ImageFormat::Png => {
                 let mut ldr_img = DynamicImage::new_rgb8(self.width, self.height).into_rgb8();
                 for y in 0..self.height {
@@ -326,12 +326,12 @@ impl HdrImage {
                 ldr_img
                     .save_with_format(&path, format)
                     .map_err(HdrImageErr::LdrFileWriteFailure)
-            }
+            },
             _ => {
                 return Err(HdrImageErr::UnsupportedLdrFileFormat(String::from(
                     path.extension().unwrap().to_str().unwrap_or(""),
                 )))
-            }
+            },
         }
     }
 }
@@ -409,7 +409,8 @@ fn write_float<W: Write>(
 
 /// Luminosity enum.
 pub enum Luminosity {
-    /// Variant for using [`average_luminosity`](../hdrimage/struct.HdrImage.html#method.average_luminosity)
+    /// Variant for using
+    /// [`average_luminosity`](../hdrimage/struct.HdrImage.html#method.average_luminosity)
     /// inside [`normalize_image`](../hdrimage/struct.HdrImage.html#method.normalize_image) method
     AverageLuminosity,
     /// Variant for setting a constant [`f32`] value for luminosity inside
@@ -425,8 +426,7 @@ fn clamp(x: f32) -> f32 {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::color::WHITE;
-    use crate::misc::IsClose;
+    use crate::{color::WHITE, misc::IsClose};
     use std::io::Cursor;
 
     #[test]

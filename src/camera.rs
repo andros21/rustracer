@@ -7,10 +7,7 @@
 //! That implement [`FireRay`] trait.
 //!
 //! And [`Camera`] enum that wrap them.
-use crate::point::Point;
-use crate::ray::Ray;
-use crate::transformation::Transformation;
-use crate::vector::Vector;
+use crate::{point::Point, ray::Ray, transformation::Transformation, vector::Vector};
 
 /// Trait for fire a [`Ray`] through a [`camera`](.).
 ///

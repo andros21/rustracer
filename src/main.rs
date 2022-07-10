@@ -21,30 +21,35 @@ mod world;
 
 use clap_complete::{generate, Shell};
 use image::ImageFormat;
-use std::f32::consts::PI;
-use std::fs::{create_dir_all, File};
-use std::io::{BufWriter, Write};
-use std::path::Path;
-use std::process::exit;
-use std::str::FromStr;
-use std::{env, io};
-
-use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
-use crate::cli::Cli;
-use crate::color::{Color, BLACK, WHITE};
-use crate::error::{CompletionErr, ConvertErr, DemoErr, HdrImageErr, RenderErr};
-use crate::hdrimage::{HdrImage, Luminosity};
-use crate::imagetracer::ImageTracer;
-use crate::material::{
-    CheckeredPigment, DiffuseBRDF, Material, Pigment, SpecularBRDF, UniformPigment, BRDF,
+use std::{
+    env,
+    f32::consts::PI,
+    fs::{create_dir_all, File},
+    io,
+    io::{BufWriter, Write},
+    path::Path,
+    process::exit,
+    str::FromStr,
 };
-use crate::misc::ByteOrder;
-use crate::render::{DummyRenderer, FlatRenderer, OnOffRenderer, PathTracer, Renderer};
-use crate::scene::Scene;
-use crate::shape::{Plane, Sphere};
-use crate::transformation::{rotation_z, scaling, translation, Transformation};
-use crate::vector::Vector;
-use crate::world::World;
+
+use crate::{
+    camera::{Camera, OrthogonalCamera, PerspectiveCamera},
+    cli::Cli,
+    color::{Color, BLACK, WHITE},
+    error::{CompletionErr, ConvertErr, DemoErr, HdrImageErr, RenderErr},
+    hdrimage::{HdrImage, Luminosity},
+    imagetracer::ImageTracer,
+    material::{
+        CheckeredPigment, DiffuseBRDF, Material, Pigment, SpecularBRDF, UniformPigment, BRDF,
+    },
+    misc::ByteOrder,
+    render::{DummyRenderer, FlatRenderer, OnOffRenderer, PathTracer, Renderer},
+    scene::Scene,
+    shape::{Plane, Sphere},
+    transformation::{rotation_z, scaling, translation, Transformation},
+    vector::Vector,
+    world::World,
+};
 use colored::Colorize;
 
 /// Crate main function.

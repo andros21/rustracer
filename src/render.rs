@@ -1,11 +1,13 @@
 //! Render module.
 //!
 //! Provides different renderers that implement [`Solve`] trait.
-use crate::color::Color;
-use crate::material::{GetColor, ScatterRay};
-use crate::random::Pcg;
-use crate::ray::Ray;
-use crate::world::World;
+use crate::{
+    color::Color,
+    material::{GetColor, ScatterRay},
+    random::Pcg,
+    ray::Ray,
+    world::World,
+};
 
 /// A trait for solving rendering equation.
 ///
@@ -205,12 +207,15 @@ impl<'a> Solve for Renderer<'a> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::material::{DiffuseBRDF, Pigment, UniformPigment, BRDF};
-    use crate::misc::IsClose;
-    use crate::point::Point;
-    use crate::transformation::Transformation;
-    use crate::vector::E1;
-    use crate::{translation, CheckeredPigment, Material, Sphere, BLACK, WHITE};
+    use crate::{
+        material::{DiffuseBRDF, Pigment, UniformPigment, BRDF},
+        misc::IsClose,
+        point::Point,
+        transformation::Transformation,
+        translation,
+        vector::E1,
+        CheckeredPigment, Material, Sphere, BLACK, WHITE,
+    };
 
     #[test]
     fn test_flat() {

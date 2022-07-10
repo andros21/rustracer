@@ -1,8 +1,10 @@
 //! World module.
 //!
 //! Provides [`World`](struct@World) struct.
-use crate::ray::Ray;
-use crate::shape::{HitRecord, RayIntersection};
+use crate::{
+    ray::Ray,
+    shape::{HitRecord, RayIntersection},
+};
 
 /// A class holding a list of [`shapes`](../shape)
 /// (e.g. [`Plane`](../shape/struct.Plane.html), [`Sphere`](../shape/struct.Sphere.html)).
@@ -51,13 +53,9 @@ impl World {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::material::GetColor;
-    use crate::misc::IsClose;
-    use crate::point::Point;
-    use crate::vector::E1;
     use crate::{
-        scaling, translation, DiffuseBRDF, Material, Pigment, Sphere, UniformPigment, Vector,
-        BLACK, BRDF, WHITE,
+        material::GetColor, misc::IsClose, point::Point, scaling, translation, vector::E1,
+        DiffuseBRDF, Material, Pigment, Sphere, UniformPigment, Vector, BLACK, BRDF, WHITE,
     };
 
     #[test]

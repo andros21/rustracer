@@ -4,15 +4,15 @@
 
 use byteorder::{ReadBytesExt, WriteBytesExt};
 use image::{DynamicImage, ImageFormat, Rgb, Rgba};
-use std::fs::File;
-use std::io::{BufRead, BufReader, BufWriter, Write};
-use std::path::Path;
-use std::str::FromStr;
-use std::vec::Vec;
+use std::{
+    fs::File,
+    io::{BufRead, BufReader, BufWriter, Write},
+    path::Path,
+    str::FromStr,
+    vec::Vec,
+};
 
-use crate::color::Color;
-use crate::error::HdrImageErr;
-use crate::misc::ByteOrder;
+use crate::{color::Color, error::HdrImageErr, misc::ByteOrder};
 
 const DELTA: f32 = 1e-10;
 
@@ -409,7 +409,8 @@ fn write_float<W: Write>(
 
 /// Luminosity enum.
 pub enum Luminosity {
-    /// Variant for using [`average_luminosity`](../hdrimage/struct.HdrImage.html#method.average_luminosity)
+    /// Variant for using
+    /// [`average_luminosity`](../hdrimage/struct.HdrImage.html#method.average_luminosity)
     /// inside [`normalize_image`](../hdrimage/struct.HdrImage.html#method.normalize_image) method
     AverageLuminosity,
     /// Variant for setting a constant [`f32`] value for luminosity inside
@@ -425,8 +426,7 @@ fn clamp(x: f32) -> f32 {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::color::WHITE;
-    use crate::misc::IsClose;
+    use crate::{color::WHITE, misc::IsClose};
     use std::io::Cursor;
 
     #[test]

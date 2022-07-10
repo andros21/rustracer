@@ -90,8 +90,8 @@ impl IsClose for Color {
 }
 
 impl IntoIterator for Color {
-    type Item = f32;
     type IntoIter = std::array::IntoIter<f32, 3>;
+    type Item = f32;
 
     fn into_iter(self) -> Self::IntoIter {
         [self.r, self.g, self.b].into_iter()

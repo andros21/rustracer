@@ -1,9 +1,7 @@
 //! Light Ray module.
 //!
 //! Provides [`Ray`](struct@Ray) struct.
-use crate::misc::IsClose;
-use crate::point::Point;
-use crate::vector::Vector;
+use crate::{misc::IsClose, point::Point, vector::Vector};
 
 #[derive(Clone, Copy, Debug)]
 /// Light Ray struct.

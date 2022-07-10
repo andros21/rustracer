@@ -1,11 +1,11 @@
 //! 3D Vector module.
 //!
 //! Provides [`Vector`](struct@Vector) struct.
-use crate::misc::IsClose;
-use crate::normal::Normal;
-use crate::point::Point;
-use std::fmt;
-use std::ops::{Add, Mul, Sub};
+use crate::{misc::IsClose, normal::Normal, point::Point};
+use std::{
+    fmt,
+    ops::{Add, Mul, Sub},
+};
 
 /// X-axis vector.
 pub const E1: Vector = Vector {
@@ -181,8 +181,7 @@ pub fn create_onb_from_z(vector: Vector) -> (Vector, Vector, Vector) {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::misc::EPSILON;
-    use crate::random::Pcg;
+    use crate::{misc::EPSILON, random::Pcg};
 
     #[test]
     fn test_is_close() {

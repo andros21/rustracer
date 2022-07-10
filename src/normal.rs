@@ -1,10 +1,8 @@
 //! 3D Normal module.
 //!
 //! Provides [`Normal`](struct@Normal) struct.
-use crate::misc::IsClose;
-use crate::vector::Vector;
-use std::fmt;
-use std::ops::Mul;
+use crate::{misc::IsClose, vector::Vector};
+use std::{fmt, ops::Mul};
 
 /// X-axis normal.
 pub const E1: Normal = Normal {
@@ -162,8 +160,7 @@ pub fn create_onb_from_z(normal: Normal) -> (Vector, Vector, Vector) {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::misc::EPSILON;
-    use crate::random::Pcg;
+    use crate::{misc::EPSILON, random::Pcg};
 
     #[test]
     fn test_is_close() {

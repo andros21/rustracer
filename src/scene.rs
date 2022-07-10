@@ -1,28 +1,30 @@
 //! Scene parsing module.
 //!
 //! Provides `Scene` struct parsed from scene file (**yaml** formatted).
-use crate::camera::{Camera, OrthogonalCamera, PerspectiveCamera};
-use crate::cli::Cli;
-use crate::color::{Color, BLACK, WHITE};
-use crate::error::SceneErr;
-use crate::hdrimage::HdrImage;
-use crate::material::{
-    CheckeredPigment, DiffuseBRDF, ImagePigment, Material, Pigment, SpecularBRDF, UniformPigment,
-    BRDF,
+use crate::{
+    camera::{Camera, OrthogonalCamera, PerspectiveCamera},
+    cli::Cli,
+    color::{Color, BLACK, WHITE},
+    error::SceneErr,
+    hdrimage::HdrImage,
+    material::{
+        CheckeredPigment, DiffuseBRDF, ImagePigment, Material, Pigment, SpecularBRDF,
+        UniformPigment, BRDF,
+    },
+    shape::{Plane, RayIntersection, Sphere},
+    transformation::{rotation_x, rotation_y, rotation_z, scaling, translation, Transformation},
+    vector::{Vector, E1, E2, E3},
+    world::World,
 };
-use crate::shape::{Plane, RayIntersection, Sphere};
-use crate::transformation::{
-    rotation_x, rotation_y, rotation_z, scaling, translation, Transformation,
+use std::{
+    collections::BTreeMap,
+    f32::consts::PI,
+    fmt,
+    fs::File,
+    io::{BufReader, Read},
+    path::Path,
+    str::FromStr,
 };
-use crate::vector::{Vector, E1, E2, E3};
-use crate::world::World;
-use std::collections::BTreeMap;
-use std::f32::consts::PI;
-use std::fmt;
-use std::fs::File;
-use std::io::{BufReader, Read};
-use std::path::Path;
-use std::str::FromStr;
 
 /// Chars that must be considered special when parsed.
 ///
@@ -413,7 +415,7 @@ impl<R: Read> InputStream<R> {
         } else if ch.is_ascii_alphabetic() || ch == '_' {
             Ok(self.parse_keyword_or_identifier(ch, token_location))
         } else {
-            //self.unread_char(ch);
+            // self.unread_char(ch);
             Err(SceneErr::InvalidCharacter {
                 loc: token_location,
                 msg: format!("{} invalid character", ch),

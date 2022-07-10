@@ -192,7 +192,9 @@ pub fn build_cli() -> Command<'static> {
                         .number_of_values(1)
                         .possible_values(["onoff", "flat", "pathtracer"])
                         .help("Rendering algorithm")
-                        .long_help("Algorithm to use for render the scene: [onoff, flat, pathtracer]"),
+                        .long_help(
+                            "Algorithm to use for render the scene: [onoff, flat, pathtracer]",
+                        ),
                 )
                 .arg(
                     Arg::new("num-of-rays")
@@ -235,7 +237,8 @@ pub fn build_cli() -> Command<'static> {
                         .number_of_values(1)
                         .help("Identifier of the random sequence (positive number)")
                         .long_help(
-                            "Identifier of the sequence produced by the random number generator (positive number)",
+                            "Identifier of the sequence produced by the random number generator \
+                             (positive number)",
                         ),
                 )
                 .arg(
@@ -246,7 +249,8 @@ pub fn build_cli() -> Command<'static> {
                         .number_of_values(1)
                         .help("Anti-aliasing level")
                         .long_help(
-                            "Anti-aliasing level, corresponds to the square-root of the number of samples per pixel",
+                            "Anti-aliasing level, corresponds to the square-root of the number of \
+                             samples per pixel",
                         ),
                 ),
         )
@@ -336,7 +340,9 @@ pub fn build_cli() -> Command<'static> {
                         .number_of_values(1)
                         .possible_values(["onoff", "flat", "pathtracer"])
                         .help("Rendering algorithm")
-                        .long_help("Algorithm to use for render the scene: [onoff, flat, pathtracer]"),
+                        .long_help(
+                            "Algorithm to use for render the scene: [onoff, flat, pathtracer]",
+                        ),
                 )
                 .arg(
                     Arg::new("num-of-rays")
@@ -379,7 +385,8 @@ pub fn build_cli() -> Command<'static> {
                         .number_of_values(1)
                         .help("Identifier of the random sequence (positive number)")
                         .long_help(
-                            "Identifier of the sequence produced by the random number generator (positive number)",
+                            "Identifier of the sequence produced by the random number generator \
+                             (positive number)",
                         ),
                 )
                 .arg(
@@ -390,7 +397,8 @@ pub fn build_cli() -> Command<'static> {
                         .number_of_values(1)
                         .help("Anti-aliasing level")
                         .long_help(
-                            "Anti-aliasing level, corresponds to the square-root of the number of samples per pixel",
+                            "Anti-aliasing level, corresponds to the square-root of the number of \
+                             samples per pixel",
                         ),
                 ),
         )
@@ -405,7 +413,7 @@ pub fn build_cli() -> Command<'static> {
                         .possible_values(["bash", "fish", "zsh"])
                         .number_of_values(1)
                         .help("Shell to generate script for")
-                        .long_help("Specify for which shell completions should be generated")
+                        .long_help("Specify for which shell completions should be generated"),
                 )
                 .arg(
                     Arg::new("output")
@@ -415,7 +423,7 @@ pub fn build_cli() -> Command<'static> {
                         .number_of_values(1)
                         .help("Specify output script file")
                         .long_help("Specify an output file for shell completions"),
-                )
+                ),
         );
 
     cli

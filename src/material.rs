@@ -4,13 +4,15 @@
 //!  * Different pigments that implement [`GetColor`] trait ;
 //!  * Different BRDF that implement both [`Eval`] and [`ScatterRay`] trait;
 //!  * A [`Material`] thanks to pigments and BRDF.
-use crate::color::{Color, BLACK, WHITE};
-use crate::hdrimage::HdrImage;
-use crate::misc::Vector2D;
-use crate::normal::{create_onb_from_z, Normal};
-use crate::point::Point;
-use crate::ray::Ray;
-use crate::vector::Vector;
+use crate::{
+    color::{Color, BLACK, WHITE},
+    hdrimage::HdrImage,
+    misc::Vector2D,
+    normal::{create_onb_from_z, Normal},
+    point::Point,
+    ray::Ray,
+    vector::Vector,
+};
 use std::f32::consts::PI;
 
 /// Trait that associates a [`Color`] with each point on a parametric surface `(u,v)`.
@@ -312,9 +314,11 @@ impl Default for Material {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::normal::{E1, E2, E3};
-    use crate::random::Pcg;
-    use crate::vector::{E1 as vE1, E2 as vE2, E3 as vE3};
+    use crate::{
+        normal::{E1, E2, E3},
+        random::Pcg,
+        vector::{E1 as vE1, E2 as vE2, E3 as vE3},
+    };
 
     #[test]
     fn test_pigment() {

@@ -3,13 +3,15 @@
 //! Provides geometrical shape structs that implement the
 //! [`RayIntersection`](trait@RayIntersection) trait.
 
-use crate::material::Material;
-use crate::misc::{IsClose, Vector2D};
-use crate::normal::Normal;
-use crate::point::Point;
-use crate::ray::Ray;
-use crate::transformation::Transformation;
-use crate::vector::Vector;
+use crate::{
+    material::Material,
+    misc::{IsClose, Vector2D},
+    normal::Normal,
+    point::Point,
+    ray::Ray,
+    transformation::Transformation,
+    vector::Vector,
+};
 use std::f32::consts::PI;
 
 /// Trait to determine the intersections of an object with a [`Ray`](struct@Ray).
@@ -43,7 +45,8 @@ pub struct HitRecord {
 }
 
 impl IsClose for HitRecord {
-    /// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are [close](trait@IsClose).
+    /// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are
+    /// [close](trait@IsClose).
     fn is_close(&self, other: Self) -> bool {
         self.world_point.is_close(other.world_point)
             && self.normal.is_close(other.normal)

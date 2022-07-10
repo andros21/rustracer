@@ -61,7 +61,8 @@ macro_rules! exit {
 ///
 /// When invalid or unsupported ldr file is provided via cli fail immediately.
 ///
-/// Re-use of built-in logic inside [`write_ldr_file`](hdrimage/struct.HdrImage.html#method.write_ldr_file).
+/// Re-use of built-in logic inside
+/// [`write_ldr_file`](hdrimage/struct.HdrImage.html#method.write_ldr_file).
 #[macro_export]
 macro_rules! check {
     ($a:expr) => {

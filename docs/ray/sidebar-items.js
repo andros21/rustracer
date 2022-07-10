@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Ray","Light Ray struct."]]});

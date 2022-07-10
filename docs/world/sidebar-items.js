@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["World","A class holding a list of `shapes` (e.g. `Plane`, `Sphere`)."]]});

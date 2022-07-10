@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Renderer","Enum of renderers."]],"struct":[["DummyRenderer","A dummy renderer."],["FlatRenderer","A flat renderer."],["OnOffRenderer","A on/off renderer."],["PathTracer","A path tracing renderer."]],"trait":[["Solve","A trait for solving rendering equation."]]});

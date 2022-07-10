@@ -497,7 +497,7 @@ impl<R: Read> InputStream<R> {
                 } else {
                     not_match!(loc, key, keyword)
                 }
-            }
+            },
             _ => not_matches!(token, keyword),
         }
     }
@@ -517,7 +517,7 @@ impl<R: Read> InputStream<R> {
                 } else {
                     not_match!(loc, key, keywords)
                 }
-            }
+            },
             _ => not_matches!(token, keywords),
         }
     }
@@ -583,7 +583,7 @@ impl<R: Read> InputStream<R> {
                         ),
                     })
                 }
-            }
+            },
             _ => not_matches!(token, "floating-point number"),
         }
     }
@@ -606,7 +606,7 @@ impl<R: Read> InputStream<R> {
                 let b = self.match_number()?;
                 self.match_symbol(']')?;
                 Ok(Color::from((r, g, b)))
-            }
+            },
             // Match color from variables `var`.
             Token::Identifier(loc, color) => {
                 Ok(var
@@ -617,7 +617,7 @@ impl<R: Read> InputStream<R> {
                         loc,
                         msg: format!("{:?} color not defined", color),
                     })?)
-            }
+            },
             // Match color from variables `var`.
             Token::Keyword(loc, key) => Ok(var
                 .colors
@@ -647,7 +647,7 @@ impl<R: Read> InputStream<R> {
                 let z = self.match_number()?;
                 self.match_symbol(']')?;
                 Ok(Vector::from((x, y, z)))
-            }
+            },
             // Match vector from variables `var`.
             Token::Identifier(loc, vector) => {
                 Ok(var
@@ -658,7 +658,7 @@ impl<R: Read> InputStream<R> {
                         loc,
                         msg: format!("{:?} vector not defined, available [E1, E2, E3]", vector),
                     })?)
-            }
+            },
             _ => not_matches!(token, "xyz vector"),
         }
     }
@@ -751,7 +751,7 @@ impl<R: Read> InputStream<R> {
                         }
                     })?,
                 )))
-            }
+            },
             Keywords::Checkered => {
                 self.match_symbol('[')?;
                 let color1 = self.parse_color(var)?;
@@ -767,7 +767,7 @@ impl<R: Read> InputStream<R> {
                     color2,
                     steps,
                 }))
-            }
+            },
             // This branch should never be triggered (a dummy error).
             _ => Err(SceneErr::UnexpectedMatch(String::from(
                 "unexpected match (report it to devel)",
@@ -884,27 +884,27 @@ impl<R: Read> InputStream<R> {
                             self.match_symbol(':')?;
                             self.match_symbol(' ')?;
                             Ok(rotation_x(f32::to_radians(self.match_number()?)))
-                        }
+                        },
                         Keywords::RotationY => {
                             self.match_symbol(':')?;
                             self.match_symbol(' ')?;
                             Ok(rotation_y(f32::to_radians(self.match_number()?)))
-                        }
+                        },
                         Keywords::RotationZ => {
                             self.match_symbol(':')?;
                             self.match_symbol(' ')?;
                             Ok(rotation_z(f32::to_radians(self.match_number()?)))
-                        }
+                        },
                         Keywords::Scaling => {
                             self.match_symbol(':')?;
                             self.match_symbol(' ')?;
                             Ok(scaling(self.parse_vector(var)?))
-                        }
+                        },
                         Keywords::Translation => {
                             self.match_symbol(':')?;
                             self.match_symbol(' ')?;
                             Ok(translation(self.parse_vector(var)?))
-                        }
+                        },
                         _ => not_matches!(
                             transformation_tk,
                             vec![
@@ -927,7 +927,7 @@ impl<R: Read> InputStream<R> {
                             msg: format!("\"{:?}\" transformation not defined", key),
                         })?)
                 }
-            }
+            },
             // Match inside `transformations` [`BTreeMap`].
             Token::Identifier(loc, id) => {
                 transformations
@@ -937,7 +937,7 @@ impl<R: Read> InputStream<R> {
                         loc,
                         msg: format!("{:?} transformation not defined", id),
                     })
-            }
+            },
             _ => not_matches!(transformation_tk, "transformation"),
         }
     }
@@ -994,7 +994,7 @@ impl<R: Read> InputStream<R> {
                         transformation =
                             self.parse_transformation(transformations, var)? * transformation;
                         Ok(())
-                    }
+                    },
                     // Otherwise stop with compose transformation block.
                     // If there is '-' no more composing, this is a new transformation.
                     Token::Symbol(_, '-') => {
@@ -1003,7 +1003,7 @@ impl<R: Read> InputStream<R> {
                         // Magic rustc.
                         self.unread_token(tk_nx_nx);
                         break;
-                    }
+                    },
                     // No other suppositions are made! To reduce grammar complexity.
                     _ => not_matches!(tk_nx_nx, "[' ', '-']"),
                 }?;
@@ -1069,7 +1069,7 @@ impl<R: Read> InputStream<R> {
                 } else {
                     not_match!(loc, key, &shapes)
                 }
-            }
+            },
             _ => not_matches!(token, &shapes),
         }?;
         // Can only be a eol or inline comment.
@@ -1265,13 +1265,13 @@ impl<R: Read> InputStream<R> {
                     Keywords::Camera => {
                         scene.camera = Some(self.parse_camera(&var, cli)?);
                         blocks.remove(blocks.iter().position(|&k| k == Keywords::Camera).unwrap());
-                    }
+                    },
                     // Update colors in `var` if colors block is found.
                     // And remove it from `blocks`, because was found.
                     Keywords::Colors => {
                         var.colors.append(&mut self.parse_colors(&var)?);
                         blocks.remove(blocks.iter().position(|&k| k == Keywords::Colors).unwrap());
-                    }
+                    },
                     // Update materials in `var` if materials block is found.
                     // And remove it from `blocks`, because was found.
                     Keywords::Materials => {
@@ -1282,13 +1282,13 @@ impl<R: Read> InputStream<R> {
                                 .position(|&k| k == Keywords::Materials)
                                 .unwrap(),
                         );
-                    }
+                    },
                     // Build a `World` in `scene` using `var`.
                     // And remove it from `blocks`, because was found.
                     Keywords::Shapes => {
                         scene.shapes = Some(self.parse_shapes(&var)?);
                         blocks.remove(blocks.iter().position(|&k| k == Keywords::Shapes).unwrap());
-                    }
+                    },
                     // Update transformations in `var` if transformations block is found.
                     // And remove it from `blocks`, because was found.
                     Keywords::Transformations => {
@@ -1300,7 +1300,7 @@ impl<R: Read> InputStream<R> {
                                 .position(|&k| k == Keywords::Transformations)
                                 .unwrap(),
                         );
-                    }
+                    },
                     // This branch should never be triggered (do nothing).
                     _ => (),
                 };

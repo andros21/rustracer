@@ -80,7 +80,7 @@ impl<'a> Solve for FlatRenderer<'a> {
             Some(hit) => {
                 hit.material.emitted_radiance.get_color(hit.surface_point)
                     + hit.material.brdf.get_color(hit.surface_point)
-            }
+            },
             None => self.bg_color,
         }
     }

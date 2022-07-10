@@ -61,7 +61,7 @@ fn main() {
         Some("render") => exit!(render(cli_m.subcommand_matches("render").unwrap())),
         Some("completion") => {
             exit!(completion(cli_m.subcommand_matches("completion").unwrap()))
-        }
+        },
         // This branch should not be triggered (exit 1).
         _ => exit(1),
     }
@@ -211,7 +211,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
         "pathtracer" => {
             Renderer::PathTracer(PathTracer::new(&world, BLACK, num_of_rays, max_depth, 3))
-        }
+        },
         // This branch should not be triggered (dummy behaviour).
         _ => Renderer::Dummy(DummyRenderer),
     };
@@ -303,7 +303,7 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
         "flat" => Renderer::Flat(FlatRenderer::new(&world, BLACK)),
         "pathtracer" => {
             Renderer::PathTracer(PathTracer::new(&world, BLACK, num_of_rays, max_depth, 3))
-        }
+        },
         // This branch should not be triggered (dummy behaviour).
         _ => Renderer::Dummy(DummyRenderer),
     };
@@ -348,7 +348,7 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
     let mut path_buf = match shell {
         Shell::Bash => {
             Path::new(&home).join(".local/share/bash-completion/completions/rustracer.bash")
-        }
+        },
         Shell::Fish => Path::new(&home).join(".config/fish/completions/rustracer.fish"),
         Shell::Zsh => Path::new(&home).join(".zfunc/_rustracer.zsh"),
         // This branch should not be triggered (empty PathBuf).
@@ -408,7 +408,7 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
                 } else {
                     continue;
                 }
-            }
+            },
             _ => continue,
         }
     }

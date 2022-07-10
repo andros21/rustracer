@@ -273,10 +273,10 @@ impl ScatterRay for BRDF {
         match self {
             BRDF::Diffuse(diffuse) => {
                 diffuse.scatter_ray(pcg, incoming_dir, interaction_point, normal, depth)
-            }
+            },
             BRDF::Specular(specular) => {
                 specular.scatter_ray(pcg, incoming_dir, interaction_point, normal, depth)
-            }
+            },
         }
     }
 }

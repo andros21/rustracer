@@ -51,7 +51,7 @@ macro_rules! exit {
             Err(e) => {
                 eprintln!("{} {:#}", "[error]".red().bold(), e);
                 exit(1)
-            }
+            },
         }
     };
 }

@@ -38,7 +38,7 @@ impl World {
                     } else {
                         Some(closest_hit)
                     }
-                }
+                },
                 (None, Some(shape_hit)) => Some(shape_hit),
                 (Some(closest_hit), None) => Some(closest_hit),
                 _ => None,

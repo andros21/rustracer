@@ -185,7 +185,7 @@ Rendering demo scene:
 <div align="center">
    <h5>
       <code>
-         rustracer demo --width 1920 --height 1080 --anti-aliasing 3 -f 1 demo.png
+         rustracer demo --width 1920 --height 1080 --anti-aliasing 3 demo.png
       </code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
    </h5>
    <img src="https://github.com/andros21/rustracer/raw/master/examples/demo.png" width="500" alt="rustracer-demo-png"/>
@@ -249,7 +249,7 @@ OPTIONS:
 Rendering demo scene from scene file [`examples/demo.yml`](https://github.com/andros21/rustracer/blob/master/examples/demo.yml):
 
 <h5>
-   <code>rustracer render --anti-aliasing 3 -f 1 examples/demo.yml demo.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
+   <code>rustracer render --anti-aliasing 3 examples/demo.yml demo.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
 </h5>
 
 you can use this example scene to learn how to write your custom scene, ready to be rendered!
@@ -272,7 +272,7 @@ and the generated `flake.yml` can be simple parsed
 
 <div align="center">
    <h5>
-   <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 -f 1 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
+   <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
    </h5>
   <img src="https://github.com/andros21/rustracer/raw/master/examples/flake.png" width="500" alt="rustracer-flake"/>
   <p><sub><strong>flake.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~7h

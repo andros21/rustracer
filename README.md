@@ -168,7 +168,7 @@ ARGS:
     <LDR>    Output image [possible formats: ff, png]
 
 OPTIONS:
-    -f, --factor <FACTOR>    Normalization factor [default: 0.2]
+    -f, --factor <FACTOR>    Normalization factor [default: 1.0]
     -g, --gamma <GAMMA>      Gamma parameter [default: 1.0]
     -h, --help               Print help information
     -v, --verbose            Print stdout information
@@ -185,7 +185,7 @@ Rendering demo scene:
 <div align="center">
    <h5>
       <code>
-         rustracer demo --width 1920 --height 1080 --anti-aliasing 3 -f 1 demo.png
+         rustracer demo --width 1920 --height 1080 --anti-aliasing 3 demo.png
       </code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
    </h5>
    <img src="https://github.com/andros21/rustracer/raw/master/examples/demo.png" width="500" alt="rustracer-demo-png"/>
@@ -222,13 +222,13 @@ OPTIONS:
                                            [possible values: onoff, flat, pathtracer]
         --angle-deg <ANGLE_DEG>            View angle (in degrees) [default: 0.0]
         --anti-aliasing <ANTI_ALIASING>    Anti-aliasing level [default: 1]
-    -f, --factor <FACTOR>                  Normalization factor [default: 0.2]
+    -f, --factor <FACTOR>                  Normalization factor [default: 1.0]
     -g, --gamma <GAMMA>                    Gamma parameter [default: 1.0]
     -h, --help                             Print help information
         --height <HEIGHT>                  Image height [default: 480]
         --init-seq <INIT_SEQ>              Identifier of the random sequence (positive number)
-                                           [default: 45]
-        --init-state <INIT_STATE>          Initial random seed (positive number) [default: 45]
+                                           [default: 54]
+        --init-state <INIT_STATE>          Initial random seed (positive number) [default: 42]
     -m, --max-depth <MAX_DEPTH>            Maximum depth [default: 3]
     -n, --num-of-rays <NUM_OF_RAYS>        Number of rays [default: 10]
         --orthogonal                       Use orthogonal camera instead of perspective camera
@@ -249,7 +249,7 @@ OPTIONS:
 Rendering demo scene from scene file [`examples/demo.yml`](https://github.com/andros21/rustracer/blob/master/examples/demo.yml):
 
 <h5>
-   <code>rustracer render --anti-aliasing 3 -f 1 examples/demo.yml demo.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
+   <code>rustracer render --anti-aliasing 3 examples/demo.yml demo.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
 </h5>
 
 you can use this example scene to learn how to write your custom scene, ready to be rendered!
@@ -272,7 +272,7 @@ and the generated `flake.yml` can be simple parsed
 
 <div align="center">
    <h5>
-   <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 -f 1 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
+   <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
    </h5>
   <img src="https://github.com/andros21/rustracer/raw/master/examples/flake.png" width="500" alt="rustracer-flake"/>
   <p><sub><strong>flake.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~7h
@@ -284,7 +284,7 @@ and the generated `flake.yml` can be simple parsed
 
 ```console
 rustracer-render 1.0.0
-Render a scene from file
+Render a scene from file (yaml formatted)
 
 USAGE:
     rustracer render [OPTIONS] <INPUT> <OUTPUT>
@@ -298,13 +298,13 @@ OPTIONS:
                                            [possible values: onoff, flat, pathtracer]
         --angle-deg <ANGLE_DEG>            View angle (in degrees) [default: 0.0]
         --anti-aliasing <ANTI_ALIASING>    Anti-aliasing level [default: 1]
-    -f, --factor <FACTOR>                  Normalization factor [default: 0.2]
+    -f, --factor <FACTOR>                  Normalization factor [default: 1.0]
     -g, --gamma <GAMMA>                    Gamma parameter [default: 1.0]
     -h, --help                             Print help information
         --height <HEIGHT>                  Image height [default: 480]
         --init-seq <INIT_SEQ>              Identifier of the random sequence (positive number)
-                                           [default: 45]
-        --init-state <INIT_STATE>          Initial random seed (positive number) [default: 45]
+                                           [default: 54]
+        --init-state <INIT_STATE>          Initial random seed (positive number) [default: 42]
     -m, --max-depth <MAX_DEPTH>            Maximum depth [default: 3]
     -n, --num-of-rays <NUM_OF_RAYS>        Number of rays [default: 10]
         --output-pfm                       Output also hdr image

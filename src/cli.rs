@@ -8,7 +8,7 @@ use clap::{Arg, Command};
 /// Default normalization factor.
 ///
 /// When no arguments are provided to `--factor` flag
-const FACTOR: &str = "0.2";
+const FACTOR: &str = "1.0";
 /// Default transfer function parameter.
 ///
 /// When no arguments are provided to `--gamma` flag
@@ -40,11 +40,11 @@ const MAX_DEPTH: &str = "3";
 /// Default init seed for random generator.
 ///
 /// When no arguments are provided to `--init-state` flag
-const INIT_STATE: &str = "45";
+const INIT_STATE: &str = "42";
 /// Default identifier for random generator sequence.
 ///
 /// When no arguments are provided to `--init-seq` flag
-const INIT_SEQ: &str = "45";
+const INIT_SEQ: &str = "54";
 /// Default anti-aliasing level.
 ///
 /// When no arguments are provided to `--anti-aliasing` flag
@@ -258,7 +258,7 @@ pub fn build_cli() -> Command<'static> {
             Command::new("render")
                 .arg_required_else_help(true)
                 .dont_collapse_args_in_usage(true)
-                .about("Render a scene from file")
+                .about("Render a scene from file (yaml formatted)")
                 .arg(
                     Arg::new("INPUT")
                         .required(true)

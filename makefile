@@ -11,7 +11,7 @@ examples/demo.gif:
 	@printf "[info] create demo gif animation ... "
 	@mkdir -p examples/demo/frames
 	@for a in `seq 0 359`; do \
-		rustracer demo --width 500 --height 375 --anti-aliasing 3 -f 1 --angle-deg $$a \
+		rustracer demo --width 500 --height 375 --anti-aliasing 3 --angle-deg $$a \
 		examples/demo/frames/frame-`printf '%03d' $$a`.png; done;
 	@ffmpeg -loglevel panic -f image2 -framerate 10 \
 		-i examples/demo/frames/frame-%03d.png examples/demo.gif

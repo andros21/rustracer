@@ -96,13 +96,13 @@
 <span id="91">91</span>
 <span id="92">92</span>
 <span id="93">93</span>
-<span id="94">94</span>
-<span id="95">95</span>
 </pre><pre class="rust"><code><span class="doccomment">//! World module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides [`World`](struct@World) struct.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ray::Ray</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::shape</span>::{<span class="ident">HitRecord</span>, <span class="ident">RayIntersection</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">ray::Ray</span>,
+    <span class="ident">shape</span>::{<span class="ident">HitRecord</span>, <span class="ident">RayIntersection</span>},
+};
 
 <span class="doccomment">/// A class holding a list of [`shapes`](../shape)</span>
 <span class="doccomment">/// (e.g. [`Plane`](../shape/struct.Plane.html), [`Sphere`](../shape/struct.Sphere.html)).</span>
@@ -138,7 +138,7 @@
                     } <span class="kw">else</span> {
                         <span class="prelude-val">Some</span>(<span class="ident">closest_hit</span>)
                     }
-                }
+                },
                 (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">shape_hit</span>)) =&gt; <span class="prelude-val">Some</span>(<span class="ident">shape_hit</span>),
                 (<span class="prelude-val">Some</span>(<span class="ident">closest_hit</span>), <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">closest_hit</span>),
                 <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
@@ -151,13 +151,9 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::material::GetColor</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::E1</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">scaling</span>, <span class="ident">translation</span>, <span class="ident">DiffuseBRDF</span>, <span class="ident">Material</span>, <span class="ident">Pigment</span>, <span class="ident">Sphere</span>, <span class="ident">UniformPigment</span>, <span class="ident">Vector</span>,
-        <span class="ident">BLACK</span>, <span class="ident">BRDF</span>, <span class="ident">WHITE</span>,
+        <span class="ident">material::GetColor</span>, <span class="ident">misc::IsClose</span>, <span class="ident">point::Point</span>, <span class="ident">scaling</span>, <span class="ident">translation</span>, <span class="ident">vector::E1</span>,
+        <span class="ident">DiffuseBRDF</span>, <span class="ident">Material</span>, <span class="ident">Pigment</span>, <span class="ident">Sphere</span>, <span class="ident">UniformPigment</span>, <span class="ident">Vector</span>, <span class="ident">BLACK</span>, <span class="ident">BRDF</span>, <span class="ident">WHITE</span>,
     };
 
     <span class="attribute">#[<span class="ident">test</span>]</span>

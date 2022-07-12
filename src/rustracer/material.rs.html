@@ -405,19 +405,25 @@
 <span id="400">400</span>
 <span id="401">401</span>
 <span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Material module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides:</span>
 <span class="doccomment">//!  * Different pigments that implement [`GetColor`] trait ;</span>
 <span class="doccomment">//!  * Different BRDF that implement both [`Eval`] and [`ScatterRay`] trait;</span>
 <span class="doccomment">//!  * A [`Material`] thanks to pigments and BRDF.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color</span>::{<span class="ident">Color</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hdrimage::HdrImage</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::Vector2D</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::normal</span>::{<span class="ident">create_onb_from_z</span>, <span class="ident">Normal</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ray::Ray</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::Vector</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">color</span>::{<span class="ident">Color</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>},
+    <span class="ident">hdrimage::HdrImage</span>,
+    <span class="ident">misc::Vector2D</span>,
+    <span class="ident">normal</span>::{<span class="ident">create_onb_from_z</span>, <span class="ident">Normal</span>},
+    <span class="ident">point::Point</span>,
+    <span class="ident">ray::Ray</span>,
+    <span class="ident">vector::Vector</span>,
+};
 <span class="kw">use</span> <span class="ident">std::f32::consts::PI</span>;
 
 <span class="doccomment">/// Trait that associates a [`Color`] with each point on a parametric surface `(u,v)`.</span>
@@ -680,10 +686,10 @@
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">BRDF::Diffuse</span>(<span class="ident">diffuse</span>) =&gt; {
                 <span class="ident">diffuse</span>.<span class="ident">scatter_ray</span>(<span class="ident">pcg</span>, <span class="ident">incoming_dir</span>, <span class="ident">interaction_point</span>, <span class="ident">normal</span>, <span class="ident">depth</span>)
-            }
+            },
             <span class="ident">BRDF::Specular</span>(<span class="ident">specular</span>) =&gt; {
                 <span class="ident">specular</span>.<span class="ident">scatter_ray</span>(<span class="ident">pcg</span>, <span class="ident">incoming_dir</span>, <span class="ident">interaction_point</span>, <span class="ident">normal</span>, <span class="ident">depth</span>)
-            }
+            },
         }
     }
 }
@@ -719,9 +725,11 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::normal</span>::{<span class="ident">E1</span>, <span class="ident">E2</span>, <span class="ident">E3</span>};
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::random::Pcg</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector</span>::{<span class="ident">E1</span> <span class="kw">as</span> <span class="ident">vE1</span>, <span class="ident">E2</span> <span class="kw">as</span> <span class="ident">vE2</span>, <span class="ident">E3</span> <span class="kw">as</span> <span class="ident">vE3</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::{
+        <span class="ident">normal</span>::{<span class="ident">E1</span>, <span class="ident">E2</span>, <span class="ident">E3</span>},
+        <span class="ident">random::Pcg</span>,
+        <span class="ident">vector</span>::{<span class="ident">E1</span> <span class="kw">as</span> <span class="ident">vE1</span>, <span class="ident">E2</span> <span class="kw">as</span> <span class="ident">vE2</span>, <span class="ident">E3</span> <span class="kw">as</span> <span class="ident">vE3</span>},
+    };
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_pigment</span>() {

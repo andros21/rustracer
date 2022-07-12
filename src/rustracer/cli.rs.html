@@ -437,6 +437,14 @@
 <span id="432">432</span>
 <span id="433">433</span>
 <span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Command Line Interface module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides [`build_cli`] function with all cli</span>
@@ -447,7 +455,7 @@
 <span class="doccomment">/// Default normalization factor.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When no arguments are provided to `--factor` flag</span>
-<span class="kw">const</span> <span class="ident">FACTOR</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;0.2&quot;</span>;
+<span class="kw">const</span> <span class="ident">FACTOR</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;1.0&quot;</span>;
 <span class="doccomment">/// Default transfer function parameter.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When no arguments are provided to `--gamma` flag</span>
@@ -479,11 +487,11 @@
 <span class="doccomment">/// Default init seed for random generator.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When no arguments are provided to `--init-state` flag</span>
-<span class="kw">const</span> <span class="ident">INIT_STATE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;45&quot;</span>;
+<span class="kw">const</span> <span class="ident">INIT_STATE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;42&quot;</span>;
 <span class="doccomment">/// Default identifier for random generator sequence.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When no arguments are provided to `--init-seq` flag</span>
-<span class="kw">const</span> <span class="ident">INIT_SEQ</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;45&quot;</span>;
+<span class="kw">const</span> <span class="ident">INIT_SEQ</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;54&quot;</span>;
 <span class="doccomment">/// Default anti-aliasing level.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When no arguments are provided to `--anti-aliasing` flag</span>
@@ -631,7 +639,9 @@
                         .<span class="ident">number_of_values</span>(<span class="number">1</span>)
                         .<span class="ident">possible_values</span>([<span class="string">&quot;onoff&quot;</span>, <span class="string">&quot;flat&quot;</span>, <span class="string">&quot;pathtracer&quot;</span>])
                         .<span class="ident">help</span>(<span class="string">&quot;Rendering algorithm&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Algorithm to use for render the scene: [onoff, flat, pathtracer]&quot;</span>),
+                        .<span class="ident">long_help</span>(
+                            <span class="string">&quot;Algorithm to use for render the scene: [onoff, flat, pathtracer]&quot;</span>,
+                        ),
                 )
                 .<span class="ident">arg</span>(
                     <span class="ident">Arg::new</span>(<span class="string">&quot;num-of-rays&quot;</span>)
@@ -674,7 +684,8 @@
                         .<span class="ident">number_of_values</span>(<span class="number">1</span>)
                         .<span class="ident">help</span>(<span class="string">&quot;Identifier of the random sequence (positive number)&quot;</span>)
                         .<span class="ident">long_help</span>(
-                            <span class="string">&quot;Identifier of the sequence produced by the random number generator (positive number)&quot;</span>,
+                            <span class="string">&quot;Identifier of the sequence produced by the random number generator \
+                             (positive number)&quot;</span>,
                         ),
                 )
                 .<span class="ident">arg</span>(
@@ -685,7 +696,8 @@
                         .<span class="ident">number_of_values</span>(<span class="number">1</span>)
                         .<span class="ident">help</span>(<span class="string">&quot;Anti-aliasing level&quot;</span>)
                         .<span class="ident">long_help</span>(
-                            <span class="string">&quot;Anti-aliasing level, corresponds to the square-root of the number of samples per pixel&quot;</span>,
+                            <span class="string">&quot;Anti-aliasing level, corresponds to the square-root of the number of \
+                             samples per pixel&quot;</span>,
                         ),
                 ),
         )
@@ -693,7 +705,7 @@
             <span class="ident">Command::new</span>(<span class="string">&quot;render&quot;</span>)
                 .<span class="ident">arg_required_else_help</span>(<span class="bool-val">true</span>)
                 .<span class="ident">dont_collapse_args_in_usage</span>(<span class="bool-val">true</span>)
-                .<span class="ident">about</span>(<span class="string">&quot;Render a scene from file&quot;</span>)
+                .<span class="ident">about</span>(<span class="string">&quot;Render a scene from file (yaml formatted)&quot;</span>)
                 .<span class="ident">arg</span>(
                     <span class="ident">Arg::new</span>(<span class="string">&quot;INPUT&quot;</span>)
                         .<span class="ident">required</span>(<span class="bool-val">true</span>)
@@ -775,7 +787,9 @@
                         .<span class="ident">number_of_values</span>(<span class="number">1</span>)
                         .<span class="ident">possible_values</span>([<span class="string">&quot;onoff&quot;</span>, <span class="string">&quot;flat&quot;</span>, <span class="string">&quot;pathtracer&quot;</span>])
                         .<span class="ident">help</span>(<span class="string">&quot;Rendering algorithm&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Algorithm to use for render the scene: [onoff, flat, pathtracer]&quot;</span>),
+                        .<span class="ident">long_help</span>(
+                            <span class="string">&quot;Algorithm to use for render the scene: [onoff, flat, pathtracer]&quot;</span>,
+                        ),
                 )
                 .<span class="ident">arg</span>(
                     <span class="ident">Arg::new</span>(<span class="string">&quot;num-of-rays&quot;</span>)
@@ -818,7 +832,8 @@
                         .<span class="ident">number_of_values</span>(<span class="number">1</span>)
                         .<span class="ident">help</span>(<span class="string">&quot;Identifier of the random sequence (positive number)&quot;</span>)
                         .<span class="ident">long_help</span>(
-                            <span class="string">&quot;Identifier of the sequence produced by the random number generator (positive number)&quot;</span>,
+                            <span class="string">&quot;Identifier of the sequence produced by the random number generator \
+                             (positive number)&quot;</span>,
                         ),
                 )
                 .<span class="ident">arg</span>(
@@ -829,7 +844,8 @@
                         .<span class="ident">number_of_values</span>(<span class="number">1</span>)
                         .<span class="ident">help</span>(<span class="string">&quot;Anti-aliasing level&quot;</span>)
                         .<span class="ident">long_help</span>(
-                            <span class="string">&quot;Anti-aliasing level, corresponds to the square-root of the number of samples per pixel&quot;</span>,
+                            <span class="string">&quot;Anti-aliasing level, corresponds to the square-root of the number of \
+                             samples per pixel&quot;</span>,
                         ),
                 ),
         )
@@ -844,7 +860,7 @@
                         .<span class="ident">possible_values</span>([<span class="string">&quot;bash&quot;</span>, <span class="string">&quot;fish&quot;</span>, <span class="string">&quot;zsh&quot;</span>])
                         .<span class="ident">number_of_values</span>(<span class="number">1</span>)
                         .<span class="ident">help</span>(<span class="string">&quot;Shell to generate script for&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Specify for which shell completions should be generated&quot;</span>)
+                        .<span class="ident">long_help</span>(<span class="string">&quot;Specify for which shell completions should be generated&quot;</span>),
                 )
                 .<span class="ident">arg</span>(
                     <span class="ident">Arg::new</span>(<span class="string">&quot;output&quot;</span>)
@@ -854,7 +870,7 @@
                         .<span class="ident">number_of_values</span>(<span class="number">1</span>)
                         .<span class="ident">help</span>(<span class="string">&quot;Specify output script file&quot;</span>)
                         .<span class="ident">long_help</span>(<span class="string">&quot;Specify an output file for shell completions&quot;</span>),
-                )
+                ),
         );
 
     <span class="ident">cli</span>

@@ -419,6 +419,11 @@
 <span id="414">414</span>
 <span id="415">415</span>
 <span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">doc</span> <span class="op">=</span> <span class="macro">include_str!</span>(<span class="string">&quot;../README.md&quot;</span>)]</span>
 
 <span class="kw">mod</span> <span class="ident">camera</span>;
@@ -442,30 +447,35 @@
 
 <span class="kw">use</span> <span class="ident">clap_complete</span>::{<span class="ident">generate</span>, <span class="ident">Shell</span>};
 <span class="kw">use</span> <span class="ident">image::ImageFormat</span>;
-<span class="kw">use</span> <span class="ident">std::f32::consts::PI</span>;
-<span class="kw">use</span> <span class="ident">std::fs</span>::{<span class="ident">create_dir_all</span>, <span class="ident">File</span>};
-<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="ident">BufWriter</span>, <span class="ident">Write</span>};
-<span class="kw">use</span> <span class="ident">std::path::Path</span>;
-<span class="kw">use</span> <span class="ident">std::process::exit</span>;
-<span class="kw">use</span> <span class="ident">std::str::FromStr</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">env</span>, <span class="ident">io</span>};
-
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::camera</span>::{<span class="ident">Camera</span>, <span class="ident">OrthogonalCamera</span>, <span class="ident">PerspectiveCamera</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cli::Cli</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color</span>::{<span class="ident">Color</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error</span>::{<span class="ident">CompletionErr</span>, <span class="ident">ConvertErr</span>, <span class="ident">DemoErr</span>, <span class="ident">HdrImageErr</span>, <span class="ident">RenderErr</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hdrimage</span>::{<span class="ident">HdrImage</span>, <span class="ident">Luminosity</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::imagetracer::ImageTracer</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::material</span>::{
-    <span class="ident">CheckeredPigment</span>, <span class="ident">DiffuseBRDF</span>, <span class="ident">Material</span>, <span class="ident">Pigment</span>, <span class="ident">SpecularBRDF</span>, <span class="ident">UniformPigment</span>, <span class="ident">BRDF</span>,
+<span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">env</span>,
+    <span class="ident">f32::consts::PI</span>,
+    <span class="ident">fs</span>::{<span class="ident">create_dir_all</span>, <span class="ident">File</span>},
+    <span class="ident">io</span>,
+    <span class="ident">io</span>::{<span class="ident">BufWriter</span>, <span class="ident">Write</span>},
+    <span class="ident">path::Path</span>,
+    <span class="ident">process::exit</span>,
+    <span class="ident">str::FromStr</span>,
 };
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::ByteOrder</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::render</span>::{<span class="ident">DummyRenderer</span>, <span class="ident">FlatRenderer</span>, <span class="ident">OnOffRenderer</span>, <span class="ident">PathTracer</span>, <span class="ident">Renderer</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::scene::Scene</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::shape</span>::{<span class="ident">Plane</span>, <span class="ident">Sphere</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::transformation</span>::{<span class="ident">rotation_z</span>, <span class="ident">scaling</span>, <span class="ident">translation</span>, <span class="ident">Transformation</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::Vector</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::world::World</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">camera</span>::{<span class="ident">Camera</span>, <span class="ident">OrthogonalCamera</span>, <span class="ident">PerspectiveCamera</span>},
+    <span class="ident">cli::Cli</span>,
+    <span class="ident">color</span>::{<span class="ident">Color</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>},
+    <span class="ident">error</span>::{<span class="ident">CompletionErr</span>, <span class="ident">ConvertErr</span>, <span class="ident">DemoErr</span>, <span class="ident">HdrImageErr</span>, <span class="ident">RenderErr</span>},
+    <span class="ident">hdrimage</span>::{<span class="ident">HdrImage</span>, <span class="ident">Luminosity</span>},
+    <span class="ident">imagetracer::ImageTracer</span>,
+    <span class="ident">material</span>::{
+        <span class="ident">CheckeredPigment</span>, <span class="ident">DiffuseBRDF</span>, <span class="ident">Material</span>, <span class="ident">Pigment</span>, <span class="ident">SpecularBRDF</span>, <span class="ident">UniformPigment</span>, <span class="ident">BRDF</span>,
+    },
+    <span class="ident">misc::ByteOrder</span>,
+    <span class="ident">render</span>::{<span class="ident">DummyRenderer</span>, <span class="ident">FlatRenderer</span>, <span class="ident">OnOffRenderer</span>, <span class="ident">PathTracer</span>, <span class="ident">Renderer</span>},
+    <span class="ident">scene::Scene</span>,
+    <span class="ident">shape</span>::{<span class="ident">Plane</span>, <span class="ident">Sphere</span>},
+    <span class="ident">transformation</span>::{<span class="ident">rotation_z</span>, <span class="ident">scaling</span>, <span class="ident">translation</span>, <span class="ident">Transformation</span>},
+    <span class="ident">vector::Vector</span>,
+    <span class="ident">world::World</span>,
+};
 <span class="kw">use</span> <span class="ident">colored::Colorize</span>;
 
 <span class="doccomment">/// Crate main function.</span>
@@ -482,7 +492,7 @@
         <span class="prelude-val">Some</span>(<span class="string">&quot;render&quot;</span>) =&gt; <span class="macro">exit!</span>(<span class="ident">render</span>(<span class="ident">cli_m</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;render&quot;</span>).<span class="ident">unwrap</span>())),
         <span class="prelude-val">Some</span>(<span class="string">&quot;completion&quot;</span>) =&gt; {
             <span class="macro">exit!</span>(<span class="ident">completion</span>(<span class="ident">cli_m</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;completion&quot;</span>).<span class="ident">unwrap</span>()))
-        }
+        },
         <span class="comment">// This branch should not be triggered (exit 1).</span>
         <span class="kw">_</span> =&gt; <span class="ident">exit</span>(<span class="number">1</span>),
     }
@@ -632,7 +642,7 @@
         <span class="string">&quot;flat&quot;</span> =&gt; <span class="ident">Renderer::Flat</span>(<span class="ident">FlatRenderer::new</span>(<span class="kw-2">&amp;</span><span class="ident">world</span>, <span class="ident">BLACK</span>)),
         <span class="string">&quot;pathtracer&quot;</span> =&gt; {
             <span class="ident">Renderer::PathTracer</span>(<span class="ident">PathTracer::new</span>(<span class="kw-2">&amp;</span><span class="ident">world</span>, <span class="ident">BLACK</span>, <span class="ident">num_of_rays</span>, <span class="ident">max_depth</span>, <span class="number">3</span>))
-        }
+        },
         <span class="comment">// This branch should not be triggered (dummy behaviour).</span>
         <span class="kw">_</span> =&gt; <span class="ident">Renderer::Dummy</span>(<span class="ident">DummyRenderer</span>),
     };
@@ -724,7 +734,7 @@
         <span class="string">&quot;flat&quot;</span> =&gt; <span class="ident">Renderer::Flat</span>(<span class="ident">FlatRenderer::new</span>(<span class="kw-2">&amp;</span><span class="ident">world</span>, <span class="ident">BLACK</span>)),
         <span class="string">&quot;pathtracer&quot;</span> =&gt; {
             <span class="ident">Renderer::PathTracer</span>(<span class="ident">PathTracer::new</span>(<span class="kw-2">&amp;</span><span class="ident">world</span>, <span class="ident">BLACK</span>, <span class="ident">num_of_rays</span>, <span class="ident">max_depth</span>, <span class="number">3</span>))
-        }
+        },
         <span class="comment">// This branch should not be triggered (dummy behaviour).</span>
         <span class="kw">_</span> =&gt; <span class="ident">Renderer::Dummy</span>(<span class="ident">DummyRenderer</span>),
     };
@@ -769,7 +779,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path_buf</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">shell</span> {
         <span class="ident">Shell::Bash</span> =&gt; {
             <span class="ident">Path::new</span>(<span class="kw-2">&amp;</span><span class="ident">home</span>).<span class="ident">join</span>(<span class="string">&quot;.local/share/bash-completion/completions/rustracer.bash&quot;</span>)
-        }
+        },
         <span class="ident">Shell::Fish</span> =&gt; <span class="ident">Path::new</span>(<span class="kw-2">&amp;</span><span class="ident">home</span>).<span class="ident">join</span>(<span class="string">&quot;.config/fish/completions/rustracer.fish&quot;</span>),
         <span class="ident">Shell::Zsh</span> =&gt; <span class="ident">Path::new</span>(<span class="kw-2">&amp;</span><span class="ident">home</span>).<span class="ident">join</span>(<span class="string">&quot;.zfunc/_rustracer.zsh&quot;</span>),
         <span class="comment">// This branch should not be triggered (empty PathBuf).</span>
@@ -829,7 +839,7 @@
                 } <span class="kw">else</span> {
                     <span class="kw">continue</span>;
                 }
-            }
+            },
             <span class="kw">_</span> =&gt; <span class="kw">continue</span>,
         }
     }

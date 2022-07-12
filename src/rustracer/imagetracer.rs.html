@@ -190,12 +190,14 @@
 </pre><pre class="rust"><code><span class="doccomment">//! Image Tracer module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides [`ImageTracer`](struct@ImageTracer) struct.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::camera</span>::{<span class="ident">Camera</span>, <span class="ident">FireRay</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color::Color</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hdrimage::HdrImage</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::random::Pcg</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ray::Ray</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::render</span>::{<span class="ident">Renderer</span>, <span class="ident">Solve</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">camera</span>::{<span class="ident">Camera</span>, <span class="ident">FireRay</span>},
+    <span class="ident">color::Color</span>,
+    <span class="ident">hdrimage::HdrImage</span>,
+    <span class="ident">random::Pcg</span>,
+    <span class="ident">ray::Ray</span>,
+    <span class="ident">render</span>::{<span class="ident">Renderer</span>, <span class="ident">Solve</span>},
+};
 <span class="kw">use</span> <span class="ident">rayon::prelude</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Trace an image by shooting light rays through each of its pixels.</span>
@@ -206,13 +208,12 @@
     <span class="ident">camera</span>: <span class="ident">Camera</span>,
 }
 
-<span class="doccomment">/// Appo struct for [`all_rays`](../imagetracer/struct.ImageTracer.html#method.all_rays) that will store</span>
-<span class="doccomment">/// for each pixel in [`image`](../imagetracer/struct.ImageTracer.html#fields):</span>
-<span class="doccomment">///   * a [`Vec`] of [`Ray`]s, the length of this vector\</span>
-<span class="doccomment">///     will be greater than one when `antialiasing_level!=1`;</span>
-<span class="doccomment">///   * a [`u64`] random integer generated from [`Pcg`], that will be used\</span>
-<span class="doccomment">///     to init an independent [`Pcg`] when rendering equation solution</span>
-<span class="doccomment">///     (avoiding artefacts).</span>
+<span class="doccomment">/// Appo struct for [`all_rays`](../imagetracer/struct.ImageTracer.html#method.all_rays) that will</span>
+<span class="doccomment">/// store for each pixel in [`image`](../imagetracer/struct.ImageTracer.html#fields):</span>
+<span class="doccomment">///   * a [`Vec`] of [`Ray`]s, the length of this vector\ will be greater than one when</span>
+<span class="doccomment">///     `antialiasing_level!=1`;</span>
+<span class="doccomment">///   * a [`u64`] random integer generated from [`Pcg`], that will be used\ to init an independent</span>
+<span class="doccomment">///     [`Pcg`] when rendering equation solution (avoiding artefacts).</span>
 <span class="kw">struct</span> <span class="ident">Rays</span> {
     <span class="doccomment">/// [`Pcg`] `init_seq` for each pixel.</span>
     <span class="ident">seq</span>: <span class="ident">u64</span>,
@@ -274,7 +275,8 @@
     <span class="doccomment">/// Shoot several light rays crossing each of the pixels in the image.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If `antialiasing_level` is one, for each pixel in the [`HdrImage`] object fire one [`Ray`],\</span>
-    <span class="doccomment">/// and pass it to a [`Renderer`] that implement a [`Solve`] trait to determine the `Color` of the pixel.</span>
+    <span class="doccomment">/// and pass it to a [`Renderer`] that implement a [`Solve`] trait to determine the `Color` of</span>
+    <span class="doccomment">/// the pixel.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If `antialiasing_level` is greater than one, then each pixel is divided in a N by N grid,\</span>
     <span class="doccomment">/// where N is the anti-aliasing level, and a [`Ray`] is thrown for each sub-pixel;\</span>
@@ -315,12 +317,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::camera::PerspectiveCamera</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color::Color</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::render::DummyRenderer</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::transformation::Transformation</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::{
+        <span class="ident">camera::PerspectiveCamera</span>, <span class="ident">color::Color</span>, <span class="ident">misc::IsClose</span>, <span class="ident">point::Point</span>,
+        <span class="ident">render::DummyRenderer</span>, <span class="ident">transformation::Transformation</span>,
+    };
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_uv_sub_mapping</span>() {

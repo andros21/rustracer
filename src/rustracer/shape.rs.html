@@ -569,18 +569,23 @@
 <span id="564">564</span>
 <span id="565">565</span>
 <span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Geometric Shapes module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides geometrical shape structs that implement the</span>
 <span class="doccomment">//! [`RayIntersection`](trait@RayIntersection) trait.</span>
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::material::Material</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc</span>::{<span class="ident">IsClose</span>, <span class="ident">Vector2D</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::normal::Normal</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ray::Ray</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::transformation::Transformation</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::Vector</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">material::Material</span>,
+    <span class="ident">misc</span>::{<span class="ident">IsClose</span>, <span class="ident">Vector2D</span>},
+    <span class="ident">normal::Normal</span>,
+    <span class="ident">point::Point</span>,
+    <span class="ident">ray::Ray</span>,
+    <span class="ident">transformation::Transformation</span>,
+    <span class="ident">vector::Vector</span>,
+};
 <span class="kw">use</span> <span class="ident">std::f32::consts::PI</span>;
 
 <span class="doccomment">/// Trait to determine the intersections of an object with a [`Ray`](struct@Ray).</span>
@@ -614,7 +619,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">IsClose</span> <span class="kw">for</span> <span class="ident">HitRecord</span> {
-    <span class="doccomment">/// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are [close](trait@IsClose).</span>
+    <span class="doccomment">/// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are</span>
+    <span class="doccomment">/// [close](trait@IsClose).</span>
     <span class="kw">fn</span> <span class="ident">is_close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">world_point</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">world_point</span>)
             <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">normal</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">normal</span>)

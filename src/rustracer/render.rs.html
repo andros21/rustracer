@@ -312,14 +312,21 @@
 <span id="307">307</span>
 <span id="308">308</span>
 <span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Render module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides different renderers that implement [`Solve`] trait.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color::Color</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::material</span>::{<span class="ident">GetColor</span>, <span class="ident">ScatterRay</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::random::Pcg</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ray::Ray</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::world::World</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">color::Color</span>,
+    <span class="ident">material</span>::{<span class="ident">GetColor</span>, <span class="ident">ScatterRay</span>},
+    <span class="ident">random::Pcg</span>,
+    <span class="ident">ray::Ray</span>,
+    <span class="ident">world::World</span>,
+};
 
 <span class="doccomment">/// A trait for solving rendering equation.</span>
 <span class="doccomment">///</span>
@@ -394,7 +401,7 @@
             <span class="prelude-val">Some</span>(<span class="ident">hit</span>) =&gt; {
                 <span class="ident">hit</span>.<span class="ident">material</span>.<span class="ident">emitted_radiance</span>.<span class="ident">get_color</span>(<span class="ident">hit</span>.<span class="ident">surface_point</span>)
                     <span class="op">+</span> <span class="ident">hit</span>.<span class="ident">material</span>.<span class="ident">brdf</span>.<span class="ident">get_color</span>(<span class="ident">hit</span>.<span class="ident">surface_point</span>)
-            }
+            },
             <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">bg_color</span>,
         }
     }
@@ -519,12 +526,15 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::material</span>::{<span class="ident">DiffuseBRDF</span>, <span class="ident">Pigment</span>, <span class="ident">UniformPigment</span>, <span class="ident">BRDF</span>};
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::transformation::Transformation</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::E1</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">translation</span>, <span class="ident">CheckeredPigment</span>, <span class="ident">Material</span>, <span class="ident">Sphere</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::{
+        <span class="ident">material</span>::{<span class="ident">DiffuseBRDF</span>, <span class="ident">Pigment</span>, <span class="ident">UniformPigment</span>, <span class="ident">BRDF</span>},
+        <span class="ident">misc::IsClose</span>,
+        <span class="ident">point::Point</span>,
+        <span class="ident">transformation::Transformation</span>,
+        <span class="ident">translation</span>,
+        <span class="ident">vector::E1</span>,
+        <span class="ident">CheckeredPigment</span>, <span class="ident">Material</span>, <span class="ident">Sphere</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>,
+    };
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_flat</span>() {

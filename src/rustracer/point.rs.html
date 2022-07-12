@@ -146,13 +146,15 @@
 <span id="141">141</span>
 <span id="142">142</span>
 <span id="143">143</span>
+<span id="144">144</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 3D Point module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides [`Point`](struct@Point) struct.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::Vector</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Add</span>, <span class="ident">Mul</span>, <span class="ident">Sub</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">misc::IsClose</span>, <span class="ident">vector::Vector</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">fmt</span>,
+    <span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">Mul</span>, <span class="ident">Sub</span>},
+};
 
 <span class="doccomment">/// 3D Point struct.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>)]</span>

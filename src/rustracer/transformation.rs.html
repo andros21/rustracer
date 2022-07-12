@@ -656,16 +656,10 @@
 <span id="651">651</span>
 <span id="652">652</span>
 <span id="653">653</span>
-<span id="654">654</span>
-<span id="655">655</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 3D Homogeneous Transformation module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides [`Matrix`](struct@Matrix) and [`Transformation`](struct@Transformation) struct.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::normal::Normal</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ray::Ray</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::Vector</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">misc::IsClose</span>, <span class="ident">normal::Normal</span>, <span class="ident">point::Point</span>, <span class="ident">ray::Ray</span>, <span class="ident">vector::Vector</span>};
 <span class="kw">use</span> <span class="ident">std::ops::Mul</span>;
 
 <span class="doccomment">/// 4D Identity matrix.</span>
@@ -776,7 +770,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">IsClose</span> <span class="kw">for</span> <span class="ident">Transformation</span> {
-    <span class="doccomment">/// Return `true` if matrix and inverse matrix of two [`Transformation`] are [close](trait@IsClose).</span>
+    <span class="doccomment">/// Return `true` if matrix and inverse matrix of two [`Transformation`] are</span>
+    <span class="doccomment">/// [close](trait@IsClose).</span>
     <span class="kw">fn</span> <span class="ident">is_close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Transformation</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">m</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">m</span>) <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">invm</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">invm</span>)
     }
@@ -859,6 +854,7 @@
 
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">Ray</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Transformation</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Ray</span>;
+
     <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">Ray</span> {
             <span class="ident">origin</span>: <span class="self">self</span> <span class="op">*</span> <span class="ident">ray</span>.<span class="ident">origin</span>,

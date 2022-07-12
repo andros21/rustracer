@@ -257,16 +257,11 @@
 <span id="252">252</span>
 <span id="253">253</span>
 <span id="254">254</span>
-<span id="255">255</span>
-<span id="256">256</span>
-<span id="257">257</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 3D Normal module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides [`Normal`](struct@Normal) struct.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::Vector</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::ops::Mul</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">misc::IsClose</span>, <span class="ident">vector::Vector</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">ops::Mul</span>};
 
 <span class="doccomment">/// X-axis normal.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">E1</span>: <span class="ident">Normal</span> <span class="op">=</span> <span class="ident">Normal</span> {
@@ -424,8 +419,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::EPSILON</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::random::Pcg</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">misc::EPSILON</span>, <span class="ident">random::Pcg</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_is_close</span>() {

@@ -98,14 +98,10 @@
 <span id="93">93</span>
 <span id="94">94</span>
 <span id="95">95</span>
-<span id="96">96</span>
-<span id="97">97</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Light Ray module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides [`Ray`](struct@Ray) struct.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::Vector</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">misc::IsClose</span>, <span class="ident">point::Point</span>, <span class="ident">vector::Vector</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
 <span class="doccomment">/// Light Ray struct.</span>

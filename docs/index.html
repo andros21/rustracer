@@ -3,8 +3,8 @@
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"><a href="#">Crate rustracer</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 1.0.0</li><li><a id="all-types" href="all.html">All Items</a></li></div></ul><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="rustracer" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../docs/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
-    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">rustracer</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/rustracer/main.rs.html#1-416">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><!-- PROJECT LOGO -->
+        </a><h2 class="location"><a href="#">Crate rustracer</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 1.0.1</li><li><a id="all-types" href="all.html">All Items</a></li></div></ul><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="rustracer" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../docs/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">rustracer</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/rustracer/main.rs.html#1-421">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><!-- PROJECT LOGO -->
 <br>
 <div align="center">
   <a href="https://github.com/andros21/rustracer">
@@ -20,6 +20,10 @@
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/andros21/0e20cd331d0800e3299298a3868aab7a/raw/rustracer__master.json" alt="Coverage">
   </a>
+  <a href="https://github.com/andros21/rustracer/actions/workflows/cd.yml">
+    <img src="https://img.shields.io/github/workflow/status/andros21/rustracer/CD?style=flat-square&label=cd&logo=github" alt="CD">
+  </a>
+  <br>
   <a href="https://github.com/andros21/rustracer/releases">
     <img src="https://img.shields.io/github/v/release/andros21/rustracer?color=orange&&sort=semver&style=flat-square" alt="Version">
   </a>
@@ -99,7 +103,7 @@ cargo install --root $PREFIX --version $VER rustracer</code></pre></div></detail
 </div><br>
 <details>
 <summary>click to show <strong>rustracer -h </strong></summary>
-<div class="example-wrap"><pre class="language-console"><code>rustracer 1.0.0
+<div class="example-wrap"><pre class="language-console"><code>rustracer 1.0.1
 a multi-threaded raytracer in pure rust
 
 USAGE:
@@ -121,7 +125,7 @@ SUBCOMMANDS:
 <br>
 <details>
 <summary>click to show <strong>rustracer-convert -h </strong></summary>
-<div class="example-wrap"><pre class="language-console"><code>rustracer-convert 1.0.0
+<div class="example-wrap"><pre class="language-console"><code>rustracer-convert 1.0.1
 Convert HDR (pfm) image to LDR (ff|png) image
 
 USAGE:
@@ -132,7 +136,7 @@ ARGS:
     &lt;LDR&gt;    Output image [possible formats: ff, png]
 
 OPTIONS:
-    -f, --factor &lt;FACTOR&gt;    Normalization factor [default: 0.2]
+    -f, --factor &lt;FACTOR&gt;    Normalization factor [default: 1.0]
     -g, --gamma &lt;GAMMA&gt;      Gamma parameter [default: 1.0]
     -h, --help               Print help information
     -v, --verbose            Print stdout information
@@ -142,7 +146,7 @@ OPTIONS:
 <div align="center">
    <h6>
       <code>
-         rustracer demo --width 1920 --height 1080 --anti-aliasing 3 -f 1 demo.png
+         rustracer demo --width 1920 --height 1080 --anti-aliasing 3 demo.png
       </code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
    </h6><br>
    <img src="https://github.com/andros21/rustracer/raw/master/examples/demo.png" width="500" alt="rustracer-demo-png"/>
@@ -160,7 +164,7 @@ demo scene 360 degree (see <a href="https://github.com/andros21/rustracer/blob/m
 <br>
 <details>
 <summary>click to show <strong>rustracer-demo -h </strong></summary>
-<div class="example-wrap"><pre class="language-console"><code>rustracer-demo 1.0.0
+<div class="example-wrap"><pre class="language-console"><code>rustracer-demo 1.0.1
 Render a demo scene (hard-coded in main)
 
 USAGE:
@@ -174,13 +178,13 @@ OPTIONS:
                                            [possible values: onoff, flat, pathtracer]
         --angle-deg &lt;ANGLE_DEG&gt;            View angle (in degrees) [default: 0.0]
         --anti-aliasing &lt;ANTI_ALIASING&gt;    Anti-aliasing level [default: 1]
-    -f, --factor &lt;FACTOR&gt;                  Normalization factor [default: 0.2]
+    -f, --factor &lt;FACTOR&gt;                  Normalization factor [default: 1.0]
     -g, --gamma &lt;GAMMA&gt;                    Gamma parameter [default: 1.0]
     -h, --help                             Print help information
         --height &lt;HEIGHT&gt;                  Image height [default: 480]
         --init-seq &lt;INIT_SEQ&gt;              Identifier of the random sequence (positive number)
-                                           [default: 45]
-        --init-state &lt;INIT_STATE&gt;          Initial random seed (positive number) [default: 45]
+                                           [default: 54]
+        --init-state &lt;INIT_STATE&gt;          Initial random seed (positive number) [default: 42]
     -m, --max-depth &lt;MAX_DEPTH&gt;            Maximum depth [default: 3]
     -n, --num-of-rays &lt;NUM_OF_RAYS&gt;        Number of rays [default: 10]
         --orthogonal                       Use orthogonal camera instead of perspective camera
@@ -193,7 +197,7 @@ OPTIONS:
 <h4 id="rustracer-render"><a href="#rustracer-render">rustracer-render</a></h4>
 <p>Rendering demo scene from scene file <a href="https://github.com/andros21/rustracer/blob/master/examples/demo.yml"><code>examples/demo.yml</code></a>:</p>
 <h6>
-   <code>rustracer render --anti-aliasing 3 -f 1 examples/demo.yml demo.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
+   <code>rustracer render --anti-aliasing 3 examples/demo.yml demo.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
 </h6>
 <p>you can use this example scene to learn how to write your custom scene, ready to be rendered!</p>
 <p>But let’s unleash the power of a scene encoded in data-serialization language such as yaml<br />
@@ -209,7 +213,7 @@ wc -l flake.cue flake.yml                        # compare lines number
 and the generated <code>flake.yml</code> can be simple parsed</p>
 <div align="center">
    <h6>
-   <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 -f 1 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
+   <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
    </h6><br>
   <img src="https://github.com/andros21/rustracer/raw/master/examples/flake.png" width="500" alt="rustracer-flake"/>
   <p><sub><strong>flake.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~7h
@@ -217,8 +221,8 @@ and the generated <code>flake.yml</code> can be simple parsed</p>
 <br>
 <details>
 <summary>click to show <strong>rustracer-render -h </strong></summary>
-<div class="example-wrap"><pre class="language-console"><code>rustracer-render 1.0.0
-Render a scene from file
+<div class="example-wrap"><pre class="language-console"><code>rustracer-render 1.0.1
+Render a scene from file (yaml formatted)
 
 USAGE:
     rustracer render [OPTIONS] &lt;INPUT&gt; &lt;OUTPUT&gt;
@@ -232,13 +236,13 @@ OPTIONS:
                                            [possible values: onoff, flat, pathtracer]
         --angle-deg &lt;ANGLE_DEG&gt;            View angle (in degrees) [default: 0.0]
         --anti-aliasing &lt;ANTI_ALIASING&gt;    Anti-aliasing level [default: 1]
-    -f, --factor &lt;FACTOR&gt;                  Normalization factor [default: 0.2]
+    -f, --factor &lt;FACTOR&gt;                  Normalization factor [default: 1.0]
     -g, --gamma &lt;GAMMA&gt;                    Gamma parameter [default: 1.0]
     -h, --help                             Print help information
         --height &lt;HEIGHT&gt;                  Image height [default: 480]
         --init-seq &lt;INIT_SEQ&gt;              Identifier of the random sequence (positive number)
-                                           [default: 45]
-        --init-state &lt;INIT_STATE&gt;          Initial random seed (positive number) [default: 45]
+                                           [default: 54]
+        --init-state &lt;INIT_STATE&gt;          Initial random seed (positive number) [default: 42]
     -m, --max-depth &lt;MAX_DEPTH&gt;            Maximum depth [default: 3]
     -n, --num-of-rays &lt;NUM_OF_RAYS&gt;        Number of rays [default: 10]
         --output-pfm                       Output also hdr image
@@ -259,7 +263,7 @@ OPTIONS:
 <br>
 <details>
 <summary>click to show <strong>rustracer-completion -h </strong></summary>
-<div class="example-wrap"><pre class="language-console"><code>rustracer-completion 1.0.0
+<div class="example-wrap"><pre class="language-console"><code>rustracer-completion 1.0.1
 Generate shell completion script
 
 USAGE:

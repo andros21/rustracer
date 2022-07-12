@@ -2202,31 +2202,35 @@
 <span id="2197">2197</span>
 <span id="2198">2198</span>
 <span id="2199">2199</span>
+<span id="2200">2200</span>
+<span id="2201">2201</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Scene parsing module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides `Scene` struct parsed from scene file (**yaml** formatted).</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::camera</span>::{<span class="ident">Camera</span>, <span class="ident">OrthogonalCamera</span>, <span class="ident">PerspectiveCamera</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cli::Cli</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color</span>::{<span class="ident">Color</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::SceneErr</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hdrimage::HdrImage</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::material</span>::{
-    <span class="ident">CheckeredPigment</span>, <span class="ident">DiffuseBRDF</span>, <span class="ident">ImagePigment</span>, <span class="ident">Material</span>, <span class="ident">Pigment</span>, <span class="ident">SpecularBRDF</span>, <span class="ident">UniformPigment</span>,
-    <span class="ident">BRDF</span>,
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">camera</span>::{<span class="ident">Camera</span>, <span class="ident">OrthogonalCamera</span>, <span class="ident">PerspectiveCamera</span>},
+    <span class="ident">cli::Cli</span>,
+    <span class="ident">color</span>::{<span class="ident">Color</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>},
+    <span class="ident">error::SceneErr</span>,
+    <span class="ident">hdrimage::HdrImage</span>,
+    <span class="ident">material</span>::{
+        <span class="ident">CheckeredPigment</span>, <span class="ident">DiffuseBRDF</span>, <span class="ident">ImagePigment</span>, <span class="ident">Material</span>, <span class="ident">Pigment</span>, <span class="ident">SpecularBRDF</span>,
+        <span class="ident">UniformPigment</span>, <span class="ident">BRDF</span>,
+    },
+    <span class="ident">shape</span>::{<span class="ident">Plane</span>, <span class="ident">RayIntersection</span>, <span class="ident">Sphere</span>},
+    <span class="ident">transformation</span>::{<span class="ident">rotation_x</span>, <span class="ident">rotation_y</span>, <span class="ident">rotation_z</span>, <span class="ident">scaling</span>, <span class="ident">translation</span>, <span class="ident">Transformation</span>},
+    <span class="ident">vector</span>::{<span class="ident">Vector</span>, <span class="ident">E1</span>, <span class="ident">E2</span>, <span class="ident">E3</span>},
+    <span class="ident">world::World</span>,
 };
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::shape</span>::{<span class="ident">Plane</span>, <span class="ident">RayIntersection</span>, <span class="ident">Sphere</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::transformation</span>::{
-    <span class="ident">rotation_x</span>, <span class="ident">rotation_y</span>, <span class="ident">rotation_z</span>, <span class="ident">scaling</span>, <span class="ident">translation</span>, <span class="ident">Transformation</span>,
+<span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">collections::BTreeMap</span>,
+    <span class="ident">f32::consts::PI</span>,
+    <span class="ident">fmt</span>,
+    <span class="ident">fs::File</span>,
+    <span class="ident">io</span>::{<span class="ident">BufReader</span>, <span class="ident">Read</span>},
+    <span class="ident">path::Path</span>,
+    <span class="ident">str::FromStr</span>,
 };
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector</span>::{<span class="ident">Vector</span>, <span class="ident">E1</span>, <span class="ident">E2</span>, <span class="ident">E3</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::world::World</span>;
-<span class="kw">use</span> <span class="ident">std::collections::BTreeMap</span>;
-<span class="kw">use</span> <span class="ident">std::f32::consts::PI</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::fs::File</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="ident">BufReader</span>, <span class="ident">Read</span>};
-<span class="kw">use</span> <span class="ident">std::path::Path</span>;
-<span class="kw">use</span> <span class="ident">std::str::FromStr</span>;
 
 <span class="doccomment">/// Chars that must be considered special when parsed.</span>
 <span class="doccomment">///</span>
@@ -2617,7 +2621,7 @@
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">ch</span>.<span class="ident">is_ascii_alphabetic</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">ch</span> <span class="op">==</span> <span class="string">&#39;_&#39;</span> {
             <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">parse_keyword_or_identifier</span>(<span class="ident">ch</span>, <span class="ident">token_location</span>))
         } <span class="kw">else</span> {
-            <span class="comment">//self.unread_char(ch);</span>
+            <span class="comment">// self.unread_char(ch);</span>
             <span class="prelude-val">Err</span>(<span class="ident">SceneErr::InvalidCharacter</span> {
                 <span class="ident">loc</span>: <span class="ident">token_location</span>,
                 <span class="ident">msg</span>: <span class="macro">format!</span>(<span class="string">&quot;{} invalid character&quot;</span>, <span class="ident">ch</span>),
@@ -2701,7 +2705,7 @@
                 } <span class="kw">else</span> {
                     <span class="macro">not_match!</span>(<span class="ident">loc</span>, <span class="ident">key</span>, <span class="ident">keyword</span>)
                 }
-            }
+            },
             <span class="kw">_</span> =&gt; <span class="macro">not_matches!</span>(<span class="ident">token</span>, <span class="ident">keyword</span>),
         }
     }
@@ -2721,7 +2725,7 @@
                 } <span class="kw">else</span> {
                     <span class="macro">not_match!</span>(<span class="ident">loc</span>, <span class="ident">key</span>, <span class="ident">keywords</span>)
                 }
-            }
+            },
             <span class="kw">_</span> =&gt; <span class="macro">not_matches!</span>(<span class="ident">token</span>, <span class="ident">keywords</span>),
         }
     }
@@ -2787,7 +2791,7 @@
                         ),
                     })
                 }
-            }
+            },
             <span class="kw">_</span> =&gt; <span class="macro">not_matches!</span>(<span class="ident">token</span>, <span class="string">&quot;floating-point number&quot;</span>),
         }
     }
@@ -2810,7 +2814,7 @@
                 <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">match_number</span>()<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39;]&#39;</span>)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(<span class="ident">Color::from</span>((<span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>)))
-            }
+            },
             <span class="comment">// Match color from variables `var`.</span>
             <span class="ident">Token::Identifier</span>(<span class="ident">loc</span>, <span class="ident">color</span>) =&gt; {
                 <span class="prelude-val">Ok</span>(<span class="ident">var</span>
@@ -2821,7 +2825,7 @@
                         <span class="ident">loc</span>,
                         <span class="ident">msg</span>: <span class="macro">format!</span>(<span class="string">&quot;{:?} color not defined&quot;</span>, <span class="ident">color</span>),
                     })<span class="question-mark">?</span>)
-            }
+            },
             <span class="comment">// Match color from variables `var`.</span>
             <span class="ident">Token::Keyword</span>(<span class="ident">loc</span>, <span class="ident">key</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">var</span>
                 .<span class="ident">colors</span>
@@ -2851,7 +2855,7 @@
                 <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">match_number</span>()<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39;]&#39;</span>)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(<span class="ident">Vector::from</span>((<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>)))
-            }
+            },
             <span class="comment">// Match vector from variables `var`.</span>
             <span class="ident">Token::Identifier</span>(<span class="ident">loc</span>, <span class="ident">vector</span>) =&gt; {
                 <span class="prelude-val">Ok</span>(<span class="ident">var</span>
@@ -2862,7 +2866,7 @@
                         <span class="ident">loc</span>,
                         <span class="ident">msg</span>: <span class="macro">format!</span>(<span class="string">&quot;{:?} vector not defined, available [E1, E2, E3]&quot;</span>, <span class="ident">vector</span>),
                     })<span class="question-mark">?</span>)
-            }
+            },
             <span class="kw">_</span> =&gt; <span class="macro">not_matches!</span>(<span class="ident">token</span>, <span class="string">&quot;xyz vector&quot;</span>),
         }
     }
@@ -2955,7 +2959,7 @@
                         }
                     })<span class="question-mark">?</span>,
                 )))
-            }
+            },
             <span class="ident">Keywords::Checkered</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39;[&#39;</span>)<span class="question-mark">?</span>;
                 <span class="kw">let</span> <span class="ident">color1</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">parse_color</span>(<span class="ident">var</span>)<span class="question-mark">?</span>;
@@ -2971,7 +2975,7 @@
                     <span class="ident">color2</span>,
                     <span class="ident">steps</span>,
                 }))
-            }
+            },
             <span class="comment">// This branch should never be triggered (a dummy error).</span>
             <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">SceneErr::UnexpectedMatch</span>(<span class="ident">String::from</span>(
                 <span class="string">&quot;unexpected match (report it to devel)&quot;</span>,
@@ -3088,27 +3092,27 @@
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(<span class="ident">rotation_x</span>(<span class="ident">f32::to_radians</span>(<span class="self">self</span>.<span class="ident">match_number</span>()<span class="question-mark">?</span>)))
-                        }
+                        },
                         <span class="ident">Keywords::RotationY</span> =&gt; {
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(<span class="ident">rotation_y</span>(<span class="ident">f32::to_radians</span>(<span class="self">self</span>.<span class="ident">match_number</span>()<span class="question-mark">?</span>)))
-                        }
+                        },
                         <span class="ident">Keywords::RotationZ</span> =&gt; {
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(<span class="ident">rotation_z</span>(<span class="ident">f32::to_radians</span>(<span class="self">self</span>.<span class="ident">match_number</span>()<span class="question-mark">?</span>)))
-                        }
+                        },
                         <span class="ident">Keywords::Scaling</span> =&gt; {
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(<span class="ident">scaling</span>(<span class="self">self</span>.<span class="ident">parse_vector</span>(<span class="ident">var</span>)<span class="question-mark">?</span>))
-                        }
+                        },
                         <span class="ident">Keywords::Translation</span> =&gt; {
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
                             <span class="self">self</span>.<span class="ident">match_symbol</span>(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(<span class="ident">translation</span>(<span class="self">self</span>.<span class="ident">parse_vector</span>(<span class="ident">var</span>)<span class="question-mark">?</span>))
-                        }
+                        },
                         <span class="kw">_</span> =&gt; <span class="macro">not_matches!</span>(
                             <span class="ident">transformation_tk</span>,
                             <span class="macro">vec!</span>[
@@ -3131,7 +3135,7 @@
                             <span class="ident">msg</span>: <span class="macro">format!</span>(<span class="string">&quot;\&quot;{:?}\&quot; transformation not defined&quot;</span>, <span class="ident">key</span>),
                         })<span class="question-mark">?</span>)
                 }
-            }
+            },
             <span class="comment">// Match inside `transformations` [`BTreeMap`].</span>
             <span class="ident">Token::Identifier</span>(<span class="ident">loc</span>, <span class="ident">id</span>) =&gt; {
                 <span class="ident">transformations</span>
@@ -3141,7 +3145,7 @@
                         <span class="ident">loc</span>,
                         <span class="ident">msg</span>: <span class="macro">format!</span>(<span class="string">&quot;{:?} transformation not defined&quot;</span>, <span class="ident">id</span>),
                     })
-            }
+            },
             <span class="kw">_</span> =&gt; <span class="macro">not_matches!</span>(<span class="ident">transformation_tk</span>, <span class="string">&quot;transformation&quot;</span>),
         }
     }
@@ -3198,7 +3202,7 @@
                         <span class="ident">transformation</span> <span class="op">=</span>
                             <span class="self">self</span>.<span class="ident">parse_transformation</span>(<span class="ident">transformations</span>, <span class="ident">var</span>)<span class="question-mark">?</span> <span class="op">*</span> <span class="ident">transformation</span>;
                         <span class="prelude-val">Ok</span>(())
-                    }
+                    },
                     <span class="comment">// Otherwise stop with compose transformation block.</span>
                     <span class="comment">// If there is &#39;-&#39; no more composing, this is a new transformation.</span>
                     <span class="ident">Token::Symbol</span>(<span class="kw">_</span>, <span class="string">&#39;-&#39;</span>) =&gt; {
@@ -3207,7 +3211,7 @@
                         <span class="comment">// Magic rustc.</span>
                         <span class="self">self</span>.<span class="ident">unread_token</span>(<span class="ident">tk_nx_nx</span>);
                         <span class="kw">break</span>;
-                    }
+                    },
                     <span class="comment">// No other suppositions are made! To reduce grammar complexity.</span>
                     <span class="kw">_</span> =&gt; <span class="macro">not_matches!</span>(<span class="ident">tk_nx_nx</span>, <span class="string">&quot;[&#39; &#39;, &#39;-&#39;]&quot;</span>),
                 }<span class="question-mark">?</span>;
@@ -3273,7 +3277,7 @@
                 } <span class="kw">else</span> {
                     <span class="macro">not_match!</span>(<span class="ident">loc</span>, <span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">shapes</span>)
                 }
-            }
+            },
             <span class="kw">_</span> =&gt; <span class="macro">not_matches!</span>(<span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">shapes</span>),
         }<span class="question-mark">?</span>;
         <span class="comment">// Can only be a eol or inline comment.</span>
@@ -3469,13 +3473,13 @@
                     <span class="ident">Keywords::Camera</span> =&gt; {
                         <span class="ident">scene</span>.<span class="ident">camera</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">parse_camera</span>(<span class="kw-2">&amp;</span><span class="ident">var</span>, <span class="ident">cli</span>)<span class="question-mark">?</span>);
                         <span class="ident">blocks</span>.<span class="ident">remove</span>(<span class="ident">blocks</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span> <span class="op">==</span> <span class="ident">Keywords::Camera</span>).<span class="ident">unwrap</span>());
-                    }
+                    },
                     <span class="comment">// Update colors in `var` if colors block is found.</span>
                     <span class="comment">// And remove it from `blocks`, because was found.</span>
                     <span class="ident">Keywords::Colors</span> =&gt; {
                         <span class="ident">var</span>.<span class="ident">colors</span>.<span class="ident">append</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">parse_colors</span>(<span class="kw-2">&amp;</span><span class="ident">var</span>)<span class="question-mark">?</span>);
                         <span class="ident">blocks</span>.<span class="ident">remove</span>(<span class="ident">blocks</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span> <span class="op">==</span> <span class="ident">Keywords::Colors</span>).<span class="ident">unwrap</span>());
-                    }
+                    },
                     <span class="comment">// Update materials in `var` if materials block is found.</span>
                     <span class="comment">// And remove it from `blocks`, because was found.</span>
                     <span class="ident">Keywords::Materials</span> =&gt; {
@@ -3486,13 +3490,13 @@
                                 .<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span> <span class="op">==</span> <span class="ident">Keywords::Materials</span>)
                                 .<span class="ident">unwrap</span>(),
                         );
-                    }
+                    },
                     <span class="comment">// Build a `World` in `scene` using `var`.</span>
                     <span class="comment">// And remove it from `blocks`, because was found.</span>
                     <span class="ident">Keywords::Shapes</span> =&gt; {
                         <span class="ident">scene</span>.<span class="ident">shapes</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">parse_shapes</span>(<span class="kw-2">&amp;</span><span class="ident">var</span>)<span class="question-mark">?</span>);
                         <span class="ident">blocks</span>.<span class="ident">remove</span>(<span class="ident">blocks</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span> <span class="op">==</span> <span class="ident">Keywords::Shapes</span>).<span class="ident">unwrap</span>());
-                    }
+                    },
                     <span class="comment">// Update transformations in `var` if transformations block is found.</span>
                     <span class="comment">// And remove it from `blocks`, because was found.</span>
                     <span class="ident">Keywords::Transformations</span> =&gt; {
@@ -3504,7 +3508,7 @@
                                 .<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span> <span class="op">==</span> <span class="ident">Keywords::Transformations</span>)
                                 .<span class="ident">unwrap</span>(),
                         );
-                    }
+                    },
                     <span class="comment">// This branch should never be triggered (do nothing).</span>
                     <span class="kw">_</span> =&gt; (),
                 };

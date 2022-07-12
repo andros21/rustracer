@@ -303,15 +303,14 @@
 <span id="298">298</span>
 <span id="299">299</span>
 <span id="300">300</span>
-<span id="301">301</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 3D Vector module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides [`Vector`](struct@Vector) struct.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::normal::Normal</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Add</span>, <span class="ident">Mul</span>, <span class="ident">Sub</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">misc::IsClose</span>, <span class="ident">normal::Normal</span>, <span class="ident">point::Point</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">fmt</span>,
+    <span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">Mul</span>, <span class="ident">Sub</span>},
+};
 
 <span class="doccomment">/// X-axis vector.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">E1</span>: <span class="ident">Vector</span> <span class="op">=</span> <span class="ident">Vector</span> {
@@ -487,8 +486,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::EPSILON</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::random::Pcg</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">misc::EPSILON</span>, <span class="ident">random::Pcg</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_is_close</span>() {

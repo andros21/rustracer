@@ -206,9 +206,6 @@
 <span id="201">201</span>
 <span id="202">202</span>
 <span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Camera module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides two camera structs:</span>
@@ -218,10 +215,7 @@
 <span class="doccomment">//! That implement [`FireRay`] trait.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! And [`Camera`] enum that wrap them.</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::point::Point</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ray::Ray</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::transformation::Transformation</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vector::Vector</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">point::Point</span>, <span class="ident">ray::Ray</span>, <span class="ident">transformation::Transformation</span>, <span class="ident">vector::Vector</span>};
 
 <span class="doccomment">/// Trait for fire a [`Ray`] through a [`camera`](.).</span>
 <span class="doccomment">///</span>

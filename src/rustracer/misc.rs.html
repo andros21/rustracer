@@ -100,6 +100,7 @@
 <span id="95">95</span>
 <span id="96">96</span>
 <span id="97">97</span>
+<span id="98">98</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Miscellanea module.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Provides cross modules useful enums, functions, traits.</span>
@@ -153,7 +154,7 @@
             <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
                 <span class="macro">eprintln!</span>(<span class="string">&quot;{} {:#}&quot;</span>, <span class="string">&quot;[error]&quot;</span>.<span class="ident">red</span>().<span class="ident">bold</span>(), <span class="ident">e</span>);
                 <span class="ident">exit</span>(<span class="number">1</span>)
-            }
+            },
         }
     };
 }
@@ -163,7 +164,8 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// When invalid or unsupported ldr file is provided via cli fail immediately.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Re-use of built-in logic inside [`write_ldr_file`](hdrimage/struct.HdrImage.html#method.write_ldr_file).</span>
+<span class="doccomment">/// Re-use of built-in logic inside</span>
+<span class="doccomment">/// [`write_ldr_file`](hdrimage/struct.HdrImage.html#method.write_ldr_file).</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">check</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">expr</span>) =&gt; {

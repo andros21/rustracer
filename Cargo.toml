@@ -1,9 +1,9 @@
 [package]
 name         = "rustracer"
 license      = "GPL-3.0"
-version      = "1.0.0"
+version      = "1.0.1"
 edition      = "2021"
-rust-version = "1.61"
+rust-version = "1.62"
 authors      = [
    "Andrea Rossoni <andrea dot ros.21 at e.email>",
    "Paolo Azzini <paolo dot azzini1 at gmail.com>"
@@ -11,18 +11,22 @@ authors      = [
 readme        = "README.md"
 repository    = "https://github.com/andros21/rustracer"
 homepage      = "https://github.com/andros21/rustracer"
-documentation = "https://andros21.github.io/rustracer"
+documentation = "https://andros21.github.io/rustracer/docs"
 categories    = ["command-line-utilities"]
 description   = "a multi-threaded raytracer in pure rust"
-exclude       = [".github/*", ".gitignore", "makefile"]
+exclude       = [
+   ".github/*",
+   ".gitignore",
+   "examples/*",
+   "install.sh",
+   "makefile",
+]
 keywords      = [
    "cli",
-   "generator",
    "image",
-   "photo",
    "raytracer",
    "raytracing",
-   "realistic",
+   "thread"
 ]
 
 [[bin]]

@@ -1,0 +1,11 @@
+# requirements.txt
+# ================
+
+# cd deps
+# -------
+Jinja2==3.1.2
+
+# ci deps
+# -------
+black==22.6.0
+flake8==4.0.1

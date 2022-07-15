@@ -43,6 +43,16 @@ jobs:
         with:
           command: build
           args: --locked --release --target x86_64-unknown-linux-musl
+      - name: setup python
+        run: |
+          python3 -m pip install --user -r .github/workflows/requirements.txt
+      - name: update readme
+        run: .github/workflows/md.py
+      - name: commit readme
+        uses: EndBug/add-and-commit@998652d28d7702d095d40f52ae42982a80ae8c7d
+        with:
+          message: 'feat(README): update from README template'
+          add: 'README.md'
       - name: assemble artifacts
         run: .github/workflows/cd.sh assemble
       - name: check cosign version

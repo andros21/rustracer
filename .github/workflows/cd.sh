@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# cd.sh
+# =====
 # `rustracer` continuos deployment workflow (`cd.yml`) helper script,
 # it assemble, checksum and (co)sign artifacts for releases
 

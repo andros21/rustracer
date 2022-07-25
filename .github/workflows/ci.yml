@@ -31,6 +31,7 @@ jobs:
       contents: read
     outputs:
       bash: ${{ steps.filter.outputs.bash }}
+      markdown: ${{ steps.filter.outputs.markdown }}
       python: ${{ steps.filter.outputs.python }}
       rust: ${{ steps.filter.outputs.rust }}
     steps:
@@ -42,6 +43,11 @@ jobs:
           filters: |
             bash:
               - '**/*.sh'
+            markdown:
+              - 'src/cli.rs'
+              - 'Cargo.lock'
+              - 'Cargo.toml'
+              - 'TEMPLATE.md'
             python:
               - '**/*.py'
               - '.github/workflows/requirements.txt'
@@ -60,7 +66,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
       - name: check cache
-        uses: actions/cache@c3f1317a9e7b1ef106c153ac8c0f00fed3ddbc0d
+        uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129
         id: cache
         with:
           path: |
@@ -95,20 +101,6 @@ jobs:
         uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: rustdoc
-  lint_sh:
-    name: lint bash ci
-    needs: changes
-    if: ${{ needs.changes.outputs.bash == 'true' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: checkout project
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
-      - name: shellcheck bash
-        run: |
-          shopt -s globstar
-          shellcheck -s bash **/*.sh .github/**/*.sh
   lint_py:
     name: lint python ci
     needs: changes
@@ -127,6 +119,20 @@ jobs:
           md=".github/workflows/md.py"
           ~/.local/bin/black "$md"
           ~/.local/bin/flake8 --max-line-length 90 "$md"
+  lint_sh:
+    name: lint bash ci
+    needs: changes
+    if: ${{ needs.changes.outputs.bash == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: checkout project
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - name: shellcheck bash
+        run: |
+          shopt -s globstar
+          shellcheck -s bash **/*.sh .github/**/*.sh
   test:
     name: test ci
     needs: lint_rs
@@ -140,7 +146,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
       - name: check cache
-        uses: actions/cache@c3f1317a9e7b1ef106c153ac8c0f00fed3ddbc0d
+        uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129
         id: cache
         with:
           path: |
@@ -157,7 +163,7 @@ jobs:
           profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: install cargo-llvm-cov
-        uses: taiki-e/install-action@37f510303aeb4b92ae4d0ac329a1bcdf05a5fae0
+        uses: taiki-e/install-action@e6302a3430039862110150c1d248ea3319404c4f
         with:
           tool: cargo-llvm-cov
       - name: cargo build
@@ -180,13 +186,13 @@ jobs:
              | awk '{print int($0)}')
           echo "##[set-output name=coverage;]${COVERAGE}"
       - name: cargo test coverage (lcov)
-        if: ${{ github.event_name == 'pull_request' }}
+        if: (${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
         uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: llvm-cov
           args: --locked --tests --lcov --output-path coverage.lcov.info
       - name: lcov pr report
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
         uses: romeovs/lcov-reporter-action@dda1c9b1fa1622b225e9acd87a248751dbcc6ada
         with:
           title: Coverage Report
@@ -197,7 +203,7 @@ jobs:
     needs:
       - pre_ci
       - test
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ (github.event_name == 'push') && (github.actor != 'dependabot[bot]') }}
     runs-on: ubuntu-latest
     permissions: {}
     env:
@@ -222,3 +228,45 @@ jobs:
           MARKDOWN="![Coverage](${URL})"
           echo "Badge URL: ${URL}"
           echo "Badge image for Markdown: ${MARKDOWN}"
+  md:
+    name: update readme
+    needs: changes
+    if: ${{ (github.event_name == 'push') && (github.actor != 'dependabot[bot]') && (needs.changes.outputs.markdown == 'true') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: checkout project
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - name: check cache
+        uses: actions/cache@c3f1317a9e7b1ef106c153ac8c0f00fed3ddbc0d
+        id: cache
+        with:
+          path: |
+            ~/.cargo/
+            ~/.rustup/
+            target/
+          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
+      - name: install rust toolchain
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
+        with:
+          toolchain: stable
+          default: true
+          profile: minimal
+          components: clippy, llvm-tools-preview, rustfmt, rust-docs
+      - name: cargo build
+        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        with:
+          command: build
+          args: --locked
+      - name: setup python
+        run: |
+          python3 -m pip install --user -r .github/workflows/requirements.txt
+      - name: update readme
+        run: .github/workflows/md.py
+      - name: commit readme
+        uses: EndBug/add-and-commit@998652d28d7702d095d40f52ae42982a80ae8c7d
+        with:
+          message: 'build(README): render from TEMPLATE'
+          add: 'README.md'

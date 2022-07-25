@@ -32,6 +32,7 @@ jobs:
     outputs:
       bash: ${{ steps.filter.outputs.bash }}
       python: ${{ steps.filter.outputs.python }}
+      md: ${{ steps.filter.outputs.md }}
       rust: ${{ steps.filter.outputs.rust }}
     steps:
       - name: checkout project
@@ -45,6 +46,8 @@ jobs:
             python:
               - '**/*.py'
               - '.github/workflows/requirements.txt'
+            md:
+              - 'TEMPLATE.md'
             rust:
               - '**/*.rs'
               - 'Cargo.lock'
@@ -222,3 +225,21 @@ jobs:
           MARKDOWN="![Coverage](${URL})"
           echo "Badge URL: ${URL}"
           echo "Badge image for Markdown: ${MARKDOWN}"
+  md:
+    name: update readme
+    needs: changes
+    if: ${{ (github.event_name == 'push') && (needs.changes.outputs.md == 'true') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: setup python
+        run: |
+          python3 -m pip install --user -r .github/workflows/requirements.txt
+      - name: update readme
+        run: .github/workflows/md.py
+      - name: commit readme
+        uses: EndBug/add-and-commit@998652d28d7702d095d40f52ae42982a80ae8c7d
+        with:
+          message: 'feat(README): update from README template'
+          add: 'README.md'

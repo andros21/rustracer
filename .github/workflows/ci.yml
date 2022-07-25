@@ -32,6 +32,7 @@ jobs:
     outputs:
       bash: ${{ steps.filter.outputs.bash }}
       python: ${{ steps.filter.outputs.python }}
+      md: ${{ steps.filter.outputs.md }}
       rust: ${{ steps.filter.outputs.rust }}
     steps:
       - name: checkout project
@@ -45,14 +46,20 @@ jobs:
             python:
               - '**/*.py'
               - '.github/workflows/requirements.txt'
+            md:
+              - 'TEMPLATE.md'
             rust:
               - '**/*.rs'
+              - 'Cargo.lock'
+              - 'Cargo.toml'
+            rust_cli:
+              - 'src/cli.rs'
               - 'Cargo.lock'
               - 'Cargo.toml'
   lint_rs:
     name: lint rust ci
     needs: changes
-    if: ${{ needs.changes.outputs.rust == 'true' }}
+    if: ${{ (needs.changes.outputs.rust == 'true') || (needs.changes.outputs.md == 'true') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -129,7 +136,9 @@ jobs:
           ~/.local/bin/flake8 --max-line-length 90 "$md"
   test:
     name: test ci
-    needs: lint_rs
+    needs:
+      - changes
+      - lint_rs
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -180,13 +189,13 @@ jobs:
              | awk '{print int($0)}')
           echo "##[set-output name=coverage;]${COVERAGE}"
       - name: cargo test coverage (lcov)
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ (github.event_name == 'pull_request') && (needs.changes.outputs.rust_cli == 'true') }}
         uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: llvm-cov
           args: --locked --tests --lcov --output-path coverage.lcov.info
       - name: lcov pr report
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ (github.event_name == 'pull_request') && (needs.changes.outputs.rust_cli == 'true') }}
         uses: romeovs/lcov-reporter-action@dda1c9b1fa1622b225e9acd87a248751dbcc6ada
         with:
           title: Coverage Report
@@ -195,9 +204,10 @@ jobs:
   badge:
     name: coverage badge
     needs:
+      - changes
       - pre_ci
       - test
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ (github.event_name == 'push') && (needs.changes.outputs.rust_cli == 'true') }}
     runs-on: ubuntu-latest
     permissions: {}
     env:
@@ -222,3 +232,35 @@ jobs:
           MARKDOWN="![Coverage](${URL})"
           echo "Badge URL: ${URL}"
           echo "Badge image for Markdown: ${MARKDOWN}"
+  md:
+    name: update readme
+    needs:
+      - changes
+      - lint_py
+      - test
+    if: ${{ (github.event_name == 'push') && ((needs.changes.outputs.md == 'true') || (needs.changes.outputs.rust_cli == 'true')) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: checkout project
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - name: check cache
+        uses: actions/cache@c3f1317a9e7b1ef106c153ac8c0f00fed3ddbc0d
+        id: cache
+        with:
+          path: |
+            ~/.cargo/
+            ~/.rustup/
+            target/
+          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
+      - name: setup python
+        run: |
+          python3 -m pip install --user -r .github/workflows/requirements.txt
+      - name: update readme
+        run: .github/workflows/md.py
+      - name: commit readme
+        uses: EndBug/add-and-commit@998652d28d7702d095d40f52ae42982a80ae8c7d
+        with:
+          message: 'build(README): automatically generate from TEMPLATE'
+          add: 'README.md'

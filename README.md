@@ -389,7 +389,7 @@ Simple generate completion script for `bash` shell (same for `fish` and `zsh`):
    <h5>
       <code>rustracer completion bash</code> <a href="#note6"><sup>(6)</sup></a>
    </h5>
-   <a href="https://asciinema.org/a/1lqL4683WLvXPfOo5W608je6V?autoplay=1&speed1.5" target="_blank"><img src="https://asciinema.org/a/1lqL4683WLvXPfOo5W608je6V.svg" width="500" /></a>
+   <a href="https://asciinema.org/a/1lqL4683WLvXPfOo5W608je6V?autoplay=1&speed=2" target="_blank"><img src="https://asciinema.org/a/1lqL4683WLvXPfOo5W608je6V.svg" width="500" /></a>
    <p><sub><strong>note:</strong> close-open your shell, and here we go, tab completions now available!
 </div>
 

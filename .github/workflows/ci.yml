@@ -230,9 +230,7 @@ jobs:
           echo "Badge image for Markdown: ${MARKDOWN}"
   md:
     name: update readme
-    needs:
-      - changes
-      - lint_py
+    needs: changes
     if: ${{ (github.event_name == 'push') && (github.actor != 'dependabot[bot]') && (needs.changes.outputs.markdown == 'true') }}
     runs-on: ubuntu-latest
     permissions:

@@ -163,7 +163,7 @@ jobs:
           profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: install cargo-llvm-cov
-        uses: taiki-e/install-action@e6302a3430039862110150c1d248ea3319404c4f
+        uses: taiki-e/install-action@7d5481ab3ac31c153575df39eaf2815ac4f92de7
         with:
           tool: cargo-llvm-cov
       - name: cargo build

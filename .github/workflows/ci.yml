@@ -172,13 +172,13 @@ jobs:
           command: build
           args: --locked
       - name: cargo test coverage (json)
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
         uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: llvm-cov
           args: --locked --tests --json --summary-only --output-path coverage.json
       - name: report (total lines) coverage
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
         id: coverage
         run: |
           COVERAGE=$(cat coverage.json \
@@ -203,7 +203,7 @@ jobs:
     needs:
       - pre_ci
       - test
-    if: ${{ (github.event_name == 'push') && (github.actor != 'dependabot[bot]') }}
+    if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
     runs-on: ubuntu-latest
     permissions: {}
     env:
@@ -231,7 +231,7 @@ jobs:
   md:
     name: update readme
     needs: changes
-    if: ${{ (github.event_name == 'push') && (github.actor != 'dependabot[bot]') && (needs.changes.outputs.markdown == 'true') }}
+    if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) && (needs.changes.outputs.markdown == 'true') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

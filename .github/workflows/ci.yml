@@ -186,7 +186,7 @@ jobs:
              | awk '{print int($0)}')
           echo "##[set-output name=coverage;]${COVERAGE}"
       - name: cargo test coverage (lcov)
-        if: (${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
+        if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
         uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
         with:
           command: llvm-cov

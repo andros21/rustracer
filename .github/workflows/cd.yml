@@ -17,7 +17,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
       - name: check cargo cache
-        uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129
+        uses: actions/cache@f4278025ab0f432ce369118909e46deec636f50c
         id: rust-cache
         with:
           path: |
@@ -52,7 +52,7 @@ jobs:
           echo "cosign version: ${LATEST}"
           echo "##[set-output name=latest;]${LATEST}"
       - name: check cosign cache
-        uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129
+        uses: actions/cache@f4278025ab0f432ce369118909e46deec636f50c
         id: cosign-cache
         with:
           path: ~/.cosign
@@ -95,7 +95,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
       - name: check cache
-        uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129
+        uses: actions/cache@f4278025ab0f432ce369118909e46deec636f50c
         id: cache
         with:
           path: |
@@ -129,7 +129,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
       - name: check cache
-        uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129
+        uses: actions/cache@f4278025ab0f432ce369118909e46deec636f50c
         id: cache
         with:
           path: |

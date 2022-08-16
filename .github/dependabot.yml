@@ -11,7 +11,8 @@ updates:
     schedule:
       interval: "weekly"
       day: "sunday"
-    rebase-strategy: "disabled"
+      time: "07:00"
+      timezone: "Europe/Rome"
   - package-ecosystem: "pip"
     directory: ".github/workflows"
     schedule:

@@ -34,12 +34,12 @@ jobs:
           profile: minimal
           target: x86_64-unknown-linux-musl
       - name: cargo release gnu
-        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: build
           args: --locked --release
       - name: cargo release musl
-        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: build
           args: --locked --release --target x86_64-unknown-linux-musl
@@ -64,7 +64,7 @@ jobs:
           echo "PATH=$PATH:$HOME/.cosign" >> $GITHUB_ENV
       - name: install cosign
         if: steps.cosign-cache.outputs.cache-hit != 'true'
-        uses: sigstore/cosign-installer@372f03d876de9bfec5079d00fc6cd2485af9a026
+        uses: sigstore/cosign-installer@b3413d484cc23cf8778c3d2aa361568d4eb54679
         with:
           cosign-release: ${{ steps.cosign-version.outputs.latest }}
       - name: cosign artifacts
@@ -72,7 +72,7 @@ jobs:
           COSIGN_EXPERIMENTAL: 1
         run: .github/workflows/cd.sh cosign
       - name: release artifacts
-        uses: softprops/action-gh-release@6232f0b438cb856c39d14f8743e3a7c99fc879af
+        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5
         with:
           generate_release_notes: true
           fail_on_unmatched_files: true
@@ -105,14 +105,14 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
         with:
           toolchain: stable
           default: true
           profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo publish
-        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: publish
           args: --locked
@@ -139,7 +139,7 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@568dc894a7f9e32ffd9bb7d7a6cebb784cdaa2b0
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
         with:
           toolchain: stable
           default: true
@@ -148,7 +148,7 @@ jobs:
       - name: patch and cargo rustdoc
         run: make rust_docs
       - name: publish to gh-pages
-        uses: peaceiris/actions-gh-pages@b24891da2a683970a75ebe54633f084809cc25c0
+        uses: peaceiris/actions-gh-pages@068dc23d9710f1ba62e86896f84735d869951305
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/doc/

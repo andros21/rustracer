@@ -72,7 +72,7 @@ jobs:
           COSIGN_EXPERIMENTAL: 1
         run: .github/workflows/cd.sh cosign
       - name: release artifacts
-        uses: softprops/action-gh-release@6232f0b438cb856c39d14f8743e3a7c99fc879af
+        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5
         with:
           generate_release_notes: true
           fail_on_unmatched_files: true

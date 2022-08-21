@@ -148,7 +148,7 @@ jobs:
       - name: patch and cargo rustdoc
         run: make rust_docs
       - name: publish to gh-pages
-        uses: peaceiris/actions-gh-pages@b24891da2a683970a75ebe54633f084809cc25c0
+        uses: peaceiris/actions-gh-pages@068dc23d9710f1ba62e86896f84735d869951305
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/doc/

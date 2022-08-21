@@ -83,22 +83,22 @@ jobs:
           profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo fmt check
-        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: fmt
           args: -- --check --verbose
       - name: cargo clippy main
-        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: clippy
           args: --locked --workspace
       - name: cargo clippy tests
-        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: clippy
           args: --locked --tests
       - name: cargo rustdoc
-        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: rustdoc
   lint_py:
@@ -167,13 +167,13 @@ jobs:
         with:
           tool: cargo-llvm-cov
       - name: cargo build
-        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: build
           args: --locked
       - name: cargo test coverage (json)
         if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
-        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: llvm-cov
           args: --locked --tests --json --summary-only --output-path coverage.json
@@ -187,7 +187,7 @@ jobs:
           echo "##[set-output name=coverage;]${COVERAGE}"
       - name: cargo test coverage (lcov)
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
-        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: llvm-cov
           args: --locked --tests --lcov --output-path coverage.lcov.info
@@ -256,7 +256,7 @@ jobs:
           profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo build
-        uses: actions-rs/cargo@4ff6ec2846f6e7217c1a9b0b503506665f134c4b
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: build
           args: --locked

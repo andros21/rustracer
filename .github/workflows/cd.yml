@@ -34,12 +34,12 @@ jobs:
           profile: minimal
           target: x86_64-unknown-linux-musl
       - name: cargo release gnu
-        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: build
           args: --locked --release
       - name: cargo release musl
-        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: build
           args: --locked --release --target x86_64-unknown-linux-musl
@@ -112,7 +112,7 @@ jobs:
           profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo publish
-        uses: actions-rs/cargo@b0651d9f4d4983fd4cc8e94d927bdc0bb5566667
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: publish
           args: --locked

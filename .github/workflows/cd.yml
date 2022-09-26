@@ -33,16 +33,11 @@ jobs:
           default: true
           profile: minimal
           target: x86_64-unknown-linux-musl
-      - name: cargo release gnu
+      - name: cargo release
         uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
         with:
           command: build
-          args: --locked --release
-      - name: cargo release musl
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: build
-          args: --locked --release --target x86_64-unknown-linux-musl
+          args: --locked --release --target x86_64-unknown-linux-gnu --target x86_64-unknown-linux-musl
       - name: assemble artifacts
         run: .github/workflows/cd.sh assemble
       - name: check cosign version

@@ -76,31 +76,22 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
+        uses: dtolnay/rust-toolchain@1ce4a7352a1efe5dede2e52c75512b34256e4f44
         with:
           toolchain: stable
-          default: true
-          profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo fmt check
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: fmt
-          args: -- --check --verbose
+        run: |
+          cargo fmt -- --check --verbose
       - name: cargo clippy main
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: clippy
-          args: --locked --workspace
+        run: |
+          cargo clippy --locked --workspace
       - name: cargo clippy tests
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: clippy
-          args: --locked --tests
+        run: |
+          cargo clippy --locked --tests
       - name: cargo rustdoc
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: rustdoc
+        run: |
+          cargo rustdoc
   lint_py:
     name: lint python ci
     needs: changes
@@ -156,27 +147,21 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
+        uses: dtolnay/rust-toolchain@1ce4a7352a1efe5dede2e52c75512b34256e4f44
         with:
           toolchain: stable
-          default: true
-          profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: install cargo-llvm-cov
         uses: taiki-e/install-action@ca5df137f68a4e0b5e5ac686c09b0c7e2e8e0e69
         with:
           tool: cargo-llvm-cov
       - name: cargo build
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: build
-          args: --locked
+        run: |
+          cargo build --locked
       - name: cargo test coverage (json)
         if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: llvm-cov
-          args: --locked --tests --json --summary-only --output-path coverage.json
+        run: |
+          cargo llvm-cov --locked --tests --json --summary-only --output-path coverage.json
       - name: report (total lines) coverage
         if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
         id: coverage
@@ -187,10 +172,8 @@ jobs:
           echo "##[set-output name=coverage;]${COVERAGE}"
       - name: cargo test coverage (lcov)
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: llvm-cov
-          args: --locked --tests --lcov --output-path coverage.lcov.info
+        run: |
+          cargo llvm-cov --locked --tests --lcov --output-path coverage.lcov.info
       - name: lcov pr report
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
         uses: romeovs/lcov-reporter-action@dda1c9b1fa1622b225e9acd87a248751dbcc6ada
@@ -249,17 +232,13 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
+        uses: dtolnay/rust-toolchain@1ce4a7352a1efe5dede2e52c75512b34256e4f44
         with:
           toolchain: stable
-          default: true
-          profile: minimal
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo build
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
-        with:
-          command: build
-          args: --locked
+        run: |
+          cargo build --locked
       - name: setup python
         run: |
           python3 -m pip install --user -r .github/workflows/requirements.txt

@@ -58,13 +58,11 @@ pub fn build_cli() -> Command {
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .arg_required_else_help(true)
         .disable_help_subcommand(true)
-        .dont_collapse_args_in_usage(true)
         .propagate_version(true)
         .subcommand_required(true)
         .subcommand(
             Command::new("convert")
                 .arg_required_else_help(true)
-                .dont_collapse_args_in_usage(true)
                 .about("Convert HDR (pfm) image to LDR (ff|png) image")
                 .arg(
                     Arg::new("HDR")
@@ -91,7 +89,7 @@ pub fn build_cli() -> Command {
                         .long("factor")
                         .value_name("FACTOR")
                         .default_value(FACTOR)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Normalization factor")
                         .long_help("Luminosity normalization factor"),
                 )
@@ -101,7 +99,7 @@ pub fn build_cli() -> Command {
                         .long("gamma")
                         .value_name("GAMMA")
                         .default_value(GAMMA)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Gamma parameter")
                         .long_help("Gamma transfer function parameter"),
                 ),
@@ -109,7 +107,6 @@ pub fn build_cli() -> Command {
         .subcommand(
             Command::new("demo")
                 .arg_required_else_help(true)
-                .dont_collapse_args_in_usage(true)
                 .about("Render a demo scene (hard-coded in main)")
                 .arg(
                     Arg::new("OUTPUT")
@@ -141,7 +138,7 @@ pub fn build_cli() -> Command {
                         .long("width")
                         .value_name("WIDTH")
                         .default_value(WIDTH)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Image width")
                         .long_help("Width of the image to render"),
                 )
@@ -150,7 +147,7 @@ pub fn build_cli() -> Command {
                         .long("height")
                         .value_name("HEIGHT")
                         .default_value(HEIGHT)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Image height")
                         .long_help("Height of the image to render"),
                 )
@@ -159,7 +156,7 @@ pub fn build_cli() -> Command {
                         .long("angle-deg")
                         .value_name("ANGLE_DEG")
                         .default_value(ANGLE_DEG)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("View angle (in degrees)")
                         .long_help("Render the image with this angle (in degrees) of view"),
                 )
@@ -169,7 +166,7 @@ pub fn build_cli() -> Command {
                         .long("factor")
                         .value_name("FACTOR")
                         .default_value(FACTOR)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Normalization factor")
                         .long_help("Luminosity normalization factor"),
                 )
@@ -179,7 +176,7 @@ pub fn build_cli() -> Command {
                         .long("gamma")
                         .value_name("GAMMA")
                         .default_value(GAMMA)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Gamma parameter")
                         .long_help("Gamma transfer function parameter"),
                 )
@@ -189,7 +186,7 @@ pub fn build_cli() -> Command {
                         .long("algorithm")
                         .value_name("ALGORITHM")
                         .default_value(ALGORITHM)
-                        .number_of_values(1)
+                        .num_args(1)
                         .value_parser(builder::PossibleValuesParser::new([
                             "onoff",
                             "flat",
@@ -206,7 +203,7 @@ pub fn build_cli() -> Command {
                         .long("num-of-rays")
                         .value_name("NUM_OF_RAYS")
                         .default_value(NUM_OF_RAYS)
-                        .number_of_values(1)
+                        .num_args(1)
                         .requires_if("pathtracer", "algorithm")
                         .help("Number of rays")
                         .long_help("Number of rays departing from each surface point"),
@@ -217,7 +214,7 @@ pub fn build_cli() -> Command {
                         .long("max-depth")
                         .value_name("MAX_DEPTH")
                         .default_value(MAX_DEPTH)
-                        .number_of_values(1)
+                        .num_args(1)
                         .requires_if("pathtracer", "algorithm")
                         .help("Maximum depth")
                         .long_help("Maximum allowed ray depth"),
@@ -227,7 +224,7 @@ pub fn build_cli() -> Command {
                         .long("init-state")
                         .value_name("INIT_STATE")
                         .default_value(INIT_STATE)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Initial random seed (positive number)")
                         .long_help(
                             "Initial seed for the random number generator (positive number)",
@@ -238,7 +235,7 @@ pub fn build_cli() -> Command {
                         .long("init-seq")
                         .value_name("INIT_SEQ")
                         .default_value(INIT_SEQ)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Identifier of the random sequence (positive number)")
                         .long_help(
                             "Identifier of the sequence produced by the random number generator \
@@ -250,7 +247,7 @@ pub fn build_cli() -> Command {
                         .long("anti-aliasing")
                         .value_name("ANTI_ALIASING")
                         .default_value(ANTI_ALIASING)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Anti-aliasing level")
                         .long_help(
                             "Anti-aliasing level, corresponds to the square-root of the number of \
@@ -261,7 +258,6 @@ pub fn build_cli() -> Command {
         .subcommand(
             Command::new("render")
                 .arg_required_else_help(true)
-                .dont_collapse_args_in_usage(true)
                 .about("Render a scene from file (yaml formatted)")
                 .arg(
                     Arg::new("INPUT")
@@ -293,7 +289,7 @@ pub fn build_cli() -> Command {
                         .long("width")
                         .value_name("WIDTH")
                         .default_value(WIDTH)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Image width")
                         .long_help("Width of the image to render"),
                 )
@@ -302,7 +298,7 @@ pub fn build_cli() -> Command {
                         .long("height")
                         .value_name("HEIGHT")
                         .default_value(HEIGHT)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Image height")
                         .long_help("Height of the image to render"),
                 )
@@ -311,7 +307,7 @@ pub fn build_cli() -> Command {
                         .long("angle-deg")
                         .value_name("ANGLE_DEG")
                         .default_value(ANGLE_DEG)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("View angle (in degrees)")
                         .long_help("Render the image with this angle (in degrees) of view"),
                 )
@@ -321,7 +317,7 @@ pub fn build_cli() -> Command {
                         .long("factor")
                         .value_name("FACTOR")
                         .default_value(FACTOR)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Normalization factor")
                         .long_help("Luminosity normalization factor"),
                 )
@@ -331,7 +327,7 @@ pub fn build_cli() -> Command {
                         .long("gamma")
                         .value_name("GAMMA")
                         .default_value(GAMMA)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Gamma parameter")
                         .long_help("Gamma transfer function parameter"),
                 )
@@ -341,7 +337,7 @@ pub fn build_cli() -> Command {
                         .long("algorithm")
                         .value_name("ALGORITHM")
                         .default_value(ALGORITHM)
-                        .number_of_values(1)
+                        .num_args(1)
                         .value_parser(builder::PossibleValuesParser::new([
                             "onoff",
                             "flat",
@@ -358,7 +354,7 @@ pub fn build_cli() -> Command {
                         .long("num-of-rays")
                         .value_name("NUM_OF_RAYS")
                         .default_value(NUM_OF_RAYS)
-                        .number_of_values(1)
+                        .num_args(1)
                         .requires_if("pathtracer", "algorithm")
                         .help("Number of rays")
                         .long_help("Number of rays departing from each surface point"),
@@ -369,7 +365,7 @@ pub fn build_cli() -> Command {
                         .long("max-depth")
                         .value_name("MAX_DEPTH")
                         .default_value(MAX_DEPTH)
-                        .number_of_values(1)
+                        .num_args(1)
                         .requires_if("pathtracer", "algorithm")
                         .help("Maximum depth")
                         .long_help("Maximum allowed ray depth"),
@@ -379,7 +375,7 @@ pub fn build_cli() -> Command {
                         .long("init-state")
                         .value_name("INIT_STATE")
                         .default_value(INIT_STATE)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Initial random seed (positive number)")
                         .long_help(
                             "Initial seed for the random number generator (positive number)",
@@ -390,7 +386,7 @@ pub fn build_cli() -> Command {
                         .long("init-seq")
                         .value_name("INIT_SEQ")
                         .default_value(INIT_SEQ)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Identifier of the random sequence (positive number)")
                         .long_help(
                             "Identifier of the sequence produced by the random number generator \
@@ -402,7 +398,7 @@ pub fn build_cli() -> Command {
                         .long("anti-aliasing")
                         .value_name("ANTI_ALIASING")
                         .default_value(ANTI_ALIASING)
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Anti-aliasing level")
                         .long_help(
                             "Anti-aliasing level, corresponds to the square-root of the number of \
@@ -419,7 +415,7 @@ pub fn build_cli() -> Command {
                     Arg::new("SHELL")
                         .required(true)
                         .value_parser(builder::PossibleValuesParser::new(["bash", "fish", "zsh"]))
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Shell to generate script for")
                         .long_help("Specify for which shell completions should be generated"),
                 )
@@ -428,7 +424,7 @@ pub fn build_cli() -> Command {
                         .short('o')
                         .long("output")
                         .value_name("OUTPUT")
-                        .number_of_values(1)
+                        .num_args(1)
                         .help("Specify output script file")
                         .long_help("Specify an output file for shell completions"),
                 ),

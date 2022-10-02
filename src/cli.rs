@@ -3,7 +3,7 @@
 //! Provides [`build_cli`] function with all cli
 //! desired subcommands and flags, using [`clap`](https://github.com/clap-rs/clap)
 //! library.
-use clap::{builder, Arg, Command};
+use clap::{builder, Arg, ArgAction, Command};
 
 /// Default normalization factor.
 ///
@@ -80,6 +80,8 @@ pub fn build_cli() -> Command {
                     Arg::new("verbose")
                         .short('v')
                         .long("verbose")
+                        .num_args(0)
+                        .action(ArgAction::SetTrue)
                         .help("Print stdout information")
                         .long_help("Print stdout information"),
                 )
@@ -118,18 +120,24 @@ pub fn build_cli() -> Command {
                     Arg::new("verbose")
                         .short('v')
                         .long("verbose")
+                        .num_args(0)
+                        .action(ArgAction::SetTrue)
                         .help("Print stdout information")
                         .long_help("Print stdout information"),
                 )
                 .arg(
                     Arg::new("output-pfm")
                         .long("output-pfm")
+                        .num_args(0)
+                        .action(ArgAction::SetTrue)
                         .help("Output also hdr image")
                         .long_help("Output also pfm file in combination with (ff|png) file"),
                 )
                 .arg(
                     Arg::new("orthogonal")
                         .long("orthogonal")
+                        .num_args(0)
+                        .action(ArgAction::SetTrue)
                         .help("Use orthogonal camera instead of perspective camera")
                         .long_help("Render image with orthogonal view of the scene"),
                 )
@@ -275,12 +283,15 @@ pub fn build_cli() -> Command {
                     Arg::new("verbose")
                         .short('v')
                         .long("verbose")
+                        .num_args(0)
+                        .action(ArgAction::SetTrue)
                         .help("Print stdout information")
                         .long_help("Print stdout information"),
                 )
                 .arg(
                     Arg::new("output-pfm")
                         .long("output-pfm")
+                        .num_args(0)
                         .help("Output also hdr image")
                         .long_help("Output also pfm file in combination with (ff|png) file"),
                 )

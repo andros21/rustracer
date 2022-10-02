@@ -84,7 +84,7 @@ fn convert(sub_m: &clap::ArgMatches) -> Result<(), ConvertErr> {
         .map_err(|e| ConvertErr::FloatParseFailure(e, String::from("gamma")))?;
     let mut hdr_img = HdrImage::read_pfm_file(hdr_file).map_err(ConvertErr::IoError)?;
     check!(ldr_file).map_err(ConvertErr::IoError)?;
-    if sub_m.contains_id("verbose") {
+    if sub_m.get_flag("verbose") {
         println!(
             "{} {:?} has been read from disk",
             "[info]".green(),
@@ -96,7 +96,7 @@ fn convert(sub_m: &clap::ArgMatches) -> Result<(), ConvertErr> {
     hdr_img
         .write_ldr_file(ldr_file, gamma)
         .map_err(ConvertErr::IoError)?;
-    if sub_m.contains_id("verbose") {
+    if sub_m.get_flag("verbose") {
         println!(
             "{} {:?} has been written to disk",
             "[info]".green(),
@@ -168,7 +168,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         }),
         emitted_radiance: Pigment::Uniform(UniformPigment::default()),
     };
-    if sub_m.contains_id("verbose") {
+    if sub_m.get_flag("verbose") {
         println!(
             "{} generating an image ({}, {})",
             "[info]".green(),
@@ -198,7 +198,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         * translation(Vector::from((-3.5, 0.0, 0.7)));
     let mut tracer = ImageTracer::new(
         &mut hdr_img,
-        if sub_m.contains_id("orthogonal") {
+        if sub_m.get_flag("orthogonal") {
             Camera::Orthogonal(OrthogonalCamera::new(
                 width as f32 / height as f32,
                 camera_tr,
@@ -221,12 +221,12 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
         _ => Renderer::Dummy(DummyRenderer),
     };
     tracer.fire_all_rays(&renderer, init_state, init_seq, antialiasing_level);
-    if sub_m.contains_id("output-pfm") {
+    if sub_m.get_flag("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");
         hdr_img
             .write_pfm_file(&hdr_file, ByteOrder::LittleEndian)
             .map_err(DemoErr::IoError)?;
-        if sub_m.contains_id("verbose") {
+        if sub_m.get_flag("verbose") {
             println!(
                 "{} {:?} has been written to disk",
                 "[info]".green(),
@@ -239,7 +239,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
     hdr_img
         .write_ldr_file(ldr_file, gamma)
         .map_err(DemoErr::IoError)?;
-    if sub_m.contains_id("verbose") {
+    if sub_m.get_flag("verbose") {
         println!(
             "{} {:?} has been written to disk",
             "[info]".green(),
@@ -277,7 +277,7 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
     let antialiasing_level = u32::from_str(sub_m.get_one::<String>("anti-aliasing").unwrap())
         .map_err(|e| RenderErr::IntParseFailure(e, String::from("anti-aliasing")))?;
     check!(ldr_file).map_err(RenderErr::IoError)?;
-    if sub_m.contains_id("verbose") {
+    if sub_m.get_flag("verbose") {
         println!(
             "{} reading scene from file {:?}",
             "[info]".green(),
@@ -294,7 +294,7 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
     .map_err(|err| {
         RenderErr::SceneError(err, String::from(sub_m.get_one::<String>("INPUT").unwrap()))
     })?;
-    if sub_m.contains_id("verbose") {
+    if sub_m.get_flag("verbose") {
         println!(
             "{} generating an image ({}, {})",
             "[info]".green(),
@@ -315,12 +315,12 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
         _ => Renderer::Dummy(DummyRenderer),
     };
     tracer.fire_all_rays(&renderer, init_state, init_seq, antialiasing_level);
-    if sub_m.contains_id("output-pfm") {
+    if sub_m.get_flag("output-pfm") {
         let hdr_file = ldr_file.with_extension("").with_extension("pfm");
         hdr_img
             .write_pfm_file(&hdr_file, ByteOrder::LittleEndian)
             .map_err(RenderErr::IoError)?;
-        if sub_m.contains_id("verbose") {
+        if sub_m.get_flag("verbose") {
             println!(
                 "{} {:?} has been written to disk",
                 "[info]".green(),
@@ -333,7 +333,7 @@ fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
     hdr_img
         .write_ldr_file(ldr_file, gamma)
         .map_err(RenderErr::IoError)?;
-    if sub_m.contains_id("verbose") {
+    if sub_m.get_flag("verbose") {
         println!(
             "{} {:?} has been written to disk",
             "[info]".green(),

@@ -203,7 +203,7 @@ pub fn build_cli() -> Command {
                 .arg(
                     Arg::new("num-of-rays")
                         .short('n')
-                        .long("--num-of-rays")
+                        .long("num-of-rays")
                         .value_name("NUM_OF_RAYS")
                         .default_value(NUM_OF_RAYS)
                         .number_of_values(1)
@@ -214,7 +214,7 @@ pub fn build_cli() -> Command {
                 .arg(
                     Arg::new("max-depth")
                         .short('m')
-                        .long("--max-depth")
+                        .long("max-depth")
                         .value_name("MAX_DEPTH")
                         .default_value(MAX_DEPTH)
                         .number_of_values(1)
@@ -224,7 +224,7 @@ pub fn build_cli() -> Command {
                 )
                 .arg(
                     Arg::new("init-state")
-                        .long("--init-state")
+                        .long("init-state")
                         .value_name("INIT_STATE")
                         .default_value(INIT_STATE)
                         .number_of_values(1)
@@ -235,7 +235,7 @@ pub fn build_cli() -> Command {
                 )
                 .arg(
                     Arg::new("init-seq")
-                        .long("--init-seq")
+                        .long("init-seq")
                         .value_name("INIT_SEQ")
                         .default_value(INIT_SEQ)
                         .number_of_values(1)
@@ -247,7 +247,7 @@ pub fn build_cli() -> Command {
                 )
                 .arg(
                     Arg::new("anti-aliasing")
-                        .long("--anti-aliasing")
+                        .long("anti-aliasing")
                         .value_name("ANTI_ALIASING")
                         .default_value(ANTI_ALIASING)
                         .number_of_values(1)
@@ -355,7 +355,7 @@ pub fn build_cli() -> Command {
                 .arg(
                     Arg::new("num-of-rays")
                         .short('n')
-                        .long("--num-of-rays")
+                        .long("num-of-rays")
                         .value_name("NUM_OF_RAYS")
                         .default_value(NUM_OF_RAYS)
                         .number_of_values(1)
@@ -366,7 +366,7 @@ pub fn build_cli() -> Command {
                 .arg(
                     Arg::new("max-depth")
                         .short('m')
-                        .long("--max-depth")
+                        .long("max-depth")
                         .value_name("MAX_DEPTH")
                         .default_value(MAX_DEPTH)
                         .number_of_values(1)
@@ -376,7 +376,7 @@ pub fn build_cli() -> Command {
                 )
                 .arg(
                     Arg::new("init-state")
-                        .long("--init-state")
+                        .long("init-state")
                         .value_name("INIT_STATE")
                         .default_value(INIT_STATE)
                         .number_of_values(1)
@@ -387,7 +387,7 @@ pub fn build_cli() -> Command {
                 )
                 .arg(
                     Arg::new("init-seq")
-                        .long("--init-seq")
+                        .long("init-seq")
                         .value_name("INIT_SEQ")
                         .default_value(INIT_SEQ)
                         .number_of_values(1)
@@ -399,7 +399,7 @@ pub fn build_cli() -> Command {
                 )
                 .arg(
                     Arg::new("anti-aliasing")
-                        .long("--anti-aliasing")
+                        .long("anti-aliasing")
                         .value_name("ANTI_ALIASING")
                         .default_value(ANTI_ALIASING)
                         .number_of_values(1)

@@ -52,7 +52,7 @@ const ANTI_ALIASING: &str = "1";
 
 /// Build a [`clap::Command`](https://docs.rs/clap/latest/clap/type.Command.html)
 /// for [`rustracer`](..) crate.
-pub fn build_cli() -> Command<'static> {
+pub fn build_cli() -> Command {
     let cli = Command::new(env!("CARGO_PKG_NAME"))
         .version(env!("CARGO_PKG_VERSION"))
         .about(env!("CARGO_PKG_DESCRIPTION"))

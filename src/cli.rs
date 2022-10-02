@@ -3,7 +3,7 @@
 //! Provides [`build_cli`] function with all cli
 //! desired subcommands and flags, using [`clap`](https://github.com/clap-rs/clap)
 //! library.
-use clap::{Arg, Command};
+use clap::{builder, Arg, Command};
 
 /// Default normalization factor.
 ///
@@ -190,7 +190,11 @@ pub fn build_cli() -> Command<'static> {
                         .value_name("ALGORITHM")
                         .default_value(ALGORITHM)
                         .number_of_values(1)
-                        .possible_values(["onoff", "flat", "pathtracer"])
+                        .value_parser(builder::PossibleValuesParser::new([
+                            "onoff",
+                            "flat",
+                            "pathtracer",
+                        ]))
                         .help("Rendering algorithm")
                         .long_help(
                             "Algorithm to use for render the scene: [onoff, flat, pathtracer]",
@@ -338,7 +342,11 @@ pub fn build_cli() -> Command<'static> {
                         .value_name("ALGORITHM")
                         .default_value(ALGORITHM)
                         .number_of_values(1)
-                        .possible_values(["onoff", "flat", "pathtracer"])
+                        .value_parser(builder::PossibleValuesParser::new([
+                            "onoff",
+                            "flat",
+                            "pathtracer",
+                        ]))
                         .help("Rendering algorithm")
                         .long_help(
                             "Algorithm to use for render the scene: [onoff, flat, pathtracer]",
@@ -410,7 +418,7 @@ pub fn build_cli() -> Command<'static> {
                 .arg(
                     Arg::new("SHELL")
                         .required(true)
-                        .possible_values(["bash", "fish", "zsh"])
+                        .value_parser(builder::PossibleValuesParser::new(["bash", "fish", "zsh"]))
                         .number_of_values(1)
                         .help("Shell to generate script for")
                         .long_help("Specify for which shell completions should be generated"),

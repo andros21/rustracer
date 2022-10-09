@@ -4,11 +4,13 @@
 # =========
 # update `README.md` console help output from `TEMPLATE.md`
 
+import os
 import subprocess
 
 from jinja2 import Template
 
 if __name__ == "__main__":
+    os.environ["COLUMNS"] = "150"
     rustracer = {
         "rustracer": subprocess.run(
             "target/debug/rustracer -h".split(), capture_output=True, encoding="utf8"

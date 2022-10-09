@@ -129,20 +129,18 @@ cargo install --root $PREFIX --version $VER rustracer
 <summary>click to show <strong>rustracer -h </strong></summary>
 
 ```console
-rustracer 1.0.1
 a multi-threaded raytracer in pure rust
 
-USAGE:
-    rustracer <SUBCOMMAND>
+Usage: rustracer <COMMAND>
 
-OPTIONS:
-    -h, --help       Print help information
-    -V, --version    Print version information
+Commands:
+  convert  Convert HDR (pfm) image to LDR (ff|png) image
+  demo     Render a demo scene (hard-coded in main)
+  render   Render a scene from file (yaml formatted)
 
-SUBCOMMANDS:
-    convert    Convert HDR (pfm) image to LDR (ff|png) image
-    demo       Render a demo scene (hard-coded in main)
-    render     Render a scene from file (yaml formatted)
+Options:
+  -h, --help     Print help information
+  -V, --version  Print version information
 
 ```
 </details>
@@ -162,22 +160,20 @@ Convert a pfm file to png:
 <summary>click to show <strong>rustracer-convert -h </strong></summary>
 
 ```console
-rustracer-convert 1.0.1
 Convert HDR (pfm) image to LDR (ff|png) image
 
-USAGE:
-    rustracer convert [OPTIONS] <HDR> <LDR>
+Usage: rustracer convert [OPTIONS] <HDR> <LDR>
 
-ARGS:
-    <HDR>    Input pfm image
-    <LDR>    Output image [possible formats: ff, png]
+Arguments:
+  <HDR>  Input pfm image
+  <LDR>  Output image [possible formats: ff, png]
 
-OPTIONS:
-    -f, --factor <FACTOR>    Normalization factor [default: 1.0]
-    -g, --gamma <GAMMA>      Gamma parameter [default: 1.0]
-    -h, --help               Print help information
-    -v, --verbose            Print stdout information
-    -V, --version            Print version information
+Options:
+  -v, --verbose          Print stdout information
+  -f, --factor <FACTOR>  Normalization factor [default: 1.0]
+  -g, --gamma <GAMMA>    Gamma parameter [default: 1.0]
+  -h, --help             Print help information (use `--help` for more detail)
+  -V, --version          Print version information
 
 ```
 </details>
@@ -214,63 +210,30 @@ demo scene 360 degree (see [`makefile`](https://github.com/andros21/rustracer/bl
 <summary>click to show <strong>rustracer-demo -h </strong></summary>
 
 ```console
-rustracer-demo 1.0.1
 Render a demo scene (hard-coded in main)
 
-USAGE:
-    rustracer demo [OPTIONS] <OUTPUT>
+Usage: rustracer demo [OPTIONS] <OUTPUT>
 
-ARGS:
-    <OUTPUT>    Output image [possible formats: ff, png]
+Arguments:
+  <OUTPUT>  Output image [possible formats: ff, png]
 
-OPTIONS:
-    -a, --algorithm <ALGORITHM>
-            Rendering algorithm [default: pathtracer] [possible values: onoff, flat, pathtracer]
-
-        --angle-deg <ANGLE_DEG>
-            View angle (in degrees) [default: 0.0]
-
-        --anti-aliasing <ANTI_ALIASING>
-            Anti-aliasing level [default: 1]
-
-    -f, --factor <FACTOR>
-            Normalization factor [default: 1.0]
-
-    -g, --gamma <GAMMA>
-            Gamma parameter [default: 1.0]
-
-    -h, --help
-            Print help information
-
-        --height <HEIGHT>
-            Image height [default: 480]
-
-        --init-seq <INIT_SEQ>
-            Identifier of the random sequence (positive number) [default: 54]
-
-        --init-state <INIT_STATE>
-            Initial random seed (positive number) [default: 42]
-
-    -m, --max-depth <MAX_DEPTH>
-            Maximum depth [default: 3]
-
-    -n, --num-of-rays <NUM_OF_RAYS>
-            Number of rays [default: 10]
-
-        --orthogonal
-            Use orthogonal camera instead of perspective camera
-
-        --output-pfm
-            Output also hdr image
-
-    -v, --verbose
-            Print stdout information
-
-    -V, --version
-            Print version information
-
-        --width <WIDTH>
-            Image width [default: 640]
+Options:
+  -v, --verbose                        Print stdout information
+      --output-pfm                     Output also hdr image
+      --orthogonal                     Use orthogonal camera instead of perspective camera
+      --width <WIDTH>                  Image width [default: 640]
+      --height <HEIGHT>                Image height [default: 480]
+      --angle-deg <ANGLE_DEG>          View angle (in degrees) [default: 0.0]
+  -f, --factor <FACTOR>                Normalization factor [default: 1.0]
+  -g, --gamma <GAMMA>                  Gamma parameter [default: 1.0]
+  -a, --algorithm <ALGORITHM>          Rendering algorithm [default: pathtracer] [possible values: onoff, flat, pathtracer]
+  -n, --num-of-rays <NUM_OF_RAYS>      Number of rays [default: 10]
+  -m, --max-depth <MAX_DEPTH>          Maximum depth [default: 3]
+      --init-state <INIT_STATE>        Initial random seed (positive number) [default: 42]
+      --init-seq <INIT_SEQ>            Identifier of the random sequence (positive number) [default: 54]
+      --anti-aliasing <ANTI_ALIASING>  Anti-aliasing level [default: 1]
+  -h, --help                           Print help information (use `--help` for more detail)
+  -V, --version                        Print version information
 
 ```
 </details>
@@ -318,61 +281,30 @@ and the generated `flake.yml` can be simple parsed
 <summary>click to show <strong>rustracer-render -h </strong></summary>
 
 ```console
-rustracer-render 1.0.1
 Render a scene from file (yaml formatted)
 
-USAGE:
-    rustracer render [OPTIONS] <INPUT> <OUTPUT>
+Usage: rustracer render [OPTIONS] <INPUT> <OUTPUT>
 
-ARGS:
-    <INPUT>     Input scene file
-    <OUTPUT>    Output image [possible formats: ff, png]
+Arguments:
+  <INPUT>   Input scene file
+  <OUTPUT>  Output image [possible formats: ff, png]
 
-OPTIONS:
-    -a, --algorithm <ALGORITHM>
-            Rendering algorithm [default: pathtracer] [possible values: onoff, flat, pathtracer]
-
-        --angle-deg <ANGLE_DEG>
-            View angle (in degrees) [default: 0.0]
-
-        --anti-aliasing <ANTI_ALIASING>
-            Anti-aliasing level [default: 1]
-
-    -f, --factor <FACTOR>
-            Normalization factor [default: 1.0]
-
-    -g, --gamma <GAMMA>
-            Gamma parameter [default: 1.0]
-
-    -h, --help
-            Print help information
-
-        --height <HEIGHT>
-            Image height [default: 480]
-
-        --init-seq <INIT_SEQ>
-            Identifier of the random sequence (positive number) [default: 54]
-
-        --init-state <INIT_STATE>
-            Initial random seed (positive number) [default: 42]
-
-    -m, --max-depth <MAX_DEPTH>
-            Maximum depth [default: 3]
-
-    -n, --num-of-rays <NUM_OF_RAYS>
-            Number of rays [default: 10]
-
-        --output-pfm
-            Output also hdr image
-
-    -v, --verbose
-            Print stdout information
-
-    -V, --version
-            Print version information
-
-        --width <WIDTH>
-            Image width [default: 640]
+Options:
+  -v, --verbose                        Print stdout information
+      --output-pfm                     Output also hdr image
+      --width <WIDTH>                  Image width [default: 640]
+      --height <HEIGHT>                Image height [default: 480]
+      --angle-deg <ANGLE_DEG>          View angle (in degrees) [default: 0.0]
+  -f, --factor <FACTOR>                Normalization factor [default: 1.0]
+  -g, --gamma <GAMMA>                  Gamma parameter [default: 1.0]
+  -a, --algorithm <ALGORITHM>          Rendering algorithm [default: pathtracer] [possible values: onoff, flat, pathtracer]
+  -n, --num-of-rays <NUM_OF_RAYS>      Number of rays [default: 10]
+  -m, --max-depth <MAX_DEPTH>          Maximum depth [default: 3]
+      --init-state <INIT_STATE>        Initial random seed (positive number) [default: 42]
+      --init-seq <INIT_SEQ>            Identifier of the random sequence (positive number) [default: 54]
+      --anti-aliasing <ANTI_ALIASING>  Anti-aliasing level [default: 1]
+  -h, --help                           Print help information (use `--help` for more detail)
+  -V, --version                        Print version information
 
 ```
 </details>
@@ -398,19 +330,17 @@ Simple generate completion script for `bash` shell (same for `fish` and `zsh`):
 <summary>click to show <strong>rustracer-completion -h </strong></summary>
 
 ```console
-rustracer-completion 1.0.1
 Generate shell completion script
 
-USAGE:
-    rustracer completion [OPTIONS] <SHELL>
+Usage: rustracer completion [OPTIONS] <SHELL>
 
-ARGS:
-    <SHELL>    Shell to generate script for [possible values: bash, fish, zsh]
+Arguments:
+  <SHELL>  Shell to generate script for [possible values: bash, fish, zsh]
 
-OPTIONS:
-    -h, --help               Print help information
-    -o, --output <OUTPUT>    Specify output script file
-    -V, --version            Print version information
+Options:
+  -o, --output <OUTPUT>  Specify output script file
+  -h, --help             Print help information (use `--help` for more detail)
+  -V, --version          Print version information
 
 ```
 </details>

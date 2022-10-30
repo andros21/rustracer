@@ -3,6 +3,5 @@
 
 # ci deps
 # -------
-Jinja2==3.1.2
 black==22.8.0
 flake8==5.0.2

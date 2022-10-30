@@ -6,8 +6,7 @@
 
 import os
 import subprocess
-
-from jinja2 import Template
+from string import Template
 
 if __name__ == "__main__":
     os.environ["COLUMNS"] = "150"
@@ -40,4 +39,4 @@ if __name__ == "__main__":
     with open("TEMPLATE.md") as ifs:
         template = Template(ifs.read())
     with open("README.md", "w") as ofs:
-        ofs.write(template.render(rustracer) + "\n")
+        ofs.write(template.substitute(rustracer))

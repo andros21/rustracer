@@ -102,12 +102,12 @@ Install from source code, a template could be:
 ```bash
 ## Install the latest version using `Cargo.lock` in `~/.rustracer/bin`
 export PREFIX='~/.rustracer/'
-cargo install --locked --root $PREFIX rustracer
+cargo install --locked --root $$PREFIX rustracer
 
 ## Install the `0.4.0` version in `~/.rustracer/bin`
 export VER='0.4.0'
 export PREFIX='~/.rustracer/'
-cargo install --root $PREFIX --version $VER rustracer
+cargo install --root $$PREFIX --version $$VER rustracer
 ```
 </details>
 
@@ -129,7 +129,7 @@ cargo install --root $PREFIX --version $VER rustracer
 <summary>click to show <strong>rustracer -h </strong></summary>
 
 ```console
-{{ rustracer }}
+$rustracer
 ```
 </details>
 
@@ -148,7 +148,7 @@ Convert a pfm file to png:
 <summary>click to show <strong>rustracer-convert -h </strong></summary>
 
 ```console
-{{ rustracer_convert }}
+$rustracer_convert
 ```
 </details>
 
@@ -184,7 +184,7 @@ demo scene 360 degree (see [`makefile`](https://github.com/andros21/rustracer/bl
 <summary>click to show <strong>rustracer-demo -h </strong></summary>
 
 ```console
-{{ rustracer_demo }}
+$rustracer_demo
 ```
 </details>
 
@@ -231,7 +231,7 @@ and the generated `flake.yml` can be simple parsed
 <summary>click to show <strong>rustracer-render -h </strong></summary>
 
 ```console
-{{ rustracer_render }}
+$rustracer_render
 ```
 </details>
 
@@ -256,7 +256,7 @@ Simple generate completion script for `bash` shell (same for `fish` and `zsh`):
 <summary>click to show <strong>rustracer-completion -h </strong></summary>
 
 ```console
-{{ rustracer_completion }}
+$rustracer_completion
 ```
 </details>
 

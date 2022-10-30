@@ -239,9 +239,6 @@ jobs:
       - name: cargo build
         run: |
           cargo build --locked
-      - name: setup python
-        run: |
-          python3 -m pip install --user -r .github/workflows/requirements.txt
       - name: update readme
         run: .github/workflows/md.py
       - name: commit readme

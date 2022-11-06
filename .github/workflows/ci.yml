@@ -23,7 +23,7 @@ jobs:
         run: |
           REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
           echo "Repo: ${REPO_NAME}"
-          echo "##[set-output name=repo;]${REPO_NAME}"
+          echo "repo=${REPO_NAME}" >> $GITHUB_OUTPUT
   changes:
     name: filter changes
     runs-on: ubuntu-latest

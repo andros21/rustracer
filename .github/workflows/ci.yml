@@ -152,7 +152,7 @@ jobs:
           toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: install cargo-llvm-cov
-        uses: taiki-e/install-action@c971aa51fbb1fb1a63dfc70b48226e9210bc36ac
+        uses: taiki-e/install-action@8c5018c59c71463cd8fb3300b316158dc163228a
         with:
           tool: cargo-llvm-cov
       - name: cargo build

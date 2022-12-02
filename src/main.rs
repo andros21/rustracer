@@ -376,7 +376,7 @@ fn completion(sub_m: &clap::ArgMatches) -> Result<(), CompletionErr> {
         match io::stdin().read_line(&mut answer) {
             Ok(n) => {
                 if n == 1 || (n == 2 && answer.eq_ignore_ascii_case("y\n")) {
-                    create_dir_all(&path_buf.parent().unwrap()).map_err(|e| {
+                    create_dir_all(path_buf.parent().unwrap()).map_err(|e| {
                         CompletionErr::WriteCompletionFailure(
                             e,
                             String::from(

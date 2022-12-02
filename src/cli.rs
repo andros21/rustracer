@@ -53,7 +53,7 @@ const ANTI_ALIASING: &str = "1";
 /// Build a [`clap::Command`](https://docs.rs/clap/latest/clap/type.Command.html)
 /// for [`rustracer`](..) crate.
 pub fn build_cli() -> Command {
-    let cli = Command::new(env!("CARGO_PKG_NAME"))
+    Command::new(env!("CARGO_PKG_NAME"))
         .version(env!("CARGO_PKG_VERSION"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .arg_required_else_help(true)
@@ -439,9 +439,7 @@ pub fn build_cli() -> Command {
                         .help("Specify output script file")
                         .long_help("Specify an output file for shell completions"),
                 ),
-        );
-
-    cli
+        )
 }
 
 /// Inherits some useful cli parameters.

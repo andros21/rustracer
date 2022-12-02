@@ -284,7 +284,7 @@ impl HdrImage {
     ///
     /// In case of errors, `std::result::Result` is an [`HdrImageErr`] error variant.
     pub fn write_ldr_file(&self, path: &Path, gamma: f32) -> Result<(), HdrImageErr> {
-        let format = ImageFormat::from_path(&path).map_err(HdrImageErr::LdrFileWriteFailure)?;
+        let format = ImageFormat::from_path(path).map_err(HdrImageErr::LdrFileWriteFailure)?;
         match format {
             ImageFormat::Farbfeld => {
                 let mut ldr_img = DynamicImage::new_rgb16(self.width, self.height).into_rgba16();

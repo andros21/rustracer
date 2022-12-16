@@ -9,13 +9,13 @@
   </a>
   <h3 style="border-bottom: 0px;">a multi-threaded raytracer in pure rust</h3>
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
-    <img src="https://img.shields.io/github/workflow/status/andros21/rustracer/CI?style=flat-square&label=ci&logo=github" alt="CI">
+    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/ci.yml?branch=master&style=flat-square&label=ci&logo=github" alt="CI">
   </a>
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/andros21/0e20cd331d0800e3299298a3868aab7a/raw/rustracer__master.json" alt="Coverage">
   </a>
   <a href="https://github.com/andros21/rustracer/actions/workflows/cd.yml">
-    <img src="https://img.shields.io/github/workflow/status/andros21/rustracer/CD?style=flat-square&label=cd&logo=github" alt="CD">
+    <img src="https://github.com/andros21/rustracer/actions/workflows/cd.yml/badge.svg" alt="CD">
   </a>
   <br>
   <a href="https://github.com/andros21/rustracer/releases">

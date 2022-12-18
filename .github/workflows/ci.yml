@@ -36,7 +36,7 @@ jobs:
       rust: ${{ steps.filter.outputs.rust }}
     steps:
       - name: checkout project
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
       - uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
         id: filter
         with:
@@ -64,7 +64,7 @@ jobs:
       contents: read
     steps:
       - name: checkout project
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
       - name: check cache
         uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7
         id: cache
@@ -101,7 +101,7 @@ jobs:
       contents: read
     steps:
       - name: checkout project
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
       - name: setup python
         run: |
           python3 -m pip install --user -r .github/workflows/requirements.txt
@@ -119,7 +119,7 @@ jobs:
       contents: read
     steps:
       - name: checkout project
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
       - name: shellcheck bash
         run: |
           shopt -s globstar
@@ -135,7 +135,7 @@ jobs:
       coverage: ${{ steps.coverage.outputs.coverage }}
     steps:
       - name: checkout project
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
       - name: check cache
         uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7
         id: cache
@@ -220,7 +220,7 @@ jobs:
       contents: write
     steps:
       - name: checkout project
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
       - name: check cache
         uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7
         id: cache

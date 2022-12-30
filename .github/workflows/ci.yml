@@ -169,7 +169,7 @@ jobs:
           COVERAGE=$(cat coverage.json \
              | jq -r ".data[0] | .totals | .lines | .percent" \
              | awk '{print int($0)}')
-          echo "##[set-output name=coverage;]${COVERAGE}"
+          echo "coverage=${COVERAGE}" >> $GITHUB_OUTPUT
       - name: cargo test coverage (xml)
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
         run: |

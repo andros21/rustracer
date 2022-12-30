@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/andros21/0e20cd331d0800e3299298a3868aab7a/raw/rustracer__master.json" alt="Coverage">
   </a>
   <a href="https://github.com/andros21/rustracer/actions/workflows/cd.yml">
-    <img src="https://github.com/andros21/rustracer/actions/workflows/cd.yml/badge.svg" alt="CD">
+    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/cd.yml?style=flat-square&label=cd&logo=github" alt="CD">
   </a>
   <br>
   <a href="https://github.com/andros21/rustracer/releases">
@@ -186,9 +186,7 @@ Rendering demo scene:
 
 <div align="center">
    <h5>
-      <code>
-         rustracer demo --width 1920 --height 1080 --anti-aliasing 3 demo.png
-      </code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
+      <code>rustracer demo --width 1920 --height 1080 --anti-aliasing 3 demo.png</code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
    </h5>
    <img src="https://github.com/andros21/rustracer/raw/master/examples/demo.png" width="500" alt="rustracer-demo-png"/>
    <p><sub><strong>demo.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~35s

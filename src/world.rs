@@ -61,7 +61,7 @@ mod test {
     #[test]
     fn test_world() {
         let mut world = World::default();
-        world.add(Box::new(Sphere::default()));
+        world.add(Box::<Sphere>::default());
         world.add(Box::new(Sphere::new(
             translation(E1 * 4.) * scaling(Vector::from((2., 2., 2.))),
             Material {

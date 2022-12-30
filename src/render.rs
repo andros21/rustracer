@@ -268,7 +268,7 @@ mod test {
             ..Default::default()
         };
         let mut world = World::default();
-        world.add(Box::new(Sphere::default()));
+        world.add(Box::<Sphere>::default());
         let onoff_renderer = Renderer::OnOff(OnOffRenderer::new(&world, BLACK, WHITE));
         assert!(onoff_renderer.solve(ray1, &mut pcg).is_close(BLACK));
         assert!(onoff_renderer.solve(ray2, &mut pcg).is_close(WHITE))

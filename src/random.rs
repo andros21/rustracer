@@ -39,7 +39,7 @@ impl Pcg {
         self.state = old_state.wrapping_mul(6364136223846793005) + self.inc;
         let xor_shifted = (((old_state >> 18) ^ old_state) >> 27) as u32;
         let rot = old_state >> 59;
-        (xor_shifted >> rot) as u32 | (xor_shifted << ((-(rot as i64)) & 31))
+        (xor_shifted >> rot) | (xor_shifted << ((-(rot as i64)) & 31))
     }
 
     /// Generates a float random number.

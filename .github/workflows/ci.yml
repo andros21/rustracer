@@ -169,18 +169,27 @@ jobs:
           COVERAGE=$(cat coverage.json \
              | jq -r ".data[0] | .totals | .lines | .percent" \
              | awk '{print int($0)}')
-          echo "##[set-output name=coverage;]${COVERAGE}"
-      - name: cargo test coverage (lcov)
+          echo "coverage=${COVERAGE}" >> $GITHUB_OUTPUT
+      - name: cargo test coverage (xml)
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
         run: |
-          cargo llvm-cov --locked --tests --lcov --output-path coverage.lcov.info
-      - name: lcov pr report
+          cargo llvm-cov --locked --tests --cobertura --output-path coverage.xml
+      - name: cov summary md
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
-        uses: romeovs/lcov-reporter-action@dda1c9b1fa1622b225e9acd87a248751dbcc6ada
+        uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95
         with:
-          title: Coverage Report
-          filter-changed-files: true
-          lcov-file: coverage.lcov.info
+          filename: coverage.xml
+          format: 'markdown'
+          hide_complexity: true
+          hide_branch_rate: true
+          output: both
+      - name: cov pr comment
+        if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
+        uses: marocchino/sticky-pull-request-comment@fcf6fe9e4a0409cd9316a5011435be0f3327f1e1
+        with:
+          message: Coverage Report
+          recreate: true
+          path: code-coverage-results.md
   badge:
     name: coverage badge
     needs:

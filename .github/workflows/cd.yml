@@ -15,7 +15,7 @@ jobs:
       contents: write
     steps:
       - name: checkout project
-        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
       - name: check cargo cache
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d
         id: rust-cache
@@ -64,7 +64,7 @@ jobs:
       url: https://crates.io/crates/rustracer
     steps:
       - name: checkout project
-        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
       - name: check cache
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d
         id: cache
@@ -94,7 +94,7 @@ jobs:
       - cratesio
     steps:
       - name: checkout project
-        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
       - name: check cache
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d
         id: cache

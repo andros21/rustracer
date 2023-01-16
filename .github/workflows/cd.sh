@@ -5,7 +5,7 @@
 # `rustracer` continuos deployment workflow (`cd.yml`) helper script,
 # it assemble, checksum and (co)sign artifacts for releases
 
-set -e
+set -xe
 
 PLATFORMS=("x86_64-unknown-linux-gnu" "x86_64-unknown-linux-musl")
 BASENAME="rustracer-${GITHUB_REF_NAME}"
@@ -27,8 +27,8 @@ _cosign() {
    for PLATFORM in "${PLATFORMS[@]}"
    do
       cosign sign-blob "${BASENAME}-${PLATFORM}.tar.gz" \
-         --output-signature "${BASENAME}-${PLATFORM}-keyless.sig" \
-         --output-certificate "${BASENAME}-${PLATFORM}-keyless.pem"
+         --output-signature "${BASENAME}-${PLATFORM}.tar.gz-keyless.sig" \
+         --output-certificate "${BASENAME}-${PLATFORM}.tar.gz-keyless.pem"
    done
    cosign sign-blob "${CHECKSUM}" \
       --output-signature "${CHECKSUM}-keyless.sig" \

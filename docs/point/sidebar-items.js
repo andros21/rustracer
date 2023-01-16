@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Point","3D Point struct."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Point","3D Point struct."]]};

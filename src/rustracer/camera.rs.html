@@ -1,9 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/camera.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>camera.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/camera.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>camera.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -206,209 +201,208 @@
 <span id="201">201</span>
 <span id="202">202</span>
 <span id="203">203</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Camera module.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Provides two camera structs:</span>
-<span class="doccomment">//!  * [`OrthogonalCamera`](struct@OrthogonalCamera);</span>
-<span class="doccomment">//!  * [`PerspectiveCamera`](struct@PerspectiveCamera).\</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! That implement [`FireRay`] trait.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! And [`Camera`] enum that wrap them.</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">point::Point</span>, <span class="ident">ray::Ray</span>, <span class="ident">transformation::Transformation</span>, <span class="ident">vector::Vector</span>};
+</pre><pre class="rust"><code><span class="doccomment">//! Camera module.
+//!
+//! Provides two camera structs:
+//!  * [`OrthogonalCamera`](struct@OrthogonalCamera);
+//!  * [`PerspectiveCamera`](struct@PerspectiveCamera).\
+//!
+//! That implement [`FireRay`] trait.
+//!
+//! And [`Camera`] enum that wrap them.
+</span><span class="kw">use crate</span>::{point::Point, ray::Ray, transformation::Transformation, vector::Vector};
 
-<span class="doccomment">/// Trait for fire a [`Ray`] through a [`camera`](.).</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// You should redefine it in derived classes.\</span>
-<span class="doccomment">/// Fire a ray that goes through the screen at the position `(u, v)`.\</span>
-<span class="doccomment">/// The exact meaning of these coordinates depend on the projection used by the camera.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FireRay</span> {
-    <span class="kw">fn</span> <span class="ident">fire_ray</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">u</span>: <span class="ident">f32</span>, <span class="ident">v</span>: <span class="ident">f32</span>) -&gt; <span class="ident">Ray</span>;
+<span class="doccomment">/// Trait for fire a [`Ray`] through a [`camera`](.).
+///
+/// You should redefine it in derived classes.\
+/// Fire a ray that goes through the screen at the position `(u, v)`.\
+/// The exact meaning of these coordinates depend on the projection used by the camera.
+</span><span class="kw">pub trait </span>FireRay {
+    <span class="kw">fn </span>fire_ray(<span class="kw-2">&amp;</span><span class="self">self</span>, u: f32, v: f32) -&gt; Ray;
 }
 
-<span class="doccomment">/// A camera implementing an orthogonal 3D -&gt; 2D projection.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This class implements an observer seeing the world through an orthogonal projection.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OrthogonalCamera</span> {
-    <span class="doccomment">/// Aspect Ratio.</span>
-    <span class="ident">aspect_ratio</span>: <span class="ident">f32</span>,
-    <span class="doccomment">/// [`Transformation`] to apply to [`Ray`].</span>
-    <span class="ident">tranformation</span>: <span class="ident">Transformation</span>,
+<span class="doccomment">/// A camera implementing an orthogonal 3D -&gt; 2D projection.
+///
+/// This class implements an observer seeing the world through an orthogonal projection.
+</span><span class="attribute">#[derive(Clone, Copy, Debug, Default, PartialEq)]
+</span><span class="kw">pub struct </span>OrthogonalCamera {
+    <span class="doccomment">/// Aspect Ratio.
+    </span>aspect_ratio: f32,
+    <span class="doccomment">/// [`Transformation`] to apply to [`Ray`].
+    </span>tranformation: Transformation,
 }
 
-<span class="kw">impl</span> <span class="ident">OrthogonalCamera</span> {
-    <span class="doccomment">/// Create a new orthographic camera.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The parameter `aspect_ratio` defines how larger than the height is the image.\</span>
-    <span class="doccomment">/// For full screen images, you should probably set `aspect_ratio` to `16/9`,\</span>
-    <span class="doccomment">/// as this is the most used aspect ratio used in modern monitors.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The `transformation` parameter is an instance of the [`Transformation`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">aspect_ratio</span>: <span class="ident">f32</span>, <span class="ident">tranformation</span>: <span class="ident">Transformation</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">aspect_ratio</span>,
-            <span class="ident">tranformation</span>,
+<span class="kw">impl </span>OrthogonalCamera {
+    <span class="doccomment">/// Create a new orthographic camera.
+    ///
+    /// The parameter `aspect_ratio` defines how larger than the height is the image.\
+    /// For full screen images, you should probably set `aspect_ratio` to `16/9`,\
+    /// as this is the most used aspect ratio used in modern monitors.
+    ///
+    /// The `transformation` parameter is an instance of the [`Transformation`].
+    </span><span class="kw">pub fn </span>new(aspect_ratio: f32, tranformation: Transformation) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            aspect_ratio,
+            tranformation,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FireRay</span> <span class="kw">for</span> <span class="ident">OrthogonalCamera</span> {
-    <span class="doccomment">/// Shoot a [`Ray`] through the camera&#39;s screen.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The coordinates `(u, v)` specify the point on the screen where the ray crosses it.\</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Coordinates:</span>
-    <span class="doccomment">///  * `(0, 0)` represent the bottom-left corner</span>
-    <span class="doccomment">///  * `(0, 1)` the top-left corner</span>
-    <span class="doccomment">///  * `(1, 0)` the bottom-right corner</span>
-    <span class="doccomment">///  * `(1, 1)` the top-right corner</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">///  (0, 1)                          (1, 1)</span>
-    <span class="doccomment">///     +------------------------------+</span>
-    <span class="doccomment">///     |                              |</span>
-    <span class="doccomment">///     |                              |</span>
-    <span class="doccomment">///     |                              |</span>
-    <span class="doccomment">///     +------------------------------+</span>
-    <span class="doccomment">///  (0, 0)                          (1, 0)</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">fire_ray</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">u</span>: <span class="ident">f32</span>, <span class="ident">v</span>: <span class="ident">f32</span>) -&gt; <span class="ident">Ray</span> {
-        <span class="self">self</span>.<span class="ident">tranformation</span>
-            <span class="op">*</span> <span class="ident">Ray</span> {
-                <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">1.0</span>, (<span class="number">1.0</span> <span class="op">-</span> <span class="number">2.0</span> <span class="op">*</span> <span class="ident">u</span>) <span class="op">*</span> <span class="self">self</span>.<span class="ident">aspect_ratio</span>, <span class="number">2.0</span> <span class="op">*</span> <span class="ident">v</span> <span class="op">-</span> <span class="number">1.0</span>)),
-                <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)),
-                ..<span class="ident">Default::default</span>()
+<span class="kw">impl </span>FireRay <span class="kw">for </span>OrthogonalCamera {
+    <span class="doccomment">/// Shoot a [`Ray`] through the camera&#39;s screen.
+    ///
+    /// The coordinates `(u, v)` specify the point on the screen where the ray crosses it.\
+    ///
+    /// Coordinates:
+    ///  * `(0, 0)` represent the bottom-left corner
+    ///  * `(0, 1)` the top-left corner
+    ///  * `(1, 0)` the bottom-right corner
+    ///  * `(1, 1)` the top-right corner
+    ///
+    /// ```text
+    ///  (0, 1)                          (1, 1)
+    ///     +------------------------------+
+    ///     |                              |
+    ///     |                              |
+    ///     |                              |
+    ///     +------------------------------+
+    ///  (0, 0)                          (1, 0)
+    /// ```
+    </span><span class="kw">fn </span>fire_ray(<span class="kw-2">&amp;</span><span class="self">self</span>, u: f32, v: f32) -&gt; Ray {
+        <span class="self">self</span>.tranformation
+            * Ray {
+                origin: Point::from((-<span class="number">1.0</span>, (<span class="number">1.0 </span>- <span class="number">2.0 </span>* u) * <span class="self">self</span>.aspect_ratio, <span class="number">2.0 </span>* v - <span class="number">1.0</span>)),
+                dir: Vector::from((<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)),
+                ..Default::default()
             }
     }
 }
 
-<span class="doccomment">/// A camera implementing a perspective 3D -&gt; 2D projection.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This class implements an observer seeing the world through a perspective projection.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PerspectiveCamera</span> {
-    <span class="doccomment">/// Screen distance.</span>
-    <span class="ident">distance</span>: <span class="ident">f32</span>,
-    <span class="doccomment">/// Aspect ratio.</span>
-    <span class="ident">aspect_ratio</span>: <span class="ident">f32</span>,
-    <span class="doccomment">/// [`Transformation`] to apply to [`Ray`].</span>
-    <span class="ident">transformation</span>: <span class="ident">Transformation</span>,
+<span class="doccomment">/// A camera implementing a perspective 3D -&gt; 2D projection.
+///
+/// This class implements an observer seeing the world through a perspective projection.
+</span><span class="attribute">#[derive(Clone, Copy, Debug, Default, PartialEq)]
+</span><span class="kw">pub struct </span>PerspectiveCamera {
+    <span class="doccomment">/// Screen distance.
+    </span>distance: f32,
+    <span class="doccomment">/// Aspect ratio.
+    </span>aspect_ratio: f32,
+    <span class="doccomment">/// [`Transformation`] to apply to [`Ray`].
+    </span>transformation: Transformation,
 }
 
-<span class="kw">impl</span> <span class="ident">PerspectiveCamera</span> {
-    <span class="doccomment">/// Create a new perspective camera.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The parameter `distance` tells how much far from the eye\</span>
-    <span class="doccomment">/// of the observer is the screen, and it influences the so-called «aperture»\</span>
-    <span class="doccomment">/// (the field-of-view angle along the horizontal direction).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The parameter `aspect_ratio` defines how larger than the height is the image.\</span>
-    <span class="doccomment">/// For fullscreen images, you should probably set `aspect_ratio` to `16/9`,\</span>
-    <span class="doccomment">/// as this is the most used aspect ratio used in modern monitors.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The `transformation` parameter is an instance of the [`Transformation`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">distance</span>: <span class="ident">f32</span>, <span class="ident">aspect_ratio</span>: <span class="ident">f32</span>, <span class="ident">transformation</span>: <span class="ident">Transformation</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">distance</span>,
-            <span class="ident">aspect_ratio</span>,
-            <span class="ident">transformation</span>,
+<span class="kw">impl </span>PerspectiveCamera {
+    <span class="doccomment">/// Create a new perspective camera.
+    ///
+    /// The parameter `distance` tells how much far from the eye\
+    /// of the observer is the screen, and it influences the so-called «aperture»\
+    /// (the field-of-view angle along the horizontal direction).
+    ///
+    /// The parameter `aspect_ratio` defines how larger than the height is the image.\
+    /// For fullscreen images, you should probably set `aspect_ratio` to `16/9`,\
+    /// as this is the most used aspect ratio used in modern monitors.
+    ///
+    /// The `transformation` parameter is an instance of the [`Transformation`].
+    </span><span class="kw">pub fn </span>new(distance: f32, aspect_ratio: f32, transformation: Transformation) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            distance,
+            aspect_ratio,
+            transformation,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FireRay</span> <span class="kw">for</span> <span class="ident">PerspectiveCamera</span> {
-    <span class="doccomment">/// Shoot a [`Ray`] through the camera&#39;s screen.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The coordinates `(u, v)` specify the point on the screen where the ray crosses it.\</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Coordinates:</span>
-    <span class="doccomment">///  * `(0, 0)` represent the bottom-left corner</span>
-    <span class="doccomment">///  * `(0, 1)` the top-left corner</span>
-    <span class="doccomment">///  * `(1, 0)` the bottom-right corner</span>
-    <span class="doccomment">///  * `(1, 1)` the top-right corner</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">///  (0, 1)                          (1, 1)</span>
-    <span class="doccomment">///     +------------------------------+</span>
-    <span class="doccomment">///     |                              |</span>
-    <span class="doccomment">///     |                              |</span>
-    <span class="doccomment">///     |                              |</span>
-    <span class="doccomment">///     +------------------------------+</span>
-    <span class="doccomment">///  (0, 0)                          (1, 0)</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">fire_ray</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">u</span>: <span class="ident">f32</span>, <span class="ident">v</span>: <span class="ident">f32</span>) -&gt; <span class="ident">Ray</span> {
-        <span class="self">self</span>.<span class="ident">transformation</span>
-            <span class="op">*</span> <span class="ident">Ray</span> {
-                <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="self">self</span>.<span class="ident">distance</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)),
-                <span class="ident">dir</span>: <span class="ident">Vector::from</span>((
-                    <span class="self">self</span>.<span class="ident">distance</span>,
-                    (<span class="number">1.0</span> <span class="op">-</span> <span class="number">2.0</span> <span class="op">*</span> <span class="ident">u</span>) <span class="op">*</span> <span class="self">self</span>.<span class="ident">aspect_ratio</span>,
-                    <span class="number">2.0</span> <span class="op">*</span> <span class="ident">v</span> <span class="op">-</span> <span class="number">1.0</span>,
+<span class="kw">impl </span>FireRay <span class="kw">for </span>PerspectiveCamera {
+    <span class="doccomment">/// Shoot a [`Ray`] through the camera&#39;s screen.
+    ///
+    /// The coordinates `(u, v)` specify the point on the screen where the ray crosses it.\
+    ///
+    /// Coordinates:
+    ///  * `(0, 0)` represent the bottom-left corner
+    ///  * `(0, 1)` the top-left corner
+    ///  * `(1, 0)` the bottom-right corner
+    ///  * `(1, 1)` the top-right corner
+    ///
+    /// ```text
+    ///  (0, 1)                          (1, 1)
+    ///     +------------------------------+
+    ///     |                              |
+    ///     |                              |
+    ///     |                              |
+    ///     +------------------------------+
+    ///  (0, 0)                          (1, 0)
+    /// ```
+    </span><span class="kw">fn </span>fire_ray(<span class="kw-2">&amp;</span><span class="self">self</span>, u: f32, v: f32) -&gt; Ray {
+        <span class="self">self</span>.transformation
+            * Ray {
+                origin: Point::from((-<span class="self">self</span>.distance, <span class="number">0.0</span>, <span class="number">0.0</span>)),
+                dir: Vector::from((
+                    <span class="self">self</span>.distance,
+                    (<span class="number">1.0 </span>- <span class="number">2.0 </span>* u) * <span class="self">self</span>.aspect_ratio,
+                    <span class="number">2.0 </span>* v - <span class="number">1.0</span>,
                 )),
-                ..<span class="ident">Default::default</span>()
+                ..Default::default()
             }
     }
 }
 
-<span class="doccomment">/// Enum of cameras.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Camera</span> {
-    <span class="ident">Orthogonal</span>(<span class="ident">OrthogonalCamera</span>),
-    <span class="ident">Perspective</span>(<span class="ident">PerspectiveCamera</span>),
+<span class="doccomment">/// Enum of cameras.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub enum </span>Camera {
+    Orthogonal(OrthogonalCamera),
+    Perspective(PerspectiveCamera),
 }
 
-<span class="kw">impl</span> <span class="ident">FireRay</span> <span class="kw">for</span> <span class="ident">Camera</span> {
-    <span class="doccomment">/// Shoot a [`Ray`] through the camera&#39;s screen as the variant that [`Camera`] contain will do.</span>
-    <span class="kw">fn</span> <span class="ident">fire_ray</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">u</span>: <span class="ident">f32</span>, <span class="ident">v</span>: <span class="ident">f32</span>) -&gt; <span class="ident">Ray</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Camera::Orthogonal</span>(<span class="ident">orthogonal</span>) =&gt; <span class="ident">orthogonal</span>.<span class="ident">fire_ray</span>(<span class="ident">u</span>, <span class="ident">v</span>),
-            <span class="ident">Camera::Perspective</span>(<span class="ident">perspective</span>) =&gt; <span class="ident">perspective</span>.<span class="ident">fire_ray</span>(<span class="ident">u</span>, <span class="ident">v</span>),
+<span class="kw">impl </span>FireRay <span class="kw">for </span>Camera {
+    <span class="doccomment">/// Shoot a [`Ray`] through the camera&#39;s screen as the variant that [`Camera`] contain will do.
+    </span><span class="kw">fn </span>fire_ray(<span class="kw-2">&amp;</span><span class="self">self</span>, u: f32, v: f32) -&gt; Ray {
+        <span class="kw">match </span><span class="self">self </span>{
+            Camera::Orthogonal(orthogonal) =&gt; orthogonal.fire_ray(u, v),
+            Camera::Perspective(perspective) =&gt; perspective.fire_ray(u, v),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::misc::IsClose</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::misc::IsClose;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_orthogonal_camera</span>() {
-        <span class="kw">let</span> <span class="ident">cam</span> <span class="op">=</span> <span class="ident">Camera::Orthogonal</span>(<span class="ident">OrthogonalCamera::new</span>(<span class="number">2.0</span>, <span class="ident">Transformation::default</span>()));
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">cam</span>.<span class="ident">fire_ray</span>(<span class="number">0.0</span>, <span class="number">0.0</span>);
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">cam</span>.<span class="ident">fire_ray</span>(<span class="number">1.0</span>, <span class="number">0.0</span>);
-        <span class="kw">let</span> <span class="ident">ray3</span> <span class="op">=</span> <span class="ident">cam</span>.<span class="ident">fire_ray</span>(<span class="number">0.0</span>, <span class="number">1.0</span>);
-        <span class="kw">let</span> <span class="ident">ray4</span> <span class="op">=</span> <span class="ident">cam</span>.<span class="ident">fire_ray</span>(<span class="number">1.0</span>, <span class="number">1.0</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_orthogonal_camera() {
+        <span class="kw">let </span>cam = Camera::Orthogonal(OrthogonalCamera::new(<span class="number">2.0</span>, Transformation::default()));
+        <span class="kw">let </span>ray1 = cam.fire_ray(<span class="number">0.0</span>, <span class="number">0.0</span>);
+        <span class="kw">let </span>ray2 = cam.fire_ray(<span class="number">1.0</span>, <span class="number">0.0</span>);
+        <span class="kw">let </span>ray3 = cam.fire_ray(<span class="number">0.0</span>, <span class="number">1.0</span>);
+        <span class="kw">let </span>ray4 = cam.fire_ray(<span class="number">1.0</span>, <span class="number">1.0</span>);
 
-        <span class="macro">assert!</span>((<span class="ident">ray1</span>.<span class="ident">dir</span> <span class="op">*</span> <span class="ident">ray2</span>.<span class="ident">dir</span>).<span class="ident">squared_norm</span>().<span class="ident">is_close</span>(<span class="number">0.0</span>));
-        <span class="macro">assert!</span>((<span class="ident">ray1</span>.<span class="ident">dir</span> <span class="op">*</span> <span class="ident">ray3</span>.<span class="ident">dir</span>).<span class="ident">squared_norm</span>().<span class="ident">is_close</span>(<span class="number">0.0</span>));
-        <span class="macro">assert!</span>((<span class="ident">ray1</span>.<span class="ident">dir</span> <span class="op">*</span> <span class="ident">ray4</span>.<span class="ident">dir</span>).<span class="ident">squared_norm</span>().<span class="ident">is_close</span>(<span class="number">0.0</span>));
+        <span class="macro">assert!</span>((ray1.dir * ray2.dir).squared_norm().is_close(<span class="number">0.0</span>));
+        <span class="macro">assert!</span>((ray1.dir * ray3.dir).squared_norm().is_close(<span class="number">0.0</span>));
+        <span class="macro">assert!</span>((ray1.dir * ray4.dir).squared_norm().is_close(<span class="number">0.0</span>));
 
-        <span class="macro">assert!</span>(<span class="ident">ray1</span>.<span class="ident">at</span>(<span class="number">1.0</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.0</span>, <span class="number">2.0</span>, <span class="op">-</span><span class="number">1.0</span>))));
-        <span class="macro">assert!</span>(<span class="ident">ray2</span>.<span class="ident">at</span>(<span class="number">1.0</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.0</span>, <span class="op">-</span><span class="number">2.0</span>, <span class="op">-</span><span class="number">1.0</span>))));
-        <span class="macro">assert!</span>(<span class="ident">ray3</span>.<span class="ident">at</span>(<span class="number">1.0</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.0</span>, <span class="number">2.0</span>, <span class="number">1.0</span>))));
-        <span class="macro">assert!</span>(<span class="ident">ray4</span>.<span class="ident">at</span>(<span class="number">1.0</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.0</span>, <span class="op">-</span><span class="number">2.0</span>, <span class="number">1.0</span>))));
+        <span class="macro">assert!</span>(ray1.at(<span class="number">1.0</span>).is_close(Point::from((<span class="number">0.0</span>, <span class="number">2.0</span>, -<span class="number">1.0</span>))));
+        <span class="macro">assert!</span>(ray2.at(<span class="number">1.0</span>).is_close(Point::from((<span class="number">0.0</span>, -<span class="number">2.0</span>, -<span class="number">1.0</span>))));
+        <span class="macro">assert!</span>(ray3.at(<span class="number">1.0</span>).is_close(Point::from((<span class="number">0.0</span>, <span class="number">2.0</span>, <span class="number">1.0</span>))));
+        <span class="macro">assert!</span>(ray4.at(<span class="number">1.0</span>).is_close(Point::from((<span class="number">0.0</span>, -<span class="number">2.0</span>, <span class="number">1.0</span>))));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_perspective_camera</span>() {
-        <span class="kw">let</span> <span class="ident">cam</span> <span class="op">=</span> <span class="ident">Camera::Perspective</span>(<span class="ident">PerspectiveCamera::new</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="ident">Transformation::default</span>()));
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">cam</span>.<span class="ident">fire_ray</span>(<span class="number">0.0</span>, <span class="number">0.0</span>);
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">cam</span>.<span class="ident">fire_ray</span>(<span class="number">1.0</span>, <span class="number">0.0</span>);
-        <span class="kw">let</span> <span class="ident">ray3</span> <span class="op">=</span> <span class="ident">cam</span>.<span class="ident">fire_ray</span>(<span class="number">0.0</span>, <span class="number">1.0</span>);
-        <span class="kw">let</span> <span class="ident">ray4</span> <span class="op">=</span> <span class="ident">cam</span>.<span class="ident">fire_ray</span>(<span class="number">1.0</span>, <span class="number">1.0</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_perspective_camera() {
+        <span class="kw">let </span>cam = Camera::Perspective(PerspectiveCamera::new(<span class="number">1.0</span>, <span class="number">2.0</span>, Transformation::default()));
+        <span class="kw">let </span>ray1 = cam.fire_ray(<span class="number">0.0</span>, <span class="number">0.0</span>);
+        <span class="kw">let </span>ray2 = cam.fire_ray(<span class="number">1.0</span>, <span class="number">0.0</span>);
+        <span class="kw">let </span>ray3 = cam.fire_ray(<span class="number">0.0</span>, <span class="number">1.0</span>);
+        <span class="kw">let </span>ray4 = cam.fire_ray(<span class="number">1.0</span>, <span class="number">1.0</span>);
 
-        <span class="macro">assert!</span>(<span class="ident">ray1</span>.<span class="ident">origin</span>.<span class="ident">is_close</span>(<span class="ident">ray2</span>.<span class="ident">origin</span>));
-        <span class="macro">assert!</span>(<span class="ident">ray1</span>.<span class="ident">origin</span>.<span class="ident">is_close</span>(<span class="ident">ray3</span>.<span class="ident">origin</span>));
-        <span class="macro">assert!</span>(<span class="ident">ray1</span>.<span class="ident">origin</span>.<span class="ident">is_close</span>(<span class="ident">ray4</span>.<span class="ident">origin</span>));
+        <span class="macro">assert!</span>(ray1.origin.is_close(ray2.origin));
+        <span class="macro">assert!</span>(ray1.origin.is_close(ray3.origin));
+        <span class="macro">assert!</span>(ray1.origin.is_close(ray4.origin));
 
-        <span class="macro">assert!</span>(<span class="ident">ray1</span>.<span class="ident">at</span>(<span class="number">1.0</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.0</span>, <span class="number">2.0</span>, <span class="op">-</span><span class="number">1.0</span>))));
-        <span class="macro">assert!</span>(<span class="ident">ray2</span>.<span class="ident">at</span>(<span class="number">1.0</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.0</span>, <span class="op">-</span><span class="number">2.0</span>, <span class="op">-</span><span class="number">1.0</span>))));
-        <span class="macro">assert!</span>(<span class="ident">ray3</span>.<span class="ident">at</span>(<span class="number">1.0</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.0</span>, <span class="number">2.0</span>, <span class="number">1.0</span>))));
-        <span class="macro">assert!</span>(<span class="ident">ray4</span>.<span class="ident">at</span>(<span class="number">1.0</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.0</span>, <span class="op">-</span><span class="number">2.0</span>, <span class="number">1.0</span>))));
+        <span class="macro">assert!</span>(ray1.at(<span class="number">1.0</span>).is_close(Point::from((<span class="number">0.0</span>, <span class="number">2.0</span>, -<span class="number">1.0</span>))));
+        <span class="macro">assert!</span>(ray2.at(<span class="number">1.0</span>).is_close(Point::from((<span class="number">0.0</span>, -<span class="number">2.0</span>, -<span class="number">1.0</span>))));
+        <span class="macro">assert!</span>(ray3.at(<span class="number">1.0</span>).is_close(Point::from((<span class="number">0.0</span>, <span class="number">2.0</span>, <span class="number">1.0</span>))));
+        <span class="macro">assert!</span>(ray4.at(<span class="number">1.0</span>).is_close(Point::from((<span class="number">0.0</span>, -<span class="number">2.0</span>, <span class="number">1.0</span>))));
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

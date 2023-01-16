@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["E1","X-axis normal."],["E2","Y-axis normal."],["E3","Z-axis normal."]],"fn":[["create_onb_from_z","Create a orthonormal basis (ONB) from a [`Normal`] representing the z axis."]],"struct":[["Normal","3D Normal struct."]]});
+window.SIDEBAR_ITEMS = {"constant":[["E1","X-axis normal."],["E2","Y-axis normal."],["E3","Z-axis normal."]],"fn":[["create_onb_from_z","Create a orthonormal basis (ONB) from a [`Normal`] representing the z axis."]],"struct":[["Normal","3D Normal struct."]]};

@@ -1,9 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/shape.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>shape.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/shape.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>shape.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -572,575 +567,574 @@
 <span id="567">567</span>
 <span id="568">568</span>
 <span id="569">569</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Geometric Shapes module.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Provides geometrical shape structs that implement the</span>
-<span class="doccomment">//! [`RayIntersection`](trait@RayIntersection) trait.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Geometric Shapes module.
+//!
+//! Provides geometrical shape structs that implement the
+//! [`RayIntersection`](trait@RayIntersection) trait.
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">material::Material</span>,
-    <span class="ident">misc</span>::{<span class="ident">IsClose</span>, <span class="ident">Vector2D</span>},
-    <span class="ident">normal::Normal</span>,
-    <span class="ident">point::Point</span>,
-    <span class="ident">ray::Ray</span>,
-    <span class="ident">transformation::Transformation</span>,
-    <span class="ident">vector::Vector</span>,
+</span><span class="kw">use crate</span>::{
+    material::Material,
+    misc::{IsClose, Vector2D},
+    normal::Normal,
+    point::Point,
+    ray::Ray,
+    transformation::Transformation,
+    vector::Vector,
 };
-<span class="kw">use</span> <span class="ident">std::f32::consts::PI</span>;
+<span class="kw">use </span>std::f32::consts::PI;
 
-<span class="doccomment">/// Trait to determine the intersections of an object with a [`Ray`](struct@Ray).</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This trait is meant to be implemented by geometrical [shapes](#implementors) in order to</span>
-<span class="doccomment">/// calculate how [light rays](struct@Ray) hit them.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// All objects that implement [`RayIntersection`] must implement also:</span>
-<span class="doccomment">///   * [`Debug`];</span>
-<span class="doccomment">///   * [`Send`];</span>
-<span class="doccomment">///   * [`Sync`].</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RayIntersection</span>: <span class="ident">std::fmt::Debug</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="kw">fn</span> <span class="ident">ray_intersection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HitRecord</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Trait to determine the intersections of an object with a [`Ray`](struct@Ray).
+///
+/// This trait is meant to be implemented by geometrical [shapes](#implementors) in order to
+/// calculate how [light rays](struct@Ray) hit them.
+///
+/// All objects that implement [`RayIntersection`] must implement also:
+///   * [`Debug`];
+///   * [`Send`];
+///   * [`Sync`].
+</span><span class="kw">pub trait </span>RayIntersection: std::fmt::Debug + Send + Sync {
+    <span class="kw">fn </span>ray_intersection(<span class="kw-2">&amp;</span><span class="self">self</span>, ray: Ray) -&gt; <span class="prelude-ty">Option</span>&lt;HitRecord&gt;;
 }
 
-<span class="doccomment">/// Struct used to store the results of [`RayIntersection`](trait@RayIntersection).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HitRecord</span> {
-    <span class="doccomment">/// Coordinates of the point of impact.</span>
-    <span class="kw">pub</span> <span class="ident">world_point</span>: <span class="ident">Point</span>,
-    <span class="doccomment">/// Normal of the shape surface on the impact point.</span>
-    <span class="kw">pub</span> <span class="ident">normal</span>: <span class="ident">Normal</span>,
-    <span class="doccomment">/// Coordinates of the point of impact in the frame of reference of the shape&#39;s surface.</span>
-    <span class="kw">pub</span> <span class="ident">surface_point</span>: <span class="ident">Vector2D</span>,
-    <span class="doccomment">/// Time the ray travelled before the impact.</span>
-    <span class="kw">pub</span> <span class="ident">t</span>: <span class="ident">f32</span>,
-    <span class="doccomment">/// The ray that impacted on the shape.</span>
-    <span class="kw">pub</span> <span class="ident">ray</span>: <span class="ident">Ray</span>,
-    <span class="doccomment">/// The [`Material`](struct@Material) of the impacted shape</span>
-    <span class="kw">pub</span> <span class="ident">material</span>: <span class="ident">Material</span>,
+<span class="doccomment">/// Struct used to store the results of [`RayIntersection`](trait@RayIntersection).
+</span><span class="attribute">#[derive(Clone)]
+</span><span class="kw">pub struct </span>HitRecord {
+    <span class="doccomment">/// Coordinates of the point of impact.
+    </span><span class="kw">pub </span>world_point: Point,
+    <span class="doccomment">/// Normal of the shape surface on the impact point.
+    </span><span class="kw">pub </span>normal: Normal,
+    <span class="doccomment">/// Coordinates of the point of impact in the frame of reference of the shape&#39;s surface.
+    </span><span class="kw">pub </span>surface_point: Vector2D,
+    <span class="doccomment">/// Time the ray travelled before the impact.
+    </span><span class="kw">pub </span>t: f32,
+    <span class="doccomment">/// The ray that impacted on the shape.
+    </span><span class="kw">pub </span>ray: Ray,
+    <span class="doccomment">/// The [`Material`](struct@Material) of the impacted shape
+    </span><span class="kw">pub </span>material: Material,
 }
 
-<span class="kw">impl</span> <span class="ident">IsClose</span> <span class="kw">for</span> <span class="ident">HitRecord</span> {
-    <span class="doccomment">/// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are</span>
-    <span class="doccomment">/// [close](trait@IsClose).</span>
-    <span class="kw">fn</span> <span class="ident">is_close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">world_point</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">world_point</span>)
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">normal</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">normal</span>)
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">surface_point</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">surface_point</span>)
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">t</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">t</span>)
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ray</span>.<span class="ident">is_close</span>(<span class="ident">other</span>.<span class="ident">ray</span>)
+<span class="kw">impl </span>IsClose <span class="kw">for </span>HitRecord {
+    <span class="doccomment">/// Return `true` if all the members of two [`HitRecord`](struct@HitRecord) are
+    /// [close](trait@IsClose).
+    </span><span class="kw">fn </span>is_close(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="self">Self</span>) -&gt; bool {
+        <span class="self">self</span>.world_point.is_close(other.world_point)
+            &amp;&amp; <span class="self">self</span>.normal.is_close(other.normal)
+            &amp;&amp; <span class="self">self</span>.surface_point.is_close(other.surface_point)
+            &amp;&amp; <span class="self">self</span>.t.is_close(other.t)
+            &amp;&amp; <span class="self">self</span>.ray.is_close(other.ray)
     }
 }
 
-<span class="doccomment">/// Geometrical shape corresponding to a sphere.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Sphere</span> {
-    <span class="doccomment">/// A generic sphere is defined by means of a</span>
-    <span class="doccomment">/// [`Transformation`](struct@Transformation) on the</span>
-    <span class="doccomment">/// unit sphere centered at the origin of axis.\</span>
-    <span class="doccomment">/// This means that you can also get an ellipsis</span>
-    <span class="doccomment">/// using the proper [`scaling`](fn@crate::transformation::scaling).</span>
-    <span class="ident">transformation</span>: <span class="ident">Transformation</span>,
-    <span class="doccomment">/// The [`Material`](struct@Material) of the sphere.</span>
-    <span class="ident">material</span>: <span class="ident">Material</span>,
+<span class="doccomment">/// Geometrical shape corresponding to a sphere.
+</span><span class="attribute">#[derive(Debug, Default)]
+</span><span class="kw">pub struct </span>Sphere {
+    <span class="doccomment">/// A generic sphere is defined by means of a
+    /// [`Transformation`](struct@Transformation) on the
+    /// unit sphere centered at the origin of axis.\
+    /// This means that you can also get an ellipsis
+    /// using the proper [`scaling`](fn@crate::transformation::scaling).
+    </span>transformation: Transformation,
+    <span class="doccomment">/// The [`Material`](struct@Material) of the sphere.
+    </span>material: Material,
 }
 
-<span class="kw">impl</span> <span class="ident">Sphere</span> {
-    <span class="doccomment">/// Provides a constructor for [`Sphere`](struct@Sphere).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">transformation</span>: <span class="ident">Transformation</span>, <span class="ident">material</span>: <span class="ident">Material</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">Sphere</span> {
-            <span class="ident">transformation</span>,
-            <span class="ident">material</span>,
+<span class="kw">impl </span>Sphere {
+    <span class="doccomment">/// Provides a constructor for [`Sphere`](struct@Sphere).
+    </span><span class="kw">pub fn </span>new(transformation: Transformation, material: Material) -&gt; <span class="self">Self </span>{
+        Sphere {
+            transformation,
+            material,
         }
     }
 }
 
-<span class="doccomment">/// Calculates normals to [`Sphere`](struct@Sphere)&#39;s surface.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This Function is meant to be used inside [`Sphere`](struct@Sphere)&#39;s</span>
-<span class="doccomment">/// [`RayIntersection`](trait@RayIntersection) implementation.\</span>
-<span class="doccomment">/// `ray_dir` is the direction of an impacting [`Ray`](struct@Ray) and\</span>
-<span class="doccomment">/// is used to determine on which side of the surface the normal is calculated.</span>
-<span class="kw">fn</span> <span class="ident">sphere_normal</span>(<span class="ident">point</span>: <span class="ident">Point</span>, <span class="ident">ray_dir</span>: <span class="ident">Vector</span>) -&gt; <span class="ident">Normal</span> {
-    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Normal::from</span>((<span class="ident">point</span>.<span class="ident">x</span>, <span class="ident">point</span>.<span class="ident">y</span>, <span class="ident">point</span>.<span class="ident">z</span>));
-    <span class="kw">if</span> <span class="ident">Vector::from</span>(<span class="ident">point</span>).<span class="ident">dot</span>(<span class="ident">ray_dir</span>) <span class="op">&lt;</span> <span class="number">0.0</span> {
-        <span class="ident">result</span>
-    } <span class="kw">else</span> {
-        <span class="ident">result</span>.<span class="ident">neg</span>()
+<span class="doccomment">/// Calculates normals to [`Sphere`](struct@Sphere)&#39;s surface.
+///
+/// This Function is meant to be used inside [`Sphere`](struct@Sphere)&#39;s
+/// [`RayIntersection`](trait@RayIntersection) implementation.\
+/// `ray_dir` is the direction of an impacting [`Ray`](struct@Ray) and\
+/// is used to determine on which side of the surface the normal is calculated.
+</span><span class="kw">fn </span>sphere_normal(point: Point, ray_dir: Vector) -&gt; Normal {
+    <span class="kw">let </span>result = Normal::from((point.x, point.y, point.z));
+    <span class="kw">if </span>Vector::from(point).dot(ray_dir) &lt; <span class="number">0.0 </span>{
+        result
+    } <span class="kw">else </span>{
+        result.neg()
     }
 }
 
-<span class="doccomment">/// Returns parametrization coordinates of a point on a sphere.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The sphere&#39;s surface is parametrized by two angles that correspond</span>
-<span class="doccomment">/// to latitude and longitude.</span>
-<span class="kw">fn</span> <span class="ident">sphere_point_to_uv</span>(<span class="ident">point</span>: <span class="ident">Point</span>) -&gt; <span class="ident">Vector2D</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">point</span>.<span class="ident">y</span>.<span class="ident">atan2</span>(<span class="ident">point</span>.<span class="ident">x</span>) <span class="op">/</span> (<span class="number">2.0</span> <span class="op">*</span> <span class="ident">PI</span>);
-    <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">point</span>.<span class="ident">z</span>.<span class="ident">acos</span>() <span class="op">/</span> <span class="ident">PI</span>;
-    <span class="kw">if</span> <span class="ident">u</span> <span class="op">&lt;</span> <span class="number">0.0</span> {
-        <span class="ident">u</span> <span class="op">+</span><span class="op">=</span> <span class="number">1.0</span>
-    };
-    <span class="ident">Vector2D</span> { <span class="ident">u</span>, <span class="ident">v</span> }
+<span class="doccomment">/// Returns parametrization coordinates of a point on a sphere.
+///
+/// The sphere&#39;s surface is parametrized by two angles that correspond
+/// to latitude and longitude.
+</span><span class="kw">fn </span>sphere_point_to_uv(point: Point) -&gt; Vector2D {
+    <span class="kw">let </span><span class="kw-2">mut </span>u = point.y.atan2(point.x) / (<span class="number">2.0 </span>* PI);
+    <span class="kw">let </span>v = point.z.acos() / PI;
+    <span class="kw">if </span>u &lt; <span class="number">0.0 </span>{
+        u += <span class="number">1.0
+    </span>};
+    Vector2D { u, v }
 }
 
-<span class="kw">impl</span> <span class="ident">RayIntersection</span> <span class="kw">for</span> <span class="ident">Sphere</span> {
-    <span class="doccomment">/// Finds intersections between a [`Ray`](struct@Ray) and a [`Sphere`](struct@Sphere).</span>
-    <span class="kw">fn</span> <span class="ident">ray_intersection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HitRecord</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">inv_ray</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">transformation</span>.<span class="ident">inverse</span>() <span class="op">*</span> <span class="ident">ray</span>;
-        <span class="kw">let</span> <span class="ident">origin_vec</span> <span class="op">=</span> <span class="ident">Vector::from</span>(<span class="ident">inv_ray</span>.<span class="ident">origin</span>);
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">inv_ray</span>.<span class="ident">dir</span>.<span class="ident">squared_norm</span>();
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="number">2.0</span> <span class="op">*</span> <span class="ident">origin_vec</span>.<span class="ident">dot</span>(<span class="ident">inv_ray</span>.<span class="ident">dir</span>);
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">origin_vec</span>.<span class="ident">squared_norm</span>() <span class="op">-</span> <span class="number">1.0</span>;
+<span class="kw">impl </span>RayIntersection <span class="kw">for </span>Sphere {
+    <span class="doccomment">/// Finds intersections between a [`Ray`](struct@Ray) and a [`Sphere`](struct@Sphere).
+    </span><span class="kw">fn </span>ray_intersection(<span class="kw-2">&amp;</span><span class="self">self</span>, ray: Ray) -&gt; <span class="prelude-ty">Option</span>&lt;HitRecord&gt; {
+        <span class="kw">let </span>inv_ray = <span class="self">self</span>.transformation.inverse() * ray;
+        <span class="kw">let </span>origin_vec = Vector::from(inv_ray.origin);
+        <span class="kw">let </span>a = inv_ray.dir.squared_norm();
+        <span class="kw">let </span>b = <span class="number">2.0 </span>* origin_vec.dot(inv_ray.dir);
+        <span class="kw">let </span>c = origin_vec.squared_norm() - <span class="number">1.0</span>;
 
-        <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">b</span> <span class="op">*</span> <span class="ident">b</span> <span class="op">-</span> <span class="number">4.0</span> <span class="op">*</span> <span class="ident">a</span> <span class="op">*</span> <span class="ident">c</span>;
-        <span class="kw">if</span> <span class="ident">delta</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0.0</span> {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        <span class="kw">let </span>delta = b * b - <span class="number">4.0 </span>* a * c;
+        <span class="kw">if </span>delta &lt;= <span class="number">0.0 </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="ident">sqrt_delta</span> <span class="op">=</span> <span class="ident">delta</span>.<span class="ident">sqrt</span>();
-        <span class="kw">let</span> <span class="ident">t1</span> <span class="op">=</span> (<span class="op">-</span><span class="ident">b</span> <span class="op">-</span> <span class="ident">sqrt_delta</span>) <span class="op">/</span> (<span class="number">2.0</span> <span class="op">*</span> <span class="ident">a</span>);
-        <span class="kw">let</span> <span class="ident">t2</span> <span class="op">=</span> (<span class="op">-</span><span class="ident">b</span> <span class="op">+</span> <span class="ident">sqrt_delta</span>) <span class="op">/</span> (<span class="number">2.0</span> <span class="op">*</span> <span class="ident">a</span>);
-        <span class="kw">let</span> <span class="ident">first_hit_t</span>;
-        <span class="kw">if</span> (<span class="ident">t1</span> <span class="op">&gt;</span> <span class="ident">inv_ray</span>.<span class="ident">tmin</span>) <span class="op">&amp;&amp;</span> (<span class="ident">t1</span> <span class="op">&lt;</span> <span class="ident">inv_ray</span>.<span class="ident">tmax</span>) {
-            <span class="ident">first_hit_t</span> <span class="op">=</span> <span class="ident">t1</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> (<span class="ident">t2</span> <span class="op">&gt;</span> <span class="ident">inv_ray</span>.<span class="ident">tmin</span>) <span class="op">&amp;&amp;</span> (<span class="ident">t2</span> <span class="op">&lt;</span> <span class="ident">inv_ray</span>.<span class="ident">tmax</span>) {
-            <span class="ident">first_hit_t</span> <span class="op">=</span> <span class="ident">t2</span>;
-        } <span class="kw">else</span> {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        <span class="kw">let </span>sqrt_delta = delta.sqrt();
+        <span class="kw">let </span>t1 = (-b - sqrt_delta) / (<span class="number">2.0 </span>* a);
+        <span class="kw">let </span>t2 = (-b + sqrt_delta) / (<span class="number">2.0 </span>* a);
+        <span class="kw">let </span>first_hit_t;
+        <span class="kw">if </span>(t1 &gt; inv_ray.tmin) &amp;&amp; (t1 &lt; inv_ray.tmax) {
+            first_hit_t = t1;
+        } <span class="kw">else if </span>(t2 &gt; inv_ray.tmin) &amp;&amp; (t2 &lt; inv_ray.tmax) {
+            first_hit_t = t2;
+        } <span class="kw">else </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="ident">hit_point</span> <span class="op">=</span> <span class="ident">inv_ray</span>.<span class="ident">at</span>(<span class="ident">first_hit_t</span>);
-        <span class="prelude-val">Some</span>(<span class="ident">HitRecord</span> {
-            <span class="ident">world_point</span>: <span class="self">self</span>.<span class="ident">transformation</span> <span class="op">*</span> <span class="ident">hit_point</span>,
-            <span class="ident">normal</span>: <span class="self">self</span>.<span class="ident">transformation</span> <span class="op">*</span> <span class="ident">sphere_normal</span>(<span class="ident">hit_point</span>, <span class="ident">inv_ray</span>.<span class="ident">dir</span>),
-            <span class="ident">surface_point</span>: <span class="ident">sphere_point_to_uv</span>(<span class="ident">hit_point</span>),
-            <span class="ident">t</span>: <span class="ident">first_hit_t</span>,
-            <span class="ident">ray</span>,
-            <span class="ident">material</span>: <span class="self">self</span>.<span class="ident">material</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>hit_point = inv_ray.at(first_hit_t);
+        <span class="prelude-val">Some</span>(HitRecord {
+            world_point: <span class="self">self</span>.transformation * hit_point,
+            normal: <span class="self">self</span>.transformation * sphere_normal(hit_point, inv_ray.dir),
+            surface_point: sphere_point_to_uv(hit_point),
+            t: first_hit_t,
+            ray,
+            material: <span class="self">self</span>.material.clone(),
         })
     }
 }
 
-<span class="doccomment">/// Geometrical shape corresponding to a plane.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Plane</span> {
-    <span class="doccomment">/// A generic plane is defined by means of a [`Transformation`](struct@Transformation)</span>
-    <span class="doccomment">/// on the X-Y plane.\</span>
-    <span class="doccomment">/// A [`scaling`](fn@crate::transformation::scaling) transformation has the</span>
-    <span class="doccomment">/// effect to change the sides length of the basic rectangle in the plane&#39;s</span>
-    <span class="doccomment">/// [parametrization](fn@plane_point_to_uv).</span>
-    <span class="ident">transformation</span>: <span class="ident">Transformation</span>,
-    <span class="doccomment">/// The [`Material`](struct@Material) of the sphere.</span>
-    <span class="ident">material</span>: <span class="ident">Material</span>,
+<span class="doccomment">/// Geometrical shape corresponding to a plane.
+</span><span class="attribute">#[derive(Debug, Default)]
+</span><span class="kw">pub struct </span>Plane {
+    <span class="doccomment">/// A generic plane is defined by means of a [`Transformation`](struct@Transformation)
+    /// on the X-Y plane.\
+    /// A [`scaling`](fn@crate::transformation::scaling) transformation has the
+    /// effect to change the sides length of the basic rectangle in the plane&#39;s
+    /// [parametrization](fn@plane_point_to_uv).
+    </span>transformation: Transformation,
+    <span class="doccomment">/// The [`Material`](struct@Material) of the sphere.
+    </span>material: Material,
 }
 
-<span class="kw">impl</span> <span class="ident">Plane</span> {
-    <span class="doccomment">/// Provides a constructor for [`Plane`](struct@Plane).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">transformation</span>: <span class="ident">Transformation</span>, <span class="ident">material</span>: <span class="ident">Material</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">Plane</span> {
-            <span class="ident">transformation</span>,
-            <span class="ident">material</span>,
+<span class="kw">impl </span>Plane {
+    <span class="doccomment">/// Provides a constructor for [`Plane`](struct@Plane).
+    </span><span class="kw">pub fn </span>new(transformation: Transformation, material: Material) -&gt; <span class="self">Self </span>{
+        Plane {
+            transformation,
+            material,
         }
     }
 }
 
-<span class="doccomment">/// Calculates normals to [`Plane`](struct@Plane)&#39;s surface.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This Function is meant to be used inside [`Plane`](struct@Plane)&#39;s</span>
-<span class="doccomment">/// [`RayIntersection`](trait@RayIntersection) implementation.\</span>
-<span class="doccomment">/// `ray_dir` is the direction of an impacting [`Ray`](struct@Ray)</span>
-<span class="doccomment">/// and is used to determine on which side of the surface the normal is calculated.</span>
-<span class="kw">fn</span> <span class="ident">plane_normal</span>(<span class="ident">ray_dir</span>: <span class="ident">Vector</span>) -&gt; <span class="ident">Normal</span> {
-    <span class="kw">let</span> <span class="ident">normal</span> <span class="op">=</span> <span class="ident">Normal::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>));
-    <span class="kw">if</span> <span class="ident">Vector::from</span>(<span class="ident">normal</span>).<span class="ident">dot</span>(<span class="ident">ray_dir</span>) <span class="op">&lt;</span> <span class="number">0.0</span> {
-        <span class="ident">normal</span>
-    } <span class="kw">else</span> {
-        <span class="ident">normal</span>.<span class="ident">neg</span>()
+<span class="doccomment">/// Calculates normals to [`Plane`](struct@Plane)&#39;s surface.
+///
+/// This Function is meant to be used inside [`Plane`](struct@Plane)&#39;s
+/// [`RayIntersection`](trait@RayIntersection) implementation.\
+/// `ray_dir` is the direction of an impacting [`Ray`](struct@Ray)
+/// and is used to determine on which side of the surface the normal is calculated.
+</span><span class="kw">fn </span>plane_normal(ray_dir: Vector) -&gt; Normal {
+    <span class="kw">let </span>normal = Normal::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>));
+    <span class="kw">if </span>Vector::from(normal).dot(ray_dir) &lt; <span class="number">0.0 </span>{
+        normal
+    } <span class="kw">else </span>{
+        normal.neg()
     }
 }
 
-<span class="doccomment">/// Returns parametrization coordinates of a point on a plane.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The plane is parametrized by the `[0,1]x[0,1]` square with periodic boundary conditions.</span>
-<span class="kw">fn</span> <span class="ident">plane_point_to_uv</span>(<span class="ident">point</span>: <span class="ident">Point</span>) -&gt; <span class="ident">Vector2D</span> {
-    <span class="ident">Vector2D</span> {
-        <span class="ident">u</span>: <span class="ident">point</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">point</span>.<span class="ident">x</span>.<span class="ident">floor</span>(),
-        <span class="ident">v</span>: <span class="ident">point</span>.<span class="ident">y</span> <span class="op">-</span> <span class="ident">point</span>.<span class="ident">y</span>.<span class="ident">floor</span>(),
+<span class="doccomment">/// Returns parametrization coordinates of a point on a plane.
+///
+/// The plane is parametrized by the `[0,1]x[0,1]` square with periodic boundary conditions.
+</span><span class="kw">fn </span>plane_point_to_uv(point: Point) -&gt; Vector2D {
+    Vector2D {
+        u: point.x - point.x.floor(),
+        v: point.y - point.y.floor(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">RayIntersection</span> <span class="kw">for</span> <span class="ident">Plane</span> {
-    <span class="doccomment">/// Finds intersections between a [`Ray`](struct@Ray) and a [`Plane`](struct@Plane).</span>
-    <span class="kw">fn</span> <span class="ident">ray_intersection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HitRecord</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">inv_ray</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">transformation</span>.<span class="ident">inverse</span>() <span class="op">*</span> <span class="ident">ray</span>;
-        <span class="kw">if</span> <span class="ident">inv_ray</span>.<span class="ident">dir</span>.<span class="ident">z</span>.<span class="ident">abs</span>() <span class="op">&lt;</span> <span class="number">1e-5</span> {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>RayIntersection <span class="kw">for </span>Plane {
+    <span class="doccomment">/// Finds intersections between a [`Ray`](struct@Ray) and a [`Plane`](struct@Plane).
+    </span><span class="kw">fn </span>ray_intersection(<span class="kw-2">&amp;</span><span class="self">self</span>, ray: Ray) -&gt; <span class="prelude-ty">Option</span>&lt;HitRecord&gt; {
+        <span class="kw">let </span>inv_ray = <span class="self">self</span>.transformation.inverse() * ray;
+        <span class="kw">if </span>inv_ray.dir.z.abs() &lt; <span class="number">1e-5 </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="op">-</span><span class="ident">inv_ray</span>.<span class="ident">origin</span>.<span class="ident">z</span> <span class="op">/</span> <span class="ident">inv_ray</span>.<span class="ident">dir</span>.<span class="ident">z</span>;
-        <span class="kw">if</span> (<span class="ident">t</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">inv_ray</span>.<span class="ident">tmin</span>) <span class="op">|</span><span class="op">|</span> (<span class="ident">t</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">inv_ray</span>.<span class="ident">tmax</span>) {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        <span class="kw">let </span>t = -inv_ray.origin.z / inv_ray.dir.z;
+        <span class="kw">if </span>(t &lt;= inv_ray.tmin) || (t &gt;= inv_ray.tmax) {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="ident">hit_point</span> <span class="op">=</span> <span class="ident">inv_ray</span>.<span class="ident">at</span>(<span class="ident">t</span>);
-        <span class="prelude-val">Some</span>(<span class="ident">HitRecord</span> {
-            <span class="ident">world_point</span>: <span class="self">self</span>.<span class="ident">transformation</span> <span class="op">*</span> <span class="ident">hit_point</span>,
-            <span class="ident">normal</span>: <span class="self">self</span>.<span class="ident">transformation</span> <span class="op">*</span> <span class="ident">plane_normal</span>(<span class="ident">inv_ray</span>.<span class="ident">dir</span>),
-            <span class="ident">surface_point</span>: <span class="ident">plane_point_to_uv</span>(<span class="ident">hit_point</span>),
-            <span class="ident">t</span>,
-            <span class="ident">ray</span>,
-            <span class="ident">material</span>: <span class="self">self</span>.<span class="ident">material</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>hit_point = inv_ray.at(t);
+        <span class="prelude-val">Some</span>(HitRecord {
+            world_point: <span class="self">self</span>.transformation * hit_point,
+            normal: <span class="self">self</span>.transformation * plane_normal(inv_ray.dir),
+            surface_point: plane_point_to_uv(hit_point),
+            t,
+            ray,
+            material: <span class="self">self</span>.material.clone(),
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::transformation</span>::{<span class="ident">rotation_y</span>, <span class="ident">scaling</span>, <span class="ident">translation</span>};
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::transformation::{rotation_y, scaling, translation};
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_hit_sphere</span>() {
-        <span class="kw">let</span> <span class="ident">sphere</span> <span class="op">=</span> <span class="ident">Sphere::default</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_hit_sphere() {
+        <span class="kw">let </span>sphere = Sphere::default();
 
-        <span class="kw">let</span> <span class="ident">ray0</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">10.</span>, <span class="number">2.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray0 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">10.</span>, <span class="number">2.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray0</span>).<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(sphere.ray_intersection(ray0).is_none());
 
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">2.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">2.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection1</span> <span class="op">=</span> <span class="ident">sphere</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray1</span>);
+        <span class="kw">let </span>intersection1 = sphere.ray_intersection(ray1);
 
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(<span class="ident">intersection1</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>.<span class="ident">is_close</span>(<span class="ident">HitRecord</span> {
-                <span class="ident">world_point</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-                <span class="ident">normal</span>: <span class="ident">Normal::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-                <span class="ident">surface_point</span>: <span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.</span> },
-                <span class="ident">t</span>: <span class="number">1.</span>,
-                <span class="ident">ray</span>: <span class="ident">ray1</span>,
-                <span class="ident">material</span>: <span class="ident">Material::default</span>()
+            <span class="macro">matches!</span>(intersection1, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection.is_close(HitRecord {
+                world_point: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+                normal: Normal::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+                surface_point: Vector2D { u: <span class="number">0.</span>, v: <span class="number">0. </span>},
+                t: <span class="number">1.</span>,
+                ray: ray1,
+                material: Material::default()
             }))
         );
 
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">3.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray2 = Ray {
+            origin: Point::from((<span class="number">3.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((-<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection2</span> <span class="op">=</span> <span class="ident">sphere</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray2</span>);
+        <span class="kw">let </span>intersection2 = sphere.ray_intersection(ray2);
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(<span class="ident">intersection2</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>.<span class="ident">is_close</span>(<span class="ident">HitRecord</span> {
-                <span class="ident">world_point</span>: <span class="ident">Point::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-                <span class="ident">normal</span>: <span class="ident">Normal::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-                <span class="ident">surface_point</span>: <span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.5</span> },
-                <span class="ident">t</span>: <span class="number">2.</span>,
-                <span class="ident">ray</span>: <span class="ident">ray2</span>,
-                <span class="ident">material</span>: <span class="ident">Material::default</span>()
+            <span class="macro">matches!</span>(intersection2, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection.is_close(HitRecord {
+                world_point: Point::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+                normal: Normal::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+                surface_point: Vector2D { u: <span class="number">0.</span>, v: <span class="number">0.5 </span>},
+                t: <span class="number">2.</span>,
+                ray: ray2,
+                material: Material::default()
             }))
         );
 
-        <span class="kw">let</span> <span class="ident">ray3</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::default</span>(),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray3 = Ray {
+            origin: Point::default(),
+            dir: Vector::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection3</span> <span class="op">=</span> <span class="ident">sphere</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray3</span>);
+        <span class="kw">let </span>intersection3 = sphere.ray_intersection(ray3);
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(<span class="ident">intersection3</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>.<span class="ident">is_close</span>(<span class="ident">HitRecord</span> {
-                <span class="ident">world_point</span>: <span class="ident">Point::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-                <span class="ident">normal</span>: <span class="ident">Normal::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-                <span class="ident">surface_point</span>: <span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.5</span> },
-                <span class="ident">t</span>: <span class="number">1.</span>,
-                <span class="ident">ray</span>: <span class="ident">ray3</span>,
-                <span class="ident">material</span>: <span class="ident">Material::default</span>()
+            <span class="macro">matches!</span>(intersection3, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection.is_close(HitRecord {
+                world_point: Point::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+                normal: Normal::from((-<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+                surface_point: Vector2D { u: <span class="number">0.</span>, v: <span class="number">0.5 </span>},
+                t: <span class="number">1.</span>,
+                ray: ray3,
+                material: Material::default()
             }))
         )
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_transform_sphere</span>() {
-        <span class="kw">let</span> <span class="ident">sphere</span> <span class="op">=</span> <span class="ident">Sphere::new</span>(
-            <span class="ident">translation</span>(<span class="ident">Vector::from</span>((<span class="number">10.</span>, <span class="number">0.</span>, <span class="number">0.</span>))),
-            <span class="ident">Material::default</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_transform_sphere() {
+        <span class="kw">let </span>sphere = Sphere::new(
+            translation(Vector::from((<span class="number">10.</span>, <span class="number">0.</span>, <span class="number">0.</span>))),
+            Material::default(),
         );
 
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">10.</span>, <span class="number">0.</span>, <span class="number">2.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((<span class="number">10.</span>, <span class="number">0.</span>, <span class="number">2.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection1</span> <span class="op">=</span> <span class="ident">sphere</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray1</span>);
+        <span class="kw">let </span>intersection1 = sphere.ray_intersection(ray1);
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(<span class="ident">intersection1</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>.<span class="ident">is_close</span>(<span class="ident">HitRecord</span> {
-                <span class="ident">world_point</span>: <span class="ident">Point::from</span>((<span class="number">10.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>)),
-                <span class="ident">normal</span>: <span class="ident">Normal::from</span>((<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>)),
-                <span class="ident">surface_point</span>: <span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.</span> },
-                <span class="ident">t</span>: <span class="number">1.0</span>,
-                <span class="ident">ray</span>: <span class="ident">ray1</span>,
-                <span class="ident">material</span>: <span class="ident">Material::default</span>()
+            <span class="macro">matches!</span>(intersection1, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection.is_close(HitRecord {
+                world_point: Point::from((<span class="number">10.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>)),
+                normal: Normal::from((<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>)),
+                surface_point: Vector2D { u: <span class="number">0.</span>, v: <span class="number">0. </span>},
+                t: <span class="number">1.0</span>,
+                ray: ray1,
+                material: Material::default()
             }))
         );
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">13.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray2 = Ray {
+            origin: Point::from((<span class="number">13.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((-<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection2</span> <span class="op">=</span> <span class="ident">sphere</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray2</span>);
+        <span class="kw">let </span>intersection2 = sphere.ray_intersection(ray2);
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(<span class="ident">intersection2</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>.<span class="ident">is_close</span>(<span class="ident">HitRecord</span> {
-                <span class="ident">world_point</span>: <span class="ident">Point::from</span>((<span class="number">11.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)),
-                <span class="ident">normal</span>: <span class="ident">Normal::from</span>((<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)),
-                <span class="ident">surface_point</span>: <span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.5</span> },
-                <span class="ident">t</span>: <span class="number">2.0</span>,
-                <span class="ident">ray</span>: <span class="ident">ray2</span>,
-                <span class="ident">material</span>: <span class="ident">Material::default</span>()
+            <span class="macro">matches!</span>(intersection2, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection.is_close(HitRecord {
+                world_point: Point::from((<span class="number">11.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)),
+                normal: Normal::from((<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)),
+                surface_point: Vector2D { u: <span class="number">0.</span>, v: <span class="number">0.5 </span>},
+                t: <span class="number">2.0</span>,
+                ray: ray2,
+                material: Material::default()
             }))
         );
 
-        <span class="kw">let</span> <span class="ident">ray3</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">2.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray3 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">2.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray3</span>).<span class="ident">is_none</span>());
-        <span class="kw">let</span> <span class="ident">ray4</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">10.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="macro">assert!</span>(sphere.ray_intersection(ray3).is_none());
+        <span class="kw">let </span>ray4 = Ray {
+            origin: Point::from((-<span class="number">10.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray4</span>).<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(sphere.ray_intersection(ray4).is_none());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_sphere_normal</span>() {
-        <span class="kw">let</span> <span class="ident">sphere1</span> <span class="op">=</span> <span class="ident">Sphere::new</span>(<span class="ident">scaling</span>(<span class="ident">Vector::from</span>((<span class="number">2.</span>, <span class="number">1.</span>, <span class="number">1.</span>))), <span class="ident">Material::default</span>());
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_sphere_normal() {
+        <span class="kw">let </span>sphere1 = Sphere::new(scaling(Vector::from((<span class="number">2.</span>, <span class="number">1.</span>, <span class="number">1.</span>))), Material::default());
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((-<span class="number">1.</span>, -<span class="number">1.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection1</span> <span class="op">=</span> <span class="ident">sphere1</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray1</span>);
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="ident">intersection1</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>
-            .<span class="ident">normal</span>
-            .<span class="ident">normalize</span>()
-            .<span class="ident">is_close</span>(<span class="ident">Normal::from</span>((<span class="number">1.</span>, <span class="number">4.</span>, <span class="number">0.</span>)).<span class="ident">normalize</span>())));
+        <span class="kw">let </span>intersection1 = sphere1.ray_intersection(ray1);
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(intersection1, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection
+            .normal
+            .normalize()
+            .is_close(Normal::from((<span class="number">1.</span>, <span class="number">4.</span>, <span class="number">0.</span>)).normalize())));
 
-        <span class="kw">let</span> <span class="ident">sphere2</span> <span class="op">=</span> <span class="ident">Sphere::new</span>(<span class="ident">scaling</span>(<span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="op">-</span><span class="number">1.</span>, <span class="op">-</span><span class="number">1.</span>))), <span class="ident">Material::default</span>());
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">2.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>sphere2 = Sphere::new(scaling(Vector::from((-<span class="number">1.</span>, -<span class="number">1.</span>, -<span class="number">1.</span>))), Material::default());
+        <span class="kw">let </span>ray2 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">2.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, -<span class="number">1.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection2</span> <span class="op">=</span> <span class="ident">sphere2</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray2</span>);
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="ident">intersection2</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>
-            .<span class="ident">normal</span>
-            .<span class="ident">normalize</span>()
-            .<span class="ident">is_close</span>(<span class="ident">Normal::from</span>((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>)).<span class="ident">normalize</span>())))
+        <span class="kw">let </span>intersection2 = sphere2.ray_intersection(ray2);
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(intersection2, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection
+            .normal
+            .normalize()
+            .is_close(Normal::from((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>)).normalize())))
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_sphere_point_to_uv</span>() {
-        <span class="kw">let</span> <span class="ident">sphere</span> <span class="op">=</span> <span class="ident">Sphere::default</span>();
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">2.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_sphere_point_to_uv() {
+        <span class="kw">let </span>sphere = Sphere::default();
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((<span class="number">2.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((-<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray1</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.5</span> }));
+        <span class="macro">assert!</span>(sphere
+            .ray_intersection(ray1)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.</span>, v: <span class="number">0.5 </span>}));
 
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">2.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray2 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">2.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, -<span class="number">1.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray2</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.25</span>, <span class="ident">v</span>: <span class="number">0.5</span> }));
+        <span class="macro">assert!</span>(sphere
+            .ray_intersection(ray2)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.25</span>, v: <span class="number">0.5 </span>}));
 
-        <span class="kw">let</span> <span class="ident">ray3</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">2.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray3 = Ray {
+            origin: Point::from((-<span class="number">2.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray3</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.5</span>, <span class="ident">v</span>: <span class="number">0.5</span> }));
+        <span class="macro">assert!</span>(sphere
+            .ray_intersection(ray3)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.5</span>, v: <span class="number">0.5 </span>}));
 
-        <span class="kw">let</span> <span class="ident">ray4</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="op">-</span><span class="number">2.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray4 = Ray {
+            origin: Point::from((<span class="number">0.</span>, -<span class="number">2.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray4</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.75</span>, <span class="ident">v</span>: <span class="number">0.5</span> }));
+        <span class="macro">assert!</span>(sphere
+            .ray_intersection(ray4)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.75</span>, v: <span class="number">0.5 </span>}));
 
-        <span class="kw">let</span> <span class="ident">ray5</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">2.</span>, <span class="number">0.</span>, <span class="number">0.5</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray5 = Ray {
+            origin: Point::from((<span class="number">2.</span>, <span class="number">0.</span>, <span class="number">0.5</span>)),
+            dir: Vector::from((-<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray5</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">1.</span> <span class="op">/</span> <span class="number">3.</span> }));
+        <span class="macro">assert!</span>(sphere
+            .ray_intersection(ray5)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.</span>, v: <span class="number">1. </span>/ <span class="number">3. </span>}));
 
-        <span class="kw">let</span> <span class="ident">ray6</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">2.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">0.5</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray6 = Ray {
+            origin: Point::from((<span class="number">2.</span>, <span class="number">0.</span>, -<span class="number">0.5</span>)),
+            dir: Vector::from((-<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">sphere</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray6</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">2.</span> <span class="op">/</span> <span class="number">3.</span> }));
+        <span class="macro">assert!</span>(sphere
+            .ray_intersection(ray6)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.</span>, v: <span class="number">2. </span>/ <span class="number">3. </span>}));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_hit_plane</span>() {
-        <span class="kw">let</span> <span class="ident">plane</span> <span class="op">=</span> <span class="ident">Plane::default</span>();
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_hit_plane() {
+        <span class="kw">let </span>plane = Plane::default();
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection1</span> <span class="op">=</span> <span class="ident">plane</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray1</span>);
+        <span class="kw">let </span>intersection1 = plane.ray_intersection(ray1);
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(<span class="ident">intersection1</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>.<span class="ident">is_close</span>(<span class="ident">HitRecord</span> {
-                <span class="ident">world_point</span>: <span class="ident">Point::default</span>(),
-                <span class="ident">normal</span>: <span class="ident">Normal::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-                <span class="ident">surface_point</span>: <span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.</span> },
-                <span class="ident">t</span>: <span class="number">1.</span>,
-                <span class="ident">ray</span>: <span class="ident">ray1</span>,
-                <span class="ident">material</span>: <span class="ident">Material::default</span>()
+            <span class="macro">matches!</span>(intersection1, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection.is_close(HitRecord {
+                world_point: Point::default(),
+                normal: Normal::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+                surface_point: Vector2D { u: <span class="number">0.</span>, v: <span class="number">0. </span>},
+                t: <span class="number">1.</span>,
+                ray: ray1,
+                material: Material::default()
             }))
         );
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray2 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection2</span> <span class="op">=</span> <span class="ident">plane</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray2</span>);
-        <span class="macro">assert!</span>(<span class="ident">intersection2</span>.<span class="ident">is_none</span>());
-        <span class="kw">let</span> <span class="ident">ray3</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>intersection2 = plane.ray_intersection(ray2);
+        <span class="macro">assert!</span>(intersection2.is_none());
+        <span class="kw">let </span>ray3 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection3</span> <span class="op">=</span> <span class="ident">plane</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray3</span>);
-        <span class="macro">assert!</span>(<span class="ident">intersection3</span>.<span class="ident">is_none</span>());
-        <span class="kw">let</span> <span class="ident">ray4</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>intersection3 = plane.ray_intersection(ray3);
+        <span class="macro">assert!</span>(intersection3.is_none());
+        <span class="kw">let </span>ray4 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection4</span> <span class="op">=</span> <span class="ident">plane</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray4</span>);
-        <span class="macro">assert!</span>(<span class="ident">intersection4</span>.<span class="ident">is_none</span>());
+        <span class="kw">let </span>intersection4 = plane.ray_intersection(ray4);
+        <span class="macro">assert!</span>(intersection4.is_none());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_transform_plane</span>() {
-        <span class="kw">let</span> <span class="ident">plane</span> <span class="op">=</span> <span class="ident">Plane::new</span>(<span class="ident">rotation_y</span>(<span class="ident">PI</span> <span class="op">/</span> <span class="number">2.</span>), <span class="ident">Material::default</span>());
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_transform_plane() {
+        <span class="kw">let </span>plane = Plane::new(rotation_y(PI / <span class="number">2.</span>), Material::default());
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            dir: Vector::from((-<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection1</span> <span class="op">=</span> <span class="ident">plane</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray1</span>);
+        <span class="kw">let </span>intersection1 = plane.ray_intersection(ray1);
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(<span class="ident">intersection1</span>, <span class="prelude-val">Some</span>(<span class="ident">intersection</span>) <span class="kw">if</span> <span class="ident">intersection</span>.<span class="ident">is_close</span>(<span class="ident">HitRecord</span> {
-                <span class="ident">world_point</span>: <span class="ident">Point::default</span>(),
-                <span class="ident">normal</span>: <span class="ident">Normal::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-                <span class="ident">surface_point</span>: <span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.</span> },
-                <span class="ident">t</span>: <span class="number">1.</span>,
-                <span class="ident">ray</span>: <span class="ident">ray1</span>,
-                <span class="ident">material</span>: <span class="ident">Material::default</span>()
+            <span class="macro">matches!</span>(intersection1, <span class="prelude-val">Some</span>(intersection) <span class="kw">if </span>intersection.is_close(HitRecord {
+                world_point: Point::default(),
+                normal: Normal::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+                surface_point: Vector2D { u: <span class="number">0.</span>, v: <span class="number">0. </span>},
+                t: <span class="number">1.</span>,
+                ray: ray1,
+                material: Material::default()
             }))
         );
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray2 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection2</span> <span class="op">=</span> <span class="ident">plane</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray2</span>);
-        <span class="macro">assert!</span>(<span class="ident">intersection2</span>.<span class="ident">is_none</span>());
-        <span class="kw">let</span> <span class="ident">ray3</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>intersection2 = plane.ray_intersection(ray2);
+        <span class="macro">assert!</span>(intersection2.is_none());
+        <span class="kw">let </span>ray3 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection3</span> <span class="op">=</span> <span class="ident">plane</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray3</span>);
-        <span class="macro">assert!</span>(<span class="ident">intersection3</span>.<span class="ident">is_none</span>());
-        <span class="kw">let</span> <span class="ident">ray4</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>intersection3 = plane.ray_intersection(ray3);
+        <span class="macro">assert!</span>(intersection3.is_none());
+        <span class="kw">let </span>ray4 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">intersection4</span> <span class="op">=</span> <span class="ident">plane</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray4</span>);
-        <span class="macro">assert!</span>(<span class="ident">intersection4</span>.<span class="ident">is_none</span>());
+        <span class="kw">let </span>intersection4 = plane.ray_intersection(ray4);
+        <span class="macro">assert!</span>(intersection4.is_none());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_plane_point_to_uv</span>() {
-        <span class="kw">let</span> <span class="ident">plane</span> <span class="op">=</span> <span class="ident">Plane::default</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_plane_point_to_uv() {
+        <span class="kw">let </span>plane = Plane::default();
 
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">plane</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray1</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.</span>, <span class="ident">v</span>: <span class="number">0.0</span> }));
+        <span class="macro">assert!</span>(plane
+            .ray_intersection(ray1)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.</span>, v: <span class="number">0.0 </span>}));
 
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">0.25</span>, <span class="number">0.75</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray2 = Ray {
+            origin: Point::from((<span class="number">0.25</span>, <span class="number">0.75</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">plane</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray2</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.25</span>, <span class="ident">v</span>: <span class="number">0.75</span> }));
+        <span class="macro">assert!</span>(plane
+            .ray_intersection(ray2)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.25</span>, v: <span class="number">0.75 </span>}));
 
-        <span class="kw">let</span> <span class="ident">ray3</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="number">4.25</span>, <span class="number">7.75</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray3 = Ray {
+            origin: Point::from((<span class="number">4.25</span>, <span class="number">7.75</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">plane</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray3</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.25</span>, <span class="ident">v</span>: <span class="number">0.75</span> }));
+        <span class="macro">assert!</span>(plane
+            .ray_intersection(ray3)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.25</span>, v: <span class="number">0.75 </span>}));
 
-        <span class="kw">let</span> <span class="ident">ray4</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">4.25</span>, <span class="op">-</span><span class="number">7.75</span>, <span class="number">1.</span>)),
-            <span class="ident">dir</span>: <span class="ident">Vector::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="op">-</span><span class="number">1.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray4 = Ray {
+            origin: Point::from((-<span class="number">4.25</span>, -<span class="number">7.75</span>, <span class="number">1.</span>)),
+            dir: Vector::from((<span class="number">0.</span>, <span class="number">0.</span>, -<span class="number">1.</span>)),
+            ..Default::default()
         };
-        <span class="macro">assert!</span>(<span class="ident">plane</span>
-            .<span class="ident">ray_intersection</span>(<span class="ident">ray4</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">surface_point</span>
-            .<span class="ident">is_close</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.75</span>, <span class="ident">v</span>: <span class="number">0.25</span> }));
+        <span class="macro">assert!</span>(plane
+            .ray_intersection(ray4)
+            .unwrap()
+            .surface_point
+            .is_close(Vector2D { u: <span class="number">0.75</span>, v: <span class="number">0.25 </span>}));
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Ray","Light Ray struct."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Ray","Light Ray struct."]]};

@@ -1,9 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/imagetracer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>imagetracer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/imagetracer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>imagetracer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -187,190 +182,189 @@
 <span id="182">182</span>
 <span id="183">183</span>
 <span id="184">184</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Image Tracer module.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Provides [`ImageTracer`](struct@ImageTracer) struct.</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">camera</span>::{<span class="ident">Camera</span>, <span class="ident">FireRay</span>},
-    <span class="ident">color::Color</span>,
-    <span class="ident">hdrimage::HdrImage</span>,
-    <span class="ident">random::Pcg</span>,
-    <span class="ident">ray::Ray</span>,
-    <span class="ident">render</span>::{<span class="ident">Renderer</span>, <span class="ident">Solve</span>},
+</pre><pre class="rust"><code><span class="doccomment">//! Image Tracer module.
+//!
+//! Provides [`ImageTracer`](struct@ImageTracer) struct.
+</span><span class="kw">use crate</span>::{
+    camera::{Camera, FireRay},
+    color::Color,
+    hdrimage::HdrImage,
+    random::Pcg,
+    ray::Ray,
+    render::{Renderer, Solve},
 };
-<span class="kw">use</span> <span class="ident">rayon::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>rayon::prelude::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// Trace an image by shooting light rays through each of its pixels.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImageTracer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// An initialized [`HdrImage`].</span>
-    <span class="ident">image</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">HdrImage</span>,
-    <span class="doccomment">/// A [`Camera`] enum that implement [`FireRay`] trait.</span>
-    <span class="ident">camera</span>: <span class="ident">Camera</span>,
+<span class="doccomment">/// Trace an image by shooting light rays through each of its pixels.
+</span><span class="kw">pub struct </span>ImageTracer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// An initialized [`HdrImage`].
+    </span>image: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>HdrImage,
+    <span class="doccomment">/// A [`Camera`] enum that implement [`FireRay`] trait.
+    </span>camera: Camera,
 }
 
-<span class="doccomment">/// Appo struct for [`all_rays`](../imagetracer/struct.ImageTracer.html#method.all_rays) that will</span>
-<span class="doccomment">/// store for each pixel in [`image`](../imagetracer/struct.ImageTracer.html#fields):</span>
-<span class="doccomment">///   * a [`Vec`] of [`Ray`]s, the length of this vector\ will be greater than one when</span>
-<span class="doccomment">///     `antialiasing_level!=1`;</span>
-<span class="doccomment">///   * a [`u64`] random integer generated from [`Pcg`], that will be used\ to init an independent</span>
-<span class="doccomment">///     [`Pcg`] when rendering equation solution (avoiding artefacts).</span>
-<span class="kw">struct</span> <span class="ident">Rays</span> {
-    <span class="doccomment">/// [`Pcg`] `init_seq` for each pixel.</span>
-    <span class="ident">seq</span>: <span class="ident">u64</span>,
-    <span class="doccomment">/// Rays for each pixel.</span>
-    <span class="ident">rays</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Ray</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Appo struct for [`all_rays`](../imagetracer/struct.ImageTracer.html#method.all_rays) that will
+/// store for each pixel in [`image`](../imagetracer/struct.ImageTracer.html#fields):
+///   * a [`Vec`] of [`Ray`]s, the length of this vector\ will be greater than one when
+///     `antialiasing_level!=1`;
+///   * a [`u64`] random integer generated from [`Pcg`], that will be used\ to init an independent
+///     [`Pcg`] when rendering equation solution (avoiding artefacts).
+</span><span class="kw">struct </span>Rays {
+    <span class="doccomment">/// [`Pcg`] `init_seq` for each pixel.
+    </span>seq: u64,
+    <span class="doccomment">/// Rays for each pixel.
+    </span>rays: Vec&lt;Ray&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ImageTracer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Initialize an ImageTracer object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The parameter `image` must be a [`HdrImage`] object that has already been initialized.\</span>
-    <span class="doccomment">/// The parameter `camera` must be a [`Camera`] enum that implement [`FireRay`] trait.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">image</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">HdrImage</span>, <span class="ident">camera</span>: <span class="ident">Camera</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">image</span>, <span class="ident">camera</span> }
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ImageTracer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Initialize an ImageTracer object.
+    ///
+    /// The parameter `image` must be a [`HdrImage`] object that has already been initialized.\
+    /// The parameter `camera` must be a [`Camera`] enum that implement [`FireRay`] trait.
+    </span><span class="kw">pub fn </span>new(image: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>HdrImage, camera: Camera) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ image, camera }
     }
 
-    <span class="doccomment">/// Shot one light [`Ray`] through image pixel `(col, row)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The parameters `(col, row)` are measured in the same way as\</span>
-    <span class="doccomment">/// they are in `HdrImage`the bottom left corner is placed at `(0, 0)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The values of `u_pixel` and `v_pixel` are floating-point numbers in the range `[0, 1]`.\</span>
-    <span class="doccomment">/// They specify where the ray should cross the pixel; passing `0.5` to both means that\</span>
-    <span class="doccomment">/// the ray will pass through the pixel&#39;s center.</span>
-    <span class="kw">fn</span> <span class="ident">fire_ray</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">col</span>: <span class="ident">u32</span>, <span class="ident">row</span>: <span class="ident">u32</span>, <span class="ident">u_pixel</span>: <span class="ident">f32</span>, <span class="ident">v_pixel</span>: <span class="ident">f32</span>) -&gt; <span class="ident">Ray</span> {
-        <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> (<span class="ident">col</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">+</span> <span class="ident">u_pixel</span>) <span class="op">/</span> <span class="self">self</span>.<span class="ident">image</span>.<span class="ident">shape</span>().<span class="number">0</span> <span class="kw">as</span> <span class="ident">f32</span>;
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="number">1.</span> <span class="op">-</span> (<span class="ident">row</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">+</span> <span class="ident">v_pixel</span>) <span class="op">/</span> <span class="self">self</span>.<span class="ident">image</span>.<span class="ident">shape</span>().<span class="number">1</span> <span class="kw">as</span> <span class="ident">f32</span>;
-        <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">fire_ray</span>(<span class="ident">u</span>, <span class="ident">v</span>)
+    <span class="doccomment">/// Shot one light [`Ray`] through image pixel `(col, row)`.
+    ///
+    /// The parameters `(col, row)` are measured in the same way as\
+    /// they are in `HdrImage`the bottom left corner is placed at `(0, 0)`.
+    ///
+    /// The values of `u_pixel` and `v_pixel` are floating-point numbers in the range `[0, 1]`.\
+    /// They specify where the ray should cross the pixel; passing `0.5` to both means that\
+    /// the ray will pass through the pixel&#39;s center.
+    </span><span class="kw">fn </span>fire_ray(<span class="kw-2">&amp;</span><span class="self">self</span>, col: u32, row: u32, u_pixel: f32, v_pixel: f32) -&gt; Ray {
+        <span class="kw">let </span>u = (col <span class="kw">as </span>f32 + u_pixel) / <span class="self">self</span>.image.shape().<span class="number">0 </span><span class="kw">as </span>f32;
+        <span class="kw">let </span>v = <span class="number">1. </span>- (row <span class="kw">as </span>f32 + v_pixel) / <span class="self">self</span>.image.shape().<span class="number">1 </span><span class="kw">as </span>f32;
+        <span class="self">self</span>.camera.fire_ray(u, v)
     }
 
-    <span class="doccomment">/// Generate a [`Vec`] of [`Rays`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Appo method for parallelized [`fire_all_rays`](#method.fire_all_rays).</span>
-    <span class="kw">fn</span> <span class="ident">all_rays</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">init_state</span>: <span class="ident">u64</span>, <span class="ident">init_seq</span>: <span class="ident">u64</span>, <span class="ident">antialiasing_level</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Rays</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">all_rays</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::new</span>(<span class="ident">init_state</span>, <span class="ident">init_seq</span>);
-        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">image</span>.<span class="ident">shape</span>().<span class="number">1</span> {
-            <span class="kw">for</span> <span class="ident">col</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">image</span>.<span class="ident">shape</span>().<span class="number">0</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rays</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-                <span class="kw">for</span> <span class="ident">sub_row</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">antialiasing_level</span> {
-                    <span class="kw">for</span> <span class="ident">sub_col</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">antialiasing_level</span> {
-                        <span class="ident">rays</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">fire_ray</span>(
-                            <span class="ident">col</span>,
-                            <span class="ident">row</span>,
-                            (<span class="ident">sub_row</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">+</span> <span class="ident">pcg</span>.<span class="ident">random_float</span>()) <span class="op">/</span> (<span class="ident">antialiasing_level</span> <span class="kw">as</span> <span class="ident">f32</span>),
-                            (<span class="ident">sub_col</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">+</span> <span class="ident">pcg</span>.<span class="ident">random_float</span>()) <span class="op">/</span> (<span class="ident">antialiasing_level</span> <span class="kw">as</span> <span class="ident">f32</span>),
+    <span class="doccomment">/// Generate a [`Vec`] of [`Rays`].
+    ///
+    /// Appo method for parallelized [`fire_all_rays`](#method.fire_all_rays).
+    </span><span class="kw">fn </span>all_rays(<span class="kw-2">&amp;</span><span class="self">self</span>, init_state: u64, init_seq: u64, antialiasing_level: u32) -&gt; Vec&lt;Rays&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>all_rays = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::new(init_state, init_seq);
+        <span class="kw">for </span>row <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.image.shape().<span class="number">1 </span>{
+            <span class="kw">for </span>col <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.image.shape().<span class="number">0 </span>{
+                <span class="kw">let </span><span class="kw-2">mut </span>rays = Vec::new();
+                <span class="kw">for </span>sub_row <span class="kw">in </span><span class="number">0</span>..antialiasing_level {
+                    <span class="kw">for </span>sub_col <span class="kw">in </span><span class="number">0</span>..antialiasing_level {
+                        rays.push(<span class="self">self</span>.fire_ray(
+                            col,
+                            row,
+                            (sub_row <span class="kw">as </span>f32 + pcg.random_float()) / (antialiasing_level <span class="kw">as </span>f32),
+                            (sub_col <span class="kw">as </span>f32 + pcg.random_float()) / (antialiasing_level <span class="kw">as </span>f32),
                         ));
                     }
                 }
-                <span class="ident">all_rays</span>.<span class="ident">push</span>(<span class="ident">Rays</span> {
-                    <span class="ident">rays</span>,
-                    <span class="ident">seq</span>: <span class="ident">pcg</span>.<span class="ident">random</span>() <span class="kw">as</span> <span class="ident">u64</span>,
+                all_rays.push(Rays {
+                    rays,
+                    seq: pcg.random() <span class="kw">as </span>u64,
                 })
             }
         }
-        <span class="ident">all_rays</span>
+        all_rays
     }
 
-    <span class="doccomment">/// Shoot several light rays crossing each of the pixels in the image.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `antialiasing_level` is one, for each pixel in the [`HdrImage`] object fire one [`Ray`],\</span>
-    <span class="doccomment">/// and pass it to a [`Renderer`] that implement a [`Solve`] trait to determine the `Color` of</span>
-    <span class="doccomment">/// the pixel.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `antialiasing_level` is greater than one, then each pixel is divided in a N by N grid,\</span>
-    <span class="doccomment">/// where N is the anti-aliasing level, and a [`Ray`] is thrown for each sub-pixel;\</span>
-    <span class="doccomment">/// the color of the pixel in this case is obtained as the mean color of the N*N samples.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is **parallelized** for each pixel that compose</span>
-    <span class="doccomment">/// [`image`](#fields) pixels matrix,\</span>
-    <span class="doccomment">/// thanks to high-level API [`rayon::iter::IntoParallelRefIterator::par_iter`].\</span>
-    <span class="doccomment">/// So for each available thread an independent</span>
-    <span class="doccomment">/// pixel rendering equation resolution is computed,\</span>
-    <span class="doccomment">/// using particular [`Renderer`] that implement [`Solve`] trait.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// **Note:** to avoid artefacts each [`Pcg`] used by each thread is created from</span>
-    <span class="doccomment">/// a different sequence, thanks to [`all_rays`](#method.all_rays) method.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fire_all_rays</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">renderer</span>: <span class="kw-2">&amp;</span><span class="ident">Renderer</span>,
-        <span class="ident">init_state</span>: <span class="ident">u64</span>,
-        <span class="ident">init_seq</span>: <span class="ident">u64</span>,
-        <span class="ident">antialiasing_level</span>: <span class="ident">u32</span>,
+    <span class="doccomment">/// Shoot several light rays crossing each of the pixels in the image.
+    ///
+    /// If `antialiasing_level` is one, for each pixel in the [`HdrImage`] object fire one [`Ray`],\
+    /// and pass it to a [`Renderer`] that implement a [`Solve`] trait to determine the `Color` of
+    /// the pixel.
+    ///
+    /// If `antialiasing_level` is greater than one, then each pixel is divided in a N by N grid,\
+    /// where N is the anti-aliasing level, and a [`Ray`] is thrown for each sub-pixel;\
+    /// the color of the pixel in this case is obtained as the mean color of the N*N samples.
+    ///
+    /// This function is **parallelized** for each pixel that compose
+    /// [`image`](#fields) pixels matrix,\
+    /// thanks to high-level API [`rayon::iter::IntoParallelRefIterator::par_iter`].\
+    /// So for each available thread an independent
+    /// pixel rendering equation resolution is computed,\
+    /// using particular [`Renderer`] that implement [`Solve`] trait.
+    ///
+    /// **Note:** to avoid artefacts each [`Pcg`] used by each thread is created from
+    /// a different sequence, thanks to [`all_rays`](#method.all_rays) method.
+    </span><span class="kw">pub fn </span>fire_all_rays(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        renderer: <span class="kw-2">&amp;</span>Renderer,
+        init_state: u64,
+        init_seq: u64,
+        antialiasing_level: u32,
     ) {
-        <span class="kw">let</span> <span class="ident">pixels</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">all_rays</span>(<span class="ident">init_state</span>, <span class="ident">init_seq</span>, <span class="ident">antialiasing_level</span>)
-            .<span class="ident">par_iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">ray</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">Color::default</span>();
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::new</span>(<span class="ident">init_state</span>, <span class="ident">ray</span>.<span class="ident">seq</span>);
-                <span class="kw">for</span> <span class="ident">ray</span> <span class="kw">in</span> <span class="ident">ray</span>.<span class="ident">rays</span>.<span class="ident">iter</span>() {
-                    <span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span> <span class="op">+</span> <span class="ident">renderer</span>.<span class="ident">solve</span>(<span class="kw-2">*</span><span class="ident">ray</span>, <span class="kw-2">&amp;mut</span> <span class="ident">pcg</span>);
+        <span class="kw">let </span>pixels: Vec&lt;Color&gt; = <span class="self">self
+            </span>.all_rays(init_state, init_seq, antialiasing_level)
+            .par_iter()
+            .map(|ray| {
+                <span class="kw">let </span><span class="kw-2">mut </span>color = Color::default();
+                <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::new(init_state, ray.seq);
+                <span class="kw">for </span>ray <span class="kw">in </span>ray.rays.iter() {
+                    color = color + renderer.solve(<span class="kw-2">*</span>ray, <span class="kw-2">&amp;mut </span>pcg);
                 }
-                <span class="ident">color</span> <span class="op">*</span> (<span class="number">1.</span> <span class="op">/</span> <span class="ident">antialiasing_level</span>.<span class="ident">pow</span>(<span class="number">2</span>) <span class="kw">as</span> <span class="ident">f32</span>)
+                color * (<span class="number">1. </span>/ antialiasing_level.pow(<span class="number">2</span>) <span class="kw">as </span>f32)
             })
-            .<span class="ident">collect</span>();
-        <span class="self">self</span>.<span class="ident">image</span>.<span class="ident">set_pixels</span>(<span class="ident">pixels</span>).<span class="ident">unwrap_or</span>(())
+            .collect();
+        <span class="self">self</span>.image.set_pixels(pixels).unwrap_or(())
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">camera::PerspectiveCamera</span>, <span class="ident">color::Color</span>, <span class="ident">misc::IsClose</span>, <span class="ident">point::Point</span>,
-        <span class="ident">render::DummyRenderer</span>, <span class="ident">transformation::Transformation</span>,
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use crate</span>::{
+        camera::PerspectiveCamera, color::Color, misc::IsClose, point::Point,
+        render::DummyRenderer, transformation::Transformation,
     };
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_uv_sub_mapping</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">HdrImage::new</span>(<span class="number">4</span>, <span class="number">2</span>);
-        <span class="kw">let</span> <span class="ident">camera</span> <span class="op">=</span>
-            <span class="ident">Camera::Perspective</span>(<span class="ident">PerspectiveCamera::new</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="ident">Transformation::default</span>()));
-        <span class="kw">let</span> <span class="ident">tracer</span> <span class="op">=</span> <span class="ident">ImageTracer::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">image</span>, <span class="ident">camera</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_uv_sub_mapping() {
+        <span class="kw">let </span><span class="kw-2">mut </span>image = HdrImage::new(<span class="number">4</span>, <span class="number">2</span>);
+        <span class="kw">let </span>camera =
+            Camera::Perspective(PerspectiveCamera::new(<span class="number">1.0</span>, <span class="number">2.0</span>, Transformation::default()));
+        <span class="kw">let </span>tracer = ImageTracer::new(<span class="kw-2">&amp;mut </span>image, camera);
 
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">tracer</span>.<span class="ident">fire_ray</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">2.5</span>, <span class="number">1.5</span>);
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">tracer</span>.<span class="ident">fire_ray</span>(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0.5</span>, <span class="number">0.5</span>);
-        <span class="macro">assert!</span>(<span class="ident">ray1</span>.<span class="ident">is_close</span>(<span class="ident">ray2</span>));
+        <span class="kw">let </span>ray1 = tracer.fire_ray(<span class="number">0</span>, <span class="number">0</span>, <span class="number">2.5</span>, <span class="number">1.5</span>);
+        <span class="kw">let </span>ray2 = tracer.fire_ray(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0.5</span>, <span class="number">0.5</span>);
+        <span class="macro">assert!</span>(ray1.is_close(ray2));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_image_coverage</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">HdrImage::new</span>(<span class="number">4</span>, <span class="number">2</span>);
-        <span class="kw">let</span> <span class="ident">camera</span> <span class="op">=</span>
-            <span class="ident">Camera::Perspective</span>(<span class="ident">PerspectiveCamera::new</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="ident">Transformation::default</span>()));
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tracer</span> <span class="op">=</span> <span class="ident">ImageTracer::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">image</span>, <span class="ident">camera</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_image_coverage() {
+        <span class="kw">let </span><span class="kw-2">mut </span>image = HdrImage::new(<span class="number">4</span>, <span class="number">2</span>);
+        <span class="kw">let </span>camera =
+            Camera::Perspective(PerspectiveCamera::new(<span class="number">1.0</span>, <span class="number">2.0</span>, Transformation::default()));
+        <span class="kw">let </span><span class="kw-2">mut </span>tracer = ImageTracer::new(<span class="kw-2">&amp;mut </span>image, camera);
 
-        <span class="ident">tracer</span>.<span class="ident">fire_all_rays</span>(<span class="kw-2">&amp;</span><span class="ident">Renderer::Dummy</span>(<span class="ident">DummyRenderer</span>), <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);
-        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">image</span>.<span class="ident">shape</span>().<span class="number">1</span> {
-            <span class="kw">for</span> <span class="ident">col</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">image</span>.<span class="ident">shape</span>().<span class="number">0</span> {
+        tracer.fire_all_rays(<span class="kw-2">&amp;</span>Renderer::Dummy(DummyRenderer), <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);
+        <span class="kw">for </span>row <span class="kw">in </span><span class="number">0</span>..image.shape().<span class="number">1 </span>{
+            <span class="kw">for </span>col <span class="kw">in </span><span class="number">0</span>..image.shape().<span class="number">0 </span>{
                 <span class="macro">assert!</span>(
-                    <span class="macro">matches!</span>(<span class="ident">image</span>.<span class="ident">get_pixel</span>(<span class="ident">col</span>, <span class="ident">row</span>), <span class="prelude-val">Ok</span>(<span class="ident">col</span>) <span class="kw">if</span> <span class="ident">col</span> <span class="op">==</span> <span class="ident">Color::from</span>((<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>)))
+                    <span class="macro">matches!</span>(image.get_pixel(col, row), <span class="prelude-val">Ok</span>(col) <span class="kw">if </span>col == Color::from((<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>)))
                 );
             }
         }
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_orientation</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">HdrImage::new</span>(<span class="number">4</span>, <span class="number">2</span>);
-        <span class="kw">let</span> <span class="ident">camera</span> <span class="op">=</span>
-            <span class="ident">Camera::Perspective</span>(<span class="ident">PerspectiveCamera::new</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="ident">Transformation::default</span>()));
-        <span class="kw">let</span> <span class="ident">tracer</span> <span class="op">=</span> <span class="ident">ImageTracer</span> {
-            <span class="ident">image</span>: <span class="kw-2">&amp;mut</span> <span class="ident">image</span>,
-            <span class="ident">camera</span>,
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_orientation() {
+        <span class="kw">let </span><span class="kw-2">mut </span>image = HdrImage::new(<span class="number">4</span>, <span class="number">2</span>);
+        <span class="kw">let </span>camera =
+            Camera::Perspective(PerspectiveCamera::new(<span class="number">1.0</span>, <span class="number">2.0</span>, Transformation::default()));
+        <span class="kw">let </span>tracer = ImageTracer {
+            image: <span class="kw-2">&amp;mut </span>image,
+            camera,
         };
 
-        <span class="kw">let</span> <span class="ident">top_left_ray</span> <span class="op">=</span> <span class="ident">tracer</span>.<span class="ident">fire_ray</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.</span>, <span class="number">0.</span>);
-        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">top_left_ray</span>.<span class="ident">at</span>(<span class="number">1.</span>));
-        <span class="macro">assert!</span>(<span class="ident">top_left_ray</span>.<span class="ident">at</span>(<span class="number">1.</span>).<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="number">2.</span>, <span class="number">1.</span>))));
+        <span class="kw">let </span>top_left_ray = tracer.fire_ray(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.</span>, <span class="number">0.</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, top_left_ray.at(<span class="number">1.</span>));
+        <span class="macro">assert!</span>(top_left_ray.at(<span class="number">1.</span>).is_close(Point::from((<span class="number">0.</span>, <span class="number">2.</span>, <span class="number">1.</span>))));
 
-        <span class="kw">let</span> <span class="ident">bottom_right_ray</span> <span class="op">=</span> <span class="ident">tracer</span>.<span class="ident">fire_ray</span>(<span class="number">3</span>, <span class="number">1</span>, <span class="number">1.</span>, <span class="number">1.</span>);
-        <span class="macro">assert!</span>(<span class="ident">bottom_right_ray</span>
-            .<span class="ident">at</span>(<span class="number">1.</span>)
-            .<span class="ident">is_close</span>(<span class="ident">Point::from</span>((<span class="number">0.</span>, <span class="op">-</span><span class="number">2.</span>, <span class="op">-</span><span class="number">1.</span>))));
+        <span class="kw">let </span>bottom_right_ray = tracer.fire_ray(<span class="number">3</span>, <span class="number">1</span>, <span class="number">1.</span>, <span class="number">1.</span>);
+        <span class="macro">assert!</span>(bottom_right_ray
+            .at(<span class="number">1.</span>)
+            .is_close(Point::from((<span class="number">0.</span>, -<span class="number">2.</span>, -<span class="number">1.</span>))));
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

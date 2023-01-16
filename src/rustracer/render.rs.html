@@ -1,9 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/render.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>render.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/render.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>render.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -317,320 +312,319 @@
 <span id="312">312</span>
 <span id="313">313</span>
 <span id="314">314</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Render module.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Provides different renderers that implement [`Solve`] trait.</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">color::Color</span>,
-    <span class="ident">material</span>::{<span class="ident">GetColor</span>, <span class="ident">ScatterRay</span>},
-    <span class="ident">random::Pcg</span>,
-    <span class="ident">ray::Ray</span>,
-    <span class="ident">world::World</span>,
+</pre><pre class="rust"><code><span class="doccomment">//! Render module.
+//!
+//! Provides different renderers that implement [`Solve`] trait.
+</span><span class="kw">use crate</span>::{
+    color::Color,
+    material::{GetColor, ScatterRay},
+    random::Pcg,
+    ray::Ray,
+    world::World,
 };
 
-<span class="doccomment">/// A trait for solving rendering equation.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Must accept a [`Ray`] and a [`Pcg`], and must return a [`Color`] instance telling the</span>
-<span class="doccomment">/// color to assign to a pixel in the image.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// **Note:** [`Pcg`] parameter will be used only with [`Renderer::PathTracer`].</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Solve</span> {
-    <span class="kw">fn</span> <span class="ident">solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>, <span class="ident">pcg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Pcg</span>) -&gt; <span class="ident">Color</span>;
+<span class="doccomment">/// A trait for solving rendering equation.
+///
+/// Must accept a [`Ray`] and a [`Pcg`], and must return a [`Color`] instance telling the
+/// color to assign to a pixel in the image.
+///
+/// **Note:** [`Pcg`] parameter will be used only with [`Renderer::PathTracer`].
+</span><span class="kw">pub trait </span>Solve {
+    <span class="kw">fn </span>solve(<span class="kw-2">&amp;</span><span class="self">self</span>, ray: Ray, pcg: <span class="kw-2">&amp;mut </span>Pcg) -&gt; Color;
 }
 
-<span class="doccomment">/// A on/off renderer.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This renderer is mostly useful for debugging purposes,</span>
-<span class="doccomment">/// as it is really fast, but it produces boring images.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OnOffRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// A world instance.</span>
-    <span class="ident">world</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">World</span>,
-    <span class="doccomment">/// Background color (usually [`BLACK`](../color/constant.BLACK.html)).</span>
-    <span class="ident">bg_color</span>: <span class="ident">Color</span>,
-    <span class="doccomment">/// Foreground color (usually [`WHITE`](../color/constant.WHITE.html)).</span>
-    <span class="ident">fg_color</span>: <span class="ident">Color</span>,
+<span class="doccomment">/// A on/off renderer.
+///
+/// This renderer is mostly useful for debugging purposes,
+/// as it is really fast, but it produces boring images.
+</span><span class="kw">pub struct </span>OnOffRenderer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// A world instance.
+    </span>world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>World,
+    <span class="doccomment">/// Background color (usually [`BLACK`](../color/constant.BLACK.html)).
+    </span>bg_color: Color,
+    <span class="doccomment">/// Foreground color (usually [`WHITE`](../color/constant.WHITE.html)).
+    </span>fg_color: Color,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">OnOffRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new [`OnOffRenderer`] renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">world</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">World</span>, <span class="ident">bg_color</span>: <span class="ident">Color</span>, <span class="ident">fg_color</span>: <span class="ident">Color</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">world</span>,
-            <span class="ident">bg_color</span>,
-            <span class="ident">fg_color</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; OnOffRenderer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Create a new [`OnOffRenderer`] renderer.
+    </span><span class="kw">pub fn </span>new(world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>World, bg_color: Color, fg_color: Color) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            world,
+            bg_color,
+            fg_color,
         }
     }
 }
 
-<span class="doccomment">/// A flat renderer.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This renderer is mostly useful for debugging purposes,</span>
-<span class="doccomment">/// as it is fast, but it does not take into account light reflection and shadows.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FlatRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// A world instance.</span>
-    <span class="ident">world</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">World</span>,
-    <span class="doccomment">/// Background color (usually [`BLACK`](../color/constant.BLACK.html)).</span>
-    <span class="ident">bg_color</span>: <span class="ident">Color</span>,
+<span class="doccomment">/// A flat renderer.
+///
+/// This renderer is mostly useful for debugging purposes,
+/// as it is fast, but it does not take into account light reflection and shadows.
+</span><span class="kw">pub struct </span>FlatRenderer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// A world instance.
+    </span>world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>World,
+    <span class="doccomment">/// Background color (usually [`BLACK`](../color/constant.BLACK.html)).
+    </span>bg_color: Color,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Solve</span> <span class="kw">for</span> <span class="ident">OnOffRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Solve rendering with on/off strategy.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If intersection happens return `fg_color` otherwise `bg_color`.</span>
-    <span class="kw">fn</span> <span class="ident">solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>, <span class="ident">_pcg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Pcg</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">_hit</span>) =&gt; <span class="self">self</span>.<span class="ident">fg_color</span>,
-            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">bg_color</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Solve <span class="kw">for </span>OnOffRenderer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Solve rendering with on/off strategy.
+    ///
+    /// If intersection happens return `fg_color` otherwise `bg_color`.
+    </span><span class="kw">fn </span>solve(<span class="kw-2">&amp;</span><span class="self">self</span>, ray: Ray, _pcg: <span class="kw-2">&amp;mut </span>Pcg) -&gt; Color {
+        <span class="kw">match </span><span class="self">self</span>.world.ray_intersection(ray) {
+            <span class="prelude-val">Some</span>(_hit) =&gt; <span class="self">self</span>.fg_color,
+            <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.bg_color,
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FlatRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new [`FlatRenderer`] renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">world</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">World</span>, <span class="ident">bg_color</span>: <span class="ident">Color</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">world</span>, <span class="ident">bg_color</span> }
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FlatRenderer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Create a new [`FlatRenderer`] renderer.
+    </span><span class="kw">pub fn </span>new(world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>World, bg_color: Color) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ world, bg_color }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Solve</span> <span class="kw">for</span> <span class="ident">FlatRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Solve rendering with flat colors.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If intersection happens return the color of the hit shape, otherwise `bg_color`.</span>
-    <span class="kw">fn</span> <span class="ident">solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>, <span class="ident">_pcg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Pcg</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">hit</span>) =&gt; {
-                <span class="ident">hit</span>.<span class="ident">material</span>.<span class="ident">emitted_radiance</span>.<span class="ident">get_color</span>(<span class="ident">hit</span>.<span class="ident">surface_point</span>)
-                    <span class="op">+</span> <span class="ident">hit</span>.<span class="ident">material</span>.<span class="ident">brdf</span>.<span class="ident">get_color</span>(<span class="ident">hit</span>.<span class="ident">surface_point</span>)
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Solve <span class="kw">for </span>FlatRenderer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Solve rendering with flat colors.
+    ///
+    /// If intersection happens return the color of the hit shape, otherwise `bg_color`.
+    </span><span class="kw">fn </span>solve(<span class="kw-2">&amp;</span><span class="self">self</span>, ray: Ray, _pcg: <span class="kw-2">&amp;mut </span>Pcg) -&gt; Color {
+        <span class="kw">match </span><span class="self">self</span>.world.ray_intersection(ray) {
+            <span class="prelude-val">Some</span>(hit) =&gt; {
+                hit.material.emitted_radiance.get_color(hit.surface_point)
+                    + hit.material.brdf.get_color(hit.surface_point)
             },
-            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">bg_color</span>,
+            <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.bg_color,
         }
     }
 }
 
-<span class="doccomment">/// A path tracing renderer.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// It resolves the rendering equations by means</span>
-<span class="doccomment">/// of a Monte Carlo numeric integration algorithm.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PathTracer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// A world instance.</span>
-    <span class="ident">world</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">World</span>,
-    <span class="doccomment">/// Background color (usually [`BLACK`](../color/constant.BLACK.html)).</span>
-    <span class="ident">bg_color</span>: <span class="ident">Color</span>,
-    <span class="doccomment">/// Number of scattered rays after every impact.</span>
-    <span class="ident">num_of_rays</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// Maximum depth of scattered rays,</span>
-    <span class="doccomment">/// this should always be infinite if not for debugging purposes.</span>
-    <span class="ident">max_depth</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// After this level of depth the russian roulette algorithm came into play</span>
-    <span class="doccomment">/// to eventually stop the rendering.</span>
-    <span class="ident">russian_roulette_limit</span>: <span class="ident">u32</span>,
+<span class="doccomment">/// A path tracing renderer.
+///
+/// It resolves the rendering equations by means
+/// of a Monte Carlo numeric integration algorithm.
+</span><span class="kw">pub struct </span>PathTracer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// A world instance.
+    </span>world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>World,
+    <span class="doccomment">/// Background color (usually [`BLACK`](../color/constant.BLACK.html)).
+    </span>bg_color: Color,
+    <span class="doccomment">/// Number of scattered rays after every impact.
+    </span>num_of_rays: u32,
+    <span class="doccomment">/// Maximum depth of scattered rays,
+    /// this should always be infinite if not for debugging purposes.
+    </span>max_depth: u32,
+    <span class="doccomment">/// After this level of depth the russian roulette algorithm came into play
+    /// to eventually stop the rendering.
+    </span>russian_roulette_limit: u32,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">PathTracer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new [`PathTracer`] renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">world</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">World</span>,
-        <span class="ident">bg_color</span>: <span class="ident">Color</span>,
-        <span class="ident">num_of_rays</span>: <span class="ident">u32</span>,
-        <span class="ident">max_depth</span>: <span class="ident">u32</span>,
-        <span class="ident">russian_roulette_limit</span>: <span class="ident">u32</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="ident">PathTracer</span> {
-            <span class="ident">world</span>,
-            <span class="ident">bg_color</span>,
-            <span class="ident">num_of_rays</span>,
-            <span class="ident">max_depth</span>,
-            <span class="ident">russian_roulette_limit</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; PathTracer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Create a new [`PathTracer`] renderer.
+    </span><span class="kw">pub fn </span>new(
+        world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>World,
+        bg_color: Color,
+        num_of_rays: u32,
+        max_depth: u32,
+        russian_roulette_limit: u32,
+    ) -&gt; <span class="self">Self </span>{
+        PathTracer {
+            world,
+            bg_color,
+            num_of_rays,
+            max_depth,
+            russian_roulette_limit,
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Solve</span> <span class="kw">for</span> <span class="ident">PathTracer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Solve the rendering equation using a path tracing algorithm.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The algorithm implemented here allows the caller to tune number of\</span>
-    <span class="doccomment">/// rays thrown at each iteration,as well as the maximum depth.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It implements Russian roulette, to avoid artefacts and speed up computation.</span>
-    <span class="kw">fn</span> <span class="ident">solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>, <span class="ident">pcg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Pcg</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">if</span> <span class="ident">ray</span>.<span class="ident">depth</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">max_depth</span> {
-            <span class="kw">return</span> <span class="ident">Color::default</span>();
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Solve <span class="kw">for </span>PathTracer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Solve the rendering equation using a path tracing algorithm.
+    ///
+    /// The algorithm implemented here allows the caller to tune number of\
+    /// rays thrown at each iteration,as well as the maximum depth.
+    ///
+    /// It implements Russian roulette, to avoid artefacts and speed up computation.
+    </span><span class="kw">fn </span>solve(<span class="kw-2">&amp;</span><span class="self">self</span>, ray: Ray, pcg: <span class="kw-2">&amp;mut </span>Pcg) -&gt; Color {
+        <span class="kw">if </span>ray.depth &gt; <span class="self">self</span>.max_depth {
+            <span class="kw">return </span>Color::default();
         }
-        <span class="kw">let</span> <span class="ident">hit_record</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world</span>.<span class="ident">ray_intersection</span>(<span class="ident">ray</span>);
-        <span class="kw">if</span> <span class="ident">hit_record</span>.<span class="ident">is_none</span>() {
-            <span class="kw">return</span> <span class="self">self</span>.<span class="ident">bg_color</span>;
+        <span class="kw">let </span>hit_record = <span class="self">self</span>.world.ray_intersection(ray);
+        <span class="kw">if </span>hit_record.is_none() {
+            <span class="kw">return </span><span class="self">self</span>.bg_color;
         }
-        <span class="kw">let</span> <span class="ident">hit</span> <span class="op">=</span> <span class="ident">hit_record</span>.<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">hit_material</span> <span class="op">=</span> <span class="ident">hit</span>.<span class="ident">material</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hit_color</span> <span class="op">=</span> <span class="ident">hit_material</span>.<span class="ident">brdf</span>.<span class="ident">get_color</span>(<span class="ident">hit</span>.<span class="ident">surface_point</span>);
-        <span class="kw">let</span> <span class="ident">emitted_radiance</span> <span class="op">=</span> <span class="ident">hit_material</span>.<span class="ident">emitted_radiance</span>.<span class="ident">get_color</span>(<span class="ident">hit</span>.<span class="ident">surface_point</span>);
-        <span class="kw">let</span> <span class="ident">hit_color_lum</span> <span class="op">=</span> <span class="ident">hit_color</span>.<span class="ident">r</span>.<span class="ident">max</span>(<span class="ident">hit_color</span>.<span class="ident">g</span>.<span class="ident">max</span>(<span class="ident">hit_color</span>.<span class="ident">b</span>));
-        <span class="kw">if</span> <span class="ident">ray</span>.<span class="ident">depth</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">russian_roulette_limit</span> {
-            <span class="kw">let</span> <span class="ident">q</span> <span class="op">=</span> (<span class="number">1.</span> <span class="op">-</span> <span class="ident">hit_color_lum</span>).<span class="ident">max</span>(<span class="number">0.05</span>);
-            <span class="kw">if</span> <span class="ident">pcg</span>.<span class="ident">random_float</span>() <span class="op">&gt;</span> <span class="ident">q</span> {
-                <span class="ident">hit_color</span> <span class="op">=</span> <span class="ident">hit_color</span> <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> (<span class="number">1.</span> <span class="op">-</span> <span class="ident">q</span>));
-            } <span class="kw">else</span> {
-                <span class="kw">return</span> <span class="ident">emitted_radiance</span>;
+        <span class="kw">let </span>hit = hit_record.unwrap();
+        <span class="kw">let </span>hit_material = hit.material;
+        <span class="kw">let </span><span class="kw-2">mut </span>hit_color = hit_material.brdf.get_color(hit.surface_point);
+        <span class="kw">let </span>emitted_radiance = hit_material.emitted_radiance.get_color(hit.surface_point);
+        <span class="kw">let </span>hit_color_lum = hit_color.r.max(hit_color.g.max(hit_color.b));
+        <span class="kw">if </span>ray.depth &gt;= <span class="self">self</span>.russian_roulette_limit {
+            <span class="kw">let </span>q = (<span class="number">1. </span>- hit_color_lum).max(<span class="number">0.05</span>);
+            <span class="kw">if </span>pcg.random_float() &gt; q {
+                hit_color = hit_color * (<span class="number">1.0 </span>/ (<span class="number">1. </span>- q));
+            } <span class="kw">else </span>{
+                <span class="kw">return </span>emitted_radiance;
             }
         }
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cum_radiance</span> <span class="op">=</span> <span class="ident">Color::default</span>();
-        <span class="kw">if</span> <span class="ident">hit_color_lum</span> <span class="op">&gt;</span> <span class="number">0.</span> {
-            <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">num_of_rays</span> {
-                <span class="kw">let</span> <span class="ident">new_ray</span> <span class="op">=</span> <span class="ident">hit_material</span>.<span class="ident">brdf</span>.<span class="ident">scatter_ray</span>(
-                    (<span class="ident">pcg</span>.<span class="ident">random_float</span>(), <span class="ident">pcg</span>.<span class="ident">random_float</span>()),
-                    <span class="ident">hit</span>.<span class="ident">ray</span>.<span class="ident">dir</span>,
-                    <span class="ident">hit</span>.<span class="ident">world_point</span>,
-                    <span class="ident">hit</span>.<span class="ident">normal</span>,
-                    <span class="ident">ray</span>.<span class="ident">depth</span> <span class="op">+</span> <span class="number">1</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>cum_radiance = Color::default();
+        <span class="kw">if </span>hit_color_lum &gt; <span class="number">0. </span>{
+            <span class="kw">for _ in </span><span class="number">0</span>..<span class="self">self</span>.num_of_rays {
+                <span class="kw">let </span>new_ray = hit_material.brdf.scatter_ray(
+                    (pcg.random_float(), pcg.random_float()),
+                    hit.ray.dir,
+                    hit.world_point,
+                    hit.normal,
+                    ray.depth + <span class="number">1</span>,
                 );
-                <span class="kw">let</span> <span class="ident">new_radiance</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::solve</span>(<span class="self">self</span>, <span class="ident">new_ray</span>, <span class="ident">pcg</span>);
-                <span class="ident">cum_radiance</span> <span class="op">=</span> <span class="ident">cum_radiance</span> <span class="op">+</span> (<span class="ident">hit_color</span> <span class="op">*</span> <span class="ident">new_radiance</span>);
+                <span class="kw">let </span>new_radiance = <span class="self">Self</span>::solve(<span class="self">self</span>, new_ray, pcg);
+                cum_radiance = cum_radiance + (hit_color * new_radiance);
             }
         }
-        <span class="ident">emitted_radiance</span> <span class="op">+</span> <span class="ident">cum_radiance</span> <span class="op">*</span> (<span class="number">1.</span> <span class="op">/</span> (<span class="self">self</span>.<span class="ident">num_of_rays</span> <span class="kw">as</span> <span class="ident">f32</span>))
+        emitted_radiance + cum_radiance * (<span class="number">1. </span>/ (<span class="self">self</span>.num_of_rays <span class="kw">as </span>f32))
     }
 }
 
-<span class="doccomment">/// A dummy renderer.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Test purpose and little else.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DummyRenderer</span>;
+<span class="doccomment">/// A dummy renderer.
+///
+/// Test purpose and little else.
+</span><span class="kw">pub struct </span>DummyRenderer;
 
-<span class="kw">impl</span> <span class="ident">Solve</span> <span class="kw">for</span> <span class="ident">DummyRenderer</span> {
-    <span class="doccomment">/// Solve nothing! Only return a fixed [`Color`].</span>
-    <span class="kw">fn</span> <span class="ident">solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_ray</span>: <span class="ident">Ray</span>, <span class="ident">_pcg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Pcg</span>) -&gt; <span class="ident">Color</span> {
-        <span class="ident">Color::from</span>((<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>))
+<span class="kw">impl </span>Solve <span class="kw">for </span>DummyRenderer {
+    <span class="doccomment">/// Solve nothing! Only return a fixed [`Color`].
+    </span><span class="kw">fn </span>solve(<span class="kw-2">&amp;</span><span class="self">self</span>, _ray: Ray, _pcg: <span class="kw-2">&amp;mut </span>Pcg) -&gt; Color {
+        Color::from((<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>))
     }
 }
 
-<span class="doccomment">/// Enum of renderers.</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Renderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">OnOff</span>(<span class="ident">OnOffRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
-    <span class="ident">Dummy</span>(<span class="ident">DummyRenderer</span>),
-    <span class="ident">PathTracer</span>(<span class="ident">PathTracer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
-    <span class="ident">Flat</span>(<span class="ident">FlatRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
+<span class="doccomment">/// Enum of renderers.
+</span><span class="kw">pub enum </span>Renderer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    OnOff(OnOffRenderer&lt;<span class="lifetime">&#39;a</span>&gt;),
+    Dummy(DummyRenderer),
+    PathTracer(PathTracer&lt;<span class="lifetime">&#39;a</span>&gt;),
+    Flat(FlatRenderer&lt;<span class="lifetime">&#39;a</span>&gt;),
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Solve</span> <span class="kw">for</span> <span class="ident">Renderer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Render the scene using a particular [`Renderer`] variants.</span>
-    <span class="kw">fn</span> <span class="ident">solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ray</span>: <span class="ident">Ray</span>, <span class="ident">pcg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Pcg</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Renderer::OnOff</span>(<span class="ident">onoff</span>) =&gt; <span class="ident">onoff</span>.<span class="ident">solve</span>(<span class="ident">ray</span>, <span class="ident">pcg</span>),
-            <span class="ident">Renderer::Dummy</span>(<span class="ident">dummy</span>) =&gt; <span class="ident">dummy</span>.<span class="ident">solve</span>(<span class="ident">ray</span>, <span class="ident">pcg</span>),
-            <span class="ident">Renderer::PathTracer</span>(<span class="ident">pathtracer</span>) =&gt; <span class="ident">pathtracer</span>.<span class="ident">solve</span>(<span class="ident">ray</span>, <span class="ident">pcg</span>),
-            <span class="ident">Renderer::Flat</span>(<span class="ident">flat</span>) =&gt; <span class="ident">flat</span>.<span class="ident">solve</span>(<span class="ident">ray</span>, <span class="ident">pcg</span>),
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Solve <span class="kw">for </span>Renderer&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Render the scene using a particular [`Renderer`] variants.
+    </span><span class="kw">fn </span>solve(<span class="kw-2">&amp;</span><span class="self">self</span>, ray: Ray, pcg: <span class="kw-2">&amp;mut </span>Pcg) -&gt; Color {
+        <span class="kw">match </span><span class="self">self </span>{
+            Renderer::OnOff(onoff) =&gt; onoff.solve(ray, pcg),
+            Renderer::Dummy(dummy) =&gt; dummy.solve(ray, pcg),
+            Renderer::PathTracer(pathtracer) =&gt; pathtracer.solve(ray, pcg),
+            Renderer::Flat(flat) =&gt; flat.solve(ray, pcg),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">material</span>::{<span class="ident">DiffuseBRDF</span>, <span class="ident">Pigment</span>, <span class="ident">UniformPigment</span>, <span class="ident">BRDF</span>},
-        <span class="ident">misc::IsClose</span>,
-        <span class="ident">point::Point</span>,
-        <span class="ident">transformation::Transformation</span>,
-        <span class="ident">translation</span>,
-        <span class="ident">vector::E1</span>,
-        <span class="ident">CheckeredPigment</span>, <span class="ident">Material</span>, <span class="ident">Sphere</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>,
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use crate</span>::{
+        material::{DiffuseBRDF, Pigment, UniformPigment, BRDF},
+        misc::IsClose,
+        point::Point,
+        transformation::Transformation,
+        translation,
+        vector::E1,
+        CheckeredPigment, Material, Sphere, BLACK, WHITE,
     };
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_flat</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::default</span>();
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">2.</span>, <span class="number">3.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_flat() {
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::default();
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((-<span class="number">2.</span>, <span class="number">3.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">ray_r</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">2.</span>, <span class="number">0.5</span>, <span class="number">0.5</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray_r = Ray {
+            origin: Point::from((-<span class="number">2.</span>, <span class="number">0.5</span>, <span class="number">0.5</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">ray_l</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">2.</span>, <span class="op">-</span><span class="number">0.5</span>, <span class="number">0.5</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray_l = Ray {
+            origin: Point::from((-<span class="number">2.</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">red</span> <span class="op">=</span> <span class="ident">Color::from</span>((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>));
-        <span class="kw">let</span> <span class="ident">green</span> <span class="op">=</span> <span class="ident">Color::from</span>((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>));
-        <span class="kw">let</span> <span class="ident">blue</span> <span class="op">=</span> <span class="ident">Color::from</span>((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>));
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">world</span> <span class="op">=</span> <span class="ident">World::default</span>();
-        <span class="kw">let</span> <span class="ident">sphere_material</span> <span class="op">=</span> <span class="ident">Material</span> {
-            <span class="ident">brdf</span>: <span class="ident">BRDF::Diffuse</span>(<span class="ident">DiffuseBRDF</span> {
-                <span class="ident">pigment</span>: <span class="ident">Pigment::Checkered</span>(<span class="ident">CheckeredPigment</span> {
-                    <span class="ident">color1</span>: <span class="ident">red</span>,
-                    <span class="ident">color2</span>: <span class="ident">blue</span>,
-                    <span class="ident">steps</span>: <span class="number">2</span>,
+        <span class="kw">let </span>red = Color::from((<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>));
+        <span class="kw">let </span>green = Color::from((<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>));
+        <span class="kw">let </span>blue = Color::from((<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">1.</span>));
+        <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
+        <span class="kw">let </span>sphere_material = Material {
+            brdf: BRDF::Diffuse(DiffuseBRDF {
+                pigment: Pigment::Checkered(CheckeredPigment {
+                    color1: red,
+                    color2: blue,
+                    steps: <span class="number">2</span>,
                 }),
             }),
-            <span class="ident">emitted_radiance</span>: <span class="ident">Pigment::Uniform</span>(<span class="ident">UniformPigment</span> { <span class="ident">color</span>: <span class="ident">green</span> }),
+            emitted_radiance: Pigment::Uniform(UniformPigment { color: green }),
         };
-        <span class="ident">world</span>.<span class="ident">add</span>(<span class="ident">Box::new</span>(<span class="ident">Sphere::new</span>(
-            <span class="ident">Transformation::default</span>(),
-            <span class="ident">sphere_material</span>,
+        world.add(Box::new(Sphere::new(
+            Transformation::default(),
+            sphere_material,
         )));
-        <span class="kw">let</span> <span class="ident">flat_renderer</span> <span class="op">=</span> <span class="ident">Renderer::Flat</span>(<span class="ident">FlatRenderer::new</span>(<span class="kw-2">&amp;</span><span class="ident">world</span>, <span class="ident">BLACK</span>));
-        <span class="macro">assert!</span>(<span class="ident">flat_renderer</span>.<span class="ident">solve</span>(<span class="ident">ray1</span>, <span class="kw-2">&amp;mut</span> <span class="ident">pcg</span>).<span class="ident">is_close</span>(<span class="ident">BLACK</span>));
-        <span class="macro">assert!</span>(<span class="ident">flat_renderer</span>.<span class="ident">solve</span>(<span class="ident">ray_r</span>, <span class="kw-2">&amp;mut</span> <span class="ident">pcg</span>).<span class="ident">is_close</span>(<span class="ident">red</span> <span class="op">+</span> <span class="ident">green</span>));
-        <span class="macro">assert!</span>(<span class="ident">flat_renderer</span>.<span class="ident">solve</span>(<span class="ident">ray_l</span>, <span class="kw-2">&amp;mut</span> <span class="ident">pcg</span>).<span class="ident">is_close</span>(<span class="ident">blue</span> <span class="op">+</span> <span class="ident">green</span>));
+        <span class="kw">let </span>flat_renderer = Renderer::Flat(FlatRenderer::new(<span class="kw-2">&amp;</span>world, BLACK));
+        <span class="macro">assert!</span>(flat_renderer.solve(ray1, <span class="kw-2">&amp;mut </span>pcg).is_close(BLACK));
+        <span class="macro">assert!</span>(flat_renderer.solve(ray_r, <span class="kw-2">&amp;mut </span>pcg).is_close(red + green));
+        <span class="macro">assert!</span>(flat_renderer.solve(ray_l, <span class="kw-2">&amp;mut </span>pcg).is_close(blue + green));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_onoff</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::default</span>();
-        <span class="kw">let</span> <span class="ident">ray1</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">2.</span>, <span class="number">3.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_onoff() {
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::default();
+        <span class="kw">let </span>ray1 = Ray {
+            origin: Point::from((-<span class="number">2.</span>, <span class="number">3.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="ident">ray2</span> <span class="op">=</span> <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">Point::from</span>((<span class="op">-</span><span class="number">2.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
-            ..<span class="ident">Default::default</span>()
+        <span class="kw">let </span>ray2 = Ray {
+            origin: Point::from((-<span class="number">2.</span>, <span class="number">0.</span>, <span class="number">0.</span>)),
+            ..Default::default()
         };
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">world</span> <span class="op">=</span> <span class="ident">World::default</span>();
-        <span class="ident">world</span>.<span class="ident">add</span>(<span class="ident">Box::new</span>(<span class="ident">Sphere::default</span>()));
-        <span class="kw">let</span> <span class="ident">onoff_renderer</span> <span class="op">=</span> <span class="ident">Renderer::OnOff</span>(<span class="ident">OnOffRenderer::new</span>(<span class="kw-2">&amp;</span><span class="ident">world</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>));
-        <span class="macro">assert!</span>(<span class="ident">onoff_renderer</span>.<span class="ident">solve</span>(<span class="ident">ray1</span>, <span class="kw-2">&amp;mut</span> <span class="ident">pcg</span>).<span class="ident">is_close</span>(<span class="ident">BLACK</span>));
-        <span class="macro">assert!</span>(<span class="ident">onoff_renderer</span>.<span class="ident">solve</span>(<span class="ident">ray2</span>, <span class="kw-2">&amp;mut</span> <span class="ident">pcg</span>).<span class="ident">is_close</span>(<span class="ident">WHITE</span>))
+        <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
+        world.add(Box::&lt;Sphere&gt;::default());
+        <span class="kw">let </span>onoff_renderer = Renderer::OnOff(OnOffRenderer::new(<span class="kw-2">&amp;</span>world, BLACK, WHITE));
+        <span class="macro">assert!</span>(onoff_renderer.solve(ray1, <span class="kw-2">&amp;mut </span>pcg).is_close(BLACK));
+        <span class="macro">assert!</span>(onoff_renderer.solve(ray2, <span class="kw-2">&amp;mut </span>pcg).is_close(WHITE))
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_furnace</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::default</span>();
-        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span> {
-            <span class="kw">let</span> <span class="ident">emitted_radiance</span> <span class="op">=</span> <span class="ident">pcg</span>.<span class="ident">random_float</span>();
-            <span class="kw">let</span> <span class="ident">reflectance</span> <span class="op">=</span> <span class="ident">pcg</span>.<span class="ident">random_float</span>() <span class="op">*</span> <span class="number">0.9</span>;
-            <span class="kw">let</span> <span class="ident">furnace_material</span> <span class="op">=</span> <span class="ident">Material</span> {
-                <span class="ident">brdf</span>: <span class="ident">BRDF::Diffuse</span>(<span class="ident">DiffuseBRDF</span> {
-                    <span class="ident">pigment</span>: <span class="ident">Pigment::Uniform</span>(<span class="ident">UniformPigment</span> {
-                        <span class="ident">color</span>: <span class="ident">WHITE</span> <span class="op">*</span> <span class="ident">reflectance</span>,
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_furnace() {
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::default();
+        <span class="kw">for _ in </span><span class="number">0</span>..<span class="number">10 </span>{
+            <span class="kw">let </span>emitted_radiance = pcg.random_float();
+            <span class="kw">let </span>reflectance = pcg.random_float() * <span class="number">0.9</span>;
+            <span class="kw">let </span>furnace_material = Material {
+                brdf: BRDF::Diffuse(DiffuseBRDF {
+                    pigment: Pigment::Uniform(UniformPigment {
+                        color: WHITE * reflectance,
                     }),
                 }),
-                <span class="ident">emitted_radiance</span>: <span class="ident">Pigment::Uniform</span>(<span class="ident">UniformPigment</span> {
-                    <span class="ident">color</span>: <span class="ident">WHITE</span> <span class="op">*</span> <span class="ident">emitted_radiance</span>,
+                emitted_radiance: Pigment::Uniform(UniformPigment {
+                    color: WHITE * emitted_radiance,
                 }),
             };
-            <span class="kw">let</span> <span class="ident">furnace</span> <span class="op">=</span> <span class="ident">Sphere::new</span>(<span class="ident">Transformation::default</span>(), <span class="ident">furnace_material</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">world</span> <span class="op">=</span> <span class="ident">World::default</span>();
-            <span class="ident">world</span>.<span class="ident">add</span>(<span class="ident">Box::new</span>(<span class="ident">furnace</span>));
-            <span class="kw">let</span> <span class="ident">path_tracer</span> <span class="op">=</span> <span class="ident">Renderer::PathTracer</span>(<span class="ident">PathTracer::new</span>(<span class="kw-2">&amp;</span><span class="ident">world</span>, <span class="ident">BLACK</span>, <span class="number">1</span>, <span class="number">100</span>, <span class="number">101</span>));
-            <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">path_tracer</span>.<span class="ident">solve</span>(<span class="ident">Ray::default</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">pcg</span>);
-            <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">emitted_radiance</span> <span class="op">/</span> (<span class="number">1.</span> <span class="op">-</span> <span class="ident">reflectance</span>);
-            <span class="macro">assert!</span>(<span class="ident">expected</span>.<span class="ident">is_close</span>(<span class="ident">color</span>.<span class="ident">r</span>));
-            <span class="macro">assert!</span>(<span class="ident">expected</span>.<span class="ident">is_close</span>(<span class="ident">color</span>.<span class="ident">g</span>));
-            <span class="macro">assert!</span>(<span class="ident">expected</span>.<span class="ident">is_close</span>(<span class="ident">color</span>.<span class="ident">b</span>));
+            <span class="kw">let </span>furnace = Sphere::new(Transformation::default(), furnace_material);
+            <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
+            world.add(Box::new(furnace));
+            <span class="kw">let </span>path_tracer = Renderer::PathTracer(PathTracer::new(<span class="kw-2">&amp;</span>world, BLACK, <span class="number">1</span>, <span class="number">100</span>, <span class="number">101</span>));
+            <span class="kw">let </span>color = path_tracer.solve(Ray::default(), <span class="kw-2">&amp;mut </span>pcg);
+            <span class="kw">let </span>expected = emitted_radiance / (<span class="number">1. </span>- reflectance);
+            <span class="macro">assert!</span>(expected.is_close(color.r));
+            <span class="macro">assert!</span>(expected.is_close(color.g));
+            <span class="macro">assert!</span>(expected.is_close(color.b));
         }
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_background</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::default</span>();
-        <span class="kw">let</span> <span class="ident">sphere</span> <span class="op">=</span> <span class="ident">Sphere::new</span>(<span class="ident">translation</span>(<span class="ident">E1</span> <span class="op">*</span> <span class="number">2.</span>), <span class="ident">Material::default</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">world</span> <span class="op">=</span> <span class="ident">World::default</span>();
-        <span class="ident">world</span>.<span class="ident">add</span>(<span class="ident">Box::new</span>(<span class="ident">sphere</span>));
-        <span class="kw">let</span> <span class="ident">path_tracer</span> <span class="op">=</span> <span class="ident">Renderer::PathTracer</span>(<span class="ident">PathTracer::new</span>(<span class="kw-2">&amp;</span><span class="ident">world</span>, <span class="ident">BLACK</span>, <span class="number">1000</span>, <span class="number">1000</span>, <span class="number">0</span>));
-        <span class="macro">assert!</span>(<span class="ident">path_tracer</span>.<span class="ident">solve</span>(<span class="ident">Ray::default</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">pcg</span>).<span class="ident">is_close</span>(<span class="ident">BLACK</span>))
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_background() {
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::default();
+        <span class="kw">let </span>sphere = Sphere::new(translation(E1 * <span class="number">2.</span>), Material::default());
+        <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
+        world.add(Box::new(sphere));
+        <span class="kw">let </span>path_tracer = Renderer::PathTracer(PathTracer::new(<span class="kw-2">&amp;</span>world, BLACK, <span class="number">1000</span>, <span class="number">1000</span>, <span class="number">0</span>));
+        <span class="macro">assert!</span>(path_tracer.solve(Ray::default(), <span class="kw-2">&amp;mut </span>pcg).is_close(BLACK))
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

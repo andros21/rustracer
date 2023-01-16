@@ -1,9 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/random.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>random.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/random.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>random.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -85,77 +80,77 @@
 <span id="80">80</span>
 <span id="81">81</span>
 <span id="82">82</span>
-</pre><pre class="rust"><code><span class="doccomment">//! [PCG](https://www.pcg-random.org/index.html) random numbers generator module.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Provides [`Pcg`](struct@Pcg) struct.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! [PCG](https://www.pcg-random.org/index.html) random numbers generator module.
+//!
+//! Provides [`Pcg`](struct@Pcg) struct.
 
-<span class="doccomment">/// [PCG](https://www.pcg-random.org/index.html) random numbers generator.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Pcg</span> {
-    <span class="ident">state</span>: <span class="ident">u64</span>,
-    <span class="ident">inc</span>: <span class="ident">u64</span>,
+/// [PCG](https://www.pcg-random.org/index.html) random numbers generator.
+</span><span class="attribute">#[derive(Copy, Clone, Debug)]
+</span><span class="kw">pub struct </span>Pcg {
+    state: u64,
+    inc: u64,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Pcg</span> {
-    <span class="doccomment">/// Provides a default constructor for [`Pcg`](struct@Pcg),</span>
-    <span class="doccomment">/// the default values for the seed are:</span>
-    <span class="doccomment">/// - `init_state==42`;</span>
-    <span class="doccomment">/// - `init_seq==54`.</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="number">42</span>, <span class="number">54</span>)
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Pcg</span> {
-    <span class="doccomment">/// Provides a constructor for [`Pcg`](struct@Pcg).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `init_state` and `init_seq` are the seed of the generator.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">init_state</span>: <span class="ident">u64</span>, <span class="ident">init_seq</span>: <span class="ident">u64</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">inc</span> <span class="op">=</span> (<span class="ident">init_seq</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>) <span class="op">|</span> <span class="number">1</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg</span> { <span class="ident">state</span>, <span class="ident">inc</span> };
-        <span class="ident">pcg</span>.<span class="ident">random</span>();
-        <span class="ident">pcg</span>.<span class="ident">state</span> <span class="op">+</span><span class="op">=</span> <span class="ident">init_state</span>;
-        <span class="ident">pcg</span>.<span class="ident">random</span>();
-        <span class="ident">pcg</span>
-    }
-
-    <span class="doccomment">/// Generates an integer random number.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">random</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">let</span> <span class="ident">old_state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>;
-        <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">old_state</span>.<span class="ident">wrapping_mul</span>(<span class="number">6364136223846793005</span>) <span class="op">+</span> <span class="self">self</span>.<span class="ident">inc</span>;
-        <span class="kw">let</span> <span class="ident">xor_shifted</span> <span class="op">=</span> (((<span class="ident">old_state</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">18</span>) <span class="op">^</span> <span class="ident">old_state</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">27</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">let</span> <span class="ident">rot</span> <span class="op">=</span> <span class="ident">old_state</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">59</span>;
-        (<span class="ident">xor_shifted</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">rot</span>) <span class="kw">as</span> <span class="ident">u32</span> <span class="op">|</span> (<span class="ident">xor_shifted</span> <span class="op">&lt;</span><span class="op">&lt;</span> ((<span class="op">-</span>(<span class="ident">rot</span> <span class="kw">as</span> <span class="ident">i64</span>)) <span class="op">&amp;</span> <span class="number">31</span>))
-    }
-
-    <span class="doccomment">/// Generates a float random number.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">random_float</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">f32</span> {
-        <span class="self">self</span>.<span class="ident">random</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">f32</span>
+<span class="kw">impl </span>Default <span class="kw">for </span>Pcg {
+    <span class="doccomment">/// Provides a default constructor for [`Pcg`](struct@Pcg),
+    /// the default values for the seed are:
+    /// - `init_state==42`;
+    /// - `init_seq==54`.
+    </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(<span class="number">42</span>, <span class="number">54</span>)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="kw">impl </span>Pcg {
+    <span class="doccomment">/// Provides a constructor for [`Pcg`](struct@Pcg).
+    ///
+    /// `init_state` and `init_seq` are the seed of the generator.
+    </span><span class="kw">pub fn </span>new(init_state: u64, init_seq: u64) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>state = <span class="number">0</span>;
+        <span class="kw">let </span>inc = (init_seq &lt;&lt; <span class="number">1</span>) | <span class="number">1</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg { state, inc };
+        pcg.random();
+        pcg.state += init_state;
+        pcg.random();
+        pcg
+    }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_random</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::default</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">pcg</span>.<span class="ident">state</span>, <span class="number">1753877967969059832</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">pcg</span>.<span class="ident">inc</span>, <span class="number">109</span>);
-        <span class="kw">for</span> <span class="ident">expected</span> <span class="kw">in</span> [
+    <span class="doccomment">/// Generates an integer random number.
+    </span><span class="kw">pub fn </span>random(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; u32 {
+        <span class="kw">let </span>old_state = <span class="self">self</span>.state;
+        <span class="self">self</span>.state = old_state.wrapping_mul(<span class="number">6364136223846793005</span>) + <span class="self">self</span>.inc;
+        <span class="kw">let </span>xor_shifted = (((old_state &gt;&gt; <span class="number">18</span>) ^ old_state) &gt;&gt; <span class="number">27</span>) <span class="kw">as </span>u32;
+        <span class="kw">let </span>rot = old_state &gt;&gt; <span class="number">59</span>;
+        (xor_shifted &gt;&gt; rot) | (xor_shifted &lt;&lt; ((-(rot <span class="kw">as </span>i64)) &amp; <span class="number">31</span>))
+    }
+
+    <span class="doccomment">/// Generates a float random number.
+    </span><span class="kw">pub fn </span>random_float(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; f32 {
+        <span class="self">self</span>.random() <span class="kw">as </span>f32 / u32::MAX <span class="kw">as </span>f32
+    }
+}
+
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_random() {
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::default();
+        <span class="macro">assert_eq!</span>(pcg.state, <span class="number">1753877967969059832</span>);
+        <span class="macro">assert_eq!</span>(pcg.inc, <span class="number">109</span>);
+        <span class="kw">for </span>expected <span class="kw">in </span>[
             <span class="number">2707161783</span>, <span class="number">2068313097</span>, <span class="number">3122475824</span>, <span class="number">2211639955</span>, <span class="number">3215226955</span>, <span class="number">3421331566</span>,
         ] {
-            <span class="macro">assert_eq!</span>(<span class="ident">pcg</span>.<span class="ident">random</span>(), <span class="ident">expected</span>);
+            <span class="macro">assert_eq!</span>(pcg.random(), expected);
         }
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_random_float</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::new</span>(<span class="number">38</span>, <span class="number">62</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_random_float() {
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::new(<span class="number">38</span>, <span class="number">62</span>);
 
-        <span class="kw">for</span> <span class="ident">expected</span> <span class="kw">in</span> [
+        <span class="kw">for </span>expected <span class="kw">in </span>[
             <span class="number">0.090_021_014</span>,
             <span class="number">0.390_379_37</span>,
             <span class="number">0.664_116_2</span>,
@@ -163,10 +158,9 @@
             <span class="number">0.300_064_77</span>,
             <span class="number">0.158_574_3</span>,
         ] {
-            <span class="macro">assert_eq!</span>(<span class="ident">pcg</span>.<span class="ident">random_float</span>(), <span class="ident">expected</span>);
+            <span class="macro">assert_eq!</span>(pcg.random_float(), expected);
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["rustracer"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.62.0/core/iter/traits/collect/trait.IntoIterator.html\" title=\"trait core::iter::traits::collect::IntoIterator\">IntoIterator</a> for <a class=\"struct\" href=\"rustracer/color/struct.Color.html\" title=\"struct rustracer::color::Color\">Color</a>","synthetic":false,"types":["rustracer::color::Color"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"rustracer":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.66.1/core/iter/traits/collect/trait.IntoIterator.html\" title=\"trait core::iter::traits::collect::IntoIterator\">IntoIterator</a> for <a class=\"struct\" href=\"rustracer/color/struct.Color.html\" title=\"struct rustracer::color::Color\">Color</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

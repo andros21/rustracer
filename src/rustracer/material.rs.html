@@ -1,9 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/material.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>material.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/material.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>material.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -409,412 +404,411 @@
 <span id="404">404</span>
 <span id="405">405</span>
 <span id="406">406</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Material module.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Provides:</span>
-<span class="doccomment">//!  * Different pigments that implement [`GetColor`] trait ;</span>
-<span class="doccomment">//!  * Different BRDF that implement both [`Eval`] and [`ScatterRay`] trait;</span>
-<span class="doccomment">//!  * A [`Material`] thanks to pigments and BRDF.</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">color</span>::{<span class="ident">Color</span>, <span class="ident">BLACK</span>, <span class="ident">WHITE</span>},
-    <span class="ident">hdrimage::HdrImage</span>,
-    <span class="ident">misc::Vector2D</span>,
-    <span class="ident">normal</span>::{<span class="ident">create_onb_from_z</span>, <span class="ident">Normal</span>},
-    <span class="ident">point::Point</span>,
-    <span class="ident">ray::Ray</span>,
-    <span class="ident">vector::Vector</span>,
+</pre><pre class="rust"><code><span class="doccomment">//! Material module.
+//!
+//! Provides:
+//!  * Different pigments that implement [`GetColor`] trait ;
+//!  * Different BRDF that implement both [`Eval`] and [`ScatterRay`] trait;
+//!  * A [`Material`] thanks to pigments and BRDF.
+</span><span class="kw">use crate</span>::{
+    color::{Color, BLACK, WHITE},
+    hdrimage::HdrImage,
+    misc::Vector2D,
+    normal::{create_onb_from_z, Normal},
+    point::Point,
+    ray::Ray,
+    vector::Vector,
 };
-<span class="kw">use</span> <span class="ident">std::f32::consts::PI</span>;
+<span class="kw">use </span>std::f32::consts::PI;
 
-<span class="doccomment">/// Trait that associates a [`Color`] with each point on a parametric surface `(u,v)`.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">GetColor</span> {
-    <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span>;
+<span class="doccomment">/// Trait that associates a [`Color`] with each point on a parametric surface `(u,v)`.
+</span><span class="kw">pub trait </span>GetColor {
+    <span class="kw">fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, uv: Vector2D) -&gt; Color;
 }
 
-<span class="doccomment">/// A uniform pigment.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This is the most boring pigment: a uniform hue over the whole surface.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UniformPigment</span> {
-    <span class="doccomment">/// A [`Color`].</span>
-    <span class="kw">pub</span> <span class="ident">color</span>: <span class="ident">Color</span>,
+<span class="doccomment">/// A uniform pigment.
+///
+/// This is the most boring pigment: a uniform hue over the whole surface.
+</span><span class="attribute">#[derive(Clone, Copy, Debug, Default)]
+</span><span class="kw">pub struct </span>UniformPigment {
+    <span class="doccomment">/// A [`Color`].
+    </span><span class="kw">pub </span>color: Color,
 }
 
-<span class="kw">impl</span> <span class="ident">GetColor</span> <span class="kw">for</span> <span class="ident">UniformPigment</span> {
-    <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="self">self</span>.<span class="ident">color</span>
+<span class="kw">impl </span>GetColor <span class="kw">for </span>UniformPigment {
+    <span class="kw">fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, _uv: Vector2D) -&gt; Color {
+        <span class="self">self</span>.color
     }
 }
 
-<span class="doccomment">/// A textured pigment.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The texture is given through a [`HdrImage`], maybe read from pfm file.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImagePigment</span> {
-    <span class="doccomment">/// An [`HdrImage`] reference.</span>
-    <span class="ident">hdr_img</span>: <span class="ident">HdrImage</span>,
+<span class="doccomment">/// A textured pigment.
+///
+/// The texture is given through a [`HdrImage`], maybe read from pfm file.
+</span><span class="attribute">#[derive(Clone, Debug)]
+</span><span class="kw">pub struct </span>ImagePigment {
+    <span class="doccomment">/// An [`HdrImage`] reference.
+    </span>hdr_img: HdrImage,
 }
 
-<span class="kw">impl</span> <span class="ident">ImagePigment</span> {
-    <span class="doccomment">/// Create a new [`ImagePigment`] from [`HdrImage`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">hdr_img</span>: <span class="ident">HdrImage</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">hdr_img</span> }
+<span class="kw">impl </span>ImagePigment {
+    <span class="doccomment">/// Create a new [`ImagePigment`] from [`HdrImage`].
+    </span><span class="kw">pub fn </span>new(hdr_img: HdrImage) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ hdr_img }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">GetColor</span> <span class="kw">for</span> <span class="ident">ImagePigment</span> {
-    <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">col</span> <span class="op">=</span> (<span class="ident">uv</span>.<span class="ident">u</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">hdr_img</span>.<span class="ident">shape</span>().<span class="number">0</span> <span class="kw">as</span> <span class="ident">f32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">row</span> <span class="op">=</span> (<span class="ident">uv</span>.<span class="ident">v</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">hdr_img</span>.<span class="ident">shape</span>().<span class="number">1</span> <span class="kw">as</span> <span class="ident">f32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">if</span> <span class="ident">col</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">hdr_img</span>.<span class="ident">shape</span>().<span class="number">0</span> {
-            <span class="ident">col</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">hdr_img</span>.<span class="ident">shape</span>().<span class="number">0</span> <span class="op">-</span> <span class="number">1</span>;
+<span class="kw">impl </span>GetColor <span class="kw">for </span>ImagePigment {
+    <span class="kw">fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, uv: Vector2D) -&gt; Color {
+        <span class="kw">let </span><span class="kw-2">mut </span>col = (uv.u * <span class="self">self</span>.hdr_img.shape().<span class="number">0 </span><span class="kw">as </span>f32) <span class="kw">as </span>u32;
+        <span class="kw">let </span><span class="kw-2">mut </span>row = (uv.v * <span class="self">self</span>.hdr_img.shape().<span class="number">1 </span><span class="kw">as </span>f32) <span class="kw">as </span>u32;
+        <span class="kw">if </span>col &gt;= <span class="self">self</span>.hdr_img.shape().<span class="number">0 </span>{
+            col = <span class="self">self</span>.hdr_img.shape().<span class="number">0 </span>- <span class="number">1</span>;
         }
-        <span class="kw">if</span> <span class="ident">row</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">hdr_img</span>.<span class="ident">shape</span>().<span class="number">1</span> {
-            <span class="ident">row</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">hdr_img</span>.<span class="ident">shape</span>().<span class="number">1</span> <span class="op">-</span> <span class="number">1</span>
-        }
-        <span class="comment">// TODO</span>
-        <span class="comment">// A nicer solution would implement bilinear interpolation</span>
-        <span class="comment">// to reduce pixelization artifacts.</span>
-        <span class="comment">// See https://en.wikipedia.org/wiki/Bilinear_interpolation.</span>
-        <span class="self">self</span>.<span class="ident">hdr_img</span>.<span class="ident">get_pixel</span>(<span class="ident">col</span>, <span class="ident">row</span>).<span class="ident">unwrap</span>()
+        <span class="kw">if </span>row &gt;= <span class="self">self</span>.hdr_img.shape().<span class="number">1 </span>{
+            row = <span class="self">self</span>.hdr_img.shape().<span class="number">1 </span>- <span class="number">1
+        </span>}
+        <span class="comment">// TODO
+        // A nicer solution would implement bilinear interpolation
+        // to reduce pixelization artifacts.
+        // See https://en.wikipedia.org/wiki/Bilinear_interpolation.
+        </span><span class="self">self</span>.hdr_img.get_pixel(col, row).unwrap()
     }
 }
 
-<span class="doccomment">/// A checkered pigment.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The number of rows/columns in the checkered pattern is tunable,\</span>
-<span class="doccomment">/// but you cannot have a different number of repetitions along the u/v directions.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheckeredPigment</span> {
-    <span class="doccomment">/// First [`Color`].</span>
-    <span class="kw">pub</span> <span class="ident">color1</span>: <span class="ident">Color</span>,
-    <span class="doccomment">/// Second [`Color`].</span>
-    <span class="kw">pub</span> <span class="ident">color2</span>: <span class="ident">Color</span>,
-    <span class="doccomment">/// Number of steps.</span>
-    <span class="kw">pub</span> <span class="ident">steps</span>: <span class="ident">u32</span>,
+<span class="doccomment">/// A checkered pigment.
+///
+/// The number of rows/columns in the checkered pattern is tunable,\
+/// but you cannot have a different number of repetitions along the u/v directions.
+</span><span class="attribute">#[derive(Clone, Copy, Debug)]
+</span><span class="kw">pub struct </span>CheckeredPigment {
+    <span class="doccomment">/// First [`Color`].
+    </span><span class="kw">pub </span>color1: Color,
+    <span class="doccomment">/// Second [`Color`].
+    </span><span class="kw">pub </span>color2: Color,
+    <span class="doccomment">/// Number of steps.
+    </span><span class="kw">pub </span>steps: u32,
 }
 
-<span class="kw">impl</span> <span class="ident">GetColor</span> <span class="kw">for</span> <span class="ident">CheckeredPigment</span> {
-    <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">let</span> <span class="ident">int_u</span> <span class="op">=</span> <span class="ident">f32::floor</span>(<span class="ident">uv</span>.<span class="ident">u</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">steps</span> <span class="kw">as</span> <span class="ident">f32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">let</span> <span class="ident">int_v</span> <span class="op">=</span> <span class="ident">f32::floor</span>(<span class="ident">uv</span>.<span class="ident">v</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">steps</span> <span class="kw">as</span> <span class="ident">f32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">if</span> <span class="ident">int_u</span> <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="ident">int_v</span> <span class="op">%</span> <span class="number">2</span> {
-            <span class="self">self</span>.<span class="ident">color1</span>
-        } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">color2</span>
-        }
-    }
-}
-
-<span class="doccomment">/// Enum of pigments.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Pigment</span> {
-    <span class="ident">Uniform</span>(<span class="ident">UniformPigment</span>),
-    <span class="ident">Image</span>(<span class="ident">ImagePigment</span>),
-    <span class="ident">Checkered</span>(<span class="ident">CheckeredPigment</span>),
-}
-
-<span class="kw">impl</span> <span class="ident">GetColor</span> <span class="kw">for</span> <span class="ident">Pigment</span> {
-    <span class="doccomment">/// Return a different [`Color`] as function of [`Pigment`] variant.</span>
-    <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Pigment::Uniform</span>(<span class="ident">uniform</span>) =&gt; <span class="ident">uniform</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>),
-            <span class="ident">Pigment::Image</span>(<span class="ident">image</span>) =&gt; <span class="ident">image</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>),
-            <span class="ident">Pigment::Checkered</span>(<span class="ident">checkered</span>) =&gt; <span class="ident">checkered</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>),
+<span class="kw">impl </span>GetColor <span class="kw">for </span>CheckeredPigment {
+    <span class="kw">fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, uv: Vector2D) -&gt; Color {
+        <span class="kw">let </span>int_u = f32::floor(uv.u * <span class="self">self</span>.steps <span class="kw">as </span>f32) <span class="kw">as </span>u32;
+        <span class="kw">let </span>int_v = f32::floor(uv.v * <span class="self">self</span>.steps <span class="kw">as </span>f32) <span class="kw">as </span>u32;
+        <span class="kw">if </span>int_u % <span class="number">2 </span>== int_v % <span class="number">2 </span>{
+            <span class="self">self</span>.color1
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.color2
         }
     }
 }
 
-<span class="doccomment">/// A trait for evaluating a particular BRDF on a parametric surface `(u,v)`.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Eval</span> {
-    <span class="kw">fn</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">normal</span>: <span class="ident">Normal</span>, <span class="ident">in_dir</span>: <span class="ident">Vector</span>, <span class="ident">out_dir</span>: <span class="ident">Vector</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span>;
+<span class="doccomment">/// Enum of pigments.
+</span><span class="attribute">#[derive(Clone, Debug)]
+</span><span class="kw">pub enum </span>Pigment {
+    Uniform(UniformPigment),
+    Image(ImagePigment),
+    Checkered(CheckeredPigment),
 }
 
-<span class="doccomment">/// A trait for scatter a [`Ray`] for a particular BRDF.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ScatterRay</span> {
-    <span class="kw">fn</span> <span class="ident">scatter_ray</span>(
+<span class="kw">impl </span>GetColor <span class="kw">for </span>Pigment {
+    <span class="doccomment">/// Return a different [`Color`] as function of [`Pigment`] variant.
+    </span><span class="kw">fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, uv: Vector2D) -&gt; Color {
+        <span class="kw">match </span><span class="self">self </span>{
+            Pigment::Uniform(uniform) =&gt; uniform.get_color(uv),
+            Pigment::Image(image) =&gt; image.get_color(uv),
+            Pigment::Checkered(checkered) =&gt; checkered.get_color(uv),
+        }
+    }
+}
+
+<span class="doccomment">/// A trait for evaluating a particular BRDF on a parametric surface `(u,v)`.
+</span><span class="kw">pub trait </span>Eval {
+    <span class="kw">fn </span>eval(<span class="kw-2">&amp;</span><span class="self">self</span>, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -&gt; Color;
+}
+
+<span class="doccomment">/// A trait for scatter a [`Ray`] for a particular BRDF.
+</span><span class="kw">pub trait </span>ScatterRay {
+    <span class="kw">fn </span>scatter_ray(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">pcg</span>: (<span class="ident">f32</span>, <span class="ident">f32</span>),
-        <span class="ident">incoming_dir</span>: <span class="ident">Vector</span>,
-        <span class="ident">interaction_point</span>: <span class="ident">Point</span>,
-        <span class="ident">normal</span>: <span class="ident">Normal</span>,
-        <span class="ident">depth</span>: <span class="ident">u32</span>,
-    ) -&gt; <span class="ident">Ray</span>;
+        pcg: (f32, f32),
+        incoming_dir: Vector,
+        interaction_point: Point,
+        normal: Normal,
+        depth: u32,
+    ) -&gt; Ray;
 }
 
-<span class="doccomment">/// A class representing an ideal diffuse BRDF (also called &quot;Lambertian&quot;).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DiffuseBRDF</span> {
-    <span class="doccomment">/// A generic pigment that implement [`GetColor`].</span>
-    <span class="kw">pub</span> <span class="ident">pigment</span>: <span class="ident">Pigment</span>,
+<span class="doccomment">/// A class representing an ideal diffuse BRDF (also called &quot;Lambertian&quot;).
+</span><span class="attribute">#[derive(Clone, Debug)]
+</span><span class="kw">pub struct </span>DiffuseBRDF {
+    <span class="doccomment">/// A generic pigment that implement [`GetColor`].
+    </span><span class="kw">pub </span>pigment: Pigment,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">DiffuseBRDF</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">pigment</span>: <span class="ident">Pigment::Uniform</span>(<span class="ident">UniformPigment</span> { <span class="ident">color</span>: <span class="ident">WHITE</span> }),
+<span class="kw">impl </span>Default <span class="kw">for </span>DiffuseBRDF {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            pigment: Pigment::Uniform(UniformPigment { color: WHITE }),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">GetColor</span> <span class="kw">for</span> <span class="ident">DiffuseBRDF</span> {
-    <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="self">self</span>.<span class="ident">pigment</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>)
+<span class="kw">impl </span>GetColor <span class="kw">for </span>DiffuseBRDF {
+    <span class="kw">fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, uv: Vector2D) -&gt; Color {
+        <span class="self">self</span>.pigment.get_color(uv)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Eval</span> <span class="kw">for</span> <span class="ident">DiffuseBRDF</span> {
-    <span class="kw">fn</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_normal</span>: <span class="ident">Normal</span>, <span class="ident">_in_dir</span>: <span class="ident">Vector</span>, <span class="ident">_out_dir</span>: <span class="ident">Vector</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="self">self</span>.<span class="ident">pigment</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>) <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="ident">PI</span>)
+<span class="kw">impl </span>Eval <span class="kw">for </span>DiffuseBRDF {
+    <span class="kw">fn </span>eval(<span class="kw-2">&amp;</span><span class="self">self</span>, _normal: Normal, _in_dir: Vector, _out_dir: Vector, uv: Vector2D) -&gt; Color {
+        <span class="self">self</span>.pigment.get_color(uv) * (<span class="number">1.0 </span>/ PI)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ScatterRay</span> <span class="kw">for</span> <span class="ident">DiffuseBRDF</span> {
-    <span class="doccomment">/// Random scattering on semi-sphere using two [`f32`] that will be generated by</span>
-    <span class="doccomment">/// [`Pcg`](../../../random/struct.Pcg.html) random generator.</span>
-    <span class="kw">fn</span> <span class="ident">scatter_ray</span>(
+<span class="kw">impl </span>ScatterRay <span class="kw">for </span>DiffuseBRDF {
+    <span class="doccomment">/// Random scattering on semi-sphere using two [`f32`] that will be generated by
+    /// [`Pcg`](../../../random/struct.Pcg.html) random generator.
+    </span><span class="kw">fn </span>scatter_ray(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">pcg</span>: (<span class="ident">f32</span>, <span class="ident">f32</span>),
-        <span class="ident">_incoming_dir</span>: <span class="ident">Vector</span>,
-        <span class="ident">interaction_point</span>: <span class="ident">Point</span>,
-        <span class="ident">normal</span>: <span class="ident">Normal</span>,
-        <span class="ident">depth</span>: <span class="ident">u32</span>,
-    ) -&gt; <span class="ident">Ray</span> {
-        <span class="comment">// Cosine-weighted distribution around the z (local) axis.</span>
-        <span class="kw">let</span> (<span class="ident">e1</span>, <span class="ident">e2</span>, <span class="ident">e3</span>) <span class="op">=</span> <span class="ident">create_onb_from_z</span>(<span class="ident">normal</span>);
-        <span class="kw">let</span> <span class="ident">cos_theta_sq</span> <span class="op">=</span> <span class="ident">pcg</span>.<span class="number">0</span>;
-        <span class="kw">let</span> (<span class="ident">cos_theta</span>, <span class="ident">sin_theta</span>) <span class="op">=</span> (<span class="ident">f32::sqrt</span>(<span class="ident">cos_theta_sq</span>), <span class="ident">f32::sqrt</span>(<span class="number">1.0</span> <span class="op">-</span> <span class="ident">cos_theta_sq</span>));
-        <span class="kw">let</span> <span class="ident">phi</span> <span class="op">=</span> <span class="number">2.0</span> <span class="op">*</span> <span class="ident">PI</span> <span class="op">*</span> <span class="ident">pcg</span>.<span class="number">1</span>;
+        pcg: (f32, f32),
+        _incoming_dir: Vector,
+        interaction_point: Point,
+        normal: Normal,
+        depth: u32,
+    ) -&gt; Ray {
+        <span class="comment">// Cosine-weighted distribution around the z (local) axis.
+        </span><span class="kw">let </span>(e1, e2, e3) = create_onb_from_z(normal);
+        <span class="kw">let </span>cos_theta_sq = pcg.<span class="number">0</span>;
+        <span class="kw">let </span>(cos_theta, sin_theta) = (f32::sqrt(cos_theta_sq), f32::sqrt(<span class="number">1.0 </span>- cos_theta_sq));
+        <span class="kw">let </span>phi = <span class="number">2.0 </span>* PI * pcg.<span class="number">1</span>;
 
-        <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">interaction_point</span>,
-            <span class="ident">dir</span>: <span class="ident">e1</span> <span class="op">*</span> <span class="ident">f32::cos</span>(<span class="ident">phi</span>) <span class="op">*</span> <span class="ident">cos_theta</span> <span class="op">+</span> <span class="ident">e2</span> <span class="op">*</span> <span class="ident">f32::sin</span>(<span class="ident">phi</span>) <span class="op">*</span> <span class="ident">cos_theta</span> <span class="op">+</span> <span class="ident">e3</span> <span class="op">*</span> <span class="ident">sin_theta</span>,
-            <span class="ident">tmin</span>: <span class="number">1.0e-3</span>,
-            <span class="ident">depth</span>,
-            ..<span class="ident">Default::default</span>()
+        Ray {
+            origin: interaction_point,
+            dir: e1 * f32::cos(phi) * cos_theta + e2 * f32::sin(phi) * cos_theta + e3 * sin_theta,
+            tmin: <span class="number">1.0e-3</span>,
+            depth,
+            ..Default::default()
         }
     }
 }
 
-<span class="doccomment">/// A class representing an ideal mirror BRDF.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SpecularBRDF</span> {
-    <span class="doccomment">/// A generic pigment that implement [`GetColor`] trait.</span>
-    <span class="kw">pub</span> <span class="ident">pigment</span>: <span class="ident">Pigment</span>,
-    <span class="doccomment">/// A threshold angle in radians.</span>
-    <span class="kw">pub</span> <span class="ident">threshold_angle_rad</span>: <span class="ident">f32</span>,
+<span class="doccomment">/// A class representing an ideal mirror BRDF.
+</span><span class="attribute">#[derive(Clone, Debug)]
+</span><span class="kw">pub struct </span>SpecularBRDF {
+    <span class="doccomment">/// A generic pigment that implement [`GetColor`] trait.
+    </span><span class="kw">pub </span>pigment: Pigment,
+    <span class="doccomment">/// A threshold angle in radians.
+    </span><span class="kw">pub </span>threshold_angle_rad: f32,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">SpecularBRDF</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">pigment</span>: <span class="ident">Pigment::Uniform</span>(<span class="ident">UniformPigment</span> { <span class="ident">color</span>: <span class="ident">WHITE</span> }),
-            <span class="ident">threshold_angle_rad</span>: <span class="ident">PI</span> <span class="op">/</span> <span class="number">1800.0</span>,
+<span class="kw">impl </span>Default <span class="kw">for </span>SpecularBRDF {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            pigment: Pigment::Uniform(UniformPigment { color: WHITE }),
+            threshold_angle_rad: PI / <span class="number">1800.0</span>,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">GetColor</span> <span class="kw">for</span> <span class="ident">SpecularBRDF</span> {
-    <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="self">self</span>.<span class="ident">pigment</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>)
+<span class="kw">impl </span>GetColor <span class="kw">for </span>SpecularBRDF {
+    <span class="kw">fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, uv: Vector2D) -&gt; Color {
+        <span class="self">self</span>.pigment.get_color(uv)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Eval</span> <span class="kw">for</span> <span class="ident">SpecularBRDF</span> {
-    <span class="kw">fn</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">normal</span>: <span class="ident">Normal</span>, <span class="ident">in_dir</span>: <span class="ident">Vector</span>, <span class="ident">out_dir</span>: <span class="ident">Vector</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">let</span> <span class="ident">theta_in</span> <span class="op">=</span> <span class="ident">f32::acos</span>(<span class="ident">Vector::from</span>(<span class="ident">normal</span>).<span class="ident">normalize</span>().<span class="ident">dot</span>(<span class="ident">in_dir</span>.<span class="ident">normalize</span>()));
-        <span class="kw">let</span> <span class="ident">theta_out</span> <span class="op">=</span> <span class="ident">f32::acos</span>(<span class="ident">Vector::from</span>(<span class="ident">normal</span>).<span class="ident">normalize</span>().<span class="ident">dot</span>(<span class="ident">out_dir</span>.<span class="ident">normalize</span>()));
+<span class="kw">impl </span>Eval <span class="kw">for </span>SpecularBRDF {
+    <span class="kw">fn </span>eval(<span class="kw-2">&amp;</span><span class="self">self</span>, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -&gt; Color {
+        <span class="kw">let </span>theta_in = f32::acos(Vector::from(normal).normalize().dot(in_dir.normalize()));
+        <span class="kw">let </span>theta_out = f32::acos(Vector::from(normal).normalize().dot(out_dir.normalize()));
 
-        <span class="kw">if</span> (<span class="ident">theta_in</span> <span class="op">-</span> <span class="ident">theta_out</span>).<span class="ident">abs</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">threshold_angle_rad</span> {
-            <span class="self">self</span>.<span class="ident">pigment</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>)
-        } <span class="kw">else</span> {
-            <span class="ident">BLACK</span>
+        <span class="kw">if </span>(theta_in - theta_out).abs() &lt; <span class="self">self</span>.threshold_angle_rad {
+            <span class="self">self</span>.pigment.get_color(uv)
+        } <span class="kw">else </span>{
+            BLACK
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ScatterRay</span> <span class="kw">for</span> <span class="ident">SpecularBRDF</span> {
-    <span class="doccomment">/// Perfect mirror behaviour.</span>
-    <span class="kw">fn</span> <span class="ident">scatter_ray</span>(
+<span class="kw">impl </span>ScatterRay <span class="kw">for </span>SpecularBRDF {
+    <span class="doccomment">/// Perfect mirror behaviour.
+    </span><span class="kw">fn </span>scatter_ray(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">_pcg</span>: (<span class="ident">f32</span>, <span class="ident">f32</span>),
-        <span class="ident">incoming_dir</span>: <span class="ident">Vector</span>,
-        <span class="ident">interaction_point</span>: <span class="ident">Point</span>,
-        <span class="ident">normal</span>: <span class="ident">Normal</span>,
-        <span class="ident">depth</span>: <span class="ident">u32</span>,
-    ) -&gt; <span class="ident">Ray</span> {
-        <span class="kw">let</span> <span class="ident">ray_dir</span> <span class="op">=</span> <span class="ident">incoming_dir</span>.<span class="ident">normalize</span>();
-        <span class="kw">let</span> <span class="ident">normal</span> <span class="op">=</span> <span class="ident">Vector::from</span>(<span class="ident">normal</span>).<span class="ident">normalize</span>();
-        <span class="kw">let</span> <span class="ident">dot_prod</span> <span class="op">=</span> <span class="ident">normal</span>.<span class="ident">dot</span>(<span class="ident">ray_dir</span>);
+        _pcg: (f32, f32),
+        incoming_dir: Vector,
+        interaction_point: Point,
+        normal: Normal,
+        depth: u32,
+    ) -&gt; Ray {
+        <span class="kw">let </span>ray_dir = incoming_dir.normalize();
+        <span class="kw">let </span>normal = Vector::from(normal).normalize();
+        <span class="kw">let </span>dot_prod = normal.dot(ray_dir);
 
-        <span class="ident">Ray</span> {
-            <span class="ident">origin</span>: <span class="ident">interaction_point</span>,
-            <span class="ident">dir</span>: <span class="ident">ray_dir</span> <span class="op">-</span> <span class="ident">normal</span> <span class="op">*</span> <span class="number">2.0</span> <span class="op">*</span> <span class="ident">dot_prod</span>,
-            <span class="ident">depth</span>,
-            ..<span class="ident">Default::default</span>()
+        Ray {
+            origin: interaction_point,
+            dir: ray_dir - normal * <span class="number">2.0 </span>* dot_prod,
+            depth,
+            ..Default::default()
         }
     }
 }
 
-<span class="doccomment">/// Enum of BRDFs.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BRDF</span> {
-    <span class="ident">Diffuse</span>(<span class="ident">DiffuseBRDF</span>),
-    <span class="ident">Specular</span>(<span class="ident">SpecularBRDF</span>),
+<span class="doccomment">/// Enum of BRDFs.
+</span><span class="attribute">#[derive(Clone, Debug)]
+</span><span class="kw">pub enum </span>BRDF {
+    Diffuse(DiffuseBRDF),
+    Specular(SpecularBRDF),
 }
 
-<span class="kw">impl</span> <span class="ident">Eval</span> <span class="kw">for</span> <span class="ident">BRDF</span> {
-    <span class="doccomment">/// Eval a particular [`BRDF`] variant.</span>
-    <span class="kw">fn</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">normal</span>: <span class="ident">Normal</span>, <span class="ident">in_dir</span>: <span class="ident">Vector</span>, <span class="ident">out_dir</span>: <span class="ident">Vector</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BRDF::Diffuse</span>(<span class="ident">diffuse</span>) =&gt; <span class="ident">diffuse</span>.<span class="ident">eval</span>(<span class="ident">normal</span>, <span class="ident">in_dir</span>, <span class="ident">out_dir</span>, <span class="ident">uv</span>),
-            <span class="ident">BRDF::Specular</span>(<span class="ident">specular</span>) =&gt; <span class="ident">specular</span>.<span class="ident">eval</span>(<span class="ident">normal</span>, <span class="ident">in_dir</span>, <span class="ident">out_dir</span>, <span class="ident">uv</span>),
+<span class="kw">impl </span>Eval <span class="kw">for </span>BRDF {
+    <span class="doccomment">/// Eval a particular [`BRDF`] variant.
+    </span><span class="kw">fn </span>eval(<span class="kw-2">&amp;</span><span class="self">self</span>, normal: Normal, in_dir: Vector, out_dir: Vector, uv: Vector2D) -&gt; Color {
+        <span class="kw">match </span><span class="self">self </span>{
+            BRDF::Diffuse(diffuse) =&gt; diffuse.eval(normal, in_dir, out_dir, uv),
+            BRDF::Specular(specular) =&gt; specular.eval(normal, in_dir, out_dir, uv),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ScatterRay</span> <span class="kw">for</span> <span class="ident">BRDF</span> {
-    <span class="doccomment">/// Scatter a [`Ray`] as a particular [`BRDF`] variant.</span>
-    <span class="kw">fn</span> <span class="ident">scatter_ray</span>(
+<span class="kw">impl </span>ScatterRay <span class="kw">for </span>BRDF {
+    <span class="doccomment">/// Scatter a [`Ray`] as a particular [`BRDF`] variant.
+    </span><span class="kw">fn </span>scatter_ray(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">pcg</span>: (<span class="ident">f32</span>, <span class="ident">f32</span>),
-        <span class="ident">incoming_dir</span>: <span class="ident">Vector</span>,
-        <span class="ident">interaction_point</span>: <span class="ident">Point</span>,
-        <span class="ident">normal</span>: <span class="ident">Normal</span>,
-        <span class="ident">depth</span>: <span class="ident">u32</span>,
-    ) -&gt; <span class="ident">Ray</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BRDF::Diffuse</span>(<span class="ident">diffuse</span>) =&gt; {
-                <span class="ident">diffuse</span>.<span class="ident">scatter_ray</span>(<span class="ident">pcg</span>, <span class="ident">incoming_dir</span>, <span class="ident">interaction_point</span>, <span class="ident">normal</span>, <span class="ident">depth</span>)
+        pcg: (f32, f32),
+        incoming_dir: Vector,
+        interaction_point: Point,
+        normal: Normal,
+        depth: u32,
+    ) -&gt; Ray {
+        <span class="kw">match </span><span class="self">self </span>{
+            BRDF::Diffuse(diffuse) =&gt; {
+                diffuse.scatter_ray(pcg, incoming_dir, interaction_point, normal, depth)
             },
-            <span class="ident">BRDF::Specular</span>(<span class="ident">specular</span>) =&gt; {
-                <span class="ident">specular</span>.<span class="ident">scatter_ray</span>(<span class="ident">pcg</span>, <span class="ident">incoming_dir</span>, <span class="ident">interaction_point</span>, <span class="ident">normal</span>, <span class="ident">depth</span>)
+            BRDF::Specular(specular) =&gt; {
+                specular.scatter_ray(pcg, incoming_dir, interaction_point, normal, depth)
             },
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">GetColor</span> <span class="kw">for</span> <span class="ident">BRDF</span> {
-    <span class="doccomment">/// Return a different Color as function of Pigment variant.</span>
-    <span class="kw">fn</span> <span class="ident">get_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uv</span>: <span class="ident">Vector2D</span>) -&gt; <span class="ident">Color</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BRDF::Diffuse</span>(<span class="ident">diffuse</span>) =&gt; <span class="ident">diffuse</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>),
-            <span class="ident">BRDF::Specular</span>(<span class="ident">specular</span>) =&gt; <span class="ident">specular</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>),
+<span class="kw">impl </span>GetColor <span class="kw">for </span>BRDF {
+    <span class="doccomment">/// Return a different Color as function of Pigment variant.
+    </span><span class="kw">fn </span>get_color(<span class="kw-2">&amp;</span><span class="self">self</span>, uv: Vector2D) -&gt; Color {
+        <span class="kw">match </span><span class="self">self </span>{
+            BRDF::Diffuse(diffuse) =&gt; diffuse.get_color(uv),
+            BRDF::Specular(specular) =&gt; specular.get_color(uv),
         }
     }
 }
 
-<span class="doccomment">/// A material with a particular pigment and BRDF.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Material</span> {
-    <span class="doccomment">/// A BRDF that implement both [`Eval`] and [`ScatterRay`] traits.</span>
-    <span class="kw">pub</span> <span class="ident">brdf</span>: <span class="ident">BRDF</span>,
-    <span class="doccomment">/// A pigment that implement [`GetColor`] trait.</span>
-    <span class="kw">pub</span> <span class="ident">emitted_radiance</span>: <span class="ident">Pigment</span>,
+<span class="doccomment">/// A material with a particular pigment and BRDF.
+</span><span class="attribute">#[derive(Clone, Debug)]
+</span><span class="kw">pub struct </span>Material {
+    <span class="doccomment">/// A BRDF that implement both [`Eval`] and [`ScatterRay`] traits.
+    </span><span class="kw">pub </span>brdf: BRDF,
+    <span class="doccomment">/// A pigment that implement [`GetColor`] trait.
+    </span><span class="kw">pub </span>emitted_radiance: Pigment,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Material</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">brdf</span>: <span class="ident">BRDF::Diffuse</span>(<span class="ident">DiffuseBRDF::default</span>()),
-            <span class="ident">emitted_radiance</span>: <span class="ident">Pigment::Uniform</span>(<span class="ident">UniformPigment::default</span>()),
+<span class="kw">impl </span>Default <span class="kw">for </span>Material {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            brdf: BRDF::Diffuse(DiffuseBRDF::default()),
+            emitted_radiance: Pigment::Uniform(UniformPigment::default()),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">normal</span>::{<span class="ident">E1</span>, <span class="ident">E2</span>, <span class="ident">E3</span>},
-        <span class="ident">random::Pcg</span>,
-        <span class="ident">vector</span>::{<span class="ident">E1</span> <span class="kw">as</span> <span class="ident">vE1</span>, <span class="ident">E2</span> <span class="kw">as</span> <span class="ident">vE2</span>, <span class="ident">E3</span> <span class="kw">as</span> <span class="ident">vE3</span>},
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use crate</span>::{
+        normal::{E1, E2, E3},
+        random::Pcg,
+        vector::{E1 <span class="kw">as </span>vE1, E2 <span class="kw">as </span>vE2, E3 <span class="kw">as </span>vE3},
     };
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_pigment</span>() {
-        <span class="kw">let</span> <span class="ident">uniform0</span> <span class="op">=</span> <span class="ident">Pigment::Uniform</span>(<span class="ident">UniformPigment::default</span>());
-        <span class="kw">let</span> <span class="ident">uniform1</span> <span class="op">=</span> <span class="ident">Pigment::Uniform</span>(<span class="ident">UniformPigment</span> { <span class="ident">color</span>: <span class="ident">WHITE</span> });
-        <span class="kw">let</span> <span class="ident">checkered</span> <span class="op">=</span> <span class="ident">Pigment::Checkered</span>(<span class="ident">CheckeredPigment</span> {
-            <span class="ident">color1</span>: <span class="ident">BLACK</span>,
-            <span class="ident">color2</span>: <span class="ident">WHITE</span>,
-            <span class="ident">steps</span>: <span class="number">10</span>,
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_pigment() {
+        <span class="kw">let </span>uniform0 = Pigment::Uniform(UniformPigment::default());
+        <span class="kw">let </span>uniform1 = Pigment::Uniform(UniformPigment { color: WHITE });
+        <span class="kw">let </span>checkered = Pigment::Checkered(CheckeredPigment {
+            color1: BLACK,
+            color2: WHITE,
+            steps: <span class="number">10</span>,
         });
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hdr_img</span> <span class="op">=</span> <span class="ident">HdrImage::new</span>(<span class="number">3</span>, <span class="number">3</span>);
-        <span class="ident">hdr_img</span>.<span class="ident">set_pixel</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="ident">WHITE</span>).<span class="ident">unwrap</span>();
-        <span class="ident">hdr_img</span>.<span class="ident">set_pixel</span>(<span class="number">2</span>, <span class="number">0</span>, <span class="ident">WHITE</span>).<span class="ident">unwrap</span>();
-        <span class="ident">hdr_img</span>.<span class="ident">set_pixel</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="ident">WHITE</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">ImagePigment::new</span>(<span class="ident">hdr_img</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>hdr_img = HdrImage::new(<span class="number">3</span>, <span class="number">3</span>);
+        hdr_img.set_pixel(<span class="number">0</span>, <span class="number">2</span>, WHITE).unwrap();
+        hdr_img.set_pixel(<span class="number">2</span>, <span class="number">0</span>, WHITE).unwrap();
+        hdr_img.set_pixel(<span class="number">2</span>, <span class="number">2</span>, WHITE).unwrap();
+        <span class="kw">let </span>image = ImagePigment::new(hdr_img);
 
-        <span class="macro">assert_eq!</span>(<span class="ident">uniform0</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.1</span>, <span class="ident">v</span>: <span class="number">3.0</span> }), <span class="ident">BLACK</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">uniform1</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.5</span>, <span class="ident">v</span>: <span class="number">0.3</span> }), <span class="ident">WHITE</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">checkered</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.0</span>, <span class="ident">v</span>: <span class="number">0.0</span> }), <span class="ident">BLACK</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">checkered</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">2.0</span>, <span class="ident">v</span>: <span class="number">2.0</span> }), <span class="ident">BLACK</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">checkered</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.0</span>, <span class="ident">v</span>: <span class="number">0.9</span> }), <span class="ident">WHITE</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">checkered</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.9</span>, <span class="ident">v</span>: <span class="number">0.0</span> }), <span class="ident">WHITE</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">image</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.0</span>, <span class="ident">v</span>: <span class="number">0.0</span> }), <span class="ident">BLACK</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">image</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">0.0</span>, <span class="ident">v</span>: <span class="number">1.0</span> }), <span class="ident">WHITE</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">image</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">1.0</span>, <span class="ident">v</span>: <span class="number">0.0</span> }), <span class="ident">WHITE</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">image</span>.<span class="ident">get_color</span>(<span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">1.0</span>, <span class="ident">v</span>: <span class="number">1.0</span> }), <span class="ident">WHITE</span>)
+        <span class="macro">assert_eq!</span>(uniform0.get_color(Vector2D { u: <span class="number">0.1</span>, v: <span class="number">3.0 </span>}), BLACK);
+        <span class="macro">assert_eq!</span>(uniform1.get_color(Vector2D { u: <span class="number">0.5</span>, v: <span class="number">0.3 </span>}), WHITE);
+        <span class="macro">assert_eq!</span>(checkered.get_color(Vector2D { u: <span class="number">0.0</span>, v: <span class="number">0.0 </span>}), BLACK);
+        <span class="macro">assert_eq!</span>(checkered.get_color(Vector2D { u: <span class="number">2.0</span>, v: <span class="number">2.0 </span>}), BLACK);
+        <span class="macro">assert_eq!</span>(checkered.get_color(Vector2D { u: <span class="number">0.0</span>, v: <span class="number">0.9 </span>}), WHITE);
+        <span class="macro">assert_eq!</span>(checkered.get_color(Vector2D { u: <span class="number">0.9</span>, v: <span class="number">0.0 </span>}), WHITE);
+        <span class="macro">assert_eq!</span>(image.get_color(Vector2D { u: <span class="number">0.0</span>, v: <span class="number">0.0 </span>}), BLACK);
+        <span class="macro">assert_eq!</span>(image.get_color(Vector2D { u: <span class="number">0.0</span>, v: <span class="number">1.0 </span>}), WHITE);
+        <span class="macro">assert_eq!</span>(image.get_color(Vector2D { u: <span class="number">1.0</span>, v: <span class="number">0.0 </span>}), WHITE);
+        <span class="macro">assert_eq!</span>(image.get_color(Vector2D { u: <span class="number">1.0</span>, v: <span class="number">1.0 </span>}), WHITE)
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_brdf</span>() {
-        <span class="kw">let</span> <span class="ident">diff_brdf</span> <span class="op">=</span> <span class="ident">BRDF::Diffuse</span>(<span class="ident">DiffuseBRDF::default</span>());
-        <span class="kw">let</span> <span class="ident">spec_brdf</span> <span class="op">=</span> <span class="ident">BRDF::Specular</span>(<span class="ident">SpecularBRDF::default</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pcg</span> <span class="op">=</span> <span class="ident">Pcg::default</span>();
-        <span class="kw">let</span> <span class="ident">uv</span> <span class="op">=</span> <span class="ident">Vector2D</span> { <span class="ident">u</span>: <span class="number">1.</span>, <span class="ident">v</span>: <span class="number">2.</span> };
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_brdf() {
+        <span class="kw">let </span>diff_brdf = BRDF::Diffuse(DiffuseBRDF::default());
+        <span class="kw">let </span>spec_brdf = BRDF::Specular(SpecularBRDF::default());
+        <span class="kw">let </span><span class="kw-2">mut </span>pcg = Pcg::default();
+        <span class="kw">let </span>uv = Vector2D { u: <span class="number">1.</span>, v: <span class="number">2. </span>};
 
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="kw-2">&amp;</span><span class="ident">diff_brdf</span>, <span class="ident">BRDF::Diffuse</span>(<span class="ident">diff</span>) <span class="kw">if</span> <span class="ident">diff</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>)<span class="op">==</span><span class="ident">WHITE</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>diff_brdf, BRDF::Diffuse(diff) <span class="kw">if </span>diff.get_color(uv)==WHITE));
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(<span class="kw-2">&amp;</span><span class="ident">spec_brdf</span>, <span class="ident">BRDF::Specular</span>(<span class="ident">spec</span>) <span class="kw">if</span> (<span class="ident">spec</span>.<span class="ident">get_color</span>(<span class="ident">uv</span>), <span class="ident">spec</span>.<span class="ident">threshold_angle_rad</span>) <span class="op">==</span> (<span class="ident">WHITE</span>, <span class="ident">PI</span><span class="op">/</span><span class="number">1800.</span>))
+            <span class="macro">matches!</span>(<span class="kw-2">&amp;</span>spec_brdf, BRDF::Specular(spec) <span class="kw">if </span>(spec.get_color(uv), spec.threshold_angle_rad) == (WHITE, PI/<span class="number">1800.</span>))
         );
 
-        <span class="macro">assert_eq!</span>(<span class="ident">diff_brdf</span>.<span class="ident">eval</span>(<span class="ident">E1</span>, <span class="ident">vE2</span>, <span class="ident">vE3</span>, <span class="ident">uv</span>), <span class="ident">WHITE</span> <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="ident">PI</span>));
+        <span class="macro">assert_eq!</span>(diff_brdf.eval(E1, vE2, vE3, uv), WHITE * (<span class="number">1.0 </span>/ PI));
         <span class="macro">assert_eq!</span>(
-            <span class="ident">spec_brdf</span>.<span class="ident">eval</span>(<span class="ident">E3</span>, <span class="ident">vE1</span> <span class="op">+</span> <span class="ident">vE2</span> <span class="op">+</span> <span class="ident">vE3</span>, <span class="ident">vE1</span> <span class="op">+</span> <span class="ident">vE2</span> <span class="op">+</span> <span class="ident">vE3</span>, <span class="ident">uv</span>),
-            <span class="ident">WHITE</span>
+            spec_brdf.eval(E3, vE1 + vE2 + vE3, vE1 + vE2 + vE3, uv),
+            WHITE
         );
-        <span class="macro">assert_eq!</span>(<span class="ident">spec_brdf</span>.<span class="ident">eval</span>(<span class="ident">E2</span>, <span class="ident">vE1</span> <span class="op">+</span> <span class="ident">vE2</span> <span class="op">+</span> <span class="ident">vE3</span>, <span class="ident">vE1</span> <span class="op">+</span> <span class="ident">vE3</span>, <span class="ident">uv</span>), <span class="ident">BLACK</span>);
+        <span class="macro">assert_eq!</span>(spec_brdf.eval(E2, vE1 + vE2 + vE3, vE1 + vE3, uv), BLACK);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">spec_brdf</span>
-                .<span class="ident">scatter_ray</span>(
-                    (<span class="ident">pcg</span>.<span class="ident">random_float</span>(), <span class="ident">pcg</span>.<span class="ident">random_float</span>()),
-                    <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.0</span>, <span class="number">0.0</span>, <span class="op">-</span><span class="number">1.0</span>)),
-                    <span class="ident">Point::default</span>(),
-                    <span class="ident">E3</span>,
-                    <span class="number">10</span>
-                )
-                .<span class="ident">dir</span>,
-            <span class="ident">Vector::from</span>((<span class="op">-</span><span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>)).<span class="ident">normalize</span>()
+            spec_brdf
+                .scatter_ray(
+                    (pcg.random_float(), pcg.random_float()),
+                    Vector::from((-<span class="number">1.0</span>, <span class="number">0.0</span>, -<span class="number">1.0</span>)),
+                    Point::default(),
+                    E3,
+                    <span class="number">10
+                </span>)
+                .dir,
+            Vector::from((-<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>)).normalize()
         );
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sum</span> <span class="op">=</span> <span class="ident">Vector</span> {
-            <span class="ident">x</span>: <span class="number">0.0</span>,
-            <span class="ident">y</span>: <span class="number">0.0</span>,
-            <span class="ident">z</span>: <span class="number">0.0</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>sum = Vector {
+            x: <span class="number">0.0</span>,
+            y: <span class="number">0.0</span>,
+            z: <span class="number">0.0</span>,
         };
-        <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="number">5e5</span>;
-        <span class="kw">let</span> <span class="ident">eps</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">/</span> <span class="ident">f32::sqrt</span>(<span class="ident">num</span>);
-        <span class="kw">for</span> <span class="ident">_n</span> <span class="kw">in</span> <span class="number">1</span>..(<span class="ident">num</span> <span class="kw">as</span> <span class="ident">u32</span>) {
-            <span class="ident">sum</span> <span class="op">=</span> <span class="ident">sum</span>
-                <span class="op">+</span> <span class="ident">diff_brdf</span>
-                    .<span class="ident">scatter_ray</span>(
-                        (<span class="ident">pcg</span>.<span class="ident">random_float</span>(), <span class="ident">pcg</span>.<span class="ident">random_float</span>()),
-                        <span class="ident">vE2</span>,
-                        <span class="ident">Point::default</span>(),
-                        <span class="ident">E3</span>,
+        <span class="kw">let </span>num = <span class="number">5e5</span>;
+        <span class="kw">let </span>eps = <span class="number">1.0 </span>/ f32::sqrt(num);
+        <span class="kw">for </span>_n <span class="kw">in </span><span class="number">1</span>..(num <span class="kw">as </span>u32) {
+            sum = sum
+                + diff_brdf
+                    .scatter_ray(
+                        (pcg.random_float(), pcg.random_float()),
+                        vE2,
+                        Point::default(),
+                        E3,
                         <span class="number">10</span>,
                     )
-                    .<span class="ident">dir</span>
-                    .<span class="ident">normalize</span>()
+                    .dir
+                    .normalize()
         }
-        <span class="ident">sum</span> <span class="op">=</span> <span class="ident">sum</span> <span class="op">*</span> (<span class="number">1.0</span> <span class="op">/</span> <span class="ident">num</span>);
+        sum = sum * (<span class="number">1.0 </span>/ num);
         <span class="macro">assert!</span>(
-            <span class="ident">sum</span>.<span class="ident">x</span>.<span class="ident">abs</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">eps</span> <span class="op">&amp;&amp;</span> <span class="ident">sum</span>.<span class="ident">y</span>.<span class="ident">abs</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">eps</span> <span class="op">&amp;&amp;</span> (<span class="ident">sum</span>.<span class="ident">z</span>.<span class="ident">abs</span>() <span class="op">-</span> (<span class="number">2.0</span> <span class="op">/</span> <span class="number">3.0</span>)).<span class="ident">abs</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">eps</span>
+            sum.x.abs() &lt;= eps &amp;&amp; sum.y.abs() &lt;= eps &amp;&amp; (sum.z.abs() - (<span class="number">2.0 </span>/ <span class="number">3.0</span>)).abs() &lt;= eps
         )
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

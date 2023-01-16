@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Pcg","PCG random numbers generator."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Pcg","PCG random numbers generator."]]};

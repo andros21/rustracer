@@ -1,9 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cli.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../docs/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cli.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../docs/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -445,448 +440,473 @@
 <span id="440">440</span>
 <span id="441">441</span>
 <span id="442">442</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Command Line Interface module.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Provides [`build_cli`] function with all cli</span>
-<span class="doccomment">//! desired subcommands and flags, using [`clap`](https://github.com/clap-rs/clap)</span>
-<span class="doccomment">//! library.</span>
-<span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">Arg</span>, <span class="ident">Command</span>};
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Command Line Interface module.
+//!
+//! Provides [`build_cli`] function with all cli
+//! desired subcommands and flags, using [`clap`](https://github.com/clap-rs/clap)
+//! library.
+</span><span class="kw">use </span>clap::{builder, Arg, ArgAction, Command};
 
-<span class="doccomment">/// Default normalization factor.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--factor` flag</span>
-<span class="kw">const</span> <span class="ident">FACTOR</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;1.0&quot;</span>;
-<span class="doccomment">/// Default transfer function parameter.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--gamma` flag</span>
-<span class="kw">const</span> <span class="ident">GAMMA</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;1.0&quot;</span>;
-<span class="doccomment">/// Default image width.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--width` flag</span>
-<span class="kw">const</span> <span class="ident">WIDTH</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;640&quot;</span>;
-<span class="doccomment">/// Default image height.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--height` flag</span>
-<span class="kw">const</span> <span class="ident">HEIGHT</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;480&quot;</span>;
-<span class="doccomment">/// Default angle of view (in degrees).</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--angle-deg` flag</span>
-<span class="kw">const</span> <span class="ident">ANGLE_DEG</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;0.0&quot;</span>;
-<span class="doccomment">/// Default rendering algorithm.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--algorithm` flag</span>
-<span class="kw">const</span> <span class="ident">ALGORITHM</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;pathtracer&quot;</span>;
-<span class="doccomment">/// Default number of rays for pathtracer algorithm.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--num-of-rays` flag</span>
-<span class="kw">const</span> <span class="ident">NUM_OF_RAYS</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>;
-<span class="doccomment">/// Default max depth for pathtracer algorithm.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--max-depth` flag</span>
-<span class="kw">const</span> <span class="ident">MAX_DEPTH</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>;
-<span class="doccomment">/// Default init seed for random generator.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--init-state` flag</span>
-<span class="kw">const</span> <span class="ident">INIT_STATE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;42&quot;</span>;
-<span class="doccomment">/// Default identifier for random generator sequence.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--init-seq` flag</span>
-<span class="kw">const</span> <span class="ident">INIT_SEQ</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;54&quot;</span>;
-<span class="doccomment">/// Default anti-aliasing level.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When no arguments are provided to `--anti-aliasing` flag</span>
-<span class="kw">const</span> <span class="ident">ANTI_ALIASING</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>;
+<span class="doccomment">/// Default normalization factor.
+///
+/// When no arguments are provided to `--factor` flag
+</span><span class="kw">const </span>FACTOR: <span class="kw-2">&amp;</span>str = <span class="string">&quot;1.0&quot;</span>;
+<span class="doccomment">/// Default transfer function parameter.
+///
+/// When no arguments are provided to `--gamma` flag
+</span><span class="kw">const </span>GAMMA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;1.0&quot;</span>;
+<span class="doccomment">/// Default image width.
+///
+/// When no arguments are provided to `--width` flag
+</span><span class="kw">const </span>WIDTH: <span class="kw-2">&amp;</span>str = <span class="string">&quot;640&quot;</span>;
+<span class="doccomment">/// Default image height.
+///
+/// When no arguments are provided to `--height` flag
+</span><span class="kw">const </span>HEIGHT: <span class="kw-2">&amp;</span>str = <span class="string">&quot;480&quot;</span>;
+<span class="doccomment">/// Default angle of view (in degrees).
+///
+/// When no arguments are provided to `--angle-deg` flag
+</span><span class="kw">const </span>ANGLE_DEG: <span class="kw-2">&amp;</span>str = <span class="string">&quot;0.0&quot;</span>;
+<span class="doccomment">/// Default rendering algorithm.
+///
+/// When no arguments are provided to `--algorithm` flag
+</span><span class="kw">const </span>ALGORITHM: <span class="kw-2">&amp;</span>str = <span class="string">&quot;pathtracer&quot;</span>;
+<span class="doccomment">/// Default number of rays for pathtracer algorithm.
+///
+/// When no arguments are provided to `--num-of-rays` flag
+</span><span class="kw">const </span>NUM_OF_RAYS: <span class="kw-2">&amp;</span>str = <span class="string">&quot;10&quot;</span>;
+<span class="doccomment">/// Default max depth for pathtracer algorithm.
+///
+/// When no arguments are provided to `--max-depth` flag
+</span><span class="kw">const </span>MAX_DEPTH: <span class="kw-2">&amp;</span>str = <span class="string">&quot;3&quot;</span>;
+<span class="doccomment">/// Default init seed for random generator.
+///
+/// When no arguments are provided to `--init-state` flag
+</span><span class="kw">const </span>INIT_STATE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;42&quot;</span>;
+<span class="doccomment">/// Default identifier for random generator sequence.
+///
+/// When no arguments are provided to `--init-seq` flag
+</span><span class="kw">const </span>INIT_SEQ: <span class="kw-2">&amp;</span>str = <span class="string">&quot;54&quot;</span>;
+<span class="doccomment">/// Default anti-aliasing level.
+///
+/// When no arguments are provided to `--anti-aliasing` flag
+</span><span class="kw">const </span>ANTI_ALIASING: <span class="kw-2">&amp;</span>str = <span class="string">&quot;1&quot;</span>;
 
-<span class="doccomment">/// Build a [`clap::Command`](https://docs.rs/clap/latest/clap/type.Command.html)</span>
-<span class="doccomment">/// for [`rustracer`](..) crate.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_cli</span>() -&gt; <span class="ident">Command</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">cli</span> <span class="op">=</span> <span class="ident">Command::new</span>(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>))
-        .<span class="ident">version</span>(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>))
-        .<span class="ident">about</span>(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_DESCRIPTION&quot;</span>))
-        .<span class="ident">arg_required_else_help</span>(<span class="bool-val">true</span>)
-        .<span class="ident">disable_help_subcommand</span>(<span class="bool-val">true</span>)
-        .<span class="ident">dont_collapse_args_in_usage</span>(<span class="bool-val">true</span>)
-        .<span class="ident">propagate_version</span>(<span class="bool-val">true</span>)
-        .<span class="ident">subcommand_required</span>(<span class="bool-val">true</span>)
-        .<span class="ident">subcommand</span>(
-            <span class="ident">Command::new</span>(<span class="string">&quot;convert&quot;</span>)
-                .<span class="ident">arg_required_else_help</span>(<span class="bool-val">true</span>)
-                .<span class="ident">dont_collapse_args_in_usage</span>(<span class="bool-val">true</span>)
-                .<span class="ident">about</span>(<span class="string">&quot;Convert HDR (pfm) image to LDR (ff|png) image&quot;</span>)
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;HDR&quot;</span>)
-                        .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Input pfm image&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Input pfm file path&quot;</span>),
+<span class="doccomment">/// Build a [`clap::Command`](https://docs.rs/clap/latest/clap/type.Command.html)
+/// for [`rustracer`](..) crate.
+</span><span class="kw">pub fn </span>build_cli() -&gt; Command {
+    Command::new(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>))
+        .version(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>))
+        .about(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_DESCRIPTION&quot;</span>))
+        .arg_required_else_help(<span class="bool-val">true</span>)
+        .disable_help_subcommand(<span class="bool-val">true</span>)
+        .propagate_version(<span class="bool-val">true</span>)
+        .subcommand_required(<span class="bool-val">true</span>)
+        .subcommand(
+            Command::new(<span class="string">&quot;convert&quot;</span>)
+                .arg_required_else_help(<span class="bool-val">true</span>)
+                .about(<span class="string">&quot;Convert HDR (pfm) image to LDR (ff|png) image&quot;</span>)
+                .arg(
+                    Arg::new(<span class="string">&quot;HDR&quot;</span>)
+                        .required(<span class="bool-val">true</span>)
+                        .help(<span class="string">&quot;Input pfm image&quot;</span>)
+                        .long_help(<span class="string">&quot;Input pfm file path&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;LDR&quot;</span>)
-                        .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Output file path [possible formats: ff, png]&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;LDR&quot;</span>)
+                        .required(<span class="bool-val">true</span>)
+                        .help(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
+                        .long_help(<span class="string">&quot;Output file path [possible formats: ff, png]&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;verbose&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;v&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;verbose&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Print stdout information&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Print stdout information&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;verbose&quot;</span>)
+                        .short(<span class="string">&#39;v&#39;</span>)
+                        .long(<span class="string">&quot;verbose&quot;</span>)
+                        .num_args(<span class="number">0</span>)
+                        .action(ArgAction::SetTrue)
+                        .help(<span class="string">&quot;Print stdout information&quot;</span>)
+                        .long_help(<span class="string">&quot;Print stdout information&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;factor&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;f&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;factor&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;FACTOR&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">FACTOR</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Normalization factor&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;factor&quot;</span>)
+                        .short(<span class="string">&#39;f&#39;</span>)
+                        .long(<span class="string">&quot;factor&quot;</span>)
+                        .value_name(<span class="string">&quot;FACTOR&quot;</span>)
+                        .default_value(FACTOR)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Normalization factor&quot;</span>)
+                        .long_help(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;gamma&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;g&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;gamma&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;GAMMA&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">GAMMA</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Gamma parameter&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;gamma&quot;</span>)
+                        .short(<span class="string">&#39;g&#39;</span>)
+                        .long(<span class="string">&quot;gamma&quot;</span>)
+                        .value_name(<span class="string">&quot;GAMMA&quot;</span>)
+                        .default_value(GAMMA)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Gamma parameter&quot;</span>)
+                        .long_help(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
                 ),
         )
-        .<span class="ident">subcommand</span>(
-            <span class="ident">Command::new</span>(<span class="string">&quot;demo&quot;</span>)
-                .<span class="ident">arg_required_else_help</span>(<span class="bool-val">true</span>)
-                .<span class="ident">dont_collapse_args_in_usage</span>(<span class="bool-val">true</span>)
-                .<span class="ident">about</span>(<span class="string">&quot;Render a demo scene (hard-coded in main)&quot;</span>)
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;OUTPUT&quot;</span>)
-                        .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Output ldr image file path [possible formats: ff, png]&quot;</span>),
+        .subcommand(
+            Command::new(<span class="string">&quot;demo&quot;</span>)
+                .arg_required_else_help(<span class="bool-val">true</span>)
+                .about(<span class="string">&quot;Render a demo scene (hard-coded in main)&quot;</span>)
+                .arg(
+                    Arg::new(<span class="string">&quot;OUTPUT&quot;</span>)
+                        .required(<span class="bool-val">true</span>)
+                        .help(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
+                        .long_help(<span class="string">&quot;Output ldr image file path [possible formats: ff, png]&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;verbose&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;v&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;verbose&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Print stdout information&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Print stdout information&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;verbose&quot;</span>)
+                        .short(<span class="string">&#39;v&#39;</span>)
+                        .long(<span class="string">&quot;verbose&quot;</span>)
+                        .num_args(<span class="number">0</span>)
+                        .action(ArgAction::SetTrue)
+                        .help(<span class="string">&quot;Print stdout information&quot;</span>)
+                        .long_help(<span class="string">&quot;Print stdout information&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;output-pfm&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;output-pfm&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Output also hdr image&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Output also pfm file in combination with (ff|png) file&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;output-pfm&quot;</span>)
+                        .long(<span class="string">&quot;output-pfm&quot;</span>)
+                        .num_args(<span class="number">0</span>)
+                        .action(ArgAction::SetTrue)
+                        .help(<span class="string">&quot;Output also hdr image&quot;</span>)
+                        .long_help(<span class="string">&quot;Output also pfm file in combination with (ff|png) file&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;orthogonal&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;orthogonal&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Use orthogonal camera instead of perspective camera&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Render image with orthogonal view of the scene&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;orthogonal&quot;</span>)
+                        .long(<span class="string">&quot;orthogonal&quot;</span>)
+                        .num_args(<span class="number">0</span>)
+                        .action(ArgAction::SetTrue)
+                        .help(<span class="string">&quot;Use orthogonal camera instead of perspective camera&quot;</span>)
+                        .long_help(<span class="string">&quot;Render image with orthogonal view of the scene&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;width&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;width&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;WIDTH&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">WIDTH</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Image width&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Width of the image to render&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;width&quot;</span>)
+                        .long(<span class="string">&quot;width&quot;</span>)
+                        .value_name(<span class="string">&quot;WIDTH&quot;</span>)
+                        .default_value(WIDTH)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Image width&quot;</span>)
+                        .long_help(<span class="string">&quot;Width of the image to render&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;height&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;height&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;HEIGHT&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">HEIGHT</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Image height&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Height of the image to render&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;height&quot;</span>)
+                        .long(<span class="string">&quot;height&quot;</span>)
+                        .value_name(<span class="string">&quot;HEIGHT&quot;</span>)
+                        .default_value(HEIGHT)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Image height&quot;</span>)
+                        .long_help(<span class="string">&quot;Height of the image to render&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;angle-deg&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;angle-deg&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;ANGLE_DEG&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">ANGLE_DEG</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;View angle (in degrees)&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Render the image with this angle (in degrees) of view&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;angle-deg&quot;</span>)
+                        .long(<span class="string">&quot;angle-deg&quot;</span>)
+                        .value_name(<span class="string">&quot;ANGLE_DEG&quot;</span>)
+                        .default_value(ANGLE_DEG)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;View angle (in degrees)&quot;</span>)
+                        .long_help(<span class="string">&quot;Render the image with this angle (in degrees) of view&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;factor&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;f&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;factor&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;FACTOR&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">FACTOR</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Normalization factor&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;factor&quot;</span>)
+                        .short(<span class="string">&#39;f&#39;</span>)
+                        .long(<span class="string">&quot;factor&quot;</span>)
+                        .value_name(<span class="string">&quot;FACTOR&quot;</span>)
+                        .default_value(FACTOR)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Normalization factor&quot;</span>)
+                        .long_help(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;gamma&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;g&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;gamma&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;GAMMA&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">GAMMA</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Gamma parameter&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;gamma&quot;</span>)
+                        .short(<span class="string">&#39;g&#39;</span>)
+                        .long(<span class="string">&quot;gamma&quot;</span>)
+                        .value_name(<span class="string">&quot;GAMMA&quot;</span>)
+                        .default_value(GAMMA)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Gamma parameter&quot;</span>)
+                        .long_help(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;algorithm&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;a&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;algorithm&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;ALGORITHM&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">ALGORITHM</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">possible_values</span>([<span class="string">&quot;onoff&quot;</span>, <span class="string">&quot;flat&quot;</span>, <span class="string">&quot;pathtracer&quot;</span>])
-                        .<span class="ident">help</span>(<span class="string">&quot;Rendering algorithm&quot;</span>)
-                        .<span class="ident">long_help</span>(
+                .arg(
+                    Arg::new(<span class="string">&quot;algorithm&quot;</span>)
+                        .short(<span class="string">&#39;a&#39;</span>)
+                        .long(<span class="string">&quot;algorithm&quot;</span>)
+                        .value_name(<span class="string">&quot;ALGORITHM&quot;</span>)
+                        .default_value(ALGORITHM)
+                        .num_args(<span class="number">1</span>)
+                        .value_parser(builder::PossibleValuesParser::new([
+                            <span class="string">&quot;onoff&quot;</span>,
+                            <span class="string">&quot;flat&quot;</span>,
+                            <span class="string">&quot;pathtracer&quot;</span>,
+                        ]))
+                        .help(<span class="string">&quot;Rendering algorithm&quot;</span>)
+                        .long_help(
                             <span class="string">&quot;Algorithm to use for render the scene: [onoff, flat, pathtracer]&quot;</span>,
                         ),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;num-of-rays&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;n&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--num-of-rays&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;NUM_OF_RAYS&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">NUM_OF_RAYS</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">requires_if</span>(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Number of rays&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Number of rays departing from each surface point&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;num-of-rays&quot;</span>)
+                        .short(<span class="string">&#39;n&#39;</span>)
+                        .long(<span class="string">&quot;num-of-rays&quot;</span>)
+                        .value_name(<span class="string">&quot;NUM_OF_RAYS&quot;</span>)
+                        .default_value(NUM_OF_RAYS)
+                        .num_args(<span class="number">1</span>)
+                        .requires_if(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
+                        .help(<span class="string">&quot;Number of rays&quot;</span>)
+                        .long_help(<span class="string">&quot;Number of rays departing from each surface point&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;max-depth&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;m&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--max-depth&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;MAX_DEPTH&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">MAX_DEPTH</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">requires_if</span>(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Maximum depth&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Maximum allowed ray depth&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;max-depth&quot;</span>)
+                        .short(<span class="string">&#39;m&#39;</span>)
+                        .long(<span class="string">&quot;max-depth&quot;</span>)
+                        .value_name(<span class="string">&quot;MAX_DEPTH&quot;</span>)
+                        .default_value(MAX_DEPTH)
+                        .num_args(<span class="number">1</span>)
+                        .requires_if(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
+                        .help(<span class="string">&quot;Maximum depth&quot;</span>)
+                        .long_help(<span class="string">&quot;Maximum allowed ray depth&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;init-state&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--init-state&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;INIT_STATE&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">INIT_STATE</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Initial random seed (positive number)&quot;</span>)
-                        .<span class="ident">long_help</span>(
+                .arg(
+                    Arg::new(<span class="string">&quot;init-state&quot;</span>)
+                        .long(<span class="string">&quot;init-state&quot;</span>)
+                        .value_name(<span class="string">&quot;INIT_STATE&quot;</span>)
+                        .default_value(INIT_STATE)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Initial random seed (positive number)&quot;</span>)
+                        .long_help(
                             <span class="string">&quot;Initial seed for the random number generator (positive number)&quot;</span>,
                         ),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;init-seq&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--init-seq&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;INIT_SEQ&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">INIT_SEQ</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Identifier of the random sequence (positive number)&quot;</span>)
-                        .<span class="ident">long_help</span>(
+                .arg(
+                    Arg::new(<span class="string">&quot;init-seq&quot;</span>)
+                        .long(<span class="string">&quot;init-seq&quot;</span>)
+                        .value_name(<span class="string">&quot;INIT_SEQ&quot;</span>)
+                        .default_value(INIT_SEQ)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Identifier of the random sequence (positive number)&quot;</span>)
+                        .long_help(
                             <span class="string">&quot;Identifier of the sequence produced by the random number generator \
                              (positive number)&quot;</span>,
                         ),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;anti-aliasing&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--anti-aliasing&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;ANTI_ALIASING&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">ANTI_ALIASING</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Anti-aliasing level&quot;</span>)
-                        .<span class="ident">long_help</span>(
+                .arg(
+                    Arg::new(<span class="string">&quot;anti-aliasing&quot;</span>)
+                        .long(<span class="string">&quot;anti-aliasing&quot;</span>)
+                        .value_name(<span class="string">&quot;ANTI_ALIASING&quot;</span>)
+                        .default_value(ANTI_ALIASING)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Anti-aliasing level&quot;</span>)
+                        .long_help(
                             <span class="string">&quot;Anti-aliasing level, corresponds to the square-root of the number of \
                              samples per pixel&quot;</span>,
                         ),
                 ),
         )
-        .<span class="ident">subcommand</span>(
-            <span class="ident">Command::new</span>(<span class="string">&quot;render&quot;</span>)
-                .<span class="ident">arg_required_else_help</span>(<span class="bool-val">true</span>)
-                .<span class="ident">dont_collapse_args_in_usage</span>(<span class="bool-val">true</span>)
-                .<span class="ident">about</span>(<span class="string">&quot;Render a scene from file (yaml formatted)&quot;</span>)
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;INPUT&quot;</span>)
-                        .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Input scene file&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Input scene file (formatted as yaml) to build up the scene&quot;</span>),
+        .subcommand(
+            Command::new(<span class="string">&quot;render&quot;</span>)
+                .arg_required_else_help(<span class="bool-val">true</span>)
+                .about(<span class="string">&quot;Render a scene from file (yaml formatted)&quot;</span>)
+                .arg(
+                    Arg::new(<span class="string">&quot;INPUT&quot;</span>)
+                        .required(<span class="bool-val">true</span>)
+                        .help(<span class="string">&quot;Input scene file&quot;</span>)
+                        .long_help(<span class="string">&quot;Input scene file (formatted as yaml) to build up the scene&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;OUTPUT&quot;</span>)
-                        .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Output ldr image file path [possible formats: ff, png]&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;OUTPUT&quot;</span>)
+                        .required(<span class="bool-val">true</span>)
+                        .help(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
+                        .long_help(<span class="string">&quot;Output ldr image file path [possible formats: ff, png]&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;verbose&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;v&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;verbose&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Print stdout information&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Print stdout information&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;verbose&quot;</span>)
+                        .short(<span class="string">&#39;v&#39;</span>)
+                        .long(<span class="string">&quot;verbose&quot;</span>)
+                        .num_args(<span class="number">0</span>)
+                        .action(ArgAction::SetTrue)
+                        .help(<span class="string">&quot;Print stdout information&quot;</span>)
+                        .long_help(<span class="string">&quot;Print stdout information&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;output-pfm&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;output-pfm&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Output also hdr image&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Output also pfm file in combination with (ff|png) file&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;output-pfm&quot;</span>)
+                        .long(<span class="string">&quot;output-pfm&quot;</span>)
+                        .num_args(<span class="number">0</span>)
+                        .help(<span class="string">&quot;Output also hdr image&quot;</span>)
+                        .long_help(<span class="string">&quot;Output also pfm file in combination with (ff|png) file&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;width&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;width&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;WIDTH&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">WIDTH</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Image width&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Width of the image to render&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;width&quot;</span>)
+                        .long(<span class="string">&quot;width&quot;</span>)
+                        .value_name(<span class="string">&quot;WIDTH&quot;</span>)
+                        .default_value(WIDTH)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Image width&quot;</span>)
+                        .long_help(<span class="string">&quot;Width of the image to render&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;height&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;height&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;HEIGHT&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">HEIGHT</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Image height&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Height of the image to render&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;height&quot;</span>)
+                        .long(<span class="string">&quot;height&quot;</span>)
+                        .value_name(<span class="string">&quot;HEIGHT&quot;</span>)
+                        .default_value(HEIGHT)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Image height&quot;</span>)
+                        .long_help(<span class="string">&quot;Height of the image to render&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;angle-deg&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;angle-deg&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;ANGLE_DEG&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">ANGLE_DEG</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;View angle (in degrees)&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Render the image with this angle (in degrees) of view&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;angle-deg&quot;</span>)
+                        .long(<span class="string">&quot;angle-deg&quot;</span>)
+                        .value_name(<span class="string">&quot;ANGLE_DEG&quot;</span>)
+                        .default_value(ANGLE_DEG)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;View angle (in degrees)&quot;</span>)
+                        .long_help(<span class="string">&quot;Render the image with this angle (in degrees) of view&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;factor&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;f&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;factor&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;FACTOR&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">FACTOR</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Normalization factor&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;factor&quot;</span>)
+                        .short(<span class="string">&#39;f&#39;</span>)
+                        .long(<span class="string">&quot;factor&quot;</span>)
+                        .value_name(<span class="string">&quot;FACTOR&quot;</span>)
+                        .default_value(FACTOR)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Normalization factor&quot;</span>)
+                        .long_help(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;gamma&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;g&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;gamma&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;GAMMA&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">GAMMA</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Gamma parameter&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;gamma&quot;</span>)
+                        .short(<span class="string">&#39;g&#39;</span>)
+                        .long(<span class="string">&quot;gamma&quot;</span>)
+                        .value_name(<span class="string">&quot;GAMMA&quot;</span>)
+                        .default_value(GAMMA)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Gamma parameter&quot;</span>)
+                        .long_help(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;algorithm&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;a&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;algorithm&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;ALGORITHM&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">ALGORITHM</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">possible_values</span>([<span class="string">&quot;onoff&quot;</span>, <span class="string">&quot;flat&quot;</span>, <span class="string">&quot;pathtracer&quot;</span>])
-                        .<span class="ident">help</span>(<span class="string">&quot;Rendering algorithm&quot;</span>)
-                        .<span class="ident">long_help</span>(
+                .arg(
+                    Arg::new(<span class="string">&quot;algorithm&quot;</span>)
+                        .short(<span class="string">&#39;a&#39;</span>)
+                        .long(<span class="string">&quot;algorithm&quot;</span>)
+                        .value_name(<span class="string">&quot;ALGORITHM&quot;</span>)
+                        .default_value(ALGORITHM)
+                        .num_args(<span class="number">1</span>)
+                        .value_parser(builder::PossibleValuesParser::new([
+                            <span class="string">&quot;onoff&quot;</span>,
+                            <span class="string">&quot;flat&quot;</span>,
+                            <span class="string">&quot;pathtracer&quot;</span>,
+                        ]))
+                        .help(<span class="string">&quot;Rendering algorithm&quot;</span>)
+                        .long_help(
                             <span class="string">&quot;Algorithm to use for render the scene: [onoff, flat, pathtracer]&quot;</span>,
                         ),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;num-of-rays&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;n&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--num-of-rays&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;NUM_OF_RAYS&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">NUM_OF_RAYS</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">requires_if</span>(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Number of rays&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Number of rays departing from each surface point&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;num-of-rays&quot;</span>)
+                        .short(<span class="string">&#39;n&#39;</span>)
+                        .long(<span class="string">&quot;num-of-rays&quot;</span>)
+                        .value_name(<span class="string">&quot;NUM_OF_RAYS&quot;</span>)
+                        .default_value(NUM_OF_RAYS)
+                        .num_args(<span class="number">1</span>)
+                        .requires_if(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
+                        .help(<span class="string">&quot;Number of rays&quot;</span>)
+                        .long_help(<span class="string">&quot;Number of rays departing from each surface point&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;max-depth&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;m&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--max-depth&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;MAX_DEPTH&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">MAX_DEPTH</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">requires_if</span>(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Maximum depth&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Maximum allowed ray depth&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;max-depth&quot;</span>)
+                        .short(<span class="string">&#39;m&#39;</span>)
+                        .long(<span class="string">&quot;max-depth&quot;</span>)
+                        .value_name(<span class="string">&quot;MAX_DEPTH&quot;</span>)
+                        .default_value(MAX_DEPTH)
+                        .num_args(<span class="number">1</span>)
+                        .requires_if(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
+                        .help(<span class="string">&quot;Maximum depth&quot;</span>)
+                        .long_help(<span class="string">&quot;Maximum allowed ray depth&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;init-state&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--init-state&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;INIT_STATE&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">INIT_STATE</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Initial random seed (positive number)&quot;</span>)
-                        .<span class="ident">long_help</span>(
+                .arg(
+                    Arg::new(<span class="string">&quot;init-state&quot;</span>)
+                        .long(<span class="string">&quot;init-state&quot;</span>)
+                        .value_name(<span class="string">&quot;INIT_STATE&quot;</span>)
+                        .default_value(INIT_STATE)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Initial random seed (positive number)&quot;</span>)
+                        .long_help(
                             <span class="string">&quot;Initial seed for the random number generator (positive number)&quot;</span>,
                         ),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;init-seq&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--init-seq&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;INIT_SEQ&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">INIT_SEQ</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Identifier of the random sequence (positive number)&quot;</span>)
-                        .<span class="ident">long_help</span>(
+                .arg(
+                    Arg::new(<span class="string">&quot;init-seq&quot;</span>)
+                        .long(<span class="string">&quot;init-seq&quot;</span>)
+                        .value_name(<span class="string">&quot;INIT_SEQ&quot;</span>)
+                        .default_value(INIT_SEQ)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Identifier of the random sequence (positive number)&quot;</span>)
+                        .long_help(
                             <span class="string">&quot;Identifier of the sequence produced by the random number generator \
                              (positive number)&quot;</span>,
                         ),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;anti-aliasing&quot;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;--anti-aliasing&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;ANTI_ALIASING&quot;</span>)
-                        .<span class="ident">default_value</span>(<span class="ident">ANTI_ALIASING</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Anti-aliasing level&quot;</span>)
-                        .<span class="ident">long_help</span>(
+                .arg(
+                    Arg::new(<span class="string">&quot;anti-aliasing&quot;</span>)
+                        .long(<span class="string">&quot;anti-aliasing&quot;</span>)
+                        .value_name(<span class="string">&quot;ANTI_ALIASING&quot;</span>)
+                        .default_value(ANTI_ALIASING)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Anti-aliasing level&quot;</span>)
+                        .long_help(
                             <span class="string">&quot;Anti-aliasing level, corresponds to the square-root of the number of \
                              samples per pixel&quot;</span>,
                         ),
                 ),
         )
-        .<span class="ident">subcommand</span>(
-            <span class="ident">Command::new</span>(<span class="string">&quot;completion&quot;</span>)
-                .<span class="ident">hide</span>(<span class="bool-val">true</span>)
-                .<span class="ident">arg_required_else_help</span>(<span class="bool-val">true</span>)
-                .<span class="ident">about</span>(<span class="string">&quot;Generate shell completion script&quot;</span>)
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;SHELL&quot;</span>)
-                        .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                        .<span class="ident">possible_values</span>([<span class="string">&quot;bash&quot;</span>, <span class="string">&quot;fish&quot;</span>, <span class="string">&quot;zsh&quot;</span>])
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Shell to generate script for&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Specify for which shell completions should be generated&quot;</span>),
+        .subcommand(
+            Command::new(<span class="string">&quot;completion&quot;</span>)
+                .hide(<span class="bool-val">true</span>)
+                .arg_required_else_help(<span class="bool-val">true</span>)
+                .about(<span class="string">&quot;Generate shell completion script&quot;</span>)
+                .arg(
+                    Arg::new(<span class="string">&quot;SHELL&quot;</span>)
+                        .required(<span class="bool-val">true</span>)
+                        .value_parser(builder::PossibleValuesParser::new([<span class="string">&quot;bash&quot;</span>, <span class="string">&quot;fish&quot;</span>, <span class="string">&quot;zsh&quot;</span>]))
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Shell to generate script for&quot;</span>)
+                        .long_help(<span class="string">&quot;Specify for which shell completions should be generated&quot;</span>),
                 )
-                .<span class="ident">arg</span>(
-                    <span class="ident">Arg::new</span>(<span class="string">&quot;output&quot;</span>)
-                        .<span class="ident">short</span>(<span class="string">&#39;o&#39;</span>)
-                        .<span class="ident">long</span>(<span class="string">&quot;output&quot;</span>)
-                        .<span class="ident">value_name</span>(<span class="string">&quot;OUTPUT&quot;</span>)
-                        .<span class="ident">number_of_values</span>(<span class="number">1</span>)
-                        .<span class="ident">help</span>(<span class="string">&quot;Specify output script file&quot;</span>)
-                        .<span class="ident">long_help</span>(<span class="string">&quot;Specify an output file for shell completions&quot;</span>),
+                .arg(
+                    Arg::new(<span class="string">&quot;output&quot;</span>)
+                        .short(<span class="string">&#39;o&#39;</span>)
+                        .long(<span class="string">&quot;output&quot;</span>)
+                        .value_name(<span class="string">&quot;OUTPUT&quot;</span>)
+                        .num_args(<span class="number">1</span>)
+                        .help(<span class="string">&quot;Specify output script file&quot;</span>)
+                        .long_help(<span class="string">&quot;Specify an output file for shell completions&quot;</span>),
                 ),
-        );
-
-    <span class="ident">cli</span>
+        )
 }
 
-<span class="doccomment">/// Inherits some useful cli parameters.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Use it inside [`read_scene_file`](../../scene/struct.Scene.html#method.read_scene_file) to</span>
-<span class="doccomment">/// set some standard [`f32`] values.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cli</span> {
-    <span class="comment">// Aspect ratio usually `width/height`.</span>
-    <span class="kw">pub</span> <span class="ident">aspect_ratio</span>: <span class="ident">f32</span>,
-    <span class="comment">// View angle (in degrees) of the scene.</span>
-    <span class="kw">pub</span> <span class="ident">angle_deg</span>: <span class="ident">f32</span>,
+<span class="doccomment">/// Inherits some useful cli parameters.
+///
+/// Use it inside [`read_scene_file`](../../scene/struct.Scene.html#method.read_scene_file) to
+/// set some standard [`f32`] values.
+</span><span class="attribute">#[derive(Copy, Clone)]
+</span><span class="kw">pub struct </span>Cli {
+    <span class="comment">// Aspect ratio usually `width/height`.
+    </span><span class="kw">pub </span>aspect_ratio: f32,
+    <span class="comment">// View angle (in degrees) of the scene.
+    </span><span class="kw">pub </span>angle_deg: f32,
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustracer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.1 (90743e729 2023-01-10)" ></div></body></html>

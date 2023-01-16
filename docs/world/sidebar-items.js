@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["World","A class holding a list of `shapes` (e.g. `Plane`, `Sphere`)."]]});
+window.SIDEBAR_ITEMS = {"struct":[["World","A class holding a list of `shapes` (e.g. `Plane`, `Sphere`)."]]};

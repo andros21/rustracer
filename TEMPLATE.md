@@ -163,7 +163,7 @@ Rendering demo scene:
       <code>rustracer demo --width 1920 --height 1080 --anti-aliasing 3 demo.png</code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
    </h5>
    <img src="https://github.com/andros21/rustracer/raw/master/examples/demo.png" width="500" alt="rustracer-demo-png"/>
-   <p><sub><strong>demo.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~35s
+   <p><sub><strong>demo.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~35s</sub></p>
 </div>
 
 \
@@ -174,7 +174,7 @@ demo scene 360 degree (see [`makefile`](https://github.com/andros21/rustracer/bl
       <code>make demo.gif</code>&nbsp;&nbsp;<a href="#note4"><sup>(4)</sup></a>
   </h5>
   <img src="https://github.com/andros21/rustracer/raw/master/examples/demo.gif" width="500" alt="rustracer-demo-gif"/>
-  <p><sub><strong>demo.gif:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~15m
+  <p><sub><strong>demo.gif:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~15m</sub></p>
 </div>
 
 <br>
@@ -221,7 +221,7 @@ and the generated `flake.yml` can be simple parsed
    <code>rustracer render --width 1280 --height 720 --anti-aliasing 3 flake.yml flake.png</code>&nbsp;&nbsp;<a href="#note5"><sup>(5)</sup></a>
    </h5>
   <img src="https://github.com/andros21/rustracer/raw/master/examples/flake.png" width="500" alt="rustracer-flake"/>
-  <p><sub><strong>flake.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~7h
+  <p><sub><strong>flake.png:</strong> cpu Intel(R) Xeon(R) CPU E5520 @ 2.27GHz | threads 8 | time ~7h</sub></p>
 </div>
 
 <br>
@@ -246,7 +246,7 @@ Simple generate completion script for `bash` shell (same for `fish` and `zsh`):
       <code>rustracer completion bash</code> <a href="#note6"><sup>(6)</sup></a>
    </h5>
    <a href="https://asciinema.org/a/1lqL4683WLvXPfOo5W608je6V?autoplay=1&speed=2" target="_blank"><img src="https://asciinema.org/a/1lqL4683WLvXPfOo5W608je6V.svg" width="500" /></a>
-   <p><sub><strong>note:</strong> close-open your shell, and here we go, tab completions now available!
+   <p><sub><strong>note:</strong> close-open your shell, and here we go, tab completions now available!</sub></p>
 </div>
 
 <br>

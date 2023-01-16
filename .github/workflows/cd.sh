@@ -26,7 +26,7 @@ _assemble() {
 _cosign() {
    for PLATFORM in "${PLATFORMS[@]}"
    do
-      cosign sign-blob "${BASENAME}-${PLATFORM}.targ.gz" \
+      cosign sign-blob "${BASENAME}-${PLATFORM}.tar.gz" \
          --output-signature "${BASENAME}-${PLATFORM}-keyless.sig" \
          --output-certificate "${BASENAME}-${PLATFORM}-keyless.pem"
    done

@@ -44,7 +44,7 @@
 * `x86_64-unknown-linux-gnu` <a href="#note1"><sup>(1)</sup></a>
 * `x86_64-unknown-linux-musl`
 
-<p id="note1"><sub><strong><sup>(1)</sup> note:</strong> glibc version >= 2.27</sub></p>
+<p id="note1"><sub><strong><sup>(1)</sup> note:</strong> glibc version >= 2.35</sub></p>
 
 ### Build requirements
 

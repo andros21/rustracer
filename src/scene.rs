@@ -73,7 +73,7 @@ enum Keywords {
 
 impl fmt::Display for Keywords {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", format!("{:?}", self).to_lowercase())
+        write!(f, "{}", format!("{self:?}").to_lowercase())
     }
 }
 
@@ -280,7 +280,7 @@ impl<R: Read> InputStream<R> {
                 self.unread_char(ch);
                 return Err(SceneErr::UnclosedString {
                     loc: self.location,
-                    msg: format!("unclosed `{}` untermineted string", delimiter),
+                    msg: format!("unclosed `{delimiter}` untermineted string"),
                 });
             }
             token.push(ch);
@@ -325,7 +325,7 @@ impl<R: Read> InputStream<R> {
         }
         let value = f32::from_str(token.as_str()).map_err(|err| SceneErr::FloatParseFailure {
             loc: token_location,
-            msg: format!("{:?} is an invalid floating-point number", token),
+            msg: format!("{token:?} is an invalid floating-point number"),
             src: err,
         })?;
         Ok(Token::LiteralNumber(token_location, value))
@@ -418,7 +418,7 @@ impl<R: Read> InputStream<R> {
             // self.unread_char(ch);
             Err(SceneErr::InvalidCharacter {
                 loc: token_location,
-                msg: format!("{} invalid character", ch),
+                msg: format!("{ch} invalid character"),
             })
         }
     }
@@ -534,7 +534,7 @@ impl<R: Read> InputStream<R> {
         match token {
             Token::Identifier(loc, id) => Ok((loc, id)),
             // If identifier is named as a keywords, no problem, use it as identifier.
-            Token::Keyword(loc, key) => Ok((loc, format!("{:?}", key).to_lowercase())),
+            Token::Keyword(loc, key) => Ok((loc, format!("{key:?}").to_lowercase())),
             _ => not_matches!(token, "identifier"),
         }
     }
@@ -580,8 +580,7 @@ impl<R: Read> InputStream<R> {
                     Err(SceneErr::UndefinedIdentifier {
                         loc,
                         msg: format!(
-                            "{:?} floating-point number not defined, available [DISTANCE, RATIO]",
-                            id
+                            "{id:?} floating-point number not defined, available [DISTANCE, RATIO]"
                         ),
                     })
                 }
@@ -617,17 +616,17 @@ impl<R: Read> InputStream<R> {
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
                         loc,
-                        msg: format!("{:?} color not defined", color),
+                        msg: format!("{color:?} color not defined"),
                     })?)
             },
             // Match color from variables `var`.
             Token::Keyword(loc, key) => Ok(var
                 .colors
-                .get(&format!("{:?}", key).to_lowercase())
+                .get(&format!("{key:?}").to_lowercase())
                 .copied()
                 .ok_or(SceneErr::UndefinedIdentifier {
                     loc,
-                    msg: format!("\"{:?}\" color not defined", key),
+                    msg: format!("\"{key:?}\" color not defined"),
                 })?),
             _ => not_matches!(token, "rgb color"),
         }
@@ -658,7 +657,7 @@ impl<R: Read> InputStream<R> {
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
                         loc,
-                        msg: format!("{:?} vector not defined, available [E1, E2, E3]", vector),
+                        msg: format!("{vector:?} vector not defined, available [E1, E2, E3]"),
                     })?)
             },
             _ => not_matches!(token, "xyz vector"),
@@ -748,7 +747,7 @@ impl<R: Read> InputStream<R> {
                     HdrImage::read_pfm_file(Path::new(&pfm_file)).map_err(|err| {
                         SceneErr::PfmFileReadFailure {
                             loc,
-                            msg: format!("{:?} pfm file read failure", pfm_file),
+                            msg: format!("{pfm_file:?} pfm file read failure"),
                             src: err,
                         }
                     })?,
@@ -922,11 +921,11 @@ impl<R: Read> InputStream<R> {
                 } else {
                     self.unread_char(ch);
                     Ok(transformations
-                        .get(&format!("{:?}", key).to_lowercase())
+                        .get(&format!("{key:?}").to_lowercase())
                         .copied()
                         .ok_or(SceneErr::UndefinedIdentifier {
                             loc,
-                            msg: format!("\"{:?}\" transformation not defined", key),
+                            msg: format!("\"{key:?}\" transformation not defined"),
                         })?)
                 }
             },
@@ -937,7 +936,7 @@ impl<R: Read> InputStream<R> {
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
                         loc,
-                        msg: format!("{:?} transformation not defined", id),
+                        msg: format!("{id:?} transformation not defined"),
                     })
             },
             _ => not_matches!(transformation_tk, "transformation"),
@@ -1087,7 +1086,7 @@ impl<R: Read> InputStream<R> {
                 .cloned()
                 .ok_or(SceneErr::UndefinedIdentifier {
                     loc,
-                    msg: format!("{:?} material not defined", material_id),
+                    msg: format!("{material_id:?} material not defined"),
                 })?;
         // Can only be a eol or inline comment.
         self.match_eol_or_inline_comment()?;
@@ -1099,7 +1098,7 @@ impl<R: Read> InputStream<R> {
         let transformation = var.transformations.get(&transformation_id).copied().ok_or(
             SceneErr::UndefinedIdentifier {
                 loc,
-                msg: format!("{:?} transformation not defined", transformation_id),
+                msg: format!("{transformation_id:?} transformation not defined"),
             },
         )?;
         match shape {
@@ -1172,10 +1171,7 @@ impl<R: Read> InputStream<R> {
         if !(camera == "orthogonal" || camera == "perspective") {
             return Err(SceneErr::InvalidCamera {
                 loc,
-                msg: format!(
-                    "found {:?} camera expected [\"orthogonal\", \"perspective\"]",
-                    camera
-                ),
+                msg: format!("found {camera:?} camera expected [\"orthogonal\", \"perspective\"]"),
             });
         }
         // Can only be a eol or inline comment.
@@ -1209,7 +1205,7 @@ impl<R: Read> InputStream<R> {
             * var.transformations.get(&transformation_id).copied().ok_or(
                 SceneErr::UndefinedIdentifier {
                     loc,
-                    msg: format!("{:?} transformation not defined", transformation_id),
+                    msg: format!("{transformation_id:?} transformation not defined"),
                 },
             )?;
         match camera.as_str() {
@@ -1988,7 +1984,7 @@ mod test {
         assert!(input.match_keyword(Keywords::Shapes).is_ok());
         let shapes = input.parse_shapes(&var);
         assert!(shapes.is_ok());
-        assert_eq!(format!("{:?}", shapes.unwrap()), format!("{:?}", world));
+        assert_eq!(format!("{:?}", shapes.unwrap()), format!("{world:?}"));
 
         let mut input = InputStream::new(Cursor::new(concat!(
             "# This is a comment\n",
@@ -2155,7 +2151,7 @@ mod test {
 
         let scene = input.parse_scene(cli);
         assert!(scene.is_ok());
-        assert_eq!(format!("{:?}", scene.unwrap()), format!("{:?}", scene_ref));
+        assert_eq!(format!("{:?}", scene.unwrap()), format!("{scene_ref:?}"));
 
         let mut input = InputStream::new(Cursor::new(concat!(
             "# This is a comment\n",

@@ -252,7 +252,7 @@ fn demo(sub_m: &clap::ArgMatches) -> Result<(), DemoErr> {
 /// Render a scene from file.
 ///
 /// Called when `rustracer-render` subcommand is used.
-fn render(sub_m: &clap::ArgMatches) -> Result<(), RenderErr> {
+fn render(sub_m: &clap::ArgMatches) -> Result<(), Box<RenderErr>> {
     let scene_file = Path::new(sub_m.get_one::<String>("INPUT").unwrap());
     let ldr_file = Path::new(sub_m.get_one::<String>("OUTPUT").unwrap());
     let factor = f32::from_str(sub_m.get_one::<String>("factor").unwrap())

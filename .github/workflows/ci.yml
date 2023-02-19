@@ -76,7 +76,7 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@bb357d4af1c0028503e3cdd9b1c274326d7ae140
+        uses: dtolnay/rust-toolchain@e12eda571dc9a5ee5d58eecf4738ec291c66f295
         with:
           toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
@@ -147,7 +147,7 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@bb357d4af1c0028503e3cdd9b1c274326d7ae140
+        uses: dtolnay/rust-toolchain@e12eda571dc9a5ee5d58eecf4738ec291c66f295
         with:
           toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
@@ -241,7 +241,7 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@bb357d4af1c0028503e3cdd9b1c274326d7ae140
+        uses: dtolnay/rust-toolchain@e12eda571dc9a5ee5d58eecf4738ec291c66f295
         with:
           toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs

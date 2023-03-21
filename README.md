@@ -139,8 +139,8 @@ Commands:
   render   Render a scene from file (yaml formatted)
 
 Options:
-  -h, --help     Print help information
-  -V, --version  Print version information
+  -h, --help     Print help
+  -V, --version  Print version
 
 ```
 </details>
@@ -172,8 +172,8 @@ Options:
   -v, --verbose          Print stdout information
   -f, --factor <FACTOR>  Normalization factor [default: 1.0]
   -g, --gamma <GAMMA>    Gamma parameter [default: 1.0]
-  -h, --help             Print help information (use `--help` for more detail)
-  -V, --version          Print version information
+  -h, --help             Print help (see more with '--help')
+  -V, --version          Print version
 
 ```
 </details>
@@ -230,8 +230,8 @@ Options:
       --init-state <INIT_STATE>        Initial random seed (positive number) [default: 42]
       --init-seq <INIT_SEQ>            Identifier of the random sequence (positive number) [default: 54]
       --anti-aliasing <ANTI_ALIASING>  Anti-aliasing level [default: 1]
-  -h, --help                           Print help information (use `--help` for more detail)
-  -V, --version                        Print version information
+  -h, --help                           Print help (see more with '--help')
+  -V, --version                        Print version
 
 ```
 </details>
@@ -301,8 +301,8 @@ Options:
       --init-state <INIT_STATE>        Initial random seed (positive number) [default: 42]
       --init-seq <INIT_SEQ>            Identifier of the random sequence (positive number) [default: 54]
       --anti-aliasing <ANTI_ALIASING>  Anti-aliasing level [default: 1]
-  -h, --help                           Print help information (use `--help` for more detail)
-  -V, --version                        Print version information
+  -h, --help                           Print help (see more with '--help')
+  -V, --version                        Print version
 
 ```
 </details>
@@ -337,8 +337,8 @@ Arguments:
 
 Options:
   -o, --output <OUTPUT>  Specify output script file
-  -h, --help             Print help information (use `--help` for more detail)
-  -V, --version          Print version information
+  -h, --help             Print help (see more with '--help')
+  -V, --version          Print version
 
 ```
 </details>

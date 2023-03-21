@@ -3,7 +3,7 @@ name         = "rustracer"
 license      = "GPL-3.0"
 version      = "1.0.2"
 edition      = "2021"
-rust-version = "1.67.0"
+rust-version = "1.68.0"
 authors      = [
    "Andrea Rossoni <andrea dot ros.21 at e.email>",
    "Paolo Azzini <paolo dot azzini1 at gmail.com>"

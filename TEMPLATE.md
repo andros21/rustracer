@@ -17,6 +17,9 @@
   <a href="https://github.com/andros21/rustracer/actions/workflows/cd.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/cd.yml?style=flat-square&label=cd&logo=github" alt="CD">
   </a>
+  <a href="https://github.com/andros21/rustracer/actions/workflows/e2e.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/e2e.yml?style=flat-square&label=e2e&logo=github" alt="E2E">
+  </a>
   <br>
   <a href="https://github.com/andros21/rustracer/releases">
     <img src="https://img.shields.io/github/v/release/andros21/rustracer?color=orange&&sort=semver&style=flat-square&logo=github" alt="Version">

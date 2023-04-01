@@ -1,0 +1,87 @@
+---
+name: E2E
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 0'
+
+permissions:
+  contents: read
+
+jobs:
+  cosign:
+    name: cosign blob
+    runs-on: ubuntu-latest
+    steps:
+      - name: install cosign
+        uses: sigstore/cosign-installer@c3667d99424e7e6047999fb6246c0da843953c65
+      - name: install rekor
+        run: |
+          set -x
+          latest=$(curl -sL https://api.github.com/repos/sigstore/rekor/releases/latest \
+          | jq -r '.tag_name')
+          curl -sfJSOL https://github.com/sigstore/rekor/releases/download/${latest}/rekor-cli-linux-amd64
+          sudo install -m755 rekor-cli-linux-amd64 /usr/local/bin/rekor-cli
+          rekor-cli version
+      - name: download rustracer
+        run: |
+          set -x
+          # dowload only
+          for libc in musl gnu; do
+            curl -sSf https://andros21.github.io/rustracer/install.sh \
+            | sed 's/^_verify_release$/#\0/;s/^_install_release$/#\0/' \
+            | bash -s -- ${libc}
+          done
+      # verify using cosign and rekor
+      # see https://github.com/sigstore/cosign/blob/b2351d3d7e47e51548b46cc16f459e3c23a42d94/FUN.md
+      - name: verify rustracer blobs
+        run: |
+          set -x
+          oidc="https://token.actions.githubusercontent.com"
+          latest=$(curl -sL https://api.github.com/repos/andros21/rustracer/releases/latest \
+          | jq -r '.tag_name')
+          id="https://github.com/andros21/rustracer/.github/workflows/cd.yml@refs/tags/${latest}"
+          # verify checksum
+          uuid=$(rekor-cli search --artifact rustracer-${latest}_checksums_sha256.txt)
+          sig=$(rekor-cli get --uuid=$uuid --format=json \
+                | jq -r .Body.HashedRekordObj.signature.content)
+          cert=$(rekor-cli get --uuid=$uuid --format=json \
+                | jq -r .Body.HashedRekordObj.signature.publicKey.content)
+          cosign verify-blob \
+            --cert <(echo $cert | base64 -d) \
+            --signature <(echo $sig) \
+            --certificate-identity "${id}" \
+            --certificate-oidc-issuer "${oidc}" \
+            rustracer-${latest}_checksums_sha256.txt
+          # verify tar.gz
+          for libc in musl gnu; do
+            uuid=$(rekor-cli search --artifact rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz)
+            sig=$(rekor-cli get --uuid=$uuid --format=json \
+                  | jq -r .Body.HashedRekordObj.signature.content)
+            cert=$(rekor-cli get --uuid=$uuid --format=json \
+                  | jq -r .Body.HashedRekordObj.signature.publicKey.content)
+            cosign verify-blob \
+              --cert <(echo $cert | base64 -d) \
+              --signature <(echo $sig) \
+              --certificate-identity "${id}" \
+              --certificate-oidc-issuer "${oidc}" \
+              rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz
+          done
+  openssl:
+    name: openssl blob
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        libc: ["musl", "gnu"]
+    steps:
+      # verify using openssl and release artifacts
+      - name: install rustracer
+        run: |
+          set -x
+          curl -sSf https://andros21.github.io/rustracer/install.sh \
+          | bash -s -- ${{ matrix.libc }}
+      - name: cli rustracer
+        run: |
+          ${HOME}/.local/bin/rustracer -V
+          ${HOME}/.local/bin/rustracer -h

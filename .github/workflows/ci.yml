@@ -105,11 +105,12 @@ jobs:
       - name: setup python
         run: |
           python3 -m pip install --user -r .github/workflows/requirements.txt
-      - name: black/flake python
+      - name: black/ruff python
         run: |
+          set -x
           md=".github/workflows/md.py"
-          ~/.local/bin/black "$md"
-          ~/.local/bin/flake8 --max-line-length 90 "$md"
+          ~/.local/bin/black -v "$md"
+          ~/.local/bin/ruff -v "$md"
   lint_sh:
     name: lint bash ci
     needs: changes

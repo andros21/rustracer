@@ -6,8 +6,7 @@ name: E2E
   schedule:
     - cron: '0 3 * * 0'
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   cosign:
@@ -19,9 +18,9 @@ jobs:
       - name: install rekor
         run: |
           set -x
-          latest=$(curl -sL https://api.github.com/repos/sigstore/rekor/releases/latest \
-          | jq -r '.tag_name')
-          curl -sfJSOL https://github.com/sigstore/rekor/releases/download/${latest}/rekor-cli-linux-amd64
+          latest="$(curl -sL https://api.github.com/repos/sigstore/rekor/releases/latest \
+          | jq -r '.tag_name')"
+          curl -sfJSOL "https://github.com/sigstore/rekor/releases/download/${latest}/rekor-cli-linux-amd64"
           sudo install -m755 rekor-cli-linux-amd64 /usr/local/bin/rekor-cli
           rekor-cli version
       - name: download rustracer
@@ -39,34 +38,34 @@ jobs:
         run: |
           set -x
           oidc="https://token.actions.githubusercontent.com"
-          latest=$(curl -sL https://api.github.com/repos/andros21/rustracer/releases/latest \
-          | jq -r '.tag_name')
+          latest="$(curl -sL https://api.github.com/repos/andros21/rustracer/releases/latest \
+          | jq -r '.tag_name')"
           id="https://github.com/andros21/rustracer/.github/workflows/cd.yml@refs/tags/${latest}"
           # verify checksum
-          uuid=$(rekor-cli search --artifact rustracer-${latest}_checksums_sha256.txt)
-          sig=$(rekor-cli get --uuid=$uuid --format=json \
-                | jq -r .Body.HashedRekordObj.signature.content)
-          cert=$(rekor-cli get --uuid=$uuid --format=json \
-                | jq -r .Body.HashedRekordObj.signature.publicKey.content)
+          uuid="$(rekor-cli search --artifact "rustracer-${latest}_checksums_sha256.txt")"
+          sig="$(rekor-cli get --uuid="$uuid" --format=json \
+                | jq -r .Body.HashedRekordObj.signature.content)"
+          cert="$(rekor-cli get --uuid="$uuid" --format=json \
+                | jq -r .Body.HashedRekordObj.signature.publicKey.content)"
           cosign verify-blob \
-            --cert <(echo $cert | base64 -d) \
-            --signature <(echo $sig) \
+            --cert <(echo "$cert" | base64 -d) \
+            --signature <(echo "$sig") \
             --certificate-identity "${id}" \
             --certificate-oidc-issuer "${oidc}" \
-            rustracer-${latest}_checksums_sha256.txt
+            "rustracer-${latest}_checksums_sha256.txt"
           # verify tar.gz
           for libc in musl gnu; do
-            uuid=$(rekor-cli search --artifact rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz)
-            sig=$(rekor-cli get --uuid=$uuid --format=json \
-                  | jq -r .Body.HashedRekordObj.signature.content)
-            cert=$(rekor-cli get --uuid=$uuid --format=json \
-                  | jq -r .Body.HashedRekordObj.signature.publicKey.content)
+            uuid="$(rekor-cli search --artifact "rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz")"
+            sig="$(rekor-cli get --uuid="$uuid" --format=json \
+                  | jq -r .Body.HashedRekordObj.signature.content)"
+            cert="$(rekor-cli get --uuid="$uuid" --format=json \
+                  | jq -r .Body.HashedRekordObj.signature.publicKey.content)"
             cosign verify-blob \
-              --cert <(echo $cert | base64 -d) \
-              --signature <(echo $sig) \
+              --cert <(echo "$cert" | base64 -d) \
+              --signature <(echo "$sig") \
               --certificate-identity "${id}" \
               --certificate-oidc-issuer "${oidc}" \
-              rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz
+              "rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz"
           done
   openssl:
     name: openssl blob
@@ -83,5 +82,5 @@ jobs:
           | bash -s -- ${{ matrix.libc }}
       - name: cli rustracer
         run: |
-          ${HOME}/.local/bin/rustracer -V
-          ${HOME}/.local/bin/rustracer -h
+          "${HOME}/.local/bin/rustracer" -V
+          "${HOME}/.local/bin/rustracer" -h

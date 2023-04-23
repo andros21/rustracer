@@ -1,51 +1,39 @@
 [package]
-name         = "rustracer"
-license      = "GPL-3.0"
-version      = "1.0.2"
-edition      = "2021"
-rust-version = "1.68.0"
-authors      = [
-   "Andrea Rossoni <andrea dot ros.21 at e.email>",
-   "Paolo Azzini <paolo dot azzini1 at gmail.com>"
+name = "rustracer"
+license = "GPL-3.0"
+version = "1.0.2"
+edition = "2021"
+rust-version = "1.68.2"
+authors = [
+  "Andrea Rossoni <andrea dot ros.21 at e.email>",
+  "Paolo Azzini <paolo dot azzini1 at gmail.com>",
 ]
-readme        = "README.md"
-repository    = "https://github.com/andros21/rustracer"
-homepage      = "https://github.com/andros21/rustracer"
+readme = "README.md"
+repository = "https://github.com/andros21/rustracer"
+homepage = "https://github.com/andros21/rustracer"
 documentation = "https://andros21.github.io/rustracer/docs"
-categories    = ["command-line-utilities"]
-description   = "a multi-threaded raytracer in pure rust"
-exclude       = [
-   ".github/*",
-   ".gitignore",
-   "examples/*",
-   "install.sh",
-   "makefile",
-]
-keywords      = [
-   "cli",
-   "image",
-   "raytracer",
-   "raytracing",
-   "thread"
-]
+categories = ["command-line-utilities"]
+description = "a multi-threaded raytracer in pure rust"
+exclude = [".github/*", ".gitignore", "examples/*", "install.sh", "makefile"]
+keywords = ["cli", "image", "raytracer", "raytracing", "thread"]
 
 [[bin]]
 name = "rustracer"
 path = "src/main.rs"
 
 [dependencies]
-thiserror     = "1.0.40"
-byteorder     = "1.4.3"
-rayon         = "1.7.0"
-colored       = "2.0.0"
+thiserror = "1.0.40"
+byteorder = "1.4.3"
+rayon = "1.7.0"
+colored = "2.0.0"
 clap_complete = "4.2.0"
 
 [dependencies.image]
-version          = "0.24.6"
+version = "0.24.6"
 default-features = false
-features         = ["farbfeld", "png"]
+features = ["farbfeld", "png"]
 
 [dependencies.clap]
-version          = "4.2.1"
+version = "4.2.1"
 default-features = true
-features         = ["wrap_help"]
+features = ["wrap_help"]

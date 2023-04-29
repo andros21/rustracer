@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: checkout project
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          fetch-depth: 0
       - name: check cargo cache
         uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
         id: rust-cache
@@ -40,9 +42,21 @@ jobs:
         uses: sigstore/cosign-installer@9e9de2292db7abb3f51b7f4808d98f0d347a8919
       - name: cosign artifacts
         run: .github/workflows/cd.sh cosign
+      - name: generate changelog latest
+        uses: orhun/git-cliff-action@05204db500127e1d06a0ec1cbd7b720226bb4b3a
+        id: cliff
+        with:
+          config: cliff.toml
+          args: -vv --latest --strip header
+      - name: get tag
+        shell: bash
+        run: |
+          echo "TAG=${GITHUB_REF:10}" >> "$GITHUB_ENV"
       - name: release artifacts
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
         with:
+          name: rustracer ${{ env.TAG }}
+          body: ${{ steps.cliff.outputs.content }}
           generate_release_notes: true
           fail_on_unmatched_files: true
           files: |
@@ -115,3 +129,32 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/doc/
+  changelog:
+    name: changelog
+    needs:
+      - ghpages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: checkout project
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          fetch-depth: 0
+      - name: get tag
+        shell: bash
+        run: |
+          echo "TAG=${GITHUB_REF:10}" >> "$GITHUB_ENV"
+      - name: Refresh changelog
+        uses: orhun/git-cliff-action@05204db500127e1d06a0ec1cbd7b720226bb4b3a
+        with:
+          config: cliff.toml
+          args: --verbose --tag ${{ env.TAG }}
+        env:
+          OUTPUT: CHANGELOG.md
+      - name: commit changelog
+        uses: EndBug/add-and-commit@61a88be553afe4206585b31aa72387c64295d08b
+        with:
+          message: "chore(CHANGELOG): add rustracer ${{ env.TAG }} changes"
+          add: 'CHANGELOG.md'
+          new_branch: master

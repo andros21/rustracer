@@ -29,9 +29,8 @@ jobs:
           key: ${{ runner.os }}-rust-musl-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.rust-cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
           targets: x86_64-unknown-linux-musl
       - name: cargo release
         run: |
@@ -88,9 +87,8 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo publish
         run: |
@@ -118,9 +116,8 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: patch and cargo rustdoc
         run: make rust_docs

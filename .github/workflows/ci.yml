@@ -21,9 +21,9 @@ jobs:
       - name: get repo name
         id: repo
         run: |
-          REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+          REPO_NAME="${GITHUB_REPOSITORY#"$GITHUB_REPOSITORY_OWNER/"}"
           echo "Repo: ${REPO_NAME}"
-          echo "repo=${REPO_NAME}" >> $GITHUB_OUTPUT
+          echo "repo=${REPO_NAME}" >> "$GITHUB_OUTPUT"
   changes:
     name: filter changes
     runs-on: ubuntu-latest
@@ -76,9 +76,8 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo fmt check
         run: |
@@ -124,7 +123,7 @@ jobs:
       - name: shellcheck bash
         run: |
           shopt -s globstar
-          shellcheck -s bash **/*.sh .github/**/*.sh
+          shellcheck -s bash ./*.sh .github/**/*.sh
   test:
     name: test ci
     needs: lint_rs
@@ -148,9 +147,8 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: install cargo-llvm-cov
         uses: taiki-e/install-action@3c537259cf49ccb30754ec712c96b85b0ecb3dbe
@@ -167,10 +165,9 @@ jobs:
         if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
         id: coverage
         run: |
-          COVERAGE=$(cat coverage.json \
-             | jq -r ".data[0] | .totals | .lines | .percent" \
-             | awk '{print int($0)}')
-          echo "coverage=${COVERAGE}" >> $GITHUB_OUTPUT
+          COVERAGE="$(jq -r ".data[0] | .totals | .lines | .percent" coverage.json \
+                      | awk '{print int($0)}')"
+          echo "coverage=${COVERAGE}" >> "$GITHUB_OUTPUT"
       - name: cargo test coverage (xml)
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
         run: |
@@ -242,9 +239,8 @@ jobs:
           key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install rust toolchain
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
           components: clippy, llvm-tools-preview, rustfmt, rust-docs
       - name: cargo build
         run: |

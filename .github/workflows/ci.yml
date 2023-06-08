@@ -78,7 +78,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         uses: dtolnay/rust-toolchain@stable
         with:
-          components: clippy, llvm-tools-preview, rustfmt, rust-docs
+          components: clippy, rustfmt, rust-docs
       - name: cargo fmt check
         run: |
           cargo fmt -- --check --verbose
@@ -149,34 +149,27 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         uses: dtolnay/rust-toolchain@stable
         with:
-          components: clippy, llvm-tools-preview, rustfmt, rust-docs
-      - name: install cargo-llvm-cov
+          components: clippy, rustfmt, rust-docs
+      - name: install cargo-tarpaulin
         uses: taiki-e/install-action@371685e159227b435b052476c70e32d7c41b9708
         with:
-          tool: cargo-llvm-cov
-      - name: cargo build
+          tool: cargo-tarpaulin
+          checksum: true
+      - name: cargo test coverage
         run: |
-          cargo build --locked
-      - name: cargo test coverage (json)
-        if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
-        run: |
-          cargo llvm-cov --locked --tests --json --summary-only --output-path coverage.json
+          cargo tarpaulin --locked --tests --line -o xml --exclude-files src/cli.rs src/main.rs
       - name: report (total lines) coverage
         if: ${{ (github.event_name == 'push') && !(startsWith(github.event.head_commit.message, 'build(deps):')) }}
         id: coverage
         run: |
-          COVERAGE="$(jq -r ".data[0] | .totals | .lines | .percent" coverage.json \
-                      | awk '{print int($0)}')"
+          COVERAGE="$(grep -E -o 'line-rate="[^"]+"' cobertura.xml \
+                      | head -1 | cut -d\" -f2 | awk '{print int($0*100+0.5)}')"
           echo "coverage=${COVERAGE}" >> "$GITHUB_OUTPUT"
-      - name: cargo test coverage (xml)
-        if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
-        run: |
-          cargo llvm-cov --locked --tests --cobertura --output-path coverage.xml
       - name: cov summary md
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
         uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95
         with:
-          filename: coverage.xml
+          filename: cobertura.xml
           format: 'markdown'
           hide_complexity: true
           hide_branch_rate: true
@@ -241,7 +234,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         uses: dtolnay/rust-toolchain@stable
         with:
-          components: clippy, llvm-tools-preview, rustfmt, rust-docs
+          components: clippy, rustfmt, rust-docs
       - name: cargo build
         run: |
           cargo build --locked

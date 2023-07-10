@@ -103,13 +103,15 @@ jobs:
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
       - name: setup python
         run: |
-          python3 -m pip install --user -r .github/workflows/requirements.txt
+          set -x
+          python3 -m venv .venv
+          .venv/bin/pip install --user -r .github/workflows/requirements.txt
       - name: black/ruff python
         run: |
           set -x
           md=".github/workflows/md.py"
-          ~/.local/bin/black -v "$md"
-          ~/.local/bin/ruff -v "$md"
+          .venv/bin/black -v "$md"
+          .venv/bin/ruff -v "$md"
   lint_sh:
     name: lint bash ci
     needs: changes

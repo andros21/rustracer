@@ -153,7 +153,7 @@ jobs:
         with:
           components: clippy, rustfmt, rust-docs
       - name: install cargo-tarpaulin
-        uses: taiki-e/install-action@4efcb9aabfee0046e94203abe16b74c81238f190
+        uses: taiki-e/install-action@ce314215ece9003c778f56d08087274224f66c8f
         with:
           tool: cargo-tarpaulin
           checksum: true

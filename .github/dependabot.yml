@@ -19,4 +19,6 @@ updates:
     directory: ".github/workflows"
     schedule:
       interval: "monthly"
+      time: "07:00"
+      timezone: "Europe/Rome"
     rebase-strategy: "disabled"

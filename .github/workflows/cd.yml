@@ -26,12 +26,10 @@ jobs:
             ~/.cargo/
             ~/.rustup/
             target/
-          key: ${{ runner.os }}-rust-musl-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
-      - name: install rust toolchain
-        if: steps.rust-cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: x86_64-unknown-linux-musl
+          key: ${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
+      - name: add musl target
+        run: |
+          rustup target add x86_64-unknown-linux-musl
       - name: cargo release
         run: |
           cargo build --locked --release --target x86_64-unknown-linux-gnu --target x86_64-unknown-linux-musl
@@ -84,12 +82,7 @@ jobs:
             ~/.cargo/
             ~/.rustup/
             target/
-          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
-      - name: install rust toolchain
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy, rustfmt, rust-docs
+          key: ${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: cargo publish
         run: |
           cargo publish --locked
@@ -113,12 +106,7 @@ jobs:
             ~/.cargo/
             ~/.rustup/
             target/
-          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
-      - name: install rust toolchain
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy, llvm-tools-preview, rustfmt, rust-docs
+          key: ${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: patch and cargo rustdoc
         run: make rust_docs
       - name: publish to gh-pages

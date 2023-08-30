@@ -48,6 +48,7 @@ jobs:
               - 'Cargo.lock'
               - 'Cargo.toml'
               - 'TEMPLATE.md'
+              - 'rust-toolchain.toml'
             python:
               - '**/*.py'
               - '.github/workflows/requirements.txt'
@@ -55,6 +56,7 @@ jobs:
               - '**/*.rs'
               - 'Cargo.lock'
               - 'Cargo.toml'
+              - 'rust-toolchain.toml'
   lint_rs:
     name: lint rust ci
     needs: changes
@@ -73,12 +75,7 @@ jobs:
             ~/.cargo/
             ~/.rustup/
             target/
-          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
-      - name: install rust toolchain
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy, rustfmt, rust-docs
+          key: ${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: cargo fmt check
         run: |
           cargo fmt -- --check --verbose
@@ -146,12 +143,7 @@ jobs:
             ~/.cargo/
             ~/.rustup/
             target/
-          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
-      - name: install rust toolchain
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy, rustfmt, rust-docs
+          key: ${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install cargo-tarpaulin
         uses: taiki-e/install-action@ba7482c6af6681ab4e26be5ea509d1e8f7cf6816
         with:
@@ -231,12 +223,7 @@ jobs:
             ~/.cargo/
             ~/.rustup/
             target/
-          key: ${{ runner.os }}-rust-all-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
-      - name: install rust toolchain
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy, rustfmt, rust-docs
+          key: ${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: cargo build
         run: |
           cargo build --locked

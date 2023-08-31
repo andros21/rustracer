@@ -51,9 +51,9 @@
 
 ### Build requirements
 
-* for **users** install [`cargo`](https://github.com/rust-lang/cargo/) stable latest build system
+* for **users** install [`cargo`](https://github.com/rust-lang/cargo/) stable latest build system (see [`rust-toolchain.toml`](https://github.com/andros21/rustracer/blob/master/rust-toolchain.toml) for stable version)
 
-* for **devels** it's advisable to install the entire (stable latest) toolchain using [`rustup`](https://www.rust-lang.org/tools/install)
+* for **devels** install [`rustup`](https://www.rust-lang.org/tools/install) that will automatically provision the correct toolchain
 
    For unit tests coverage `llvm-tools-preview` is required as additional component coupled with\
    [`cargo-llvm-cov`](https://github.com/taiki-e/cargo-llvm-cov) for easily use LLVM source-based code coverage

@@ -45,11 +45,12 @@ docs.pid:
 	@printf "docs url: http://localhost:8080/docs\n"
 
 rust_ccov:
-	@cargo llvm-cov --html --locked
+	@cargo tarpaulin --tests --locked --output-dir target/tarpaulin/ --out html --exclude-files src/cli.rs src/main.rs
 
 ccov.pid:
 	@printf "starting http.server ... "
-	@{ python3 -m http.server -b 127.0.0.1 -d target/llvm-cov/html 8081 >/dev/null 2>&1 \
+	@ln -sf ./tarpaulin-report.html target/tarpaulin/index.html
+	@{ python3 -m http.server -b 127.0.0.1 -d target/tarpaulin/ 8081 >/dev/null 2>&1 \
 		& echo $$! >$@; }
 	@printf "done\n"
 	@printf "ccov url: http://localhost:8081/\n"

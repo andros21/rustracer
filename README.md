@@ -55,12 +55,11 @@
 
 * for **devels** install [`rustup`](https://www.rust-lang.org/tools/install) that will automatically provision the correct toolchain
 
-   For unit tests coverage `llvm-tools-preview` is required as additional component coupled with\
-   [`cargo-llvm-cov`](https://github.com/taiki-e/cargo-llvm-cov) for easily use LLVM source-based code coverage
+  For unit tests coverage [`cargo-tarpaulin`](https://crates.io/crates/cargo-tarpaulin) is required as additional component
 
   There is an handy [`makefile`](https://github.com/andros21/rustracer/blob/master/makefile) useful to:
     + preview documentation built with `rustdoc`
-    + preview html code coverage analysys created with `cargo-llvm-cov`
+    + preview html code coverage analysis created with `cargo-tarpaulin`
     + create demo animations
 
 ## Installation

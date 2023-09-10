@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: check cargo cache
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
         id: rust-cache
         with:
           path: |
@@ -75,7 +75,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
       - name: check cache
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
         id: cache
         with:
           path: |
@@ -99,7 +99,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
       - name: check cache
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
         id: cache
         with:
           path: |

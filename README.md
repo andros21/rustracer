@@ -9,24 +9,18 @@
   </a>
   <h3 style="border-bottom: 0px;">a multi-threaded raytracer in pure rust</h3>
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/ci.yml?branch=master&style=flat-square&label=ci&logo=github" alt="CI">
-  </a>
+    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/ci.yml?branch=master&style=flat-square&label=ci&logo=github" alt="CI"></a>
   <a href="https://github.com/andros21/rustracer/actions/workflows/ci.yml">
-    <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/andros21/0e20cd331d0800e3299298a3868aab7a/raw/rustracer__master.json" alt="Coverage">
-  </a>
+    <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/andros21/0e20cd331d0800e3299298a3868aab7a/raw/rustracer__master.json" alt="Coverage"></a>
   <a href="https://github.com/andros21/rustracer/actions/workflows/cd.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/cd.yml?style=flat-square&label=cd&logo=github" alt="CD">
-  </a>
+    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/cd.yml?style=flat-square&label=cd&logo=github" alt="CD"></a>
   <a href="https://github.com/andros21/rustracer/actions/workflows/e2e.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/e2e.yml?style=flat-square&label=e2e&logo=github" alt="E2E">
-  </a>
+    <img src="https://img.shields.io/github/actions/workflow/status/andros21/rustracer/e2e.yml?style=flat-square&label=e2e&logo=github" alt="E2E"></a>
   <br>
   <a href="https://github.com/andros21/rustracer/releases">
-    <img src="https://img.shields.io/github/v/release/andros21/rustracer?color=orange&&sort=semver&style=flat-square&logo=github" alt="Version">
-  </a>
+    <img src="https://img.shields.io/github/v/release/andros21/rustracer?color=orange&&sort=semver&style=flat-square&logo=github" alt="Version"></a>
     <a href="https://crates.io/crates/rustracer">
-    <img src="https://img.shields.io/crates/v/rustracer?color=orange&logo=rust&style=flat-square" alt="Cratesio Version">
-  </a>
+    <img src="https://img.shields.io/crates/v/rustracer?color=orange&logo=rust&style=flat-square" alt="Cratesio Version"></a>
   <br>
   <a href="https://github.com/andros21/rustracer/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/andros21/rustracer?color=blue&style=flat-square&logo=gnu" alt="License">
@@ -44,23 +38,24 @@
 
 ### Platform requirements
 
-* `x86_64-unknown-linux-gnu` <a href="#note1"><sup>(1)</sup></a>
-* `x86_64-unknown-linux-musl`
+- `x86_64-unknown-linux-gnu` <a href="#note1"><sup>(1)</sup></a>
+- `x86_64-unknown-linux-musl`
 
 <p id="note1"><sub><strong><sup>(1)</sup> note:</strong> glibc version >= 2.35</sub></p>
 
 ### Build requirements
 
-* for **users** install [`cargo`](https://github.com/rust-lang/cargo/) stable latest build system (see [`rust-toolchain.toml`](https://github.com/andros21/rustracer/blob/master/rust-toolchain.toml) for stable version)
+- for **users** install [`cargo`](https://github.com/rust-lang/cargo/) stable latest build system (see [`rust-toolchain.toml`](https://github.com/andros21/rustracer/blob/master/rust-toolchain.toml) for stable version)
 
-* for **devels** install [`rustup`](https://www.rust-lang.org/tools/install) that will automatically provision the correct toolchain
+- for **devels** install [`rustup`](https://www.rust-lang.org/tools/install) that will automatically provision the correct toolchain
 
   For unit tests coverage [`cargo-tarpaulin`](https://crates.io/crates/cargo-tarpaulin) is required as additional component
 
   There is an handy [`makefile`](https://github.com/andros21/rustracer/blob/master/makefile) useful to:
-    + preview documentation built with `rustdoc`
-    + preview html code coverage analysis created with `cargo-tarpaulin`
-    + create demo animations
+
+  - preview documentation built with `rustdoc`
+  - preview html code coverage analysis created with `cargo-tarpaulin`
+  - create demo animations
 
 ## Installation
 
@@ -85,6 +80,7 @@ curl -sSf https://andros21.github.io/rustracer/install.sh | bash -s -- gnu
 export PREFIX='~/.rustracer/'
 curl -sSf https://andros21.github.io/rustracer/install.sh | bash -s -- musl 0.4.0
 ```
+
 </details>
 
 <p id="note2"><sub><strong><sup>(2)</sup> note:</strong> will install latest musl release in <code>~/.local/bin</code></sub></p>
@@ -111,6 +107,7 @@ export VER='0.4.0'
 export PREFIX='~/.rustracer/'
 cargo install --root $PREFIX --version $VER rustracer
 ```
+
 </details>
 
 <p id="note3"><sub><strong><sup>(3)</sup> note:</strong> will install latest release in <code>~/.cargo/bin</code></sub></p>
@@ -119,12 +116,12 @@ cargo install --root $PREFIX --version $VER rustracer
 
 ### rustracer
 
-| **subcommands**                                   | **description**                               |
-| :------------------------------------------------ | :-------------------------------------------- |
-| [**rustracer-convert**](#rustracer-convert)       | convert an hdr image into ldr image           |
-| [**rustracer-demo**](#rustracer-demo)             | render a simple demo scene (example purpose)  |
-| [**rustracer-render**](#rustracer-render)         | render a scene from file (yaml formatted)     |
-| [**rustracer-completion**](#rustracer-completion) | generate shell completion script (hidden)     |
+| **subcommands**                                   | **description**                              |
+| :------------------------------------------------ | :------------------------------------------- |
+| [**rustracer-convert**](#rustracer-convert)       | convert an hdr image into ldr image          |
+| [**rustracer-demo**](#rustracer-demo)             | render a simple demo scene (example purpose) |
+| [**rustracer-render**](#rustracer-render)         | render a scene from file (yaml formatted)    |
+| [**rustracer-completion**](#rustracer-completion) | generate shell completion script (hidden)    |
 
 <br>
 <details>
@@ -145,6 +142,7 @@ Options:
   -V, --version  Print version
 
 ```
+
 </details>
 
 <div align="center"> <hr width="30%"> </div>
@@ -178,6 +176,7 @@ Options:
   -V, --version          Print version
 
 ```
+
 </details>
 
 <div align="center"> <hr width="30%"> </div>
@@ -236,6 +235,7 @@ Options:
   -V, --version                        Print version
 
 ```
+
 </details>
 
 <p id="note4"><sub><strong><sup>(4)</sup> note:</strong> all available threads are used, set <code>RAYON_NUM_THREADS</code> to override</sub></p>
@@ -265,6 +265,7 @@ wc -l flake.cue flake.yml                        # compare lines number
    92 flake.cue                                  # .
  2750 flake.yml                                  # .
 ```
+
 so with this trick we've been able to condense a scene info from 2750 to 92 lines, x30 shrink! 😎\
 and the generated `flake.yml` can be simple parsed
 
@@ -307,6 +308,7 @@ Options:
   -V, --version                        Print version
 
 ```
+
 </details>
 
 <p id="note5"><sub><strong><sup>(5)</sup> note:</strong> all available threads are used, set <code>RAYON_NUM_THREADS</code> to override</sub></p>
@@ -343,6 +345,7 @@ Options:
   -V, --version          Print version
 
 ```
+
 </details>
 
 <p id="note6"><sub><strong><sup>(6)</sup> note:</strong> <code>bash>4.1</code> and <code>bash-complete>2.9</code></sub></p>
@@ -351,4 +354,4 @@ Options:
 
 ## Acknowledgements
 
-* [pytracer](https://github.com/ziotom78/pytracer) - a simple raytracer in pure Python
+- [pytracer](https://github.com/ziotom78/pytracer) - a simple raytracer in pure Python

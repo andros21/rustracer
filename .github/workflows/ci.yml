@@ -187,7 +187,7 @@ jobs:
       gist_id: 0e20cd331d0800e3299298a3868aab7a
     steps:
       - name: generate dynamic badge
-        uses: schneegans/dynamic-badges-action@5d424ad4060f866e4d1dab8f8da0456e6b1c4f56
+        uses: schneegans/dynamic-badges-action@e9a478b16159b4d31420099ba146cdc50f134483
         with:
           auth: ${{ secrets.GIST_TOKEN }}
           filename: ${{ needs.pre_ci.outputs.repo }}__${{ github.ref_name }}.json

@@ -15,7 +15,7 @@ jobs:
       contents: write
     steps:
       - name: checkout project
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           fetch-depth: 0
       - name: check cargo cache
@@ -73,7 +73,7 @@ jobs:
       url: https://crates.io/crates/rustracer
     steps:
       - name: checkout project
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: check cache
         uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
         id: cache
@@ -97,7 +97,7 @@ jobs:
       - cratesio
     steps:
       - name: checkout project
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: check cache
         uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
         id: cache
@@ -123,7 +123,7 @@ jobs:
       contents: write
     steps:
       - name: checkout project
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           fetch-depth: 0
       - name: get tag

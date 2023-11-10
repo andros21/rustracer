@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
     steps:
       - name: checkout project
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
@@ -32,7 +34,13 @@ jobs:
           cargo build --locked --release --target x86_64-unknown-linux-gnu --target x86_64-unknown-linux-musl
       - name: assemble artifacts
         run: .github/workflows/cd.sh assemble
-      - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
+      - name: generate subject
+        id: hash
+        run: |
+          set -euo pipefail
+          echo "hashes=$(cat rustracer-*.txt | base64 -w0)" >> "$GITHUB_OUTPUT"
+      - name: upload artifacts
+        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32
         with:
           name: rustracer-build
           path: |
@@ -44,8 +52,10 @@ jobs:
     name: release
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       id-token: write
       contents: write
+    needs: build
     steps:
       - name: checkout project
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
@@ -80,6 +90,18 @@ jobs:
             rustracer-*.txt
             rustracer-*.pem
             rustracer-*.sig
+  provenance:
+    needs:
+      - build
+      - release
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@07e64b653f10a80b6510f4568f685f8b7b9ea830
+    with:
+      base64-subjects: "${{ needs.build.outputs.hashes }}"
+      upload-assets: true
   cratesio:
     name: cratesio
     runs-on: ubuntu-latest

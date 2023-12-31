@@ -34,7 +34,7 @@ rust_docs:
 	@mv README.orig.md README.md
 	@mv target/doc/rustracer/ target/doc/docs
 	@find target/doc/ -name "*.html" -exec sed -i 's/\.\.\/rustracer\//\.\.\/docs\//g' {} \;
-	@sed -i 's/href]/href.replace("rustracer","docs")]/' target/doc/search.js
+	@sed -i 's/item.href/item.href.replace("rustracer","docs")/' target/doc/static.files/search-*js
 	@cp install.sh target/doc/
 
 docs.pid:

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["CompletionErr","Error enum for `completion` function inside `main`."],["ConvertErr","Error enum for `convert` function inside `main`."],["DemoErr","Error enum for `demo` function inside `main`."],["HdrImageErr","Error enum for `HdrImage` module."],["RenderErr","Error enum for `render` function inside `main`."],["SceneErr","Error enum for `Scene` module."]]};
+window.SIDEBAR_ITEMS = {"enum":["CompletionErr","ConvertErr","DemoErr","HdrImageErr","RenderErr","SceneErr"]};

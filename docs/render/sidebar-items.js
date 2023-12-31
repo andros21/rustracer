@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Renderer","Enum of renderers."]],"struct":[["DummyRenderer","A dummy renderer."],["FlatRenderer","A flat renderer."],["OnOffRenderer","A on/off renderer."],["PathTracer","A path tracing renderer."]],"trait":[["Solve","A trait for solving rendering equation."]]};
+window.SIDEBAR_ITEMS = {"enum":["Renderer"],"struct":["DummyRenderer","FlatRenderer","OnOffRenderer","PathTracer"],"trait":["Solve"]};

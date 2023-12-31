@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"rustracer":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.75.0/core/ops/index/trait.IndexMut.html\" title=\"trait core::ops::index::IndexMut\">IndexMut</a>&lt;(<a class=\"primitive\" href=\"https://doc.rust-lang.org/1.75.0/std/primitive.usize.html\">usize</a>, <a class=\"primitive\" href=\"https://doc.rust-lang.org/1.75.0/std/primitive.usize.html\">usize</a>)&gt; for <a class=\"struct\" href=\"rustracer/transformation/struct.Matrix.html\" title=\"struct rustracer::transformation::Matrix\">Matrix</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

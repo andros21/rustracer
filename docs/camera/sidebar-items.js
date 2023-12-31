@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Camera","Enum of cameras."]],"struct":[["OrthogonalCamera","A camera implementing an orthogonal 3D -> 2D projection."],["PerspectiveCamera","A camera implementing a perspective 3D -> 2D projection."]],"trait":[["FireRay","Trait for fire a [`Ray`] through a `camera`."]]};
+window.SIDEBAR_ITEMS = {"enum":["Camera"],"struct":["OrthogonalCamera","PerspectiveCamera"],"trait":["FireRay"]};

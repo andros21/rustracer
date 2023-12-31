@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["BLACK","Black color."],["WHITE","White color."]],"struct":[["Color","RGB Color struct."]]};
+window.SIDEBAR_ITEMS = {"constant":["BLACK","WHITE"],"struct":["Color"]};

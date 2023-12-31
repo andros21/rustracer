@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["EPSILON","Default error tolerance used inside [`IsClose`] trait."]],"enum":[["ByteOrder","Variants of byte/bit endianness."]],"struct":[["Vector2D","2D point struct used for shape’s surface parametrization"]],"trait":[["IsClose","Trait for equivalence between two objects, up to a certain error `tolerance`."]]};
+window.SIDEBAR_ITEMS = {"constant":["EPSILON"],"enum":["ByteOrder"],"struct":["Vector2D"],"trait":["IsClose"]};

@@ -2,6 +2,197 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2023-12-31
+
+**Full Changelog**: [`d255cf8...ad7e151`](https://github.com/andros21/rustracer/compare/d255cf84fa1313c04ea07c70fea0fa65167e8556...ad7e151d188218bbdd15035ca85795c6932c50a2)
+
+### Miscellaneous Tasks
+
+- [`00d13e9`](https://github.com/andros21/rustracer/commit/00d13e91edf10338aacb5fdcb6f74519aee6f5d0) stop pinning slsa-github-generator to commit
+- [`ad7e151`](https://github.com/andros21/rustracer/commit/ad7e151d188218bbdd15035ca85795c6932c50a2) fix patch for search bar
+
+## [1.0.3] - 2023-12-31
+
+**Full Changelog**: [`8f1f38c...d255cf8`](https://github.com/andros21/rustracer/compare/8f1f38c079f3e82374b88454a2129591080aff39...d255cf84fa1313c04ea07c70fea0fa65167e8556)
+
+### Bug Fixes
+
+- [`c999f51`](https://github.com/andros21/rustracer/commit/c999f511292462a8fcadb4ce93402e3fa93da00e) since 564efb3 `tarpaulin` produce ccov ([#274](https://github.com/andros21/rustracer/issues/274))
+
+### Build
+
+- [`88ad471`](https://github.com/andros21/rustracer/commit/88ad471fa007be87ae7c9f5b1eac39249830d526) bump dtolnay/rust-toolchain ([#174](https://github.com/andros21/rustracer/issues/174))
+- [`7df3214`](https://github.com/andros21/rustracer/commit/7df321490f3e7ac32fa8037ffafd3eaa4af9bdd6) bump peaceiris/actions-gh-pages from 3.9.1 to 3.9.2 ([#175](https://github.com/andros21/rustracer/issues/175))
+- [`a4d6d60`](https://github.com/andros21/rustracer/commit/a4d6d60a4d080e5a59e8fa7f0fbd84f2731e8619) bump taiki-e/install-action from 2.2.1 to 2.3.3 ([#176](https://github.com/andros21/rustracer/issues/176))
+- [`7e22a95`](https://github.com/andros21/rustracer/commit/7e22a95d6b3e235fba1a1e52fe9a62e8dd486d1e) bump taiki-e/install-action from 2.3.3 to 2.3.4 ([#177](https://github.com/andros21/rustracer/issues/177))
+- [`092d7d9`](https://github.com/andros21/rustracer/commit/092d7d9f1c5a14afe02f86118bdb0a994433ce31) fix forgotten tar.gz extension in release script ([#173](https://github.com/andros21/rustracer/issues/173))
+- [`968f2ea`](https://github.com/andros21/rustracer/commit/968f2ea9c894174a1ab62a9be9b60ed0691e0621) bump black from 22.12.0 to 23.1.0 in /.github/workflows ([#181](https://github.com/andros21/rustracer/issues/181))
+- [`ace3e89`](https://github.com/andros21/rustracer/commit/ace3e89d1922a127602ac4e38c989499ecb7db4a) bump actions/cache from 3.2.3 to 3.2.4 ([#182](https://github.com/andros21/rustracer/issues/182))
+- [`c98418b`](https://github.com/andros21/rustracer/commit/c98418b18102c3a6270304b72a6afb3950257751) bump taiki-e/install-action from 2.3.4 to 2.3.5 ([#183](https://github.com/andros21/rustracer/issues/183))
+- [`8424e7b`](https://github.com/andros21/rustracer/commit/8424e7b95622b5d6d1a237b140e2aa4d7433853a) bump dtolnay/rust-toolchain ([#184](https://github.com/andros21/rustracer/issues/184))
+- [`3962eee`](https://github.com/andros21/rustracer/commit/3962eee09bdc3dac3577cd3bb7b2c266d483d47e) bump rust from 1.66.1 to 1.67.0 ([#178](https://github.com/andros21/rustracer/issues/178))
+- [`ad5716d`](https://github.com/andros21/rustracer/commit/ad5716db2ef56b9faa6a8f6ce4431f06e2440647) bump clap from 4.0.32 to 4.1.4 ([#179](https://github.com/andros21/rustracer/issues/179))
+- [`812a6d7`](https://github.com/andros21/rustracer/commit/812a6d7a4a571b985d1a0269f8a17a030880eaf3) bump clap_complete from 4.0.7 to 4.1.1 ([#180](https://github.com/andros21/rustracer/issues/180))
+- [`2631d4e`](https://github.com/andros21/rustracer/commit/2631d4e3f6fdbac322760f0a4e0b595aed0647db) bump actions/cache from 3.2.4 to 3.2.5 ([#186](https://github.com/andros21/rustracer/issues/186))
+- [`7b1eb8f`](https://github.com/andros21/rustracer/commit/7b1eb8f3ee464939ec8b47d2a6b366960f0700c6) bump marocchino/sticky-pull-request-comment ([#188](https://github.com/andros21/rustracer/issues/188))
+- [`dc58770`](https://github.com/andros21/rustracer/commit/dc58770762004baf559dc09638978135d15204b4) bump dtolnay/rust-toolchain ([#185](https://github.com/andros21/rustracer/issues/185))
+- [`6b69e68`](https://github.com/andros21/rustracer/commit/6b69e6897df1f4b283157c658174a138f8496974) bump taiki-e/install-action from 2.3.5 to 2.4.0 ([#187](https://github.com/andros21/rustracer/issues/187))
+- [`1cf6b6c`](https://github.com/andros21/rustracer/commit/1cf6b6cd315728cfd87fd9f5d2720cbb5b9daea7) bump taiki-e/install-action from 2.4.0 to 2.4.3 ([#190](https://github.com/andros21/rustracer/issues/190))
+- [`956d651`](https://github.com/andros21/rustracer/commit/956d651a107e25e88f21bcfe8e765cf9050fbb41) bump dtolnay/rust-toolchain ([#189](https://github.com/andros21/rustracer/issues/189))
+- [`1d2517d`](https://github.com/andros21/rustracer/commit/1d2517da8364398409bfe3ef25831e55f5171ed9) bump actions/cache from 3.2.5 to 3.2.6 ([#191](https://github.com/andros21/rustracer/issues/191))
+- [`8ce2128`](https://github.com/andros21/rustracer/commit/8ce21288cb343a855d1007c9e8ce55e0be50185e) bump taiki-e/install-action from 2.4.3 to 2.5.1 ([#192](https://github.com/andros21/rustracer/issues/192))
+- [`e60038d`](https://github.com/andros21/rustracer/commit/e60038d7c5e92b42903099b33ade1c112acf180a) bump clap from 4.1.4 to 4.1.8 ([#193](https://github.com/andros21/rustracer/issues/193))
+- [`efa658f`](https://github.com/andros21/rustracer/commit/efa658fc7d9622385d97ea57bc35553c41e180d5) bump clap_complete from 4.1.1 to 4.1.4 ([#194](https://github.com/andros21/rustracer/issues/194))
+- [`6977851`](https://github.com/andros21/rustracer/commit/6977851f888fb66bac64419ce3de3cc74132e98d) bump taiki-e/install-action from 2.5.1 to 2.5.4 ([#195](https://github.com/andros21/rustracer/issues/195))
+- [`2e66cd1`](https://github.com/andros21/rustracer/commit/2e66cd144a2351e5b70e1891e60cf6b51640d72a) bump sigstore/cosign-installer from 2.8.1 to 3.0.1 ([#196](https://github.com/andros21/rustracer/issues/196))
+- [`eda6d96`](https://github.com/andros21/rustracer/commit/eda6d96c70d08c22d74a89dd6c433f38cbe337e4) remove COSIGN_EXPERIMENTAL
+- [`45161b0`](https://github.com/andros21/rustracer/commit/45161b00db1997ff8c687b95237d032ffab72775) bump actions/cache from 3.2.6 to 3.3.1 ([#201](https://github.com/andros21/rustracer/issues/201))
+- [`fac678e`](https://github.com/andros21/rustracer/commit/fac678e95c6f0ec644ff74ca98c2c2dfe276eff2) bump actions/checkout from 3.3.0 to 3.4.0 ([#200](https://github.com/andros21/rustracer/issues/200))
+- [`d977d45`](https://github.com/andros21/rustracer/commit/d977d45dbbf2eae591870f340c78ea15eaa26782) bump taiki-e/install-action from 2.5.4 to 2.6.2 ([#199](https://github.com/andros21/rustracer/issues/199))
+- [`4caeb78`](https://github.com/andros21/rustracer/commit/4caeb7839363485e42ba2839ebec401ef001bb8d) bump rust from 1.67 to 1.68 ([#202](https://github.com/andros21/rustracer/issues/202))
+- [`15ed670`](https://github.com/andros21/rustracer/commit/15ed670982b68734d0ba3b434caa11a36cd692c8) render from TEMPLATE
+- [`b62032b`](https://github.com/andros21/rustracer/commit/b62032bdb2962ac46dfe114651b34e3ca87bff97) bump actions/checkout from 3.4.0 to 3.5.0 ([#205](https://github.com/andros21/rustracer/issues/205))
+- [`45f887a`](https://github.com/andros21/rustracer/commit/45f887ad8678b714dc4aff16b190b906edda61af) bump taiki-e/install-action from 2.6.2 to 2.6.5 ([#203](https://github.com/andros21/rustracer/issues/203))
+- [`c9736a4`](https://github.com/andros21/rustracer/commit/c9736a412265221f08b2a41cfa2bf1ec1d27b270) bump dtolnay/rust-toolchain ([#204](https://github.com/andros21/rustracer/issues/204))
+- [`6ab34e6`](https://github.com/andros21/rustracer/commit/6ab34e6f7cd54018570779bbda37e37ef3d7d16a) cosign sign from 2.0 needs extra flag
+- [`e6cd46c`](https://github.com/andros21/rustracer/commit/e6cd46c2dc8fb9c68a58956086aa951998943fcd) add e2e test action for signed blobs ([#206](https://github.com/andros21/rustracer/issues/206))
+- [`2fd516a`](https://github.com/andros21/rustracer/commit/2fd516a33e835ef22aa3ad0e3994ce86d97692a3) render from TEMPLATE
+- [`f9ebea5`](https://github.com/andros21/rustracer/commit/f9ebea5d92027ffda70586137d61175648f9bf1c) bump black from 23.1.0 to 23.3.0 in /.github/workflows ([#207](https://github.com/andros21/rustracer/issues/207))
+- [`84b2116`](https://github.com/andros21/rustracer/commit/84b21164dfb761effe20c3f5647bb688b3fa1ad9) bump peaceiris/actions-gh-pages from 3.9.2 to 3.9.3 ([#214](https://github.com/andros21/rustracer/issues/214))
+- [`06e8dba`](https://github.com/andros21/rustracer/commit/06e8dba5881f26e9d330acb3768dc8d1f0ddf05f) bump dtolnay/rust-toolchain ([#213](https://github.com/andros21/rustracer/issues/213))
+- [`a499727`](https://github.com/andros21/rustracer/commit/a4997272d5a4520e746352d565ecbb246379a1bc) bump rayon from 1.6.1 to 1.7.0 ([#212](https://github.com/andros21/rustracer/issues/212))
+- [`7ed524c`](https://github.com/andros21/rustracer/commit/7ed524c983867db2013307da16255b2736a3b61f) bump thiserror from 1.0.38 to 1.0.40 ([#209](https://github.com/andros21/rustracer/issues/209))
+- [`961860d`](https://github.com/andros21/rustracer/commit/961860dbefc7be9f7a6885a4068a606016f0bc58) bump image from 0.24.5 to 0.24.6 ([#210](https://github.com/andros21/rustracer/issues/210))
+- [`3e32ff1`](https://github.com/andros21/rustracer/commit/3e32ff120c2f73ab7e0be2cd316b3a7082c859c6) bump clap from 4.1.8 to 4.2.1 ([#211](https://github.com/andros21/rustracer/issues/211))
+- [`49cb665`](https://github.com/andros21/rustracer/commit/49cb6652395b391f546d5d4e5533e7fe5415cece) bump clap_complete from 4.1.4 to 4.2.0 ([#208](https://github.com/andros21/rustracer/issues/208))
+- [`1ca5118`](https://github.com/andros21/rustracer/commit/1ca51189e79e315807eabba08adbc09d524e2c86) s/flake/ruff python lint
+- [`f024a2b`](https://github.com/andros21/rustracer/commit/f024a2b619c1e54efd2e74785925e247a6fc35fe) bump sigstore/cosign-installer from 3.0.1 to 3.0.2 ([#216](https://github.com/andros21/rustracer/issues/216))
+- [`96d2ab7`](https://github.com/andros21/rustracer/commit/96d2ab7e05393ec18fac7512319699286eaaaf42) bump taiki-e/install-action from 2.6.5 to 2.6.10 ([#215](https://github.com/andros21/rustracer/issues/215))
+- [`b7ce298`](https://github.com/andros21/rustracer/commit/b7ce29876b7f3e9475d69892b3ccb2af3b04120d) bump taiki-e/install-action from 2.6.10 to 2.6.13 ([#218](https://github.com/andros21/rustracer/issues/218))
+- [`9a1cf56`](https://github.com/andros21/rustracer/commit/9a1cf56da7cce107291f5e95f8b9f38a1442e7ac) bump actions/checkout from 3.5.0 to 3.5.2 ([#217](https://github.com/andros21/rustracer/issues/217))
+- [`f63fe6c`](https://github.com/andros21/rustracer/commit/f63fe6c6dbe7271db3eba2ed942be80c3d258537) bump taiki-e/install-action from 2.6.13 to 2.6.18 ([#219](https://github.com/andros21/rustracer/issues/219))
+- [`7728c0f`](https://github.com/andros21/rustracer/commit/7728c0f37d6c3c787381f591a4ad0dce8ba2e27a) bump marocchino/sticky-pull-request-comment ([#220](https://github.com/andros21/rustracer/issues/220))
+- [`98ea7f3`](https://github.com/andros21/rustracer/commit/98ea7f36ebe6e5afb1d2c08b5dfbd65b85d6c1df) bump rust from 1.68 to 1.69 ([#222](https://github.com/andros21/rustracer/issues/222))
+- [`a2f988d`](https://github.com/andros21/rustracer/commit/a2f988d6e61a33a4a4cc18076a087e410edb3cc5) bump EndBug/add-and-commit from 9.1.1 to 9.1.2 ([#224](https://github.com/andros21/rustracer/issues/224))
+- [`1a438c6`](https://github.com/andros21/rustracer/commit/1a438c6b08f80bf8f93528104ed3049b57c74ec0) bump taiki-e/install-action from 2.6.18 to 2.7.2 ([#225](https://github.com/andros21/rustracer/issues/225))
+- [`b9d1a0b`](https://github.com/andros21/rustracer/commit/b9d1a0b1cbca17435d1587d9376161fb5fc8a190) bump sigstore/cosign-installer from 3.0.2 to 3.0.3 ([#226](https://github.com/andros21/rustracer/issues/226))
+- [`ef1b392`](https://github.com/andros21/rustracer/commit/ef1b3924f4c3e16afce216afaa13e983b9aa7aef) bump ruff from 0.0.260 to 0.0.263 in /.github/workflows ([#229](https://github.com/andros21/rustracer/issues/229))
+- [`b6de660`](https://github.com/andros21/rustracer/commit/b6de660c39e034b4fad706ddbb3cd8e127cb0c51) bump clap from 4.2.1 to 4.2.5 ([#227](https://github.com/andros21/rustracer/issues/227))
+- [`294df24`](https://github.com/andros21/rustracer/commit/294df243cc2f009b7461aa59fdd711087556adbc) bump clap_complete from 4.2.0 to 4.2.1 ([#228](https://github.com/andros21/rustracer/issues/228))
+- [`fbb969d`](https://github.com/andros21/rustracer/commit/fbb969d9f02e8f94b2e056d9be92b20081c49a62) bump taiki-e/install-action from 2.7.2 to 2.8.1 ([#230](https://github.com/andros21/rustracer/issues/230))
+- [`caff7b2`](https://github.com/andros21/rustracer/commit/caff7b25283d2130d4310fb5b777e2e02cf494d1) bump orhun/git-cliff-action from 2.0.5 to 2.0.6 ([#231](https://github.com/andros21/rustracer/issues/231))
+- [`5ff722d`](https://github.com/andros21/rustracer/commit/5ff722d135187b4af7c09ae267412110aac32b8f) bump EndBug/add-and-commit from 9.1.1 to 9.1.3 ([#232](https://github.com/andros21/rustracer/issues/232))
+- [`b3ee2a3`](https://github.com/andros21/rustracer/commit/b3ee2a319c21852ef1d7b2fc4e1d6bb50376771e) bump taiki-e/install-action from 2.8.1 to 2.8.4 ([#233](https://github.com/andros21/rustracer/issues/233))
+- [`4ba0c40`](https://github.com/andros21/rustracer/commit/4ba0c406df99aa3d44b5092211b78a80ceae81c1) bump taiki-e/install-action from 2.8.4 to 2.8.6 ([#235](https://github.com/andros21/rustracer/issues/235))
+- [`0b238d9`](https://github.com/andros21/rustracer/commit/0b238d94eb16c8ad11c0ac863764edb206f2a0c6) bump sigstore/cosign-installer from 3.0.3 to 3.0.5 ([#234](https://github.com/andros21/rustracer/issues/234))
+- [`5e4dcc7`](https://github.com/andros21/rustracer/commit/5e4dcc721f32c94e45212526b2d5ad8e75bc6e10) different improvements
+- [`0074123`](https://github.com/andros21/rustracer/commit/0074123a5f1d200b9f89ca44facfa1504fe43758) bump ruff from 0.0.263 to 0.0.270 in /.github/workflows ([#239](https://github.com/andros21/rustracer/issues/239))
+- [`88d77b9`](https://github.com/andros21/rustracer/commit/88d77b96b1c1e1913d06d166d214207f441d69ba) bump clap from 4.2.5 to 4.3.0 ([#238](https://github.com/andros21/rustracer/issues/238))
+- [`8d6d570`](https://github.com/andros21/rustracer/commit/8d6d5704f5ffe24311318f2868f6462b3c84733c) bump clap_complete from 4.2.1 to 4.3.0 ([#237](https://github.com/andros21/rustracer/issues/237))
+- [`0c38638`](https://github.com/andros21/rustracer/commit/0c386383c84b8b898284efa6c5f80da153843a99) bump taiki-e/install-action from 2.8.6 to 2.9.2 ([#241](https://github.com/andros21/rustracer/issues/241))
+- [`564efb3`](https://github.com/andros21/rustracer/commit/564efb3dd2162a807071fc0db7d507e7f0f17f76) s/cargo-llvm-cov/cargo-tarpaulin for code-cov
+- [`dd1132d`](https://github.com/andros21/rustracer/commit/dd1132d41cafd496d8e865d8cadc866514336175) bump rust from 1.69 to 1.70 ([#242](https://github.com/andros21/rustracer/issues/242))
+- [`9e40a9f`](https://github.com/andros21/rustracer/commit/9e40a9f57a4ade980a3a00c6a3c74f84bc6491d8) bump actions/checkout from 3.5.2 to 3.5.3 ([#244](https://github.com/andros21/rustracer/issues/244))
+- [`b3142dc`](https://github.com/andros21/rustracer/commit/b3142dcd8f50fae03104fa70918a507794abea6a) bump taiki-e/install-action from 2.9.2 to 2.11.0 ([#243](https://github.com/andros21/rustracer/issues/243))
+- [`ef233e1`](https://github.com/andros21/rustracer/commit/ef233e126200e017789c0d6269bbe76a8e4036bd) bump taiki-e/install-action from 2.11.0 to 2.11.3 ([#245](https://github.com/andros21/rustracer/issues/245))
+- [`934a5aa`](https://github.com/andros21/rustracer/commit/934a5aa6a22c9d2b10f93ea3078c2842a6cf11b2) bump taiki-e/install-action from 2.11.3 to 2.11.6 ([#247](https://github.com/andros21/rustracer/issues/247))
+- [`829bd86`](https://github.com/andros21/rustracer/commit/829bd8658c8a143e120b2821367e9ae59bb859de) bump sigstore/cosign-installer from 3.0.5 to 3.1.0 ([#246](https://github.com/andros21/rustracer/issues/246))
+- [`53cf762`](https://github.com/andros21/rustracer/commit/53cf762437d46c12aedce36a82a3161ce0d95064) bump ruff from 0.0.270 to 0.0.275 in /.github/workflows ([#250](https://github.com/andros21/rustracer/issues/250))
+- [`cd81313`](https://github.com/andros21/rustracer/commit/cd81313ce4ac0b7bb430e2f8b3178149dcfb5220) bump sigstore/cosign-installer from 3.1.0 to 3.1.1 ([#252](https://github.com/andros21/rustracer/issues/252))
+- [`584d638`](https://github.com/andros21/rustracer/commit/584d638b92d36be3e10567ac210e1793038e2ad4) bump taiki-e/install-action from 2.11.6 to 2.12.4 ([#251](https://github.com/andros21/rustracer/issues/251))
+- [`42e1c58`](https://github.com/andros21/rustracer/commit/42e1c582cf3c23c50d62950115ee162d5747313e) bump clap_complete from 4.3.0 to 4.3.1 ([#248](https://github.com/andros21/rustracer/issues/248))
+- [`305878a`](https://github.com/andros21/rustracer/commit/305878a3a5208c91429001d8cf8fcf229ee9ac15) bump clap from 4.3.0 to 4.3.10 ([#249](https://github.com/andros21/rustracer/issues/249))
+- [`7353967`](https://github.com/andros21/rustracer/commit/7353967bf7ea3cf58d7f263d13bc36b950340285) bump taiki-e/install-action from 2.12.4 to 2.12.10 ([#253](https://github.com/andros21/rustracer/issues/253))
+- [`5269218`](https://github.com/andros21/rustracer/commit/526921808846638504b770cf8f883b13944b01aa) python deps inside venv
+- [`5d5e4fa`](https://github.com/andros21/rustracer/commit/5d5e4fa483efc1a21483a8ff9616a4f4ebd21ea4) bump taiki-e/install-action from 2.12.10 to 2.12.11 ([#254](https://github.com/andros21/rustracer/issues/254))
+- [`b988b52`](https://github.com/andros21/rustracer/commit/b988b526dc83334e2066e0f5beacfe7a9ec47a7a) bump marocchino/sticky-pull-request-comment ([#257](https://github.com/andros21/rustracer/issues/257))
+- [`a64cd52`](https://github.com/andros21/rustracer/commit/a64cd5262f1098b19a527aef90ed925ca1967143) bump taiki-e/install-action from 2.12.11 to 2.12.17 ([#256](https://github.com/andros21/rustracer/issues/256))
+- [`b7311a4`](https://github.com/andros21/rustracer/commit/b7311a45b111bc7aef6b3d864d8ee434732013ff) bump rust from 1.70 to 1.71 ([#255](https://github.com/andros21/rustracer/issues/255))
+- [`d61b6e3`](https://github.com/andros21/rustracer/commit/d61b6e3880cd14c3edc26663ad1c53dc03344c0a) bump taiki-e/install-action from 2.12.17 to 2.12.21 ([#258](https://github.com/andros21/rustracer/issues/258))
+- [`35a7efd`](https://github.com/andros21/rustracer/commit/35a7efd7ad75d089cab86088bbb1ca75532a4f4f) bump colored from 2.0.0 to 2.0.4 ([#260](https://github.com/andros21/rustracer/issues/260))
+- [`31ba0bf`](https://github.com/andros21/rustracer/commit/31ba0bfc6fab0eb1f1f63e34c6ae3493398b7ed3) bump thiserror from 1.0.40 to 1.0.44 ([#261](https://github.com/andros21/rustracer/issues/261))
+- [`77d371d`](https://github.com/andros21/rustracer/commit/77d371d42dd8121631b2c3c0b2339feb0302fe07) bump clap from 4.3.10 to 4.3.19 ([#262](https://github.com/andros21/rustracer/issues/262))
+- [`d216645`](https://github.com/andros21/rustracer/commit/d216645c4bed97c4aa5465e6c625b6ce682a5909) bump clap_complete from 4.3.1 to 4.3.2 ([#259](https://github.com/andros21/rustracer/issues/259))
+- [`386ade4`](https://github.com/andros21/rustracer/commit/386ade4bcd8904df0cc099c5ebbf7232327c5f21) remove wrong `--user` flag
+- [`35e3ba9`](https://github.com/andros21/rustracer/commit/35e3ba9cd645523b9df21f4eb6bf21fcaecc458f) bump ruff from 0.0.275 to 0.0.282 in /.github/workflows ([#264](https://github.com/andros21/rustracer/issues/264))
+- [`271244c`](https://github.com/andros21/rustracer/commit/271244c1d9e5b89523f026936b21a071e5d36bdd) bump black from 23.3.0 to 23.7.0 in /.github/workflows ([#263](https://github.com/andros21/rustracer/issues/263))
+- [`0bf109f`](https://github.com/andros21/rustracer/commit/0bf109fab7f1195c3b94ae4b18c917b91b5e1f85) bump taiki-e/install-action from 2.12.21 to 2.14.1 ([#266](https://github.com/andros21/rustracer/issues/266))
+- [`e0c3db5`](https://github.com/andros21/rustracer/commit/e0c3db506abb4eaead6f59b8552b06da98773d10) bump taiki-e/install-action from 2.14.1 to 2.15.2 ([#267](https://github.com/andros21/rustracer/issues/267))
+- [`6724642`](https://github.com/andros21/rustracer/commit/672464299795f5beff915da843bac9a0d388788b) bump marocchino/sticky-pull-request-comment ([#268](https://github.com/andros21/rustracer/issues/268))
+- [`8db9854`](https://github.com/andros21/rustracer/commit/8db9854645211546dc1cc59e70cda1da19bb746e) bump taiki-e/install-action from 2.15.2 to 2.16.0 ([#269](https://github.com/andros21/rustracer/issues/269))
+- [`16a0cea`](https://github.com/andros21/rustracer/commit/16a0ceae1d0dd622a98a1ce4c36646739000a11b) bump actions/checkout from 3.5.3 to 3.6.0 ([#270](https://github.com/andros21/rustracer/issues/270))
+- [`774986b`](https://github.com/andros21/rustracer/commit/774986b16bd006bac04edc4547f33faf21ccbe91) bump taiki-e/install-action from 2.16.0 to 2.17.1 ([#271](https://github.com/andros21/rustracer/issues/271))
+- [`41007c5`](https://github.com/andros21/rustracer/commit/41007c50d9030df6341a16676ac65c2e55c92c63) bump rust from 1.71 to 1.72 ([#272](https://github.com/andros21/rustracer/issues/272))
+- [`02bfe57`](https://github.com/andros21/rustracer/commit/02bfe577b9881e52a95021246ff216f5a7228ad8) render from TEMPLATE
+- [`6e55e34`](https://github.com/andros21/rustracer/commit/6e55e34fe6911b309472c1f85c3cd7d5aaf36921) render from TEMPLATE
+- [`f0dbba3`](https://github.com/andros21/rustracer/commit/f0dbba306f319febf733424312d0a95785b42368) bump ruff from 0.0.282 to 0.0.286 in /.github/workflows ([#275](https://github.com/andros21/rustracer/issues/275))
+- [`9b1fbfe`](https://github.com/andros21/rustracer/commit/9b1fbfec49aaf15e980047dcb88482719ab9a7f4) bump image from 0.24.6 to 0.24.7 ([#277](https://github.com/andros21/rustracer/issues/277))
+- [`1c47ea6`](https://github.com/andros21/rustracer/commit/1c47ea6e5a022b2ad47a1b8980729b906ff557f7) bump thiserror from 1.0.44 to 1.0.47 ([#278](https://github.com/andros21/rustracer/issues/278))
+- [`5848726`](https://github.com/andros21/rustracer/commit/5848726a58a9ac2b00ecb90e0d9088f47be9123f) bump clap from 4.3.19 to 4.4.2 ([#276](https://github.com/andros21/rustracer/issues/276))
+- [`d709149`](https://github.com/andros21/rustracer/commit/d70914926f4132104dd144a3d0eb662f3f8f14d9) bump clap_complete from 4.3.2 to 4.4.0 ([#279](https://github.com/andros21/rustracer/issues/279))
+- [`5785b04`](https://github.com/andros21/rustracer/commit/5785b04c2bcf898fc3d6fe2e4b4949ab79b16cec) bump taiki-e/install-action from 2.17.1 to 2.17.8 ([#280](https://github.com/andros21/rustracer/issues/280))
+- [`1827857`](https://github.com/andros21/rustracer/commit/1827857ec10e0fb14c8dd60ccdc4513e4964e28e) bump orhun/git-cliff-action from 2.0.6 to 2.1.0 ([#281](https://github.com/andros21/rustracer/issues/281))
+- [`9739bef`](https://github.com/andros21/rustracer/commit/9739bef1c6adcc6c6056a81508603d964727c063) bump sigstore/cosign-installer from 3.1.1 to 3.1.2 ([#282](https://github.com/andros21/rustracer/issues/282))
+- [`37373b7`](https://github.com/andros21/rustracer/commit/37373b71c4cd6e56b69a43d797be26ccb52124c5) bump actions/checkout from 3.6.0 to 4.0.0 ([#285](https://github.com/andros21/rustracer/issues/285))
+- [`624582b`](https://github.com/andros21/rustracer/commit/624582b5c011ace83d2ae9760085f831b52e8ec8) bump actions/cache from 3.3.1 to 3.3.2 ([#283](https://github.com/andros21/rustracer/issues/283))
+- [`9fa8c56`](https://github.com/andros21/rustracer/commit/9fa8c56402e16a4aff4b436506ccf514774368e6) bump taiki-e/install-action from 2.17.8 to 2.18.6 ([#284](https://github.com/andros21/rustracer/issues/284))
+- [`e513aac`](https://github.com/andros21/rustracer/commit/e513aac976830ec951f8c030d795287d00fe4a54) bump taiki-e/install-action from 2.18.6 to 2.18.12 ([#286](https://github.com/andros21/rustracer/issues/286))
+- [`1f5e43f`](https://github.com/andros21/rustracer/commit/1f5e43f20a41878cf52cbc2be2e0f4786fc5f688) bump actions/checkout from 4.0.0 to 4.1.0 ([#288](https://github.com/andros21/rustracer/issues/288))
+- [`6f52efb`](https://github.com/andros21/rustracer/commit/6f52efb022b8b07238e94051d5a828f23ec64851) bump taiki-e/install-action from 2.18.12 to 2.18.16 ([#287](https://github.com/andros21/rustracer/issues/287))
+- [`fbc006d`](https://github.com/andros21/rustracer/commit/fbc006d9094689d791b543b79f9b24e02e5a538d) bump ruff from 0.0.286 to 0.0.291 in /.github/workflows ([#294](https://github.com/andros21/rustracer/issues/294))
+- [`04c3ea8`](https://github.com/andros21/rustracer/commit/04c3ea84bba78db22a6eb8e86f3f769c1ad9893f) bump black from 23.7.0 to 23.9.1 in /.github/workflows ([#295](https://github.com/andros21/rustracer/issues/295))
+- [`e006a14`](https://github.com/andros21/rustracer/commit/e006a144809e40bc2a0c2589ebf9df0ac60100c2) bump taiki-e/install-action from 2.18.16 to 2.19.2 ([#289](https://github.com/andros21/rustracer/issues/289))
+- [`aac7778`](https://github.com/andros21/rustracer/commit/aac7778d49bf30fe76412134ab5a71aefb2ad95b) bump thiserror from 1.0.47 to 1.0.49 ([#290](https://github.com/andros21/rustracer/issues/290))
+- [`bcfc67d`](https://github.com/andros21/rustracer/commit/bcfc67d0950fb398bb4f5d537e4b029c6bbd59cd) bump rayon from 1.7.0 to 1.8.0 ([#292](https://github.com/andros21/rustracer/issues/292))
+- [`3c12aa7`](https://github.com/andros21/rustracer/commit/3c12aa73f9ee785e59b3ce2877bee642db107df4) bump clap_complete from 4.4.0 to 4.4.3 ([#291](https://github.com/andros21/rustracer/issues/291))
+- [`e3b4a6c`](https://github.com/andros21/rustracer/commit/e3b4a6c1a2c06b7787fdfa5d4754ba7c31a170b9) bump clap from 4.4.2 to 4.4.3 ([#293](https://github.com/andros21/rustracer/issues/293))
+- [`00fc3b0`](https://github.com/andros21/rustracer/commit/00fc3b02b50eed14375fd13e6bc476b985e95620) bump taiki-e/install-action from 2.19.2 to 2.20.0 ([#297](https://github.com/andros21/rustracer/issues/297))
+- [`982ec53`](https://github.com/andros21/rustracer/commit/982ec5379ff203f021418059c8d651cade8a8c0f) bump orhun/git-cliff-action from 2.1.0 to 2.1.1 ([#296](https://github.com/andros21/rustracer/issues/296))
+- [`b608860`](https://github.com/andros21/rustracer/commit/b6088602fdf3de275461a57eb2785652efdd4331) bump rust from 1.72 to 1.73 ([#298](https://github.com/andros21/rustracer/issues/298))
+- [`57cf292`](https://github.com/andros21/rustracer/commit/57cf292bf7e2dff57826c6aaad895d07eae8c185) bump taiki-e/install-action from 2.20.0 to 2.20.3 ([#299](https://github.com/andros21/rustracer/issues/299))
+- [`544743a`](https://github.com/andros21/rustracer/commit/544743afd6da01a04405abb5152df428e893a642) bump rustix from 0.35.11 to 0.35.15 ([#300](https://github.com/andros21/rustracer/issues/300))
+- [`f922980`](https://github.com/andros21/rustracer/commit/f9229808da18b61ded5386e2f8c0102faa973676) render from TEMPLATE
+- [`9f11aa7`](https://github.com/andros21/rustracer/commit/9f11aa7415522ae2017521913bf2c9935f95a953) bump actions/checkout from 4.1.0 to 4.1.1 ([#303](https://github.com/andros21/rustracer/issues/303))
+- [`40b5d7f`](https://github.com/andros21/rustracer/commit/40b5d7f54312d6b6098c923ed708951e0ff944c7) bump taiki-e/install-action from 2.20.3 to 2.20.13 ([#302](https://github.com/andros21/rustracer/issues/302))
+- [`cefd295`](https://github.com/andros21/rustracer/commit/cefd2952bc2307bdd35bf71554b121055cd975a6) bump schneegans/dynamic-badges-action from 1.6.0 to 1.7.0 ([#301](https://github.com/andros21/rustracer/issues/301))
+- [`5ff8080`](https://github.com/andros21/rustracer/commit/5ff8080b303d15165b4beacbdec92ff6509f516c) bump taiki-e/install-action from 2.20.13 to 2.21.2 ([#304](https://github.com/andros21/rustracer/issues/304))
+- [`31bd4f4`](https://github.com/andros21/rustracer/commit/31bd4f4b5c967473ba457d23f2a602b21d92dbe9) bump black from 23.9.1 to 23.10.1 in /.github/workflows ([#305](https://github.com/andros21/rustracer/issues/305))
+- [`058eac2`](https://github.com/andros21/rustracer/commit/058eac2db0f7910945d3290c560e4df73414935b) bump thiserror from 1.0.49 to 1.0.50 ([#309](https://github.com/andros21/rustracer/issues/309))
+- [`74f6b6c`](https://github.com/andros21/rustracer/commit/74f6b6c886bf74c16411281bba4908f85169e0bd) bump ruff from 0.0.291 to 0.1.3 in /.github/workflows ([#306](https://github.com/andros21/rustracer/issues/306))
+- [`c68c58e`](https://github.com/andros21/rustracer/commit/c68c58eac2ea0ac243ad715f0637bc3ab79036dd) bump byteorder from 1.4.3 to 1.5.0 ([#308](https://github.com/andros21/rustracer/issues/308))
+- [`18f232c`](https://github.com/andros21/rustracer/commit/18f232c0622e54b32bf0e9a80f79b46bc473a906) bump clap_complete from 4.4.3 to 4.4.4 ([#307](https://github.com/andros21/rustracer/issues/307))
+- [`a16587c`](https://github.com/andros21/rustracer/commit/a16587cf400e035350acbb22ced96134d61e3d75) bump taiki-e/install-action from 2.21.2 to 2.21.7 ([#312](https://github.com/andros21/rustracer/issues/312))
+- [`0296b40`](https://github.com/andros21/rustracer/commit/0296b4047fd3c27d022283f415827f505b633a16) bump orhun/git-cliff-action from 2.1.1 to 2.2.0 ([#311](https://github.com/andros21/rustracer/issues/311))
+- [`467c9fa`](https://github.com/andros21/rustracer/commit/467c9fab63adce7093f1b3f4f443db90299859ec) bump sigstore/cosign-installer from 3.1.2 to 3.2.0 ([#316](https://github.com/andros21/rustracer/issues/316))
+- [`7bb0bc8`](https://github.com/andros21/rustracer/commit/7bb0bc8c38d1a8c8da53acc50ac1d417d2183d1d) bump taiki-e/install-action from 2.21.7 to 2.21.10 ([#315](https://github.com/andros21/rustracer/issues/315))
+- [`6e64c65`](https://github.com/andros21/rustracer/commit/6e64c659ec9ad4e6ded5035f8e706fabb8debefb) bump orhun/git-cliff-action from 2.2.0 to 2.3.0 ([#318](https://github.com/andros21/rustracer/issues/318))
+- [`a576238`](https://github.com/andros21/rustracer/commit/a5762384f3e2ee12586876ec2ace12005a12cb7d) bump taiki-e/install-action from 2.21.10 to 2.21.16 ([#317](https://github.com/andros21/rustracer/issues/317))
+- [`4878e74`](https://github.com/andros21/rustracer/commit/4878e74995f226d8741baf1a808799e9c464739a) bump taiki-e/install-action from 2.21.16 to 2.21.18 ([#320](https://github.com/andros21/rustracer/issues/320))
+- [`5cc4bd7`](https://github.com/andros21/rustracer/commit/5cc4bd708a4565d56cc5749df7feef0238f223b8) bump the pip group in /.github/workflows with 2 updates ([#321](https://github.com/andros21/rustracer/issues/321))
+- [`161dcfe`](https://github.com/andros21/rustracer/commit/161dcfec6f09a49c362a20bd64a834572b49ea74) bump taiki-e/install-action from 2.21.18 to 2.21.26 ([#322](https://github.com/andros21/rustracer/issues/322))
+- [`f704e57`](https://github.com/andros21/rustracer/commit/f704e5778581679729a91d500c088563941bf146) bump taiki-e/install-action from 2.21.26 to 2.22.0 ([#323](https://github.com/andros21/rustracer/issues/323))
+- [`2ec8953`](https://github.com/andros21/rustracer/commit/2ec8953cb3c7d7e639908df23af3c808531ba22f) bump taiki-e/install-action from 2.22.0 to 2.22.5 ([#324](https://github.com/andros21/rustracer/issues/324))
+- [`f9d15df`](https://github.com/andros21/rustracer/commit/f9d15dfde2770b54fa17bfa1080daeb7b249226d) bump sigstore/cosign-installer from 3.2.0 to 3.3.0 ([#325](https://github.com/andros21/rustracer/issues/325))
+- [`bdd7aca`](https://github.com/andros21/rustracer/commit/bdd7aca4cd08123478a7bc08f63f664bc1bbebd8) bump taiki-e/install-action from 2.22.5 to 2.23.0 ([#326](https://github.com/andros21/rustracer/issues/326))
+- [`e579d9b`](https://github.com/andros21/rustracer/commit/e579d9b1ebeca33ea1bda801c043667b99accb5d) bump taiki-e/install-action from 2.23.0 to 2.23.7 ([#328](https://github.com/andros21/rustracer/issues/328))
+
+### Miscellaneous Tasks
+
+- [`bc62366`](https://github.com/andros21/rustracer/commit/bc623661ff30baae7ac7673ba159a4be36b40c74) restrict permission, fix spellcheck errors
+- [`99e9d9e`](https://github.com/andros21/rustracer/commit/99e9d9e2abd6bd2b28a9cc1d6fb66ce504411347) git-cliff changelog detailed mode
+- [`5b914f8`](https://github.com/andros21/rustracer/commit/5b914f8457c695c864b1ac1171796dd46e4db323) monthly rust deps at specific time
+- [`fa58f1c`](https://github.com/andros21/rustracer/commit/fa58f1c96a0671aa52bd657288d4b86e05a7a6d1) monthly python deps at specific time
+- [`9f010ad`](https://github.com/andros21/rustracer/commit/9f010ad014d63927b32fcb89a1f7c85245e048a7) override default toolchain ([#273](https://github.com/andros21/rustracer/issues/273))
+- [`e3b7d9f`](https://github.com/andros21/rustracer/commit/e3b7d9f5d14107c36744d2befebf48575438a1d2) group minor/patch pip updates
+- [`beac660`](https://github.com/andros21/rustracer/commit/beac660945c4755d8399538cd81341c713bd3f87) bump rust from 1.73 to 1.74 ([#319](https://github.com/andros21/rustracer/issues/319))
+- [`09562e9`](https://github.com/andros21/rustracer/commit/09562e911e889a6e786e4779bf26d4ec9369ebad) bump rust to 1.74.1 ([#327](https://github.com/andros21/rustracer/issues/327))
+- [`f20de7e`](https://github.com/andros21/rustracer/commit/f20de7eaef642fae44565f29726931b1f01114f5) bump rust to 1.75 ([#329](https://github.com/andros21/rustracer/issues/329))
+- [`d255cf8`](https://github.com/andros21/rustracer/commit/d255cf84fa1313c04ea07c70fea0fa65167e8556) bump crate from 1.0.2 to 1.0.3 ([#314](https://github.com/andros21/rustracer/issues/314))
+
+### Refactor
+
+- [`2961d69`](https://github.com/andros21/rustracer/commit/2961d69466192183e8be3d9f1adf4d8e12a53323) prettier format
+
 ## [1.0.2] - 2023-01-16
 
 **Full Changelog**: [`52530aa...8f1f38c`](https://github.com/andros21/rustracer/compare/52530aabd7c353ca241e38034f7930fc85b1ab14...8f1f38c079f3e82374b88454a2129591080aff39)

@@ -21,7 +21,7 @@ name = "rustracer"
 path = "src/main.rs"
 
 [dependencies]
-thiserror = "1.0.50"
+thiserror = "1.0.53"
 byteorder = "1.5.0"
 rayon = "1.8.0"
 colored = "2.0.4"

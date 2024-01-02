@@ -87,7 +87,7 @@ jobs:
           cargo clippy --locked --tests
       - name: cargo rustdoc
         run: |
-          cargo rustdoc
+          make rust_docs
   lint_py:
     name: lint python ci
     needs: changes

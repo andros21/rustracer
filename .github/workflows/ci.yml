@@ -230,7 +230,7 @@ jobs:
       - name: update readme
         run: .github/workflows/md.py
       - name: commit readme
-        uses: EndBug/add-and-commit@1bad3abcf0d6ec49a5857d124b0bfb52dc7bb081
+        uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5
         with:
           message: 'build(README): render from TEMPLATE'
           add: 'README.md'

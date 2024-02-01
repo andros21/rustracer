@@ -8,6 +8,8 @@ updates:
       time: "07:00"
       timezone: "Europe/Rome"
     rebase-strategy: "disabled"
+    reviewers:
+      - "andros21"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -15,6 +17,8 @@ updates:
       day: "sunday"
       time: "07:00"
       timezone: "Europe/Rome"
+    reviewers:
+      - "andros21"
   - package-ecosystem: "pip"
     directory: ".github/workflows"
     schedule:
@@ -22,6 +26,8 @@ updates:
       time: "07:00"
       timezone: "Europe/Rome"
     rebase-strategy: "disabled"
+    reviewers:
+      - "andros21"
     groups:
       pip:
         patterns:

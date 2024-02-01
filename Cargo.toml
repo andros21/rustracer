@@ -28,7 +28,7 @@ colored = "2.1.0"
 clap_complete = "4.4.5"
 
 [dependencies.image]
-version = "0.24.7"
+version = "0.24.8"
 default-features = false
 features = ["farbfeld", "png"]
 

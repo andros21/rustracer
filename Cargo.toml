@@ -33,6 +33,6 @@ default-features = false
 features = ["farbfeld", "png"]
 
 [dependencies.clap]
-version = "4.4.3"
+version = "4.4.18"
 default-features = true
 features = ["wrap_help"]

@@ -25,7 +25,7 @@ thiserror = "1.0.56"
 byteorder = "1.5.0"
 rayon = "1.8.1"
 colored = "2.1.0"
-clap_complete = "4.4.5"
+clap_complete = "4.4.9"
 
 [dependencies.image]
 version = "0.24.8"

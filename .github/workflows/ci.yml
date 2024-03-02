@@ -103,12 +103,12 @@ jobs:
           set -x
           python3 -m venv .venv
           .venv/bin/pip install -r .github/workflows/requirements.txt
-      - name: black/ruff python
+      - name: ruff python
         run: |
           set -x
           md=".github/workflows/md.py"
-          .venv/bin/black -v "$md"
-          .venv/bin/ruff -v "$md"
+          .venv/bin/ruff check -v "$md"
+          .venv/bin/ruff format --check -v "$md"
   lint_sh:
     name: lint bash ci
     needs: changes

@@ -16,7 +16,7 @@ jobs:
       hashes: ${{ steps.hash.outputs.hashes }}
     steps:
       - name: checkout project
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - name: check cargo cache
         uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319
         id: rust-cache
@@ -58,7 +58,7 @@ jobs:
     needs: build
     steps:
       - name: checkout project
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
         with:
           fetch-depth: 0
       - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427
@@ -117,7 +117,7 @@ jobs:
       url: https://crates.io/crates/rustracer
     steps:
       - name: checkout project
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - name: check cache
         uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319
         id: cache
@@ -141,7 +141,7 @@ jobs:
       - cratesio
     steps:
       - name: checkout project
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - name: check cache
         uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319
         id: cache
@@ -167,7 +167,7 @@ jobs:
       contents: write
     steps:
       - name: checkout project
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
         with:
           fetch-depth: 0
       - name: get tag

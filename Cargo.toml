@@ -23,7 +23,7 @@ path = "src/main.rs"
 [dependencies]
 thiserror = "1.0.58"
 byteorder = "1.5.0"
-rayon = "1.9.0"
+rayon = "1.10.0"
 colored = "2.1.0"
 clap_complete = "4.5.1"
 

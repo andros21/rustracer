@@ -19,7 +19,9 @@
   <br>
   <a href="https://github.com/andros21/rustracer/releases">
     <img src="https://img.shields.io/github/v/release/andros21/rustracer?color=orange&&sort=semver&style=flat-square&logo=github" alt="Version"></a>
-    <a href="https://crates.io/crates/rustracer">
+  <a href="https://slsa.dev">
+    <img src="https://slsa.dev/images/gh-badge-level3.svg" alt="slsa3"></a>
+  <a href="https://crates.io/crates/rustracer">
     <img src="https://img.shields.io/crates/v/rustracer?color=orange&logo=rust&style=flat-square" alt="Cratesio Version"></a>
   <br>
   <a href="https://github.com/andros21/rustracer/blob/master/LICENSE">

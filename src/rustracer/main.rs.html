@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.1 (7cf61ebde 2024-03-27)" data-channel="1.77.1" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../docs/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -421,7 +423,7 @@
 <a href="#421" id="421">421</a>
 <a href="#422" id="422">422</a>
 <a href="#423" id="423">423</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc = <span class="macro">include_str!</span>(<span class="string">&quot;../README.md&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc = <span class="macro">include_str!</span>(<span class="string">"../README.md"</span>)]
 
 </span><span class="kw">mod </span>camera;
 <span class="kw">mod </span>cli;
@@ -484,11 +486,11 @@
 </span><span class="kw">fn </span>main() {
     <span class="kw">let </span>cli_m = cli::build_cli().get_matches_from(env::args_os());
     <span class="kw">match </span>cli_m.subcommand_name() {
-        <span class="prelude-val">Some</span>(<span class="string">&quot;convert&quot;</span>) =&gt; <span class="macro">exit!</span>(convert(cli_m.subcommand_matches(<span class="string">&quot;convert&quot;</span>).unwrap())),
-        <span class="prelude-val">Some</span>(<span class="string">&quot;demo&quot;</span>) =&gt; <span class="macro">exit!</span>(demo(cli_m.subcommand_matches(<span class="string">&quot;demo&quot;</span>).unwrap())),
-        <span class="prelude-val">Some</span>(<span class="string">&quot;render&quot;</span>) =&gt; <span class="macro">exit!</span>(render(cli_m.subcommand_matches(<span class="string">&quot;render&quot;</span>).unwrap())),
-        <span class="prelude-val">Some</span>(<span class="string">&quot;completion&quot;</span>) =&gt; {
-            <span class="macro">exit!</span>(completion(cli_m.subcommand_matches(<span class="string">&quot;completion&quot;</span>).unwrap()))
+        <span class="prelude-val">Some</span>(<span class="string">"convert"</span>) =&gt; <span class="macro">exit!</span>(convert(cli_m.subcommand_matches(<span class="string">"convert"</span>).unwrap())),
+        <span class="prelude-val">Some</span>(<span class="string">"demo"</span>) =&gt; <span class="macro">exit!</span>(demo(cli_m.subcommand_matches(<span class="string">"demo"</span>).unwrap())),
+        <span class="prelude-val">Some</span>(<span class="string">"render"</span>) =&gt; <span class="macro">exit!</span>(render(cli_m.subcommand_matches(<span class="string">"render"</span>).unwrap())),
+        <span class="prelude-val">Some</span>(<span class="string">"completion"</span>) =&gt; {
+            <span class="macro">exit!</span>(completion(cli_m.subcommand_matches(<span class="string">"completion"</span>).unwrap()))
         },
         <span class="comment">// This branch should not be triggered (exit 1).
         </span><span class="kw">_ </span>=&gt; exit(<span class="number">1</span>),
@@ -499,18 +501,18 @@
 ///
 /// Called when `rustracer-convert` subcommand is used.
 </span><span class="kw">fn </span>convert(sub_m: <span class="kw-2">&amp;</span>clap::ArgMatches) -&gt; <span class="prelude-ty">Result</span>&lt;(), ConvertErr&gt; {
-    <span class="kw">let </span>hdr_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;HDR&quot;</span>).unwrap());
-    <span class="kw">let </span>ldr_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;LDR&quot;</span>).unwrap());
-    <span class="kw">let </span>factor = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;factor&quot;</span>).unwrap())
-        .map_err(|e| ConvertErr::FloatParseFailure(e, String::from(<span class="string">&quot;factor&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>gamma = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;gamma&quot;</span>).unwrap())
-        .map_err(|e| ConvertErr::FloatParseFailure(e, String::from(<span class="string">&quot;gamma&quot;</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>hdr_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">"HDR"</span>).unwrap());
+    <span class="kw">let </span>ldr_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">"LDR"</span>).unwrap());
+    <span class="kw">let </span>factor = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"factor"</span>).unwrap())
+        .map_err(|e| ConvertErr::FloatParseFailure(e, String::from(<span class="string">"factor"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>gamma = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"gamma"</span>).unwrap())
+        .map_err(|e| ConvertErr::FloatParseFailure(e, String::from(<span class="string">"gamma"</span>)))<span class="question-mark">?</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>hdr_img = HdrImage::read_pfm_file(hdr_file).map_err(ConvertErr::IoError)<span class="question-mark">?</span>;
     <span class="macro">check!</span>(ldr_file).map_err(ConvertErr::IoError)<span class="question-mark">?</span>;
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
         <span class="macro">println!</span>(
-            <span class="string">&quot;{} {:?} has been read from disk&quot;</span>,
-            <span class="string">&quot;[info]&quot;</span>.green(),
+            <span class="string">"{} {:?} has been read from disk"</span>,
+            <span class="string">"[info]"</span>.green(),
             hdr_file
         );
     }
@@ -519,10 +521,10 @@
     hdr_img
         .write_ldr_file(ldr_file, gamma)
         .map_err(ConvertErr::IoError)<span class="question-mark">?</span>;
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
         <span class="macro">println!</span>(
-            <span class="string">&quot;{} {:?} has been written to disk&quot;</span>,
-            <span class="string">&quot;[info]&quot;</span>.green(),
+            <span class="string">"{} {:?} has been written to disk"</span>,
+            <span class="string">"[info]"</span>.green(),
             ldr_file
         );
     }
@@ -533,28 +535,28 @@
 ///
 /// Called when `rustracer-demo` subcommand is used.
 </span><span class="kw">fn </span>demo(sub_m: <span class="kw-2">&amp;</span>clap::ArgMatches) -&gt; <span class="prelude-ty">Result</span>&lt;(), DemoErr&gt; {
-    <span class="kw">let </span>ldr_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;OUTPUT&quot;</span>).unwrap());
-    <span class="kw">let </span>factor = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;factor&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::FloatParseFailure(e, String::from(<span class="string">&quot;factor&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>gamma = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;gamma&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::FloatParseFailure(e, String::from(<span class="string">&quot;gamma&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>width = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;width&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">&quot;width&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>height = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;height&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">&quot;height&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>angle_deg = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;angle-deg&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::FloatParseFailure(e, String::from(<span class="string">&quot;angle-deg&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>algorithm = sub_m.get_one::&lt;String&gt;(<span class="string">&quot;algorithm&quot;</span>).unwrap();
-    <span class="kw">let </span>num_of_rays = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;num-of-rays&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">&quot;num-of-rays&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>max_depth = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;max-depth&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">&quot;max-depth&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>init_state = u64::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;init-state&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">&quot;init-state&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>init_seq = u64::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;init-seq&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">&quot;init-seq&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>antialiasing_level = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;anti-aliasing&quot;</span>).unwrap())
-        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">&quot;anti-aliasing&quot;</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>ldr_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">"OUTPUT"</span>).unwrap());
+    <span class="kw">let </span>factor = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"factor"</span>).unwrap())
+        .map_err(|e| DemoErr::FloatParseFailure(e, String::from(<span class="string">"factor"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>gamma = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"gamma"</span>).unwrap())
+        .map_err(|e| DemoErr::FloatParseFailure(e, String::from(<span class="string">"gamma"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>width = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"width"</span>).unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">"width"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>height = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"height"</span>).unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">"height"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>angle_deg = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"angle-deg"</span>).unwrap())
+        .map_err(|e| DemoErr::FloatParseFailure(e, String::from(<span class="string">"angle-deg"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>algorithm = sub_m.get_one::&lt;String&gt;(<span class="string">"algorithm"</span>).unwrap();
+    <span class="kw">let </span>num_of_rays = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"num-of-rays"</span>).unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">"num-of-rays"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>max_depth = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"max-depth"</span>).unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">"max-depth"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>init_state = u64::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"init-state"</span>).unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">"init-state"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>init_seq = u64::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"init-seq"</span>).unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">"init-seq"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>antialiasing_level = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"anti-aliasing"</span>).unwrap())
+        .map_err(|e| DemoErr::IntParseFailure(e, String::from(<span class="string">"anti-aliasing"</span>)))<span class="question-mark">?</span>;
     <span class="macro">check!</span>(ldr_file).map_err(DemoErr::IoError)<span class="question-mark">?</span>;
     <span class="kw">let </span>sky_material = Material {
         brdf: BRDF::Diffuse(DiffuseBRDF {
@@ -591,10 +593,10 @@
         }),
         emitted_radiance: Pigment::Uniform(UniformPigment::default()),
     };
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
         <span class="macro">println!</span>(
-            <span class="string">&quot;{} generating an image ({}, {})&quot;</span>,
-            <span class="string">&quot;[info]&quot;</span>.green(),
+            <span class="string">"{} generating an image ({}, {})"</span>,
+            <span class="string">"[info]"</span>.green(),
             width,
             height
         );
@@ -621,7 +623,7 @@
         * translation(Vector::from((-<span class="number">3.5</span>, <span class="number">0.0</span>, <span class="number">0.7</span>)));
     <span class="kw">let </span><span class="kw-2">mut </span>tracer = ImageTracer::new(
         <span class="kw-2">&amp;mut </span>hdr_img,
-        <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;orthogonal&quot;</span>) {
+        <span class="kw">if </span>sub_m.get_flag(<span class="string">"orthogonal"</span>) {
             Camera::Orthogonal(OrthogonalCamera::new(
                 width <span class="kw">as </span>f32 / height <span class="kw">as </span>f32,
                 camera_tr,
@@ -635,24 +637,24 @@
         },
     );
     <span class="kw">let </span>renderer = <span class="kw">match </span>algorithm.as_str() {
-        <span class="string">&quot;onoff&quot; </span>=&gt; Renderer::OnOff(OnOffRenderer::new(<span class="kw-2">&amp;</span>world, BLACK, WHITE)),
-        <span class="string">&quot;flat&quot; </span>=&gt; Renderer::Flat(FlatRenderer::new(<span class="kw-2">&amp;</span>world, BLACK)),
-        <span class="string">&quot;pathtracer&quot; </span>=&gt; {
+        <span class="string">"onoff" </span>=&gt; Renderer::OnOff(OnOffRenderer::new(<span class="kw-2">&amp;</span>world, BLACK, WHITE)),
+        <span class="string">"flat" </span>=&gt; Renderer::Flat(FlatRenderer::new(<span class="kw-2">&amp;</span>world, BLACK)),
+        <span class="string">"pathtracer" </span>=&gt; {
             Renderer::PathTracer(PathTracer::new(<span class="kw-2">&amp;</span>world, BLACK, num_of_rays, max_depth, <span class="number">3</span>))
         },
         <span class="comment">// This branch should not be triggered (dummy behaviour).
         </span><span class="kw">_ </span>=&gt; Renderer::Dummy(DummyRenderer),
     };
     tracer.fire_all_rays(<span class="kw-2">&amp;</span>renderer, init_state, init_seq, antialiasing_level);
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;output-pfm&quot;</span>) {
-        <span class="kw">let </span>hdr_file = ldr_file.with_extension(<span class="string">&quot;&quot;</span>).with_extension(<span class="string">&quot;pfm&quot;</span>);
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"output-pfm"</span>) {
+        <span class="kw">let </span>hdr_file = ldr_file.with_extension(<span class="string">""</span>).with_extension(<span class="string">"pfm"</span>);
         hdr_img
             .write_pfm_file(<span class="kw-2">&amp;</span>hdr_file, ByteOrder::LittleEndian)
             .map_err(DemoErr::IoError)<span class="question-mark">?</span>;
-        <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+        <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
             <span class="macro">println!</span>(
-                <span class="string">&quot;{} {:?} has been written to disk&quot;</span>,
-                <span class="string">&quot;[info]&quot;</span>.green(),
+                <span class="string">"{} {:?} has been written to disk"</span>,
+                <span class="string">"[info]"</span>.green(),
                 hdr_file
             );
         }
@@ -662,10 +664,10 @@
     hdr_img
         .write_ldr_file(ldr_file, gamma)
         .map_err(DemoErr::IoError)<span class="question-mark">?</span>;
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
         <span class="macro">println!</span>(
-            <span class="string">&quot;{} {:?} has been written to disk&quot;</span>,
-            <span class="string">&quot;[info]&quot;</span>.green(),
+            <span class="string">"{} {:?} has been written to disk"</span>,
+            <span class="string">"[info]"</span>.green(),
             ldr_file
         );
     }
@@ -676,34 +678,34 @@
 ///
 /// Called when `rustracer-render` subcommand is used.
 </span><span class="kw">fn </span>render(sub_m: <span class="kw-2">&amp;</span>clap::ArgMatches) -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;RenderErr&gt;&gt; {
-    <span class="kw">let </span>scene_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;INPUT&quot;</span>).unwrap());
-    <span class="kw">let </span>ldr_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;OUTPUT&quot;</span>).unwrap());
-    <span class="kw">let </span>factor = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;factor&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::FloatParseFailure(e, String::from(<span class="string">&quot;factor&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>gamma = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;gamma&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::FloatParseFailure(e, String::from(<span class="string">&quot;gamma&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>width = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;width&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">&quot;width&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>height = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;height&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">&quot;height&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>angle_deg = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;angle-deg&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::FloatParseFailure(e, String::from(<span class="string">&quot;angle-deg&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>algorithm = sub_m.get_one::&lt;String&gt;(<span class="string">&quot;algorithm&quot;</span>).unwrap();
-    <span class="kw">let </span>num_of_rays = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;num-of-rays&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">&quot;num-of-rays&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>max_depth = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;max-depth&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">&quot;max-depth&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>init_state = u64::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;init-state&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">&quot;init-state&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>init_seq = u64::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;init-seq&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">&quot;init-seq&quot;</span>)))<span class="question-mark">?</span>;
-    <span class="kw">let </span>antialiasing_level = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;anti-aliasing&quot;</span>).unwrap())
-        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">&quot;anti-aliasing&quot;</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>scene_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">"INPUT"</span>).unwrap());
+    <span class="kw">let </span>ldr_file = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">"OUTPUT"</span>).unwrap());
+    <span class="kw">let </span>factor = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"factor"</span>).unwrap())
+        .map_err(|e| RenderErr::FloatParseFailure(e, String::from(<span class="string">"factor"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>gamma = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"gamma"</span>).unwrap())
+        .map_err(|e| RenderErr::FloatParseFailure(e, String::from(<span class="string">"gamma"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>width = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"width"</span>).unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">"width"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>height = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"height"</span>).unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">"height"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>angle_deg = f32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"angle-deg"</span>).unwrap())
+        .map_err(|e| RenderErr::FloatParseFailure(e, String::from(<span class="string">"angle-deg"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>algorithm = sub_m.get_one::&lt;String&gt;(<span class="string">"algorithm"</span>).unwrap();
+    <span class="kw">let </span>num_of_rays = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"num-of-rays"</span>).unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">"num-of-rays"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>max_depth = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"max-depth"</span>).unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">"max-depth"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>init_state = u64::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"init-state"</span>).unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">"init-state"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>init_seq = u64::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"init-seq"</span>).unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">"init-seq"</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>antialiasing_level = u32::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"anti-aliasing"</span>).unwrap())
+        .map_err(|e| RenderErr::IntParseFailure(e, String::from(<span class="string">"anti-aliasing"</span>)))<span class="question-mark">?</span>;
     <span class="macro">check!</span>(ldr_file).map_err(RenderErr::IoError)<span class="question-mark">?</span>;
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
         <span class="macro">println!</span>(
-            <span class="string">&quot;{} reading scene from file {:?}&quot;</span>,
-            <span class="string">&quot;[info]&quot;</span>.green(),
+            <span class="string">"{} reading scene from file {:?}"</span>,
+            <span class="string">"[info]"</span>.green(),
             scene_file
         );
     }
@@ -715,12 +717,12 @@
         },
     )
     .map_err(|err| {
-        RenderErr::SceneError(err, String::from(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;INPUT&quot;</span>).unwrap()))
+        RenderErr::SceneError(err, String::from(sub_m.get_one::&lt;String&gt;(<span class="string">"INPUT"</span>).unwrap()))
     })<span class="question-mark">?</span>;
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
         <span class="macro">println!</span>(
-            <span class="string">&quot;{} generating an image ({}, {})&quot;</span>,
-            <span class="string">&quot;[info]&quot;</span>.green(),
+            <span class="string">"{} generating an image ({}, {})"</span>,
+            <span class="string">"[info]"</span>.green(),
             width,
             height
         );
@@ -729,24 +731,24 @@
     <span class="kw">let </span><span class="kw-2">mut </span>tracer = ImageTracer::new(<span class="kw-2">&amp;mut </span>hdr_img, scene.camera.unwrap());
     <span class="kw">let </span>world = scene.shapes.unwrap();
     <span class="kw">let </span>renderer = <span class="kw">match </span>algorithm.as_str() {
-        <span class="string">&quot;onoff&quot; </span>=&gt; Renderer::OnOff(OnOffRenderer::new(<span class="kw-2">&amp;</span>world, BLACK, WHITE)),
-        <span class="string">&quot;flat&quot; </span>=&gt; Renderer::Flat(FlatRenderer::new(<span class="kw-2">&amp;</span>world, BLACK)),
-        <span class="string">&quot;pathtracer&quot; </span>=&gt; {
+        <span class="string">"onoff" </span>=&gt; Renderer::OnOff(OnOffRenderer::new(<span class="kw-2">&amp;</span>world, BLACK, WHITE)),
+        <span class="string">"flat" </span>=&gt; Renderer::Flat(FlatRenderer::new(<span class="kw-2">&amp;</span>world, BLACK)),
+        <span class="string">"pathtracer" </span>=&gt; {
             Renderer::PathTracer(PathTracer::new(<span class="kw-2">&amp;</span>world, BLACK, num_of_rays, max_depth, <span class="number">3</span>))
         },
         <span class="comment">// This branch should not be triggered (dummy behaviour).
         </span><span class="kw">_ </span>=&gt; Renderer::Dummy(DummyRenderer),
     };
     tracer.fire_all_rays(<span class="kw-2">&amp;</span>renderer, init_state, init_seq, antialiasing_level);
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;output-pfm&quot;</span>) {
-        <span class="kw">let </span>hdr_file = ldr_file.with_extension(<span class="string">&quot;&quot;</span>).with_extension(<span class="string">&quot;pfm&quot;</span>);
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"output-pfm"</span>) {
+        <span class="kw">let </span>hdr_file = ldr_file.with_extension(<span class="string">""</span>).with_extension(<span class="string">"pfm"</span>);
         hdr_img
             .write_pfm_file(<span class="kw-2">&amp;</span>hdr_file, ByteOrder::LittleEndian)
             .map_err(RenderErr::IoError)<span class="question-mark">?</span>;
-        <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+        <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
             <span class="macro">println!</span>(
-                <span class="string">&quot;{} {:?} has been written to disk&quot;</span>,
-                <span class="string">&quot;[info]&quot;</span>.green(),
+                <span class="string">"{} {:?} has been written to disk"</span>,
+                <span class="string">"[info]"</span>.green(),
                 hdr_file
             );
         }
@@ -756,10 +758,10 @@
     hdr_img
         .write_ldr_file(ldr_file, gamma)
         .map_err(RenderErr::IoError)<span class="question-mark">?</span>;
-    <span class="kw">if </span>sub_m.get_flag(<span class="string">&quot;verbose&quot;</span>) {
+    <span class="kw">if </span>sub_m.get_flag(<span class="string">"verbose"</span>) {
         <span class="macro">println!</span>(
-            <span class="string">&quot;{} {:?} has been written to disk&quot;</span>,
-            <span class="string">&quot;[info]&quot;</span>.green(),
+            <span class="string">"{} {:?} has been written to disk"</span>,
+            <span class="string">"[info]"</span>.green(),
             ldr_file
         );
     }
@@ -770,35 +772,35 @@
 ///
 /// Called when `rustracer-completion` subcommand is used.
 </span><span class="kw">fn </span>completion(sub_m: <span class="kw-2">&amp;</span>clap::ArgMatches) -&gt; <span class="prelude-ty">Result</span>&lt;(), CompletionErr&gt; {
-    <span class="kw">let </span>shell = Shell::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;SHELL&quot;</span>).unwrap()).unwrap();
-    <span class="kw">let </span>home = std::env::var(<span class="string">&quot;HOME&quot;</span>).unwrap_or_else(|<span class="kw">_</span>| <span class="string">&quot;&quot;</span>.to_string());
+    <span class="kw">let </span>shell = Shell::from_str(sub_m.get_one::&lt;String&gt;(<span class="string">"SHELL"</span>).unwrap()).unwrap();
+    <span class="kw">let </span>home = std::env::var(<span class="string">"HOME"</span>).unwrap_or_else(|<span class="kw">_</span>| <span class="string">""</span>.to_string());
     <span class="kw">if </span>home.is_empty() {
-        <span class="macro">println!</span>(<span class="string">&quot;{} HOME env variable is empty!&quot;</span>, <span class="string">&quot;[warn]&quot;</span>.yellow());
+        <span class="macro">println!</span>(<span class="string">"{} HOME env variable is empty!"</span>, <span class="string">"[warn]"</span>.yellow());
     }
     <span class="kw">let </span><span class="kw-2">mut </span>path_buf = <span class="kw">match </span>shell {
         Shell::Bash =&gt; {
-            Path::new(<span class="kw-2">&amp;</span>home).join(<span class="string">&quot;.local/share/bash-completion/completions/rustracer.bash&quot;</span>)
+            Path::new(<span class="kw-2">&amp;</span>home).join(<span class="string">".local/share/bash-completion/completions/rustracer.bash"</span>)
         },
-        Shell::Fish =&gt; Path::new(<span class="kw-2">&amp;</span>home).join(<span class="string">&quot;.config/fish/completions/rustracer.fish&quot;</span>),
-        Shell::Zsh =&gt; Path::new(<span class="kw-2">&amp;</span>home).join(<span class="string">&quot;.zfunc/_rustracer.zsh&quot;</span>),
+        Shell::Fish =&gt; Path::new(<span class="kw-2">&amp;</span>home).join(<span class="string">".config/fish/completions/rustracer.fish"</span>),
+        Shell::Zsh =&gt; Path::new(<span class="kw-2">&amp;</span>home).join(<span class="string">".zfunc/_rustracer.zsh"</span>),
         <span class="comment">// This branch should not be triggered (empty PathBuf).
-        </span><span class="kw">_ </span>=&gt; Path::new(<span class="string">&quot;&quot;</span>).to_path_buf(),
+        </span><span class="kw">_ </span>=&gt; Path::new(<span class="string">""</span>).to_path_buf(),
     };
-    <span class="kw">if </span>sub_m.contains_id(<span class="string">&quot;output&quot;</span>) {
-        path_buf = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">&quot;output&quot;</span>).unwrap()).to_path_buf();
+    <span class="kw">if </span>sub_m.contains_id(<span class="string">"output"</span>) {
+        path_buf = Path::new(sub_m.get_one::&lt;String&gt;(<span class="string">"output"</span>).unwrap()).to_path_buf();
     }
     <span class="kw">let </span><span class="kw-2">mut </span>answer;
     <span class="macro">print!</span>(
-        <span class="string">&quot;{} writing completions for {} shell, continue? [Y/n] &quot;</span>,
-        <span class="string">&quot;[info]&quot;</span>.green(),
-        sub_m.get_one::&lt;String&gt;(<span class="string">&quot;SHELL&quot;</span>).unwrap().bold()
+        <span class="string">"{} writing completions for {} shell, continue? [Y/n] "</span>,
+        <span class="string">"[info]"</span>.green(),
+        sub_m.get_one::&lt;String&gt;(<span class="string">"SHELL"</span>).unwrap().bold()
     );
     <span class="kw">loop </span>{
         answer = std::string::String::new();
         io::stdout().flush().unwrap();
         <span class="kw">match </span>io::stdin().read_line(<span class="kw-2">&amp;mut </span>answer) {
             <span class="prelude-val">Ok</span>(n) =&gt; {
-                <span class="kw">if </span>n == <span class="number">1 </span>|| (n == <span class="number">2 </span>&amp;&amp; answer.eq_ignore_ascii_case(<span class="string">&quot;y\n&quot;</span>)) {
+                <span class="kw">if </span>n == <span class="number">1 </span>|| (n == <span class="number">2 </span>&amp;&amp; answer.eq_ignore_ascii_case(<span class="string">"y\n"</span>)) {
                     create_dir_all(path_buf.parent().unwrap()).map_err(|e| {
                         CompletionErr::WriteCompletionFailure(
                             e,
@@ -806,34 +808,34 @@
                                 path_buf
                                     .as_path()
                                     .parent()
-                                    .unwrap_or_else(|| Path::new(<span class="string">&quot;&quot;</span>))
+                                    .unwrap_or_else(|| Path::new(<span class="string">""</span>))
                                     .as_os_str()
                                     .to_str()
-                                    .unwrap_or(<span class="string">&quot;&quot;</span>),
+                                    .unwrap_or(<span class="string">""</span>),
                             ),
                         )
                     })<span class="question-mark">?</span>;
                     generate(
                         shell,
                         <span class="kw-2">&amp;mut </span>cli::build_cli(),
-                        <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>),
+                        <span class="macro">env!</span>(<span class="string">"CARGO_PKG_NAME"</span>),
                         <span class="kw-2">&amp;mut </span>BufWriter::new(File::create(<span class="kw-2">&amp;</span>path_buf).map_err(|e| {
                             CompletionErr::WriteCompletionFailure(
                                 e,
-                                String::from(path_buf.as_path().as_os_str().to_str().unwrap_or(<span class="string">&quot;&quot;</span>)),
+                                String::from(path_buf.as_path().as_os_str().to_str().unwrap_or(<span class="string">""</span>)),
                             )
                         })<span class="question-mark">?</span>),
                     );
                     <span class="macro">println!</span>(
-                        <span class="string">&quot;{} shell completions generated at\n{:tab$}{:?}&quot;</span>,
-                        <span class="string">&quot;[info]&quot;</span>.green(),
-                        <span class="string">&quot;&quot;</span>,
+                        <span class="string">"{} shell completions generated at\n{:tab$}{:?}"</span>,
+                        <span class="string">"[info]"</span>.green(),
+                        <span class="string">""</span>,
                         path_buf,
                         tab = <span class="number">7
                     </span>);
                     <span class="kw">break</span>;
-                } <span class="kw">else if </span>n == <span class="number">2 </span>&amp;&amp; answer.eq_ignore_ascii_case(<span class="string">&quot;n\n&quot;</span>) {
-                    <span class="macro">println!</span>(<span class="string">&quot;{} shell completions not generated&quot;</span>, <span class="string">&quot;[warn]&quot;</span>.yellow());
+                } <span class="kw">else if </span>n == <span class="number">2 </span>&amp;&amp; answer.eq_ignore_ascii_case(<span class="string">"n\n"</span>) {
+                    <span class="macro">println!</span>(<span class="string">"{} shell completions not generated"</span>, <span class="string">"[warn]"</span>.yellow());
                     <span class="kw">break</span>;
                 } <span class="kw">else </span>{
                     <span class="kw">continue</span>;

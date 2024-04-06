@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli.rs`."><title>cli.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli.rs`."><title>cli.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.1 (7cf61ebde 2024-03-27)" data-channel="1.77.1" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../docs/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -463,436 +465,436 @@
 <span class="doccomment">/// Default normalization factor.
 ///
 /// When no arguments are provided to `--factor` flag
-</span><span class="kw">const </span>FACTOR: <span class="kw-2">&amp;</span>str = <span class="string">&quot;1.0&quot;</span>;
+</span><span class="kw">const </span>FACTOR: <span class="kw-2">&amp;</span>str = <span class="string">"1.0"</span>;
 <span class="doccomment">/// Default transfer function parameter.
 ///
 /// When no arguments are provided to `--gamma` flag
-</span><span class="kw">const </span>GAMMA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;1.0&quot;</span>;
+</span><span class="kw">const </span>GAMMA: <span class="kw-2">&amp;</span>str = <span class="string">"1.0"</span>;
 <span class="doccomment">/// Default image width.
 ///
 /// When no arguments are provided to `--width` flag
-</span><span class="kw">const </span>WIDTH: <span class="kw-2">&amp;</span>str = <span class="string">&quot;640&quot;</span>;
+</span><span class="kw">const </span>WIDTH: <span class="kw-2">&amp;</span>str = <span class="string">"640"</span>;
 <span class="doccomment">/// Default image height.
 ///
 /// When no arguments are provided to `--height` flag
-</span><span class="kw">const </span>HEIGHT: <span class="kw-2">&amp;</span>str = <span class="string">&quot;480&quot;</span>;
+</span><span class="kw">const </span>HEIGHT: <span class="kw-2">&amp;</span>str = <span class="string">"480"</span>;
 <span class="doccomment">/// Default angle of view (in degrees).
 ///
 /// When no arguments are provided to `--angle-deg` flag
-</span><span class="kw">const </span>ANGLE_DEG: <span class="kw-2">&amp;</span>str = <span class="string">&quot;0.0&quot;</span>;
+</span><span class="kw">const </span>ANGLE_DEG: <span class="kw-2">&amp;</span>str = <span class="string">"0.0"</span>;
 <span class="doccomment">/// Default rendering algorithm.
 ///
 /// When no arguments are provided to `--algorithm` flag
-</span><span class="kw">const </span>ALGORITHM: <span class="kw-2">&amp;</span>str = <span class="string">&quot;pathtracer&quot;</span>;
+</span><span class="kw">const </span>ALGORITHM: <span class="kw-2">&amp;</span>str = <span class="string">"pathtracer"</span>;
 <span class="doccomment">/// Default number of rays for pathtracer algorithm.
 ///
 /// When no arguments are provided to `--num-of-rays` flag
-</span><span class="kw">const </span>NUM_OF_RAYS: <span class="kw-2">&amp;</span>str = <span class="string">&quot;10&quot;</span>;
+</span><span class="kw">const </span>NUM_OF_RAYS: <span class="kw-2">&amp;</span>str = <span class="string">"10"</span>;
 <span class="doccomment">/// Default max depth for pathtracer algorithm.
 ///
 /// When no arguments are provided to `--max-depth` flag
-</span><span class="kw">const </span>MAX_DEPTH: <span class="kw-2">&amp;</span>str = <span class="string">&quot;3&quot;</span>;
+</span><span class="kw">const </span>MAX_DEPTH: <span class="kw-2">&amp;</span>str = <span class="string">"3"</span>;
 <span class="doccomment">/// Default init seed for random generator.
 ///
 /// When no arguments are provided to `--init-state` flag
-</span><span class="kw">const </span>INIT_STATE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;42&quot;</span>;
+</span><span class="kw">const </span>INIT_STATE: <span class="kw-2">&amp;</span>str = <span class="string">"42"</span>;
 <span class="doccomment">/// Default identifier for random generator sequence.
 ///
 /// When no arguments are provided to `--init-seq` flag
-</span><span class="kw">const </span>INIT_SEQ: <span class="kw-2">&amp;</span>str = <span class="string">&quot;54&quot;</span>;
+</span><span class="kw">const </span>INIT_SEQ: <span class="kw-2">&amp;</span>str = <span class="string">"54"</span>;
 <span class="doccomment">/// Default anti-aliasing level.
 ///
 /// When no arguments are provided to `--anti-aliasing` flag
-</span><span class="kw">const </span>ANTI_ALIASING: <span class="kw-2">&amp;</span>str = <span class="string">&quot;1&quot;</span>;
+</span><span class="kw">const </span>ANTI_ALIASING: <span class="kw-2">&amp;</span>str = <span class="string">"1"</span>;
 
 <span class="doccomment">/// Build a [`clap::Command`](https://docs.rs/clap/latest/clap/type.Command.html)
 /// for [`rustracer`](..) crate.
 </span><span class="kw">pub fn </span>build_cli() -&gt; Command {
-    Command::new(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>))
-        .version(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>))
-        .about(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_DESCRIPTION&quot;</span>))
+    Command::new(<span class="macro">env!</span>(<span class="string">"CARGO_PKG_NAME"</span>))
+        .version(<span class="macro">env!</span>(<span class="string">"CARGO_PKG_VERSION"</span>))
+        .about(<span class="macro">env!</span>(<span class="string">"CARGO_PKG_DESCRIPTION"</span>))
         .arg_required_else_help(<span class="bool-val">true</span>)
         .disable_help_subcommand(<span class="bool-val">true</span>)
         .propagate_version(<span class="bool-val">true</span>)
         .subcommand_required(<span class="bool-val">true</span>)
         .subcommand(
-            Command::new(<span class="string">&quot;convert&quot;</span>)
+            Command::new(<span class="string">"convert"</span>)
                 .arg_required_else_help(<span class="bool-val">true</span>)
-                .about(<span class="string">&quot;Convert HDR (pfm) image to LDR (ff|png) image&quot;</span>)
+                .about(<span class="string">"Convert HDR (pfm) image to LDR (ff|png) image"</span>)
                 .arg(
-                    Arg::new(<span class="string">&quot;HDR&quot;</span>)
+                    Arg::new(<span class="string">"HDR"</span>)
                         .required(<span class="bool-val">true</span>)
-                        .help(<span class="string">&quot;Input pfm image&quot;</span>)
-                        .long_help(<span class="string">&quot;Input pfm file path&quot;</span>),
+                        .help(<span class="string">"Input pfm image"</span>)
+                        .long_help(<span class="string">"Input pfm file path"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;LDR&quot;</span>)
+                    Arg::new(<span class="string">"LDR"</span>)
                         .required(<span class="bool-val">true</span>)
-                        .help(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
-                        .long_help(<span class="string">&quot;Output file path [possible formats: ff, png]&quot;</span>),
+                        .help(<span class="string">"Output image [possible formats: ff, png]"</span>)
+                        .long_help(<span class="string">"Output file path [possible formats: ff, png]"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;verbose&quot;</span>)
-                        .short(<span class="string">&#39;v&#39;</span>)
-                        .long(<span class="string">&quot;verbose&quot;</span>)
+                    Arg::new(<span class="string">"verbose"</span>)
+                        .short(<span class="string">'v'</span>)
+                        .long(<span class="string">"verbose"</span>)
                         .num_args(<span class="number">0</span>)
                         .action(ArgAction::SetTrue)
-                        .help(<span class="string">&quot;Print stdout information&quot;</span>)
-                        .long_help(<span class="string">&quot;Print stdout information&quot;</span>),
+                        .help(<span class="string">"Print stdout information"</span>)
+                        .long_help(<span class="string">"Print stdout information"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;factor&quot;</span>)
-                        .short(<span class="string">&#39;f&#39;</span>)
-                        .long(<span class="string">&quot;factor&quot;</span>)
-                        .value_name(<span class="string">&quot;FACTOR&quot;</span>)
+                    Arg::new(<span class="string">"factor"</span>)
+                        .short(<span class="string">'f'</span>)
+                        .long(<span class="string">"factor"</span>)
+                        .value_name(<span class="string">"FACTOR"</span>)
                         .default_value(FACTOR)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Normalization factor&quot;</span>)
-                        .long_help(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
+                        .help(<span class="string">"Normalization factor"</span>)
+                        .long_help(<span class="string">"Luminosity normalization factor"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;gamma&quot;</span>)
-                        .short(<span class="string">&#39;g&#39;</span>)
-                        .long(<span class="string">&quot;gamma&quot;</span>)
-                        .value_name(<span class="string">&quot;GAMMA&quot;</span>)
+                    Arg::new(<span class="string">"gamma"</span>)
+                        .short(<span class="string">'g'</span>)
+                        .long(<span class="string">"gamma"</span>)
+                        .value_name(<span class="string">"GAMMA"</span>)
                         .default_value(GAMMA)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Gamma parameter&quot;</span>)
-                        .long_help(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
+                        .help(<span class="string">"Gamma parameter"</span>)
+                        .long_help(<span class="string">"Gamma transfer function parameter"</span>),
                 ),
         )
         .subcommand(
-            Command::new(<span class="string">&quot;demo&quot;</span>)
+            Command::new(<span class="string">"demo"</span>)
                 .arg_required_else_help(<span class="bool-val">true</span>)
-                .about(<span class="string">&quot;Render a demo scene (hard-coded in main)&quot;</span>)
+                .about(<span class="string">"Render a demo scene (hard-coded in main)"</span>)
                 .arg(
-                    Arg::new(<span class="string">&quot;OUTPUT&quot;</span>)
+                    Arg::new(<span class="string">"OUTPUT"</span>)
                         .required(<span class="bool-val">true</span>)
-                        .help(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
-                        .long_help(<span class="string">&quot;Output ldr image file path [possible formats: ff, png]&quot;</span>),
+                        .help(<span class="string">"Output image [possible formats: ff, png]"</span>)
+                        .long_help(<span class="string">"Output ldr image file path [possible formats: ff, png]"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;verbose&quot;</span>)
-                        .short(<span class="string">&#39;v&#39;</span>)
-                        .long(<span class="string">&quot;verbose&quot;</span>)
+                    Arg::new(<span class="string">"verbose"</span>)
+                        .short(<span class="string">'v'</span>)
+                        .long(<span class="string">"verbose"</span>)
                         .num_args(<span class="number">0</span>)
                         .action(ArgAction::SetTrue)
-                        .help(<span class="string">&quot;Print stdout information&quot;</span>)
-                        .long_help(<span class="string">&quot;Print stdout information&quot;</span>),
+                        .help(<span class="string">"Print stdout information"</span>)
+                        .long_help(<span class="string">"Print stdout information"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;output-pfm&quot;</span>)
-                        .long(<span class="string">&quot;output-pfm&quot;</span>)
+                    Arg::new(<span class="string">"output-pfm"</span>)
+                        .long(<span class="string">"output-pfm"</span>)
                         .num_args(<span class="number">0</span>)
                         .action(ArgAction::SetTrue)
-                        .help(<span class="string">&quot;Output also hdr image&quot;</span>)
-                        .long_help(<span class="string">&quot;Output also pfm file in combination with (ff|png) file&quot;</span>),
+                        .help(<span class="string">"Output also hdr image"</span>)
+                        .long_help(<span class="string">"Output also pfm file in combination with (ff|png) file"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;orthogonal&quot;</span>)
-                        .long(<span class="string">&quot;orthogonal&quot;</span>)
+                    Arg::new(<span class="string">"orthogonal"</span>)
+                        .long(<span class="string">"orthogonal"</span>)
                         .num_args(<span class="number">0</span>)
                         .action(ArgAction::SetTrue)
-                        .help(<span class="string">&quot;Use orthogonal camera instead of perspective camera&quot;</span>)
-                        .long_help(<span class="string">&quot;Render image with orthogonal view of the scene&quot;</span>),
+                        .help(<span class="string">"Use orthogonal camera instead of perspective camera"</span>)
+                        .long_help(<span class="string">"Render image with orthogonal view of the scene"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;width&quot;</span>)
-                        .long(<span class="string">&quot;width&quot;</span>)
-                        .value_name(<span class="string">&quot;WIDTH&quot;</span>)
+                    Arg::new(<span class="string">"width"</span>)
+                        .long(<span class="string">"width"</span>)
+                        .value_name(<span class="string">"WIDTH"</span>)
                         .default_value(WIDTH)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Image width&quot;</span>)
-                        .long_help(<span class="string">&quot;Width of the image to render&quot;</span>),
+                        .help(<span class="string">"Image width"</span>)
+                        .long_help(<span class="string">"Width of the image to render"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;height&quot;</span>)
-                        .long(<span class="string">&quot;height&quot;</span>)
-                        .value_name(<span class="string">&quot;HEIGHT&quot;</span>)
+                    Arg::new(<span class="string">"height"</span>)
+                        .long(<span class="string">"height"</span>)
+                        .value_name(<span class="string">"HEIGHT"</span>)
                         .default_value(HEIGHT)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Image height&quot;</span>)
-                        .long_help(<span class="string">&quot;Height of the image to render&quot;</span>),
+                        .help(<span class="string">"Image height"</span>)
+                        .long_help(<span class="string">"Height of the image to render"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;angle-deg&quot;</span>)
-                        .long(<span class="string">&quot;angle-deg&quot;</span>)
-                        .value_name(<span class="string">&quot;ANGLE_DEG&quot;</span>)
+                    Arg::new(<span class="string">"angle-deg"</span>)
+                        .long(<span class="string">"angle-deg"</span>)
+                        .value_name(<span class="string">"ANGLE_DEG"</span>)
                         .default_value(ANGLE_DEG)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;View angle (in degrees)&quot;</span>)
-                        .long_help(<span class="string">&quot;Render the image with this angle (in degrees) of view&quot;</span>),
+                        .help(<span class="string">"View angle (in degrees)"</span>)
+                        .long_help(<span class="string">"Render the image with this angle (in degrees) of view"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;factor&quot;</span>)
-                        .short(<span class="string">&#39;f&#39;</span>)
-                        .long(<span class="string">&quot;factor&quot;</span>)
-                        .value_name(<span class="string">&quot;FACTOR&quot;</span>)
+                    Arg::new(<span class="string">"factor"</span>)
+                        .short(<span class="string">'f'</span>)
+                        .long(<span class="string">"factor"</span>)
+                        .value_name(<span class="string">"FACTOR"</span>)
                         .default_value(FACTOR)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Normalization factor&quot;</span>)
-                        .long_help(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
+                        .help(<span class="string">"Normalization factor"</span>)
+                        .long_help(<span class="string">"Luminosity normalization factor"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;gamma&quot;</span>)
-                        .short(<span class="string">&#39;g&#39;</span>)
-                        .long(<span class="string">&quot;gamma&quot;</span>)
-                        .value_name(<span class="string">&quot;GAMMA&quot;</span>)
+                    Arg::new(<span class="string">"gamma"</span>)
+                        .short(<span class="string">'g'</span>)
+                        .long(<span class="string">"gamma"</span>)
+                        .value_name(<span class="string">"GAMMA"</span>)
                         .default_value(GAMMA)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Gamma parameter&quot;</span>)
-                        .long_help(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
+                        .help(<span class="string">"Gamma parameter"</span>)
+                        .long_help(<span class="string">"Gamma transfer function parameter"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;algorithm&quot;</span>)
-                        .short(<span class="string">&#39;a&#39;</span>)
-                        .long(<span class="string">&quot;algorithm&quot;</span>)
-                        .value_name(<span class="string">&quot;ALGORITHM&quot;</span>)
+                    Arg::new(<span class="string">"algorithm"</span>)
+                        .short(<span class="string">'a'</span>)
+                        .long(<span class="string">"algorithm"</span>)
+                        .value_name(<span class="string">"ALGORITHM"</span>)
                         .default_value(ALGORITHM)
                         .num_args(<span class="number">1</span>)
                         .value_parser(builder::PossibleValuesParser::new([
-                            <span class="string">&quot;onoff&quot;</span>,
-                            <span class="string">&quot;flat&quot;</span>,
-                            <span class="string">&quot;pathtracer&quot;</span>,
+                            <span class="string">"onoff"</span>,
+                            <span class="string">"flat"</span>,
+                            <span class="string">"pathtracer"</span>,
                         ]))
-                        .help(<span class="string">&quot;Rendering algorithm&quot;</span>)
+                        .help(<span class="string">"Rendering algorithm"</span>)
                         .long_help(
-                            <span class="string">&quot;Algorithm to use for render the scene: [onoff, flat, pathtracer]&quot;</span>,
+                            <span class="string">"Algorithm to use for render the scene: [onoff, flat, pathtracer]"</span>,
                         ),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;num-of-rays&quot;</span>)
-                        .short(<span class="string">&#39;n&#39;</span>)
-                        .long(<span class="string">&quot;num-of-rays&quot;</span>)
-                        .value_name(<span class="string">&quot;NUM_OF_RAYS&quot;</span>)
+                    Arg::new(<span class="string">"num-of-rays"</span>)
+                        .short(<span class="string">'n'</span>)
+                        .long(<span class="string">"num-of-rays"</span>)
+                        .value_name(<span class="string">"NUM_OF_RAYS"</span>)
                         .default_value(NUM_OF_RAYS)
                         .num_args(<span class="number">1</span>)
-                        .requires_if(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
-                        .help(<span class="string">&quot;Number of rays&quot;</span>)
-                        .long_help(<span class="string">&quot;Number of rays departing from each surface point&quot;</span>),
+                        .requires_if(<span class="string">"pathtracer"</span>, <span class="string">"algorithm"</span>)
+                        .help(<span class="string">"Number of rays"</span>)
+                        .long_help(<span class="string">"Number of rays departing from each surface point"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;max-depth&quot;</span>)
-                        .short(<span class="string">&#39;m&#39;</span>)
-                        .long(<span class="string">&quot;max-depth&quot;</span>)
-                        .value_name(<span class="string">&quot;MAX_DEPTH&quot;</span>)
+                    Arg::new(<span class="string">"max-depth"</span>)
+                        .short(<span class="string">'m'</span>)
+                        .long(<span class="string">"max-depth"</span>)
+                        .value_name(<span class="string">"MAX_DEPTH"</span>)
                         .default_value(MAX_DEPTH)
                         .num_args(<span class="number">1</span>)
-                        .requires_if(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
-                        .help(<span class="string">&quot;Maximum depth&quot;</span>)
-                        .long_help(<span class="string">&quot;Maximum allowed ray depth&quot;</span>),
+                        .requires_if(<span class="string">"pathtracer"</span>, <span class="string">"algorithm"</span>)
+                        .help(<span class="string">"Maximum depth"</span>)
+                        .long_help(<span class="string">"Maximum allowed ray depth"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;init-state&quot;</span>)
-                        .long(<span class="string">&quot;init-state&quot;</span>)
-                        .value_name(<span class="string">&quot;INIT_STATE&quot;</span>)
+                    Arg::new(<span class="string">"init-state"</span>)
+                        .long(<span class="string">"init-state"</span>)
+                        .value_name(<span class="string">"INIT_STATE"</span>)
                         .default_value(INIT_STATE)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Initial random seed (positive number)&quot;</span>)
+                        .help(<span class="string">"Initial random seed (positive number)"</span>)
                         .long_help(
-                            <span class="string">&quot;Initial seed for the random number generator (positive number)&quot;</span>,
+                            <span class="string">"Initial seed for the random number generator (positive number)"</span>,
                         ),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;init-seq&quot;</span>)
-                        .long(<span class="string">&quot;init-seq&quot;</span>)
-                        .value_name(<span class="string">&quot;INIT_SEQ&quot;</span>)
+                    Arg::new(<span class="string">"init-seq"</span>)
+                        .long(<span class="string">"init-seq"</span>)
+                        .value_name(<span class="string">"INIT_SEQ"</span>)
                         .default_value(INIT_SEQ)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Identifier of the random sequence (positive number)&quot;</span>)
+                        .help(<span class="string">"Identifier of the random sequence (positive number)"</span>)
                         .long_help(
-                            <span class="string">&quot;Identifier of the sequence produced by the random number generator \
-                             (positive number)&quot;</span>,
+                            <span class="string">"Identifier of the sequence produced by the random number generator \
+                             (positive number)"</span>,
                         ),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;anti-aliasing&quot;</span>)
-                        .long(<span class="string">&quot;anti-aliasing&quot;</span>)
-                        .value_name(<span class="string">&quot;ANTI_ALIASING&quot;</span>)
+                    Arg::new(<span class="string">"anti-aliasing"</span>)
+                        .long(<span class="string">"anti-aliasing"</span>)
+                        .value_name(<span class="string">"ANTI_ALIASING"</span>)
                         .default_value(ANTI_ALIASING)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Anti-aliasing level&quot;</span>)
+                        .help(<span class="string">"Anti-aliasing level"</span>)
                         .long_help(
-                            <span class="string">&quot;Anti-aliasing level, corresponds to the square-root of the number of \
-                             samples per pixel&quot;</span>,
+                            <span class="string">"Anti-aliasing level, corresponds to the square-root of the number of \
+                             samples per pixel"</span>,
                         ),
                 ),
         )
         .subcommand(
-            Command::new(<span class="string">&quot;render&quot;</span>)
+            Command::new(<span class="string">"render"</span>)
                 .arg_required_else_help(<span class="bool-val">true</span>)
-                .about(<span class="string">&quot;Render a scene from file (yaml formatted)&quot;</span>)
+                .about(<span class="string">"Render a scene from file (yaml formatted)"</span>)
                 .arg(
-                    Arg::new(<span class="string">&quot;INPUT&quot;</span>)
+                    Arg::new(<span class="string">"INPUT"</span>)
                         .required(<span class="bool-val">true</span>)
-                        .help(<span class="string">&quot;Input scene file&quot;</span>)
-                        .long_help(<span class="string">&quot;Input scene file (formatted as yaml) to build up the scene&quot;</span>),
+                        .help(<span class="string">"Input scene file"</span>)
+                        .long_help(<span class="string">"Input scene file (formatted as yaml) to build up the scene"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;OUTPUT&quot;</span>)
+                    Arg::new(<span class="string">"OUTPUT"</span>)
                         .required(<span class="bool-val">true</span>)
-                        .help(<span class="string">&quot;Output image [possible formats: ff, png]&quot;</span>)
-                        .long_help(<span class="string">&quot;Output ldr image file path [possible formats: ff, png]&quot;</span>),
+                        .help(<span class="string">"Output image [possible formats: ff, png]"</span>)
+                        .long_help(<span class="string">"Output ldr image file path [possible formats: ff, png]"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;verbose&quot;</span>)
-                        .short(<span class="string">&#39;v&#39;</span>)
-                        .long(<span class="string">&quot;verbose&quot;</span>)
+                    Arg::new(<span class="string">"verbose"</span>)
+                        .short(<span class="string">'v'</span>)
+                        .long(<span class="string">"verbose"</span>)
                         .num_args(<span class="number">0</span>)
                         .action(ArgAction::SetTrue)
-                        .help(<span class="string">&quot;Print stdout information&quot;</span>)
-                        .long_help(<span class="string">&quot;Print stdout information&quot;</span>),
+                        .help(<span class="string">"Print stdout information"</span>)
+                        .long_help(<span class="string">"Print stdout information"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;output-pfm&quot;</span>)
-                        .long(<span class="string">&quot;output-pfm&quot;</span>)
+                    Arg::new(<span class="string">"output-pfm"</span>)
+                        .long(<span class="string">"output-pfm"</span>)
                         .num_args(<span class="number">0</span>)
-                        .help(<span class="string">&quot;Output also hdr image&quot;</span>)
-                        .long_help(<span class="string">&quot;Output also pfm file in combination with (ff|png) file&quot;</span>),
+                        .help(<span class="string">"Output also hdr image"</span>)
+                        .long_help(<span class="string">"Output also pfm file in combination with (ff|png) file"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;width&quot;</span>)
-                        .long(<span class="string">&quot;width&quot;</span>)
-                        .value_name(<span class="string">&quot;WIDTH&quot;</span>)
+                    Arg::new(<span class="string">"width"</span>)
+                        .long(<span class="string">"width"</span>)
+                        .value_name(<span class="string">"WIDTH"</span>)
                         .default_value(WIDTH)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Image width&quot;</span>)
-                        .long_help(<span class="string">&quot;Width of the image to render&quot;</span>),
+                        .help(<span class="string">"Image width"</span>)
+                        .long_help(<span class="string">"Width of the image to render"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;height&quot;</span>)
-                        .long(<span class="string">&quot;height&quot;</span>)
-                        .value_name(<span class="string">&quot;HEIGHT&quot;</span>)
+                    Arg::new(<span class="string">"height"</span>)
+                        .long(<span class="string">"height"</span>)
+                        .value_name(<span class="string">"HEIGHT"</span>)
                         .default_value(HEIGHT)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Image height&quot;</span>)
-                        .long_help(<span class="string">&quot;Height of the image to render&quot;</span>),
+                        .help(<span class="string">"Image height"</span>)
+                        .long_help(<span class="string">"Height of the image to render"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;angle-deg&quot;</span>)
-                        .long(<span class="string">&quot;angle-deg&quot;</span>)
-                        .value_name(<span class="string">&quot;ANGLE_DEG&quot;</span>)
+                    Arg::new(<span class="string">"angle-deg"</span>)
+                        .long(<span class="string">"angle-deg"</span>)
+                        .value_name(<span class="string">"ANGLE_DEG"</span>)
                         .default_value(ANGLE_DEG)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;View angle (in degrees)&quot;</span>)
-                        .long_help(<span class="string">&quot;Render the image with this angle (in degrees) of view&quot;</span>),
+                        .help(<span class="string">"View angle (in degrees)"</span>)
+                        .long_help(<span class="string">"Render the image with this angle (in degrees) of view"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;factor&quot;</span>)
-                        .short(<span class="string">&#39;f&#39;</span>)
-                        .long(<span class="string">&quot;factor&quot;</span>)
-                        .value_name(<span class="string">&quot;FACTOR&quot;</span>)
+                    Arg::new(<span class="string">"factor"</span>)
+                        .short(<span class="string">'f'</span>)
+                        .long(<span class="string">"factor"</span>)
+                        .value_name(<span class="string">"FACTOR"</span>)
                         .default_value(FACTOR)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Normalization factor&quot;</span>)
-                        .long_help(<span class="string">&quot;Luminosity normalization factor&quot;</span>),
+                        .help(<span class="string">"Normalization factor"</span>)
+                        .long_help(<span class="string">"Luminosity normalization factor"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;gamma&quot;</span>)
-                        .short(<span class="string">&#39;g&#39;</span>)
-                        .long(<span class="string">&quot;gamma&quot;</span>)
-                        .value_name(<span class="string">&quot;GAMMA&quot;</span>)
+                    Arg::new(<span class="string">"gamma"</span>)
+                        .short(<span class="string">'g'</span>)
+                        .long(<span class="string">"gamma"</span>)
+                        .value_name(<span class="string">"GAMMA"</span>)
                         .default_value(GAMMA)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Gamma parameter&quot;</span>)
-                        .long_help(<span class="string">&quot;Gamma transfer function parameter&quot;</span>),
+                        .help(<span class="string">"Gamma parameter"</span>)
+                        .long_help(<span class="string">"Gamma transfer function parameter"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;algorithm&quot;</span>)
-                        .short(<span class="string">&#39;a&#39;</span>)
-                        .long(<span class="string">&quot;algorithm&quot;</span>)
-                        .value_name(<span class="string">&quot;ALGORITHM&quot;</span>)
+                    Arg::new(<span class="string">"algorithm"</span>)
+                        .short(<span class="string">'a'</span>)
+                        .long(<span class="string">"algorithm"</span>)
+                        .value_name(<span class="string">"ALGORITHM"</span>)
                         .default_value(ALGORITHM)
                         .num_args(<span class="number">1</span>)
                         .value_parser(builder::PossibleValuesParser::new([
-                            <span class="string">&quot;onoff&quot;</span>,
-                            <span class="string">&quot;flat&quot;</span>,
-                            <span class="string">&quot;pathtracer&quot;</span>,
+                            <span class="string">"onoff"</span>,
+                            <span class="string">"flat"</span>,
+                            <span class="string">"pathtracer"</span>,
                         ]))
-                        .help(<span class="string">&quot;Rendering algorithm&quot;</span>)
+                        .help(<span class="string">"Rendering algorithm"</span>)
                         .long_help(
-                            <span class="string">&quot;Algorithm to use for render the scene: [onoff, flat, pathtracer]&quot;</span>,
+                            <span class="string">"Algorithm to use for render the scene: [onoff, flat, pathtracer]"</span>,
                         ),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;num-of-rays&quot;</span>)
-                        .short(<span class="string">&#39;n&#39;</span>)
-                        .long(<span class="string">&quot;num-of-rays&quot;</span>)
-                        .value_name(<span class="string">&quot;NUM_OF_RAYS&quot;</span>)
+                    Arg::new(<span class="string">"num-of-rays"</span>)
+                        .short(<span class="string">'n'</span>)
+                        .long(<span class="string">"num-of-rays"</span>)
+                        .value_name(<span class="string">"NUM_OF_RAYS"</span>)
                         .default_value(NUM_OF_RAYS)
                         .num_args(<span class="number">1</span>)
-                        .requires_if(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
-                        .help(<span class="string">&quot;Number of rays&quot;</span>)
-                        .long_help(<span class="string">&quot;Number of rays departing from each surface point&quot;</span>),
+                        .requires_if(<span class="string">"pathtracer"</span>, <span class="string">"algorithm"</span>)
+                        .help(<span class="string">"Number of rays"</span>)
+                        .long_help(<span class="string">"Number of rays departing from each surface point"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;max-depth&quot;</span>)
-                        .short(<span class="string">&#39;m&#39;</span>)
-                        .long(<span class="string">&quot;max-depth&quot;</span>)
-                        .value_name(<span class="string">&quot;MAX_DEPTH&quot;</span>)
+                    Arg::new(<span class="string">"max-depth"</span>)
+                        .short(<span class="string">'m'</span>)
+                        .long(<span class="string">"max-depth"</span>)
+                        .value_name(<span class="string">"MAX_DEPTH"</span>)
                         .default_value(MAX_DEPTH)
                         .num_args(<span class="number">1</span>)
-                        .requires_if(<span class="string">&quot;pathtracer&quot;</span>, <span class="string">&quot;algorithm&quot;</span>)
-                        .help(<span class="string">&quot;Maximum depth&quot;</span>)
-                        .long_help(<span class="string">&quot;Maximum allowed ray depth&quot;</span>),
+                        .requires_if(<span class="string">"pathtracer"</span>, <span class="string">"algorithm"</span>)
+                        .help(<span class="string">"Maximum depth"</span>)
+                        .long_help(<span class="string">"Maximum allowed ray depth"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;init-state&quot;</span>)
-                        .long(<span class="string">&quot;init-state&quot;</span>)
-                        .value_name(<span class="string">&quot;INIT_STATE&quot;</span>)
+                    Arg::new(<span class="string">"init-state"</span>)
+                        .long(<span class="string">"init-state"</span>)
+                        .value_name(<span class="string">"INIT_STATE"</span>)
                         .default_value(INIT_STATE)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Initial random seed (positive number)&quot;</span>)
+                        .help(<span class="string">"Initial random seed (positive number)"</span>)
                         .long_help(
-                            <span class="string">&quot;Initial seed for the random number generator (positive number)&quot;</span>,
+                            <span class="string">"Initial seed for the random number generator (positive number)"</span>,
                         ),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;init-seq&quot;</span>)
-                        .long(<span class="string">&quot;init-seq&quot;</span>)
-                        .value_name(<span class="string">&quot;INIT_SEQ&quot;</span>)
+                    Arg::new(<span class="string">"init-seq"</span>)
+                        .long(<span class="string">"init-seq"</span>)
+                        .value_name(<span class="string">"INIT_SEQ"</span>)
                         .default_value(INIT_SEQ)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Identifier of the random sequence (positive number)&quot;</span>)
+                        .help(<span class="string">"Identifier of the random sequence (positive number)"</span>)
                         .long_help(
-                            <span class="string">&quot;Identifier of the sequence produced by the random number generator \
-                             (positive number)&quot;</span>,
+                            <span class="string">"Identifier of the sequence produced by the random number generator \
+                             (positive number)"</span>,
                         ),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;anti-aliasing&quot;</span>)
-                        .long(<span class="string">&quot;anti-aliasing&quot;</span>)
-                        .value_name(<span class="string">&quot;ANTI_ALIASING&quot;</span>)
+                    Arg::new(<span class="string">"anti-aliasing"</span>)
+                        .long(<span class="string">"anti-aliasing"</span>)
+                        .value_name(<span class="string">"ANTI_ALIASING"</span>)
                         .default_value(ANTI_ALIASING)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Anti-aliasing level&quot;</span>)
+                        .help(<span class="string">"Anti-aliasing level"</span>)
                         .long_help(
-                            <span class="string">&quot;Anti-aliasing level, corresponds to the square-root of the number of \
-                             samples per pixel&quot;</span>,
+                            <span class="string">"Anti-aliasing level, corresponds to the square-root of the number of \
+                             samples per pixel"</span>,
                         ),
                 ),
         )
         .subcommand(
-            Command::new(<span class="string">&quot;completion&quot;</span>)
+            Command::new(<span class="string">"completion"</span>)
                 .hide(<span class="bool-val">true</span>)
                 .arg_required_else_help(<span class="bool-val">true</span>)
-                .about(<span class="string">&quot;Generate shell completion script&quot;</span>)
+                .about(<span class="string">"Generate shell completion script"</span>)
                 .arg(
-                    Arg::new(<span class="string">&quot;SHELL&quot;</span>)
+                    Arg::new(<span class="string">"SHELL"</span>)
                         .required(<span class="bool-val">true</span>)
-                        .value_parser(builder::PossibleValuesParser::new([<span class="string">&quot;bash&quot;</span>, <span class="string">&quot;fish&quot;</span>, <span class="string">&quot;zsh&quot;</span>]))
+                        .value_parser(builder::PossibleValuesParser::new([<span class="string">"bash"</span>, <span class="string">"fish"</span>, <span class="string">"zsh"</span>]))
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Shell to generate script for&quot;</span>)
-                        .long_help(<span class="string">&quot;Specify for which shell completions should be generated&quot;</span>),
+                        .help(<span class="string">"Shell to generate script for"</span>)
+                        .long_help(<span class="string">"Specify for which shell completions should be generated"</span>),
                 )
                 .arg(
-                    Arg::new(<span class="string">&quot;output&quot;</span>)
-                        .short(<span class="string">&#39;o&#39;</span>)
-                        .long(<span class="string">&quot;output&quot;</span>)
-                        .value_name(<span class="string">&quot;OUTPUT&quot;</span>)
+                    Arg::new(<span class="string">"output"</span>)
+                        .short(<span class="string">'o'</span>)
+                        .long(<span class="string">"output"</span>)
+                        .value_name(<span class="string">"OUTPUT"</span>)
                         .num_args(<span class="number">1</span>)
-                        .help(<span class="string">&quot;Specify output script file&quot;</span>)
-                        .long_help(<span class="string">&quot;Specify an output file for shell completions&quot;</span>),
+                        .help(<span class="string">"Specify output script file"</span>)
+                        .long_help(<span class="string">"Specify an output file for shell completions"</span>),
                 ),
         )
 }

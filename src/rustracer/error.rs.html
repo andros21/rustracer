@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.1 (7cf61ebde 2024-03-27)" data-channel="1.77.1" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../docs/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -137,106 +139,106 @@
 <span class="doccomment">/// Error enum for [`HdrImage`](../hdrimage) module.
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>HdrImageErr {
-    <span class="attr">#[error(<span class="string">&quot;invalid indexes: {0:?}, expected hdr image shape: {1:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid indexes: {0:?}, expected hdr image shape: {1:?}"</span>)]
     </span>OutOfBounds((u32, u32), (u32, u32)),
-    <span class="attr">#[error(<span class="string">&quot;invalid pixels vector size: {0}, expected size: {1}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid pixels vector size: {0}, expected size: {1}"</span>)]
     </span>InvalidPixelsSize(u32, u32),
-    <span class="attr">#[error(<span class="string">&quot;invalid pfm file format: {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid pfm file format: {0:?}"</span>)]
     </span>InvalidPfmFileFormat(String),
-    <span class="attr">#[error(<span class="string">&quot;impossible to read from pfm file\n\tsource: {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, .<span class="number">0</span>).to_lowercase())]
+    <span class="attr">#[error(<span class="string">"impossible to read from pfm file\n\tsource: {}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{}"</span>, .<span class="number">0</span>).to_lowercase())]
     </span>PfmFileReadFailure(<span class="attr">#[source] </span>std::io::Error),
-    <span class="attr">#[error(<span class="string">&quot;impossible to write to pfm file\n\tsource: {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, .<span class="number">0</span>).to_lowercase())]
+    <span class="attr">#[error(<span class="string">"impossible to write to pfm file\n\tsource: {}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{}"</span>, .<span class="number">0</span>).to_lowercase())]
     </span>PfmFileWriteFailure(<span class="attr">#[source] </span>std::io::Error),
-    <span class="attr">#[error(<span class="string">&quot;impossible to parse {1} as integer from pfm file\n\tsource: {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, .<span class="number">0</span>).to_lowercase())]
+    <span class="attr">#[error(<span class="string">"impossible to parse {1} as integer from pfm file\n\tsource: {}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{}"</span>, .<span class="number">0</span>).to_lowercase())]
     </span>PfmIntParseFailure(<span class="attr">#[source] </span>std::num::ParseIntError, String),
-    <span class="attr">#[error(<span class="string">&quot;impossible to parse {1} as float from pfm file\n\tsource: {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, .<span class="number">0</span>).to_lowercase())]
+    <span class="attr">#[error(<span class="string">"impossible to parse {1} as float from pfm file\n\tsource: {}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{}"</span>, .<span class="number">0</span>).to_lowercase())]
     </span>PfmFloatParseFailure(<span class="attr">#[source] </span>std::num::ParseFloatError, String),
-    <span class="attr">#[error(<span class="string">&quot;impossible to write to ldr file\n\tsource: {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, .<span class="number">0</span>).to_lowercase())]
+    <span class="attr">#[error(<span class="string">"impossible to write to ldr file\n\tsource: {}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{}"</span>, .<span class="number">0</span>).to_lowercase())]
     </span>LdrFileWriteFailure(<span class="attr">#[source] </span>image::ImageError),
-    <span class="attr">#[error(<span class="string">&quot;unsupported {0:?} ldr file format, only \&quot;ff\&quot; or \&quot;png\&quot; supported&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"unsupported {0:?} ldr file format, only \"ff\" or \"png\" supported"</span>)]
     </span>UnsupportedLdrFileFormat(String),
 }
 
 <span class="doccomment">/// Error enum for [`convert`](../fn.convert.html) function inside [`main`](../fn.main.html).
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>ConvertErr {
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {0}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{:?} flag invalid value, expected floating-point number&quot;</span>, .<span class="number">1</span>).bold())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {0}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{:?} flag invalid value, expected floating-point number"</span>, .<span class="number">1</span>).bold())]
     </span>FloatParseFailure(<span class="attr">#[source] </span>std::num::ParseFloatError, String),
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {0}&quot;</span>, <span class="string">&quot;image convert input/output error&quot;</span>.bold())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {0}"</span>, <span class="string">"image convert input/output error"</span>.bold())]
     </span>IoError(<span class="attr">#[source] </span>HdrImageErr),
 }
 
 <span class="doccomment">/// Error enum for [`demo`](../fn.demo.html) function inside [`main`](../fn.main.html).
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>DemoErr {
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {0}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{:?} flag invalid value, expected integer number&quot;</span>, .<span class="number">1</span>).bold())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {0}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{:?} flag invalid value, expected integer number"</span>, .<span class="number">1</span>).bold())]
     </span>IntParseFailure(<span class="attr">#[source] </span>std::num::ParseIntError, String),
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {0}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{:?} flag invalid value, expected floating-point number&quot;</span>, .<span class="number">1</span>).bold())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {0}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{:?} flag invalid value, expected floating-point number"</span>, .<span class="number">1</span>).bold())]
     </span>FloatParseFailure(<span class="attr">#[source] </span>std::num::ParseFloatError, String),
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {0}&quot;</span>, <span class="string">&quot;demo render input/output error&quot;</span>.bold())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {0}"</span>, <span class="string">"demo render input/output error"</span>.bold())]
     </span>IoError(<span class="attr">#[source] </span>HdrImageErr),
 }
 
 <span class="doccomment">/// Error enum for [`Scene`](../scene) module.
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>SceneErr {
-    <span class="attr">#[error(<span class="string">&quot;{} {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;:{}:{}&quot;</span>, loc.line_num, loc.col_num).yellow(), msg)]
+    <span class="attr">#[error(<span class="string">"{} {}"</span>,
+        <span class="macro">format!</span>(<span class="string">":{}:{}"</span>, loc.line_num, loc.col_num).yellow(), msg)]
     </span>InvalidCharacter { loc: SourceLocation, msg: String },
-    <span class="attr">#[error(<span class="string">&quot;{} {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;:{}:{}&quot;</span>, loc.line_num, loc.col_num).yellow(), msg)]
+    <span class="attr">#[error(<span class="string">"{} {}"</span>,
+        <span class="macro">format!</span>(<span class="string">":{}:{}"</span>, loc.line_num, loc.col_num).yellow(), msg)]
     </span>UnclosedString { loc: SourceLocation, msg: String },
-    <span class="attr">#[error(<span class="string">&quot;{} {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;:{}:{}&quot;</span>, loc.line_num, loc.col_num).yellow(), msg)]
+    <span class="attr">#[error(<span class="string">"{} {}"</span>,
+        <span class="macro">format!</span>(<span class="string">":{}:{}"</span>, loc.line_num, loc.col_num).yellow(), msg)]
     </span>FloatParseFailure {
         loc: SourceLocation,
         msg: String,
         src: std::num::ParseFloatError,
     },
-    <span class="attr">#[error(<span class="string">&quot;{} {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;:{}:{}&quot;</span>, loc.line_num, loc.col_num).yellow(), msg)]
+    <span class="attr">#[error(<span class="string">"{} {}"</span>,
+        <span class="macro">format!</span>(<span class="string">":{}:{}"</span>, loc.line_num, loc.col_num).yellow(), msg)]
     </span>NotMatch { loc: SourceLocation, msg: String },
-    <span class="attr">#[error(<span class="string">&quot;{} {}\n\tsource: {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;:{}:{}&quot;</span>, loc.line_num, loc.col_num).yellow(), msg, src)]
+    <span class="attr">#[error(<span class="string">"{} {}\n\tsource: {}"</span>,
+        <span class="macro">format!</span>(<span class="string">":{}:{}"</span>, loc.line_num, loc.col_num).yellow(), msg, src)]
     </span>PfmFileReadFailure {
         loc: SourceLocation,
         msg: String,
         src: HdrImageErr,
     },
-    <span class="attr">#[error(<span class="string">&quot;{0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"{0}"</span>)]
     </span>UnexpectedMatch(String),
-    <span class="attr">#[error(<span class="string">&quot;{} {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;:{}:{}&quot;</span>, loc.line_num, loc.col_num).yellow(), msg)]
+    <span class="attr">#[error(<span class="string">"{} {}"</span>,
+        <span class="macro">format!</span>(<span class="string">":{}:{}"</span>, loc.line_num, loc.col_num).yellow(), msg)]
     </span>UndefinedIdentifier { loc: SourceLocation, msg: String },
-    <span class="attr">#[error(<span class="string">&quot;{} {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;:{}:{}&quot;</span>, loc.line_num, loc.col_num).yellow(), msg)]
+    <span class="attr">#[error(<span class="string">"{} {}"</span>,
+        <span class="macro">format!</span>(<span class="string">":{}:{}"</span>, loc.line_num, loc.col_num).yellow(), msg)]
     </span>InvalidCamera { loc: SourceLocation, msg: String },
-    <span class="attr">#[error(<span class="string">&quot;{} impossible to read from scene file\n\tsource: {0}&quot;</span>, <span class="string">&quot;::&quot;</span>.yellow())]
+    <span class="attr">#[error(<span class="string">"{} impossible to read from scene file\n\tsource: {0}"</span>, <span class="string">"::"</span>.yellow())]
     </span>SceneFileReadFailure(<span class="attr">#[source] </span>std::io::Error),
 }
 
 <span class="doccomment">/// Error enum for [`render`](../fn.render.html) function inside [`main`](../fn.main.html).
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>RenderErr {
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {0}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{:?} flag invalid value, expected integer number&quot;</span>, .<span class="number">1</span>).bold())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {0}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{:?} flag invalid value, expected integer number"</span>, .<span class="number">1</span>).bold())]
     </span>IntParseFailure(<span class="attr">#[source] </span>std::num::ParseIntError, String),
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {0}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;{:?} flag invalid value, expected floating-point number&quot;</span>, .<span class="number">1</span>).bold())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {0}"</span>,
+        <span class="macro">format!</span>(<span class="string">"{:?} flag invalid value, expected floating-point number"</span>, .<span class="number">1</span>).bold())]
     </span>FloatParseFailure(<span class="attr">#[source] </span>std::num::ParseFloatError, String),
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {0}&quot;</span>, <span class="string">&quot;render input/output error&quot;</span>.bold())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {0}"</span>, <span class="string">"render input/output error"</span>.bold())]
     </span>IoError(<span class="attr">#[source] </span>HdrImageErr),
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;render parsing scene from {:?}&quot;</span>, .<span class="number">1</span>).bold(),
-        <span class="macro">format!</span>(<span class="string">&quot;{file}{src}&quot;</span>,
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {}"</span>,
+        <span class="macro">format!</span>(<span class="string">"render parsing scene from {:?}"</span>, .<span class="number">1</span>).bold(),
+        <span class="macro">format!</span>(<span class="string">"{file}{src}"</span>,
             file = std::path::Path::new(.<span class="number">1</span>).file_name()
                                            .unwrap_or_else(|| std::ffi::OsStr::new(.<span class="number">1</span>))
                                            .to_str().unwrap().yellow(),
@@ -247,9 +249,9 @@
 <span class="doccomment">/// Error enum for [`completion`](../fn.completion.html) function inside [`main`](../fn.main.html).
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>CompletionErr {
-    <span class="attr">#[error(<span class="string">&quot;{}\n\tsource: {}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;impossible to create {:?}&quot;</span>, .<span class="number">1</span>).bold(),
-        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, .<span class="number">0</span>).to_lowercase())]
+    <span class="attr">#[error(<span class="string">"{}\n\tsource: {}"</span>,
+        <span class="macro">format!</span>(<span class="string">"impossible to create {:?}"</span>, .<span class="number">1</span>).bold(),
+        <span class="macro">format!</span>(<span class="string">"{}"</span>, .<span class="number">0</span>).to_lowercase())]
     </span>WriteCompletionFailure(<span class="attr">#[source] </span>std::io::Error, String),
 }
 </code></pre></div></section></main></body></html>

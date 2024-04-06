@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/scene.rs`."><title>scene.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/scene.rs`."><title>scene.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.1 (7cf61ebde 2024-03-27)" data-channel="1.77.1" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../docs/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2226,7 +2228,7 @@
 <span class="doccomment">/// Chars that must be considered special when parsed.
 ///
 /// Because usually are separators or delimiters in the scene file.
-</span><span class="kw">const </span>SYMBOLS: [char; <span class="number">8</span>] = [<span class="string">&#39;\n&#39;</span>, <span class="string">&#39; &#39;</span>, <span class="string">&#39;-&#39;</span>, <span class="string">&#39;:&#39;</span>, <span class="string">&#39;[&#39;</span>, <span class="string">&#39;,&#39;</span>, <span class="string">&#39;]&#39;</span>, <span class="string">&#39;#&#39;</span>];
+</span><span class="kw">const </span>SYMBOLS: [char; <span class="number">8</span>] = [<span class="string">'\n'</span>, <span class="string">' '</span>, <span class="string">'-'</span>, <span class="string">':'</span>, <span class="string">'['</span>, <span class="string">','</span>, <span class="string">']'</span>, <span class="string">'#'</span>];
 
 <span class="doccomment">/// A specific position in a scene file.
 </span><span class="attr">#[derive(Clone, Copy, Debug)]
@@ -2269,8 +2271,8 @@
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>Keywords {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;{self:?}&quot;</span>).to_lowercase())
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"{self:?}"</span>).to_lowercase())
     }
 }
 
@@ -2292,9 +2294,9 @@
         <span class="prelude-val">Err</span>(SceneErr::NotMatch {
             loc: <span class="macro-nonterminal">$a</span>,
             msg: <span class="macro">format!</span>(
-                <span class="string">&quot;found {:?} expected {}&quot;</span>,
-                <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro-nonterminal">$b</span>),
-                <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="macro-nonterminal">$c</span>).to_lowercase().trim_matches(<span class="string">&#39;&quot;&#39;</span>)
+                <span class="string">"found {:?} expected {}"</span>,
+                <span class="macro">format!</span>(<span class="string">"{}"</span>, <span class="macro-nonterminal">$b</span>),
+                <span class="macro">format!</span>(<span class="string">"{:?}"</span>, <span class="macro-nonterminal">$c</span>).to_lowercase().trim_matches(<span class="string">'"'</span>)
             ),
         })
     };
@@ -2308,7 +2310,7 @@
             Token::Identifier(loc, id) =&gt; <span class="macro">not_match!</span>(loc, id, <span class="macro-nonterminal">$c</span>),
             Token::Keyword(loc, key) =&gt; <span class="macro">not_match!</span>(loc, key, <span class="macro-nonterminal">$c</span>),
             Token::LiteralNumber(loc, num) =&gt; <span class="macro">not_match!</span>(loc, num, <span class="macro-nonterminal">$c</span>),
-            Token::Stop(loc) =&gt; <span class="macro">not_match!</span>(loc, <span class="string">&#39;\x00&#39;</span>, <span class="macro-nonterminal">$c</span>),
+            Token::Stop(loc) =&gt; <span class="macro">not_match!</span>(loc, <span class="string">'\x00'</span>, <span class="macro-nonterminal">$c</span>),
             Token::String(loc, st) =&gt; <span class="macro">not_match!</span>(loc, st, <span class="macro-nonterminal">$c</span>),
             Token::Symbol(loc, sym) =&gt; <span class="macro">not_match!</span>(loc, sym, <span class="macro-nonterminal">$c</span>),
         }
@@ -2320,7 +2322,7 @@
 /// This class implements a wrapper around a stream,\
 /// with the following additional capabilities:
 ///   * It tracks the line number and column number;
-///   * It permits to &quot;unread&quot; characters and tokens;
+///   * It permits to "unread" characters and tokens;
 ///   * It tracks the number of spaces that build up a indent block.
 </span><span class="attr">#[derive(Clone)]
 </span><span class="kw">struct </span>InputStream&lt;R: Read&gt; {
@@ -2347,7 +2349,7 @@
                 line_num: <span class="number">1</span>,
                 col_num: <span class="number">1</span>,
             },
-            saved_ch: <span class="string">&#39;\x00&#39;</span>,
+            saved_ch: <span class="string">'\x00'</span>,
             saved_location: SourceLocation {
                 line_num: <span class="number">1</span>,
                 col_num: <span class="number">1</span>,
@@ -2359,7 +2361,7 @@
 
     <span class="doccomment">/// Update location after having read char from the stream.
     </span><span class="kw">fn </span>update_pos(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ch: char) {
-        <span class="kw">if </span>ch == <span class="string">&#39;\n&#39; </span>{
+        <span class="kw">if </span>ch == <span class="string">'\n' </span>{
             <span class="self">self</span>.location.line_num += <span class="number">1</span>;
             <span class="self">self</span>.location.col_num = <span class="number">1</span>;
         } <span class="kw">else </span>{
@@ -2371,9 +2373,9 @@
     </span><span class="kw">fn </span>read_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; char {
         <span class="comment">// Empty bytes buffer (only 1 byte).
         </span><span class="kw">let </span><span class="kw-2">mut </span>ch = [<span class="number">0</span>; <span class="number">1</span>];
-        <span class="kw">if </span><span class="self">self</span>.saved_ch != <span class="string">&#39;\x00&#39; </span>{
+        <span class="kw">if </span><span class="self">self</span>.saved_ch != <span class="string">'\x00' </span>{
             ch[<span class="number">0</span>] = <span class="self">self</span>.saved_ch <span class="kw">as </span>u8;
-            <span class="self">self</span>.saved_ch = <span class="string">&#39;\x00&#39;</span>;
+            <span class="self">self</span>.saved_ch = <span class="string">'\x00'</span>;
         } <span class="kw">else </span>{
             <span class="comment">// Read a byte no matter if eof is reached.
             // A proper stop token will be raised (later).
@@ -2396,7 +2398,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>ch = <span class="self">self</span>.read_char();
         <span class="comment">// Strip all whitespaces before `#`.
         </span><span class="kw">loop </span>{
-            <span class="kw">if </span>ch == <span class="string">&#39; &#39; </span>{
+            <span class="kw">if </span>ch == <span class="string">' ' </span>{
                 ch = <span class="self">self</span>.read_char();
             } <span class="kw">else </span>{
                 <span class="self">self</span>.unread_char(ch);
@@ -2404,10 +2406,10 @@
             }
         }
         <span class="comment">// Ignore inline comment.
-        </span><span class="kw">if </span>ch == <span class="string">&#39;#&#39; </span>{
+        </span><span class="kw">if </span>ch == <span class="string">'#' </span>{
             <span class="kw">loop </span>{
                 ch = <span class="self">self</span>.read_char();
-                <span class="kw">if </span>[<span class="string">&#39;\n&#39;</span>, <span class="string">&#39;\x00&#39;</span>].contains(<span class="kw-2">&amp;</span>ch) {
+                <span class="kw">if </span>[<span class="string">'\n'</span>, <span class="string">'\x00'</span>].contains(<span class="kw-2">&amp;</span>ch) {
                     <span class="self">self</span>.unread_char(ch);
                     <span class="kw">break</span>;
                 }
@@ -2422,11 +2424,11 @@
         <span class="kw">let </span><span class="kw-2">mut </span>ch = <span class="self">self</span>.read_char();
         <span class="kw">loop </span>{
             <span class="comment">// If whitespaces or comment ignore.
-            </span><span class="kw">if </span>[<span class="string">&#39; &#39;</span>, <span class="string">&#39;\n&#39;</span>, <span class="string">&#39;#&#39;</span>].contains(<span class="kw-2">&amp;</span>ch) {
-                <span class="kw">if </span>ch == <span class="string">&#39;#&#39; </span>{
+            </span><span class="kw">if </span>[<span class="string">' '</span>, <span class="string">'\n'</span>, <span class="string">'#'</span>].contains(<span class="kw-2">&amp;</span>ch) {
+                <span class="kw">if </span>ch == <span class="string">'#' </span>{
                     <span class="kw">loop </span>{
                         ch = <span class="self">self</span>.read_char();
-                        <span class="kw">if </span>[<span class="string">&#39;\n&#39;</span>, <span class="string">&#39;\x00&#39;</span>].contains(<span class="kw-2">&amp;</span>ch) {
+                        <span class="kw">if </span>[<span class="string">'\n'</span>, <span class="string">'\x00'</span>].contains(<span class="kw-2">&amp;</span>ch) {
                             <span class="kw">break</span>;
                         }
                     }
@@ -2447,7 +2449,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>ch = <span class="self">self</span>.read_char();
         <span class="kw">loop </span>{
             <span class="comment">// Count multiple spaces occurrences.
-            </span><span class="kw">if </span>ch == <span class="string">&#39; &#39; </span>{
+            </span><span class="kw">if </span>ch == <span class="string">' ' </span>{
                 <span class="self">self</span>.spaces += <span class="number">1</span>;
                 ch = <span class="self">self</span>.read_char();
             } <span class="kw">else </span>{
@@ -2466,18 +2468,18 @@
         delimiter: char,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Token, SceneErr&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>ch;
-        <span class="kw">let </span><span class="kw-2">mut </span>token = String::from(<span class="string">&quot;&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>token = String::from(<span class="string">""</span>);
         <span class="kw">loop </span>{
             ch = <span class="self">self</span>.read_char();
-            <span class="comment">// If string delimiter `&#39;` or `&quot;` found, stop.
+            <span class="comment">// If string delimiter `'` or `"` found, stop.
             </span><span class="kw">if </span>ch == delimiter {
                 <span class="kw">break</span>;
-                <span class="comment">// If eof or eol reached finding delimiter `&#39;` or `&quot;`, error.
-            </span>} <span class="kw">else if </span>[<span class="string">&#39;\x00&#39;</span>, <span class="string">&#39;\n&#39;</span>].contains(<span class="kw-2">&amp;</span>ch) {
+                <span class="comment">// If eof or eol reached finding delimiter `'` or `"`, error.
+            </span>} <span class="kw">else if </span>[<span class="string">'\x00'</span>, <span class="string">'\n'</span>].contains(<span class="kw-2">&amp;</span>ch) {
                 <span class="self">self</span>.unread_char(ch);
                 <span class="kw">return </span><span class="prelude-val">Err</span>(SceneErr::UnclosedString {
                     loc: <span class="self">self</span>.location,
-                    msg: <span class="macro">format!</span>(<span class="string">&quot;unclosed `{delimiter}` untermineted string&quot;</span>),
+                    msg: <span class="macro">format!</span>(<span class="string">"unclosed `{delimiter}` untermineted string"</span>),
                 });
             }
             token.push(ch);
@@ -2492,15 +2494,15 @@
         token_location: SourceLocation,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Token, SceneErr&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>ch;
-        <span class="kw">let </span><span class="kw-2">mut </span>token = String::from(<span class="string">&quot;&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>token = String::from(<span class="string">""</span>);
         token.push(first_char);
         <span class="kw">loop </span>{
             ch = <span class="self">self</span>.read_char();
             <span class="comment">// If `e` or `E` char found could be an float in scientific notation.
-            </span><span class="kw">if </span>ch.to_ascii_lowercase() == <span class="string">&#39;e&#39; </span>{
+            </span><span class="kw">if </span>ch.to_ascii_lowercase() == <span class="string">'e' </span>{
                 <span class="kw">let </span>ch_nx = <span class="self">self</span>.read_char();
-                <span class="comment">// If the char follow exp char isn&#39;t a digit or a sign, unroll.
-                </span><span class="kw">if </span>!(ch_nx.is_ascii_digit() || [<span class="string">&#39;+&#39;</span>, <span class="string">&#39;-&#39;</span>].contains(<span class="kw-2">&amp;</span>ch_nx)) {
+                <span class="comment">// If the char follow exp char isn't a digit or a sign, unroll.
+                </span><span class="kw">if </span>!(ch_nx.is_ascii_digit() || [<span class="string">'+'</span>, <span class="string">'-'</span>].contains(<span class="kw-2">&amp;</span>ch_nx)) {
                     <span class="comment">// Unroll until exp char.
                     </span><span class="self">self</span>.unread_char(ch_nx);
                     <span class="self">self</span>.unread_char(ch);
@@ -2511,8 +2513,8 @@
                     token.push(ch_nx);
                 }
             } <span class="kw">else </span>{
-                <span class="comment">// If the char isn&#39;t a digit or a dot, unroll.
-                </span><span class="kw">if </span>!(ch.is_ascii_digit() || ch == <span class="string">&#39;.&#39;</span>) {
+                <span class="comment">// If the char isn't a digit or a dot, unroll.
+                </span><span class="kw">if </span>!(ch.is_ascii_digit() || ch == <span class="string">'.'</span>) {
                     <span class="self">self</span>.unread_char(ch);
                     <span class="kw">break</span>;
                 } <span class="kw">else </span>{
@@ -2522,7 +2524,7 @@
         }
         <span class="kw">let </span>value = f32::from_str(token.as_str()).map_err(|err| SceneErr::FloatParseFailure {
             loc: token_location,
-            msg: <span class="macro">format!</span>(<span class="string">&quot;{token:?} is an invalid floating-point number&quot;</span>),
+            msg: <span class="macro">format!</span>(<span class="string">"{token:?} is an invalid floating-point number"</span>),
             src: err,
         })<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(Token::LiteralNumber(token_location, value))
@@ -2535,44 +2537,44 @@
         token_location: SourceLocation,
     ) -&gt; Token {
         <span class="kw">let </span><span class="kw-2">mut </span>ch;
-        <span class="kw">let </span><span class="kw-2">mut </span>token = String::from(<span class="string">&quot;&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>token = String::from(<span class="string">""</span>);
         token.push(first_char);
         <span class="kw">loop </span>{
             ch = <span class="self">self</span>.read_char();
             <span class="comment">// `_` only accepted separator.
-            </span><span class="kw">if </span>!(ch.is_ascii_alphanumeric() || ch == <span class="string">&#39;_&#39;</span>) {
+            </span><span class="kw">if </span>!(ch.is_ascii_alphanumeric() || ch == <span class="string">'_'</span>) {
                 <span class="self">self</span>.unread_char(ch);
                 <span class="kw">break</span>;
             }
             token.push(ch);
         }
         <span class="kw">match </span>token.as_str() {
-            <span class="string">&quot;camera&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Camera),
-            <span class="string">&quot;checkered&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Checkered),
-            <span class="string">&quot;color&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Color),
-            <span class="string">&quot;colors&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Colors),
-            <span class="string">&quot;compose&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Compose),
-            <span class="string">&quot;diffuse&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Diffuse),
-            <span class="string">&quot;distance&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Distance),
-            <span class="string">&quot;image&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Image),
-            <span class="string">&quot;material&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Material),
-            <span class="string">&quot;materials&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Materials),
-            <span class="string">&quot;name&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Name),
-            <span class="string">&quot;plane&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Plane),
-            <span class="string">&quot;ratio&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Ratio),
-            <span class="string">&quot;rotationx&quot; </span>=&gt; Token::Keyword(token_location, Keywords::RotationX),
-            <span class="string">&quot;rotationy&quot; </span>=&gt; Token::Keyword(token_location, Keywords::RotationY),
-            <span class="string">&quot;rotationz&quot; </span>=&gt; Token::Keyword(token_location, Keywords::RotationZ),
-            <span class="string">&quot;scaling&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Scaling),
-            <span class="string">&quot;shape&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Shape),
-            <span class="string">&quot;shapes&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Shapes),
-            <span class="string">&quot;specular&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Specular),
-            <span class="string">&quot;sphere&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Sphere),
-            <span class="string">&quot;transformation&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Transformation),
-            <span class="string">&quot;transformations&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Transformations),
-            <span class="string">&quot;translation&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Translation),
-            <span class="string">&quot;type&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Type),
-            <span class="string">&quot;uniform&quot; </span>=&gt; Token::Keyword(token_location, Keywords::Uniform),
+            <span class="string">"camera" </span>=&gt; Token::Keyword(token_location, Keywords::Camera),
+            <span class="string">"checkered" </span>=&gt; Token::Keyword(token_location, Keywords::Checkered),
+            <span class="string">"color" </span>=&gt; Token::Keyword(token_location, Keywords::Color),
+            <span class="string">"colors" </span>=&gt; Token::Keyword(token_location, Keywords::Colors),
+            <span class="string">"compose" </span>=&gt; Token::Keyword(token_location, Keywords::Compose),
+            <span class="string">"diffuse" </span>=&gt; Token::Keyword(token_location, Keywords::Diffuse),
+            <span class="string">"distance" </span>=&gt; Token::Keyword(token_location, Keywords::Distance),
+            <span class="string">"image" </span>=&gt; Token::Keyword(token_location, Keywords::Image),
+            <span class="string">"material" </span>=&gt; Token::Keyword(token_location, Keywords::Material),
+            <span class="string">"materials" </span>=&gt; Token::Keyword(token_location, Keywords::Materials),
+            <span class="string">"name" </span>=&gt; Token::Keyword(token_location, Keywords::Name),
+            <span class="string">"plane" </span>=&gt; Token::Keyword(token_location, Keywords::Plane),
+            <span class="string">"ratio" </span>=&gt; Token::Keyword(token_location, Keywords::Ratio),
+            <span class="string">"rotationx" </span>=&gt; Token::Keyword(token_location, Keywords::RotationX),
+            <span class="string">"rotationy" </span>=&gt; Token::Keyword(token_location, Keywords::RotationY),
+            <span class="string">"rotationz" </span>=&gt; Token::Keyword(token_location, Keywords::RotationZ),
+            <span class="string">"scaling" </span>=&gt; Token::Keyword(token_location, Keywords::Scaling),
+            <span class="string">"shape" </span>=&gt; Token::Keyword(token_location, Keywords::Shape),
+            <span class="string">"shapes" </span>=&gt; Token::Keyword(token_location, Keywords::Shapes),
+            <span class="string">"specular" </span>=&gt; Token::Keyword(token_location, Keywords::Specular),
+            <span class="string">"sphere" </span>=&gt; Token::Keyword(token_location, Keywords::Sphere),
+            <span class="string">"transformation" </span>=&gt; Token::Keyword(token_location, Keywords::Transformation),
+            <span class="string">"transformations" </span>=&gt; Token::Keyword(token_location, Keywords::Transformations),
+            <span class="string">"translation" </span>=&gt; Token::Keyword(token_location, Keywords::Translation),
+            <span class="string">"type" </span>=&gt; Token::Keyword(token_location, Keywords::Type),
+            <span class="string">"uniform" </span>=&gt; Token::Keyword(token_location, Keywords::Uniform),
             <span class="kw">_ </span>=&gt; Token::Identifier(token_location, token),
         }
     }
@@ -2591,31 +2593,31 @@
         <span class="comment">// Save location where starting to parse token.
         </span><span class="kw">let </span>token_location = <span class="self">self</span>.location;
         <span class="kw">let </span>ch = <span class="self">self</span>.read_char();
-        <span class="kw">if </span>ch == <span class="string">&#39;\x00&#39; </span>{
+        <span class="kw">if </span>ch == <span class="string">'\x00' </span>{
             <span class="prelude-val">Ok</span>(Token::Stop(token_location))
         } <span class="kw">else if </span>SYMBOLS.contains(<span class="kw-2">&amp;</span>ch) {
             <span class="kw">let </span>ch_nx = <span class="self">self</span>.read_char();
             <span class="comment">// Is negative number or special symbols?
-            </span><span class="kw">if </span>ch == <span class="string">&#39;-&#39; </span>&amp;&amp; (ch_nx.is_ascii_digit() || ch_nx == <span class="string">&#39;.&#39;</span>) {
+            </span><span class="kw">if </span>ch == <span class="string">'-' </span>&amp;&amp; (ch_nx.is_ascii_digit() || ch_nx == <span class="string">'.'</span>) {
                 <span class="self">self</span>.unread_char(ch_nx);
                 <span class="self">self</span>.parse_float(ch, token_location)
             } <span class="kw">else </span>{
                 <span class="self">self</span>.unread_char(ch_nx);
                 <span class="prelude-val">Ok</span>(Token::Symbol(token_location, ch))
             }
-        } <span class="kw">else if </span>ch.is_ascii_digit() || [<span class="string">&#39;+&#39;</span>, <span class="string">&#39;.&#39;</span>].contains(<span class="kw-2">&amp;</span>ch) {
+        } <span class="kw">else if </span>ch.is_ascii_digit() || [<span class="string">'+'</span>, <span class="string">'.'</span>].contains(<span class="kw-2">&amp;</span>ch) {
             <span class="self">self</span>.parse_float(ch, token_location)
-        } <span class="kw">else if </span>ch == <span class="string">&#39;&quot;&#39; </span>{
-            <span class="self">self</span>.parse_string(token_location, <span class="string">&#39;&quot;&#39;</span>)
-        } <span class="kw">else if </span>ch == <span class="string">&#39;\&#39;&#39; </span>{
-            <span class="self">self</span>.parse_string(token_location, <span class="string">&#39;\&#39;&#39;</span>)
-        } <span class="kw">else if </span>ch.is_ascii_alphabetic() || ch == <span class="string">&#39;_&#39; </span>{
+        } <span class="kw">else if </span>ch == <span class="string">'"' </span>{
+            <span class="self">self</span>.parse_string(token_location, <span class="string">'"'</span>)
+        } <span class="kw">else if </span>ch == <span class="string">'\'' </span>{
+            <span class="self">self</span>.parse_string(token_location, <span class="string">'\''</span>)
+        } <span class="kw">else if </span>ch.is_ascii_alphabetic() || ch == <span class="string">'_' </span>{
             <span class="prelude-val">Ok</span>(<span class="self">self</span>.parse_keyword_or_identifier(ch, token_location))
         } <span class="kw">else </span>{
             <span class="comment">// self.unread_char(ch);
             </span><span class="prelude-val">Err</span>(SceneErr::InvalidCharacter {
                 loc: token_location,
-                msg: <span class="macro">format!</span>(<span class="string">&quot;{ch} invalid character&quot;</span>),
+                msg: <span class="macro">format!</span>(<span class="string">"{ch} invalid character"</span>),
             })
         }
     }
@@ -2640,14 +2642,14 @@
     </span><span class="kw">fn </span>match_eol_or_inline_comment(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), SceneErr&gt; {
         <span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
         <span class="comment">// Two possibility: eol or inline comment.
-        </span><span class="kw">if </span><span class="macro">matches!</span>(token, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">&#39;\n&#39;</span>) {
+        </span><span class="kw">if </span><span class="macro">matches!</span>(token, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">'\n'</span>) {
             <span class="prelude-val">Ok</span>(())
-        } <span class="kw">else if </span><span class="macro">matches!</span>(token, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">&#39; &#39;</span>) {
+        } <span class="kw">else if </span><span class="macro">matches!</span>(token, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">' '</span>) {
             <span class="self">self</span>.skip_comment();
-            <span class="self">self</span>.match_symbol(<span class="string">&#39;\n&#39;</span>)<span class="question-mark">?</span>;
+            <span class="self">self</span>.match_symbol(<span class="string">'\n'</span>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else </span>{
-            <span class="macro">not_matches!</span>(token, <span class="string">&quot;inline comment or &#39;\n&#39;&quot;</span>)
+            <span class="macro">not_matches!</span>(token, <span class="string">"inline comment or '\n'"</span>)
         }
     }
 
@@ -2659,10 +2661,10 @@
         // So unread it.
         </span><span class="kw">if </span><span class="macro">matches!</span>(token, Token::Keyword(<span class="kw">_</span>, <span class="kw">_</span>)) || <span class="macro">matches!</span>(token, Token::Stop(<span class="kw">_</span>)) {
             <span class="self">self</span>.unread_token(token);
-        <span class="comment">// If there is comment symbol, unread the char &#39;#&#39;,
+        <span class="comment">// If there is comment symbol, unread the char '#',
         // and run `skip_whitespaces_and_comments`.
-        </span>} <span class="kw">else if </span><span class="macro">matches!</span>(token, Token::Symbol(<span class="kw">_</span>, <span class="string">&#39;#&#39;</span>)) {
-            <span class="self">self</span>.unread_char(<span class="string">&#39;#&#39;</span>);
+        </span>} <span class="kw">else if </span><span class="macro">matches!</span>(token, Token::Symbol(<span class="kw">_</span>, <span class="string">'#'</span>)) {
+            <span class="self">self</span>.unread_char(<span class="string">'#'</span>);
             <span class="self">self</span>.skip_whitespaces_and_comments();
         <span class="comment">// Otherwise run `skip_whitespaces_and_comments`.
         </span>} <span class="kw">else </span>{
@@ -2678,7 +2680,7 @@
         // * `level` is intended for key alignment, incremented by 2 spaces.
         // * `nested` is intended for nested list alignment, incremented by `self.spaces`.
         </span><span class="kw">for _ in </span><span class="number">1</span>..=(<span class="self">self</span>.spaces + level * <span class="number">2 </span>+ <span class="self">self</span>.spaces * nested) {
-            <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+            <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -2687,12 +2689,12 @@
     /// a particular `keywords` [`Keywords`].
     /// Otherwise return a [`SceneErr::NotMatch`] error.
     </span><span class="kw">fn </span>match_keyword(<span class="kw-2">&amp;mut </span><span class="self">self</span>, keyword: Keywords) -&gt; <span class="prelude-ty">Result</span>&lt;(), SceneErr&gt; {
-        <span class="comment">// Match a particular keyword plus &#39;:&#39;.
+        <span class="comment">// Match a particular keyword plus ':'.
         </span><span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
         <span class="kw">match </span>token {
             Token::Keyword(loc, key) =&gt; {
                 <span class="kw">if </span>key == keyword {
-                    <span class="self">self</span>.match_symbol(<span class="string">&#39;:&#39;</span>)
+                    <span class="self">self</span>.match_symbol(<span class="string">':'</span>)
                 } <span class="kw">else </span>{
                     <span class="macro">not_match!</span>(loc, key, keyword)
                 }
@@ -2706,12 +2708,12 @@
     /// Return, wrapped inside a [`Result`], the keyword.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
     </span><span class="kw">fn </span>match_keywords(<span class="kw-2">&amp;mut </span><span class="self">self</span>, keywords: <span class="kw-2">&amp;</span>Vec&lt;Keywords&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Keywords, SceneErr&gt; {
-        <span class="comment">// Match a potential vector of keywords plus &#39;:&#39;.
+        <span class="comment">// Match a potential vector of keywords plus ':'.
         </span><span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
         <span class="kw">match </span>token {
             Token::Keyword(loc, key) =&gt; {
                 <span class="kw">if </span>keywords.contains(<span class="kw-2">&amp;</span>key) {
-                    <span class="self">self</span>.match_symbol(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
+                    <span class="self">self</span>.match_symbol(<span class="string">':'</span>)<span class="question-mark">?</span>;
                     <span class="prelude-val">Ok</span>(key)
                 } <span class="kw">else </span>{
                     <span class="macro">not_match!</span>(loc, key, keywords)
@@ -2725,14 +2727,14 @@
     /// Return, wrapped inside a [`Result`], the identifier location and value.\
     /// Otherwise return a [`SceneErr::NotMatch`] error.
     </span><span class="kw">fn </span>match_identifier(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(SourceLocation, String), SceneErr&gt; {
-        <span class="comment">// Match a &#39; &#39; plus an identifier.
-        </span><span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="comment">// Match a ' ' plus an identifier.
+        </span><span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
         <span class="kw">match </span>token {
             Token::Identifier(loc, id) =&gt; <span class="prelude-val">Ok</span>((loc, id)),
             <span class="comment">// If identifier is named as a keywords, no problem, use it as identifier.
-            </span>Token::Keyword(loc, key) =&gt; <span class="prelude-val">Ok</span>((loc, <span class="macro">format!</span>(<span class="string">&quot;{key:?}&quot;</span>).to_lowercase())),
-            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">&quot;identifier&quot;</span>),
+            </span>Token::Keyword(loc, key) =&gt; <span class="prelude-val">Ok</span>((loc, <span class="macro">format!</span>(<span class="string">"{key:?}"</span>).to_lowercase())),
+            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">"identifier"</span>),
         }
     }
 
@@ -2743,7 +2745,7 @@
         <span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
         <span class="kw">match </span>token {
             Token::String(loc, st) =&gt; <span class="prelude-val">Ok</span>((loc, st)),
-            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">&quot;string&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">"string"</span>),
         }
     }
 
@@ -2754,7 +2756,7 @@
         <span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
         <span class="kw">match </span>token {
             Token::LiteralNumber(<span class="kw">_</span>, num) =&gt; <span class="prelude-val">Ok</span>(num),
-            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">&quot;floating-point number&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">"floating-point number"</span>),
         }
     }
 
@@ -2769,20 +2771,20 @@
         <span class="kw">match </span>token {
             Token::LiteralNumber(<span class="kw">_</span>, num) =&gt; <span class="prelude-val">Ok</span>(num),
             Token::Identifier(loc, <span class="kw-2">ref </span>id) =&gt; {
-                <span class="kw">if </span>id == <span class="string">&quot;RATIO&quot; </span>{
+                <span class="kw">if </span>id == <span class="string">"RATIO" </span>{
                     <span class="prelude-val">Ok</span>(cli.aspect_ratio)
-                } <span class="kw">else if </span>id == <span class="string">&quot;DISTANCE&quot; </span>{
+                } <span class="kw">else if </span>id == <span class="string">"DISTANCE" </span>{
                     <span class="prelude-val">Ok</span>(<span class="number">1.0</span>)
                 } <span class="kw">else </span>{
                     <span class="prelude-val">Err</span>(SceneErr::UndefinedIdentifier {
                         loc,
                         msg: <span class="macro">format!</span>(
-                            <span class="string">&quot;{id:?} floating-point number not defined, available [DISTANCE, RATIO]&quot;
+                            <span class="string">"{id:?} floating-point number not defined, available [DISTANCE, RATIO]"
                         </span>),
                     })
                 }
             },
-            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">&quot;floating-point number&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">"floating-point number"</span>),
         }
     }
 
@@ -2794,15 +2796,15 @@
         <span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
         <span class="kw">match </span>token {
             <span class="comment">// Match a raw color rgb.
-            </span>Token::Symbol(<span class="kw">_</span>, <span class="string">&#39;[&#39;</span>) =&gt; {
+            </span>Token::Symbol(<span class="kw">_</span>, <span class="string">'['</span>) =&gt; {
                 <span class="kw">let </span>r = <span class="self">self</span>.match_number()<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;,&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">','</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="kw">let </span>g = <span class="self">self</span>.match_number()<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;,&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">','</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="kw">let </span>b = <span class="self">self</span>.match_number()<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;]&#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">']'</span>)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(Color::from((r, g, b)))
             },
             <span class="comment">// Match color from variables `var`.
@@ -2813,19 +2815,19 @@
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
                         loc,
-                        msg: <span class="macro">format!</span>(<span class="string">&quot;{color:?} color not defined&quot;</span>),
+                        msg: <span class="macro">format!</span>(<span class="string">"{color:?} color not defined"</span>),
                     })<span class="question-mark">?</span>)
             },
             <span class="comment">// Match color from variables `var`.
             </span>Token::Keyword(loc, key) =&gt; <span class="prelude-val">Ok</span>(var
                 .colors
-                .get(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{key:?}&quot;</span>).to_lowercase())
+                .get(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"{key:?}"</span>).to_lowercase())
                 .copied()
                 .ok_or(SceneErr::UndefinedIdentifier {
                     loc,
-                    msg: <span class="macro">format!</span>(<span class="string">&quot;\&quot;{key:?}\&quot; color not defined&quot;</span>),
+                    msg: <span class="macro">format!</span>(<span class="string">"\"{key:?}\" color not defined"</span>),
                 })<span class="question-mark">?</span>),
-            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">&quot;rgb color&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">"rgb color"</span>),
         }
     }
 
@@ -2835,15 +2837,15 @@
         <span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
         <span class="kw">match </span>token {
             <span class="comment">// Match a raw vector xyz.
-            </span>Token::Symbol(<span class="kw">_</span>, <span class="string">&#39;[&#39;</span>) =&gt; {
+            </span>Token::Symbol(<span class="kw">_</span>, <span class="string">'['</span>) =&gt; {
                 <span class="kw">let </span>x = <span class="self">self</span>.match_number()<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;,&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">','</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="kw">let </span>y = <span class="self">self</span>.match_number()<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;,&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">','</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="kw">let </span>z = <span class="self">self</span>.match_number()<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;]&#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">']'</span>)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(Vector::from((x, y, z)))
             },
             <span class="comment">// Match vector from variables `var`.
@@ -2854,10 +2856,10 @@
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
                         loc,
-                        msg: <span class="macro">format!</span>(<span class="string">&quot;{vector:?} vector not defined, available [E1, E2, E3]&quot;</span>),
+                        msg: <span class="macro">format!</span>(<span class="string">"{vector:?} vector not defined, available [E1, E2, E3]"</span>),
                     })<span class="question-mark">?</span>)
             },
-            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">&quot;xyz vector&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(token, <span class="string">"xyz vector"</span>),
         }
     }
 
@@ -2876,7 +2878,7 @@
         <span class="comment">// Match indent with colors block spaces + 1 level (2 spaces)
         </span><span class="self">self</span>.match_spaces(<span class="number">1</span>, <span class="number">0</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.match_keyword(Keywords::Color)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         colors.insert(name, <span class="self">self</span>.parse_color(var)<span class="question-mark">?</span>);
         <span class="prelude-val">Ok</span>(())
     }
@@ -2887,14 +2889,14 @@
     </span><span class="kw">fn </span>parse_colors(<span class="kw-2">&amp;mut </span><span class="self">self</span>, var: <span class="kw-2">&amp;</span>Var) -&gt; <span class="prelude-ty">Result</span>&lt;BTreeMap&lt;String, Color&gt;, SceneErr&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>colors = BTreeMap::new();
         <span class="comment">// The keyword `Keywords::Colors` is parsed inside `parse_scene`.
-        // After &#39;colors:&#39; can only be a eol or inline comment.
+        // After 'colors:' can only be a eol or inline comment.
         </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
         <span class="comment">// A minimum of one space indent is absolutely needed.
-        </span><span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        </span><span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="comment">// Count spaces for colors block, used to parse indent.
         </span><span class="self">self</span>.count_spaces()<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.parse_color_name(<span class="kw-2">&amp;mut </span>colors, var)<span class="question-mark">?</span>;
         <span class="kw">loop </span>{
             <span class="comment">// Can only be a eol or inline comment.
@@ -2905,13 +2907,13 @@
             // Otherwise stop with colors block.
             // No other suppositions are made! To reduce grammar complexity.
             // So for example no comment infra line of a block of colors.
-            </span><span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">&#39; &#39;</span>) {
+            </span><span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">' '</span>) {
                 <span class="comment">// Unread a space token to complete parse the correct
                 // indent using `match_spaces`.
                 </span><span class="self">self</span>.unread_token(tk_nx);
                 <span class="self">self</span>.match_spaces(<span class="number">0</span>, <span class="number">0</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.parse_color_name(<span class="kw-2">&amp;mut </span>colors, var)<span class="question-mark">?</span>;
             } <span class="kw">else </span>{
                 <span class="comment">// Unread the condition token.
@@ -2933,7 +2935,7 @@
             Keywords::Checkered,
             Keywords::Image,
         ])<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="kw">match </span>pigment {
             Keywords::Uniform =&gt; <span class="prelude-val">Ok</span>(Pigment::Uniform(UniformPigment {
                 color: <span class="self">self</span>.parse_color(var)<span class="question-mark">?</span>,
@@ -2944,22 +2946,22 @@
                     HdrImage::read_pfm_file(Path::new(<span class="kw-2">&amp;</span>pfm_file)).map_err(|err| {
                         SceneErr::PfmFileReadFailure {
                             loc,
-                            msg: <span class="macro">format!</span>(<span class="string">&quot;{pfm_file:?} pfm file read failure&quot;</span>),
+                            msg: <span class="macro">format!</span>(<span class="string">"{pfm_file:?} pfm file read failure"</span>),
                             src: err,
                         }
                     })<span class="question-mark">?</span>,
                 )))
             },
             Keywords::Checkered =&gt; {
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;[&#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">'['</span>)<span class="question-mark">?</span>;
                 <span class="kw">let </span>color1 = <span class="self">self</span>.parse_color(var)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;,&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">','</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="kw">let </span>color2 = <span class="self">self</span>.parse_color(var)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;,&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">','</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="kw">let </span>steps = <span class="self">self</span>.match_number()<span class="question-mark">? </span><span class="kw">as </span>u32;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;]&#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">']'</span>)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(Pigment::Checkered(CheckeredPigment {
                     color1,
                     color2,
@@ -2968,7 +2970,7 @@
             },
             <span class="comment">// This branch should never be triggered (a dummy error).
             </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(SceneErr::UnexpectedMatch(String::from(
-                <span class="string">&quot;unexpected match (report it to devel)&quot;</span>,
+                <span class="string">"unexpected match (report it to devel)"</span>,
             ))),
         }
     }
@@ -2991,7 +2993,7 @@
             })),
             <span class="comment">// This branch should never be triggered (a dummy error).
             </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(SceneErr::UnexpectedMatch(String::from(
-                <span class="string">&quot;unexpected match (report it to devel)&quot;</span>,
+                <span class="string">"unexpected match (report it to devel)"</span>,
             ))),
         }
     }
@@ -3029,14 +3031,14 @@
     </span><span class="kw">fn </span>parse_materials(<span class="kw-2">&amp;mut </span><span class="self">self</span>, var: <span class="kw-2">&amp;</span>Var) -&gt; <span class="prelude-ty">Result</span>&lt;BTreeMap&lt;String, Material&gt;, SceneErr&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>materials = BTreeMap::new();
         <span class="comment">// The keyword `Keywords::Materials` is parsed inside `parse_scene`.
-        // After &#39;materials:&#39; can only be a eol or inline comment.
+        // After 'materials:' can only be a eol or inline comment.
         </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
         <span class="comment">// A minimum of one space indent is absolutely needed.
-        </span><span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        </span><span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="comment">// Count spaces for materials block, used to parse indent.
         </span><span class="self">self</span>.count_spaces()<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.parse_material(<span class="kw-2">&amp;mut </span>materials, var)<span class="question-mark">?</span>;
         <span class="kw">loop </span>{
             <span class="comment">// Can only be a eol or inline comment.
@@ -3046,13 +3048,13 @@
             <span class="comment">// If there is a space a new material can be parsed.
             // Otherwise stop with materials block.
             // No other suppositions are made! To reduce grammar complexity.
-            </span><span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">&#39; &#39;</span>) {
+            </span><span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">' '</span>) {
                 <span class="comment">// Unread a space token to complete parse the correct
                 // indent using `match_spaces`.
                 </span><span class="self">self</span>.unread_token(tk_nx);
                 <span class="self">self</span>.match_spaces(<span class="number">0</span>, <span class="number">0</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.parse_material(<span class="kw-2">&amp;mut </span>materials, var)<span class="question-mark">?</span>;
             } <span class="kw">else </span>{
                 <span class="comment">// Unread the condition token.
@@ -3075,32 +3077,32 @@
             Token::Keyword(loc, key) =&gt; {
                 <span class="kw">let </span>ch = <span class="self">self</span>.read_char();
                 <span class="comment">// Match from transformation [`Token::Keywords`].
-                </span><span class="kw">if </span>ch == <span class="string">&#39;:&#39; </span>{
-                    <span class="self">self</span>.unread_char(<span class="string">&#39;:&#39;</span>);
+                </span><span class="kw">if </span>ch == <span class="string">':' </span>{
+                    <span class="self">self</span>.unread_char(<span class="string">':'</span>);
                     <span class="kw">match </span>key {
                         Keywords::RotationX =&gt; {
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">':'</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(rotation_x(f32::to_radians(<span class="self">self</span>.match_number()<span class="question-mark">?</span>)))
                         },
                         Keywords::RotationY =&gt; {
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">':'</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(rotation_y(f32::to_radians(<span class="self">self</span>.match_number()<span class="question-mark">?</span>)))
                         },
                         Keywords::RotationZ =&gt; {
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">':'</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(rotation_z(f32::to_radians(<span class="self">self</span>.match_number()<span class="question-mark">?</span>)))
                         },
                         Keywords::Scaling =&gt; {
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">':'</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(scaling(<span class="self">self</span>.parse_vector(var)<span class="question-mark">?</span>))
                         },
                         Keywords::Translation =&gt; {
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
-                            <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">':'</span>)<span class="question-mark">?</span>;
+                            <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(translation(<span class="self">self</span>.parse_vector(var)<span class="question-mark">?</span>))
                         },
                         <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(
@@ -3118,11 +3120,11 @@
                 </span>} <span class="kw">else </span>{
                     <span class="self">self</span>.unread_char(ch);
                     <span class="prelude-val">Ok</span>(transformations
-                        .get(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{key:?}&quot;</span>).to_lowercase())
+                        .get(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"{key:?}"</span>).to_lowercase())
                         .copied()
                         .ok_or(SceneErr::UndefinedIdentifier {
                             loc,
-                            msg: <span class="macro">format!</span>(<span class="string">&quot;\&quot;{key:?}\&quot; transformation not defined&quot;</span>),
+                            msg: <span class="macro">format!</span>(<span class="string">"\"{key:?}\" transformation not defined"</span>),
                         })<span class="question-mark">?</span>)
                 }
             },
@@ -3133,10 +3135,10 @@
                     .copied()
                     .ok_or(SceneErr::UndefinedIdentifier {
                         loc,
-                        msg: <span class="macro">format!</span>(<span class="string">&quot;{id:?} transformation not defined&quot;</span>),
+                        msg: <span class="macro">format!</span>(<span class="string">"{id:?} transformation not defined"</span>),
                     })
             },
-            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(transformation_tk, <span class="string">&quot;transformation&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(transformation_tk, <span class="string">"transformation"</span>),
         }
     }
 
@@ -3163,15 +3165,15 @@
         <span class="comment">// Match indent with transformations block spaces + 1 level (2 spaces) +
         // + 1 * (transformations block spaces).
         </span><span class="self">self</span>.match_spaces(<span class="number">1</span>, <span class="number">1</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         transformation = <span class="self">self</span>.parse_transformation(transformations, var)<span class="question-mark">? </span>* transformation;
         <span class="kw">loop </span>{
             <span class="comment">// Can only be a eol or inline comment.
             </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
             <span class="comment">// Condition token: continue to read or not?
             </span><span class="kw">let </span>tk_nx = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
-            <span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">&#39; &#39;</span>) {
+            <span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">' '</span>) {
                 <span class="comment">// Unread a space token to complete parse the correct
                 // indent using `match_spaces`.
                 </span><span class="self">self</span>.unread_token(tk_nx);
@@ -3181,21 +3183,21 @@
                 </span><span class="kw">let </span>tk_nx_nx = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
                 <span class="kw">match </span>tk_nx_nx {
                     <span class="comment">// If there is a space (again) continue to compose.
-                    </span>Token::Symbol(<span class="kw">_</span>, <span class="string">&#39; &#39;</span>) =&gt; {
+                    </span>Token::Symbol(<span class="kw">_</span>, <span class="string">' '</span>) =&gt; {
                         <span class="comment">// Unread a space token to complete parse the correct
                         // indent using `match_spaces`.
                         </span><span class="self">self</span>.unread_token(tk_nx_nx);
                         <span class="comment">// Match indent with transformations block spaces + 1 level (2 spaces).
                         </span><span class="self">self</span>.match_spaces(<span class="number">1</span>, <span class="number">0</span>)<span class="question-mark">?</span>;
-                        <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-                        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                        <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+                        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                         transformation =
                             <span class="self">self</span>.parse_transformation(transformations, var)<span class="question-mark">? </span>* transformation;
                         <span class="prelude-val">Ok</span>(())
                     },
                     <span class="comment">// Otherwise stop with compose transformation block.
-                    // If there is &#39;-&#39; no more composing, this is a new transformation.
-                    </span>Token::Symbol(<span class="kw">_</span>, <span class="string">&#39;-&#39;</span>) =&gt; {
+                    // If there is '-' no more composing, this is a new transformation.
+                    </span>Token::Symbol(<span class="kw">_</span>, <span class="string">'-'</span>) =&gt; {
                         <span class="comment">// What! This branch has diffent return type `()` so not `Result`,
                         // but `break` keyword make this match valid as the others.
                         // Magic rustc.
@@ -3203,7 +3205,7 @@
                         <span class="kw">break</span>;
                     },
                     <span class="comment">// No other suppositions are made! To reduce grammar complexity.
-                    </span><span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(tk_nx_nx, <span class="string">&quot;[&#39; &#39;, &#39;-&#39;]&quot;</span>),
+                    </span><span class="kw">_ </span>=&gt; <span class="macro">not_matches!</span>(tk_nx_nx, <span class="string">"[' ', '-']"</span>),
                 }<span class="question-mark">?</span>;
             } <span class="kw">else </span>{
                 <span class="comment">// Unread the condition token.
@@ -3225,23 +3227,23 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;BTreeMap&lt;String, Transformation&gt;, SceneErr&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>transformations = BTreeMap::new();
         <span class="comment">// The keyword `Keywords::Transformations` is parsed inside `parse_scene`.
-        // After &#39;transformations:&#39; can only be a eol or inline comment.
+        // After 'transformations:' can only be a eol or inline comment.
         </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
         <span class="comment">// A minimum of one space indent is absolutely needed.
-        </span><span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        </span><span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="comment">// Count spaces for transformations block, used to parse indent.
         </span><span class="self">self</span>.count_spaces()<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.parse_composed_transformation(<span class="kw-2">&amp;mut </span>transformations, var)<span class="question-mark">?</span>;
         <span class="kw">loop </span>{
             <span class="comment">// Condition token: read a new transformation or not?
             </span><span class="kw">let </span>tk_nx = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
-            <span class="comment">// If there is &#39;-&#39; read new transformation.
+            <span class="comment">// If there is '-' read new transformation.
             // Otherwise stop with materials block.
             // No other suppositions are made! To reduce grammar complexity.
-            </span><span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">&#39;-&#39;</span>) {
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+            </span><span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">'-'</span>) {
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.parse_composed_transformation(<span class="kw-2">&amp;mut </span>transformations, var)<span class="question-mark">?</span>;
             } <span class="kw">else </span>{
                 <span class="comment">// Unread condition token.
@@ -3256,7 +3258,7 @@
     /// Otherwise return a variant of [`SceneErr`] error.
     </span><span class="kw">fn </span>parse_shape(<span class="kw-2">&amp;mut </span><span class="self">self</span>, var: <span class="kw-2">&amp;</span>Var) -&gt; <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span>RayIntersection&gt;, SceneErr&gt; {
         <span class="self">self</span>.match_keyword(Keywords::Shape)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="comment">// Shape type e.g. sphere, plane.
         </span><span class="kw">let </span>shapes = <span class="macro">vec!</span>[Keywords::Plane, Keywords::Sphere];
         <span class="kw">let </span>token = <span class="self">self</span>.read_token()<span class="question-mark">?</span>;
@@ -3283,7 +3285,7 @@
                 .cloned()
                 .ok_or(SceneErr::UndefinedIdentifier {
                     loc,
-                    msg: <span class="macro">format!</span>(<span class="string">&quot;{material_id:?} material not defined&quot;</span>),
+                    msg: <span class="macro">format!</span>(<span class="string">"{material_id:?} material not defined"</span>),
                 })<span class="question-mark">?</span>;
         <span class="comment">// Can only be a eol or inline comment.
         </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
@@ -3295,7 +3297,7 @@
         </span><span class="kw">let </span>transformation = var.transformations.get(<span class="kw-2">&amp;</span>transformation_id).copied().ok_or(
             SceneErr::UndefinedIdentifier {
                 loc,
-                msg: <span class="macro">format!</span>(<span class="string">&quot;{transformation_id:?} transformation not defined&quot;</span>),
+                msg: <span class="macro">format!</span>(<span class="string">"{transformation_id:?} transformation not defined"</span>),
             },
         )<span class="question-mark">?</span>;
         <span class="kw">match </span>shape {
@@ -3303,7 +3305,7 @@
             Keywords::Sphere =&gt; <span class="prelude-val">Ok</span>(Box::new(Sphere::new(transformation, material))),
             <span class="comment">// This branch should never be triggered (a dummy error).
             </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(SceneErr::UnexpectedMatch(String::from(
-                <span class="string">&quot;unexpected match (report it to devel)&quot;</span>,
+                <span class="string">"unexpected match (report it to devel)"</span>,
             ))),
         }
     }
@@ -3315,14 +3317,14 @@
         <span class="comment">// Init an empty world object.
         </span><span class="kw">let </span><span class="kw-2">mut </span>shapes = World::default();
         <span class="comment">// The keyword `Keywords::Shapes` is parsed inside `parse_scene`.
-        // After &#39;shapes:&#39; can only be a eol or inline comment.
+        // After 'shapes:' can only be a eol or inline comment.
         </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
         <span class="comment">// A minimum of one space indent is absolutely needed.
-        </span><span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        </span><span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="comment">// Count spaces for shapes block, used to parse indent.
         </span><span class="self">self</span>.count_spaces()<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         shapes.add(<span class="self">self</span>.parse_shape(var)<span class="question-mark">?</span>);
         <span class="kw">loop </span>{
             <span class="comment">// Can only be a eol or inline comment.
@@ -3333,13 +3335,13 @@
             // Otherwise stop with shapes block.
             // No other suppositions are made! To reduce grammar complexity.
             // So for example no comment infra line of a block of shapes.
-            </span><span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">&#39; &#39;</span>) {
+            </span><span class="kw">if </span><span class="macro">matches!</span>(tk_nx, Token::Symbol(<span class="kw">_</span>, sym) <span class="kw">if </span>sym==<span class="string">' '</span>) {
                 <span class="comment">// Unread a space token to complete parse the correct
                 // indent using `match_spaces`.
                 </span><span class="self">self</span>.unread_token(tk_nx);
                 <span class="self">self</span>.match_spaces(<span class="number">0</span>, <span class="number">0</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39;-&#39;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">'-'</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
                 shapes.add(<span class="self">self</span>.parse_shape(var)<span class="question-mark">?</span>);
             } <span class="kw">else </span>{
                 <span class="comment">// Unread condition token.
@@ -3355,20 +3357,20 @@
     /// Otherwise return a variant of [`SceneErr`] error.
     </span><span class="kw">fn </span>parse_camera(<span class="kw-2">&amp;mut </span><span class="self">self</span>, var: <span class="kw-2">&amp;</span>Var, cli: Cli) -&gt; <span class="prelude-ty">Result</span>&lt;Camera, SceneErr&gt; {
         <span class="comment">// The keyword `Keywords::Camera` is parsed inside `parse_scene`.
-        // After &#39;camera:&#39; can only be a eol or inline comment.
+        // After 'camera:' can only be a eol or inline comment.
         </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
         <span class="comment">// A minimum of one space indent is absolutely needed.
-        </span><span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        </span><span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="comment">// Count spaces for camera block, used to parse indent.
         </span><span class="self">self</span>.count_spaces()<span class="question-mark">?</span>;
         <span class="self">self</span>.match_keyword(Keywords::Type)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="comment">// Fail fast if invalid camera type parsed.
         </span><span class="kw">let </span>(loc, camera) = <span class="self">self</span>.match_string()<span class="question-mark">?</span>;
-        <span class="kw">if </span>!(camera == <span class="string">&quot;orthogonal&quot; </span>|| camera == <span class="string">&quot;perspective&quot;</span>) {
+        <span class="kw">if </span>!(camera == <span class="string">"orthogonal" </span>|| camera == <span class="string">"perspective"</span>) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(SceneErr::InvalidCamera {
                 loc,
-                msg: <span class="macro">format!</span>(<span class="string">&quot;found {camera:?} camera expected [\&quot;orthogonal\&quot;, \&quot;perspective\&quot;]&quot;</span>),
+                msg: <span class="macro">format!</span>(<span class="string">"found {camera:?} camera expected [\"orthogonal\", \"perspective\"]"</span>),
             });
         }
         <span class="comment">// Can only be a eol or inline comment.
@@ -3376,7 +3378,7 @@
         <span class="comment">// Match indent with camera block spaces.
         </span><span class="self">self</span>.match_spaces(<span class="number">0</span>, <span class="number">0</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.match_keyword(Keywords::Ratio)<span class="question-mark">?</span>;
-        <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
         <span class="kw">let </span>ratio = <span class="self">self</span>.match_number_cli(cli)<span class="question-mark">?</span>;
         <span class="comment">// Can only be a eol or inline comment.
         </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
@@ -3384,11 +3386,11 @@
         </span><span class="kw">let </span><span class="kw-2">mut </span>distance = <span class="number">1.0</span>;
         <span class="comment">// Override it if the camera is perspective,
         // otherwise will remain unused.
-        </span><span class="kw">if </span>camera == <span class="string">&quot;perspective&quot; </span>{
+        </span><span class="kw">if </span>camera == <span class="string">"perspective" </span>{
             <span class="comment">// Match indent with camera block spaces.
             </span><span class="self">self</span>.match_spaces(<span class="number">0</span>, <span class="number">0</span>)<span class="question-mark">?</span>;
             <span class="self">self</span>.match_keyword(Keywords::Distance)<span class="question-mark">?</span>;
-            <span class="self">self</span>.match_symbol(<span class="string">&#39; &#39;</span>)<span class="question-mark">?</span>;
+            <span class="self">self</span>.match_symbol(<span class="string">' '</span>)<span class="question-mark">?</span>;
             distance = <span class="self">self</span>.match_number_cli(cli)<span class="question-mark">?</span>;
             <span class="comment">// Can only be a eol or inline comment.
             </span><span class="self">self</span>.match_eol_or_inline_comment()<span class="question-mark">?</span>;
@@ -3402,22 +3404,22 @@
             * var.transformations.get(<span class="kw-2">&amp;</span>transformation_id).copied().ok_or(
                 SceneErr::UndefinedIdentifier {
                     loc,
-                    msg: <span class="macro">format!</span>(<span class="string">&quot;{transformation_id:?} transformation not defined&quot;</span>),
+                    msg: <span class="macro">format!</span>(<span class="string">"{transformation_id:?} transformation not defined"</span>),
                 },
             )<span class="question-mark">?</span>;
         <span class="kw">match </span>camera.as_str() {
-            <span class="string">&quot;orthogonal&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Camera::Orthogonal(OrthogonalCamera::new(
+            <span class="string">"orthogonal" </span>=&gt; <span class="prelude-val">Ok</span>(Camera::Orthogonal(OrthogonalCamera::new(
                 ratio,
                 transformation,
             ))),
-            <span class="string">&quot;perspective&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Camera::Perspective(PerspectiveCamera::new(
+            <span class="string">"perspective" </span>=&gt; <span class="prelude-val">Ok</span>(Camera::Perspective(PerspectiveCamera::new(
                 distance,
                 ratio,
                 transformation,
             ))),
             <span class="comment">// This branch should never be triggered (a dummy error).
             </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(SceneErr::UnexpectedMatch(String::from(
-                <span class="string">&quot;unexpected match (report it to devel)&quot;</span>,
+                <span class="string">"unexpected match (report it to devel)"</span>,
             ))),
         }
     }
@@ -3526,18 +3528,18 @@
 
 <span class="kw">impl </span>Default <span class="kw">for </span>Var {
     <span class="doccomment">/// Initialize a variables object with some useful predefined keys.\
-    /// E.g. &quot;BLACK&quot; and &quot;WHITE&quot; keys for [`BLACK`] and [`WHITE`] colors.
+    /// E.g. "BLACK" and "WHITE" keys for [`BLACK`] and [`WHITE`] colors.
     </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>colors = BTreeMap::new();
-        colors.insert(String::from(<span class="string">&quot;BLACK&quot;</span>), BLACK);
-        colors.insert(String::from(<span class="string">&quot;WHITE&quot;</span>), WHITE);
+        colors.insert(String::from(<span class="string">"BLACK"</span>), BLACK);
+        colors.insert(String::from(<span class="string">"WHITE"</span>), WHITE);
         <span class="kw">let </span>materials = BTreeMap::new();
         <span class="kw">let </span><span class="kw-2">mut </span>transformations = BTreeMap::new();
-        transformations.insert(String::from(<span class="string">&quot;IDENTITY&quot;</span>), Transformation::default());
+        transformations.insert(String::from(<span class="string">"IDENTITY"</span>), Transformation::default());
         <span class="kw">let </span><span class="kw-2">mut </span>vectors = BTreeMap::new();
-        vectors.insert(String::from(<span class="string">&quot;E1&quot;</span>), E1);
-        vectors.insert(String::from(<span class="string">&quot;E2&quot;</span>), E2);
-        vectors.insert(String::from(<span class="string">&quot;E3&quot;</span>), E3);
+        vectors.insert(String::from(<span class="string">"E1"</span>), E1);
+        vectors.insert(String::from(<span class="string">"E2"</span>), E2);
+        vectors.insert(String::from(<span class="string">"E3"</span>), E3);
         <span class="self">Self </span>{
             colors,
             materials,
@@ -3576,171 +3578,171 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_read_unread() {
-        <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="string">&quot;abc\nd \n  #comment\nef&quot;</span>));
+        <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="string">"abc\nd \n  #comment\nef"</span>));
 
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">1</span>);
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;a&#39;</span>);
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'a'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">2</span>);
 
-        input.unread_char(<span class="string">&#39;A&#39;</span>);
+        input.unread_char(<span class="string">'A'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">1</span>);
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;A&#39;</span>);
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'A'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">2</span>);
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;b&#39;</span>);
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'b'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">3</span>);
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;c&#39;</span>);
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'c'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">4</span>);
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;\n&#39;</span>);
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'\n'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">1</span>);
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;d&#39;</span>);
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'d'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">2</span>);
 
         input.skip_whitespaces_and_comments();
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;e&#39;</span>);
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'e'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">4</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">2</span>);
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;f&#39;</span>);
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'f'</span>);
         <span class="macro">assert_eq!</span>(input.location.line_num, <span class="number">4</span>);
         <span class="macro">assert_eq!</span>(input.location.col_num, <span class="number">3</span>);
 
-        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">&#39;\x00&#39;</span>)
+        <span class="macro">assert_eq!</span>(input.read_char(), <span class="string">'\x00'</span>)
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_lexer() {
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot; # This is a comment\n&quot;</span>,
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot;  - name: camera_tr\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationz: +1\n&quot;</span>,
-            <span class="string">&quot;      - rotationy: .5\n&quot;</span>,
-            <span class="string">&quot;      - translation: [-.3, 1E-02, 1E+1.5]\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;?\n&quot;</span>,
-            <span class="string">&quot;materials:\n&quot;</span>,
-            <span class="string">&quot;  - name: sphere_mt\n&quot;</span>,
-            <span class="string">&quot;    diffuse:\n&quot;</span>,
-            <span class="string">&quot;      image: \&quot;path_to_image.pfm\&quot;\n&quot;</span>,
-            <span class="string">&quot;    image: \&#39;path_to_image.pfm\&quot;\n&quot;</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">" # This is a comment\n"</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">"  - name: camera_tr\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationz: +1\n"</span>,
+            <span class="string">"      - rotationy: .5\n"</span>,
+            <span class="string">"      - translation: [-.3, 1E-02, 1E+1.5]\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"?\n"</span>,
+            <span class="string">"materials:\n"</span>,
+            <span class="string">"  - name: sphere_mt\n"</span>,
+            <span class="string">"    diffuse:\n"</span>,
+            <span class="string">"      image: \"path_to_image.pfm\"\n"</span>,
+            <span class="string">"    image: \'path_to_image.pfm\"\n"</span>,
         )));
 
         input.skip_whitespaces_and_comments();
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Keyword(_loc, key)) <span class="kw">if </span>key == Keywords::Transformations)
         );
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;:&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;-&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">':'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'-'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Keyword(_loc, key)) <span class="kw">if </span>key == Keywords::Name)
         );
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;:&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Identifier(_loc, id)) <span class="kw">if </span>id == <span class="string">&quot;camera_tr&quot;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">':'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Identifier(_loc, id)) <span class="kw">if </span>id == <span class="string">"camera_tr"</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Keyword(_loc, key)) <span class="kw">if </span>key == Keywords::Compose)
         );
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;:&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;-&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">':'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'-'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Keyword(_loc, key)) <span class="kw">if </span>key == Keywords::RotationZ)
         );
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;:&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">':'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::LiteralNumber(_loc, num)) <span class="kw">if </span>num == <span class="number">1.0</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;-&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'-'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Keyword(_loc, key)) <span class="kw">if </span>key == Keywords::RotationY)
         );
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;:&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">':'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::LiteralNumber(_loc, num)) <span class="kw">if </span>num == <span class="number">0.5</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;-&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'-'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Keyword(_loc, key)) <span class="kw">if </span>key == Keywords::Translation)
         );
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;:&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;[&#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">':'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'['</span>));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::LiteralNumber(_loc, num)) <span class="kw">if </span>num == -<span class="number">0.3</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;,&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">','</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::LiteralNumber(_loc, num)) <span class="kw">if </span>num == <span class="number">0.01</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;,&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">','</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
         input.read_token(),
         <span class="prelude-val">Err</span>(SceneErr::FloatParseFailure { loc, .. }) <span class="kw">if </span>loc.line_num==<span class="number">9 </span>&amp;&amp; loc.col_num==<span class="number">35</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;]&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">']'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
         input.read_token(),
         <span class="prelude-val">Err</span>(SceneErr::InvalidCharacter { loc, .. }) <span class="kw">if </span>loc.line_num==<span class="number">12 </span>&amp;&amp; loc.col_num==<span class="number">1</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
         <span class="kw">for _ in </span><span class="number">1</span>..=<span class="number">25 </span>{
             <span class="kw">let </span>_res = input.read_token();
         }
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Keyword(_loc, key)) <span class="kw">if </span>key == Keywords::Image)
         );
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;:&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">':'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::String(_loc, st)) <span class="kw">if </span>st == <span class="string">&quot;path_to_image.pfm&quot;</span>)
+            <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::String(_loc, st)) <span class="kw">if </span>st == <span class="string">"path_to_image.pfm"</span>)
         );
         <span class="kw">for _ in </span><span class="number">1</span>..=<span class="number">5 </span>{
             <span class="kw">let </span>_res = input.read_token();
@@ -3748,12 +3750,12 @@
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Keyword(_loc, key)) <span class="kw">if </span>key == Keywords::Image)
         );
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;:&#39;</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39; &#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">':'</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">' '</span>));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
         input.read_token(),
         <span class="prelude-val">Err</span>(SceneErr::UnclosedString { loc, .. }) <span class="kw">if </span>loc.line_num==<span class="number">17 </span>&amp;&amp; loc.col_num==<span class="number">31</span>));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">&#39;\n&#39;</span>));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Symbol(_loc, sym)) <span class="kw">if </span>sym == <span class="string">'\n'</span>));
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(input.read_token(), <span class="prelude-val">Ok</span>(Token::Stop(loc)) <span class="kw">if </span>loc.line_num==<span class="number">18 </span>&amp;&amp; loc.col_num==<span class="number">1</span>)
         )
@@ -3762,12 +3764,12 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_camera_parser() {
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;camera:\n&quot;</span>,
-            <span class="string">&quot;   type: &#39;perspective&#39;\n&quot;</span>,
-            <span class="string">&quot;   ratio: 0.5\n&quot;</span>,
-            <span class="string">&quot;   distance: DISTANCE\n&quot;</span>,
-            <span class="string">&quot;   transformation: IDENTITY\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"camera:\n"</span>,
+            <span class="string">"   type: 'perspective'\n"</span>,
+            <span class="string">"   ratio: 0.5\n"</span>,
+            <span class="string">"   distance: DISTANCE\n"</span>,
+            <span class="string">"   transformation: IDENTITY\n"</span>,
         )));
         <span class="kw">let </span><span class="kw-2">mut </span>var = Var::default();
         <span class="kw">let </span>cli = Cli {
@@ -3775,7 +3777,7 @@
             angle_deg: <span class="number">0.0</span>,
         };
         var.transformations
-            .insert(String::from(<span class="string">&quot;camera&quot;</span>), Transformation::default());
+            .insert(String::from(<span class="string">"camera"</span>), Transformation::default());
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
         <span class="macro">assert!</span>(input.match_keyword(Keywords::Camera).is_ok());
@@ -3784,10 +3786,10 @@
         );
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;camera:\n&quot;</span>,
-            <span class="string">&quot;  type: \&quot;orthogonal\&quot;    # This is an inline comment\n&quot;</span>,
-            <span class="string">&quot;  ratio: RATIO\n&quot;</span>,
-            <span class="string">&quot;  transformation: camera\n&quot;</span>,
+            <span class="string">"camera:\n"</span>,
+            <span class="string">"  type: \"orthogonal\"    # This is an inline comment\n"</span>,
+            <span class="string">"  ratio: RATIO\n"</span>,
+            <span class="string">"  transformation: camera\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3797,14 +3799,14 @@
         );
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;\n  # This is a double spaced comment&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;camera:\n&quot;</span>,
-            <span class="string">&quot;  type: &#39;mycamera&#39;\n&quot;</span>,
-            <span class="string">&quot;  ratio: 0.5\n&quot;</span>,
-            <span class="string">&quot;  distance: 1.0\n&quot;</span>,
-            <span class="string">&quot;  transformation: camera\n&quot;</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"\n  # This is a double spaced comment"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"camera:\n"</span>,
+            <span class="string">"  type: 'mycamera'\n"</span>,
+            <span class="string">"  ratio: 0.5\n"</span>,
+            <span class="string">"  distance: 1.0\n"</span>,
+            <span class="string">"  transformation: camera\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3815,12 +3817,12 @@
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;\n  &quot;</span>,
-            <span class="string">&quot;camera:\n&quot;</span>,
-            <span class="string">&quot;  type: &#39;perspective&#39;\n&quot;</span>,
-            <span class="string">&quot;  ratio: 0.5\n&quot;</span>,
-            <span class="string">&quot;  distance: 1.0\n&quot;</span>,
-            <span class="string">&quot;  transformation: camera2\n&quot;</span>,
+            <span class="string">"\n  "</span>,
+            <span class="string">"camera:\n"</span>,
+            <span class="string">"  type: 'perspective'\n"</span>,
+            <span class="string">"  ratio: 0.5\n"</span>,
+            <span class="string">"  distance: 1.0\n"</span>,
+            <span class="string">"  transformation: camera2\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3831,11 +3833,11 @@
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;camera:\n&quot;</span>,
-            <span class="string">&quot;  type: &#39;perspective&#39;\n&quot;</span>,
-            <span class="string">&quot; ratio: 0.5\n&quot;</span>,
-            <span class="string">&quot;  distance: 1.0\n&quot;</span>,
-            <span class="string">&quot;  transformation: camera2\n&quot;</span>,
+            <span class="string">"camera:\n"</span>,
+            <span class="string">"  type: 'perspective'\n"</span>,
+            <span class="string">" ratio: 0.5\n"</span>,
+            <span class="string">"  distance: 1.0\n"</span>,
+            <span class="string">"  transformation: camera2\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3849,14 +3851,14 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_colors_parser() {
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;colors:\n&quot;</span>,
-            <span class="string">&quot;   - name: red\n&quot;</span>,
-            <span class="string">&quot;     color: [1.0, 0., 0]\n&quot;</span>,
-            <span class="string">&quot;   - name: green\n&quot;</span>,
-            <span class="string">&quot;     color: [0.0, 1., 0]\n&quot;</span>,
-            <span class="string">&quot;   - name: blue\n&quot;</span>,
-            <span class="string">&quot;     color: [0.0, 0., 1]\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"colors:\n"</span>,
+            <span class="string">"   - name: red\n"</span>,
+            <span class="string">"     color: [1.0, 0., 0]\n"</span>,
+            <span class="string">"   - name: green\n"</span>,
+            <span class="string">"     color: [0.0, 1., 0]\n"</span>,
+            <span class="string">"   - name: blue\n"</span>,
+            <span class="string">"     color: [0.0, 0., 1]\n"</span>,
         )));
         <span class="kw">let </span>var: Var = Var::default();
         <span class="kw">let </span>red = Color::from((<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>));
@@ -3867,19 +3869,19 @@
         <span class="macro">assert!</span>(input.match_keyword(Keywords::Colors).is_ok());
         <span class="kw">let </span>colors = input.parse_colors(<span class="kw-2">&amp;</span>var);
         <span class="macro">assert!</span>(colors.is_ok());
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(colors.as_ref().unwrap().get(<span class="string">&quot;red&quot;</span>), <span class="prelude-val">Some</span>(r) <span class="kw">if </span><span class="kw-2">*</span>r==red));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(colors.as_ref().unwrap().get(<span class="string">&quot;green&quot;</span>), <span class="prelude-val">Some</span>(g) <span class="kw">if </span><span class="kw-2">*</span>g==green));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(colors.as_ref().unwrap().get(<span class="string">&quot;blue&quot;</span>), <span class="prelude-val">Some</span>(b) <span class="kw">if </span><span class="kw-2">*</span>b==blue));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(colors.as_ref().unwrap().get(<span class="string">"red"</span>), <span class="prelude-val">Some</span>(r) <span class="kw">if </span><span class="kw-2">*</span>r==red));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(colors.as_ref().unwrap().get(<span class="string">"green"</span>), <span class="prelude-val">Some</span>(g) <span class="kw">if </span><span class="kw-2">*</span>g==green));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(colors.as_ref().unwrap().get(<span class="string">"blue"</span>), <span class="prelude-val">Some</span>(b) <span class="kw">if </span><span class="kw-2">*</span>b==blue));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;colors:\n&quot;</span>,
-            <span class="string">&quot;  - name: red\n&quot;</span>,
-            <span class="string">&quot;    color: [1.0, 0., 0]\n&quot;</span>,
-            <span class="string">&quot;  - name: green\n&quot;</span>,
-            <span class="string">&quot;    colors: [0.0, 1., 0]\n&quot;</span>,
-            <span class="string">&quot;  - name: blue\n&quot;</span>,
-            <span class="string">&quot;    color: [0.0, 0., 1]\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"colors:\n"</span>,
+            <span class="string">"  - name: red\n"</span>,
+            <span class="string">"    color: [1.0, 0., 0]\n"</span>,
+            <span class="string">"  - name: green\n"</span>,
+            <span class="string">"    colors: [0.0, 1., 0]\n"</span>,
+            <span class="string">"  - name: blue\n"</span>,
+            <span class="string">"    color: [0.0, 0., 1]\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3890,14 +3892,14 @@
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;colors:\n&quot;</span>,
-            <span class="string">&quot;       - name: red\n&quot;</span>,
-            <span class="string">&quot;         color: [1.0, 0., 0]\n&quot;</span>,
-            <span class="string">&quot;       - name: green\n&quot;</span>,
-            <span class="string">&quot;         colors: [0.0, 1., 0]\n&quot;</span>,
-            <span class="string">&quot;       - name: blue\n&quot;</span>,
-            <span class="string">&quot;         color: [0.0, 0., 1]\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"colors:\n"</span>,
+            <span class="string">"       - name: red\n"</span>,
+            <span class="string">"         color: [1.0, 0., 0]\n"</span>,
+            <span class="string">"       - name: green\n"</span>,
+            <span class="string">"         colors: [0.0, 1., 0]\n"</span>,
+            <span class="string">"       - name: blue\n"</span>,
+            <span class="string">"         color: [0.0, 0., 1]\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3907,15 +3909,15 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_materials_parser() {
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;materials:\n&quot;</span>,
-            <span class="string">&quot;   - name: sky\n&quot;</span>,
-            <span class="string">&quot;     specular:\n&quot;</span>,
-            <span class="string">&quot;        uniform: [1.2, 0.9, 3.7]\n&quot;</span>,
-            <span class="string">&quot;     uniform: plane # This is an inline comment\n&quot;</span>,
-            <span class="string">&quot;   - name: ground\n&quot;</span>,
-            <span class="string">&quot;     diffuse:\n&quot;</span>,
-            <span class="string">&quot;        checkered: [BLACK, WHITE, 7.]\n&quot;</span>,
-            <span class="string">&quot;     uniform: [2.1, 9.0, 7.3]\n&quot;</span>,
+            <span class="string">"materials:\n"</span>,
+            <span class="string">"   - name: sky\n"</span>,
+            <span class="string">"     specular:\n"</span>,
+            <span class="string">"        uniform: [1.2, 0.9, 3.7]\n"</span>,
+            <span class="string">"     uniform: plane # This is an inline comment\n"</span>,
+            <span class="string">"   - name: ground\n"</span>,
+            <span class="string">"     diffuse:\n"</span>,
+            <span class="string">"        checkered: [BLACK, WHITE, 7.]\n"</span>,
+            <span class="string">"     uniform: [2.1, 9.0, 7.3]\n"</span>,
         )));
         <span class="kw">let </span><span class="kw-2">mut </span>var: Var = Var::default();
         <span class="kw">let </span>sky_brdf_uniform = Color::from((<span class="number">1.2</span>, <span class="number">0.9</span>, <span class="number">3.7</span>));
@@ -3925,27 +3927,27 @@
         <span class="kw">let </span>ground_brdf_checkered_steps = <span class="number">7</span>;
         <span class="kw">let </span>ground_radiance_uniform = sky_radiance_uniform;
         var.colors
-            .insert(String::from(<span class="string">&quot;plane&quot;</span>), sky_radiance_uniform);
+            .insert(String::from(<span class="string">"plane"</span>), sky_radiance_uniform);
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
         <span class="macro">assert!</span>(input.match_keyword(Keywords::Materials).is_ok());
         <span class="kw">let </span>materials = input.parse_materials(<span class="kw-2">&amp;</span>var);
         <span class="macro">assert!</span>(materials.is_ok());
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(materials.as_ref().unwrap().get(<span class="string">&quot;sky&quot;</span>), <span class="prelude-val">Some</span>(sky) <span class="kw">if </span>(<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>sky.brdf, BRDF::Specular(sp) <span class="kw">if </span><span class="macro">matches!</span>(sp.pigment, Pigment::Uniform(pg) <span class="kw">if </span>pg.color==sky_brdf_uniform))) &amp;&amp; (<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>sky.emitted_radiance, Pigment::Uniform(pg) <span class="kw">if </span>pg.color==sky_radiance_uniform))
+            <span class="macro">matches!</span>(materials.as_ref().unwrap().get(<span class="string">"sky"</span>), <span class="prelude-val">Some</span>(sky) <span class="kw">if </span>(<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>sky.brdf, BRDF::Specular(sp) <span class="kw">if </span><span class="macro">matches!</span>(sp.pigment, Pigment::Uniform(pg) <span class="kw">if </span>pg.color==sky_brdf_uniform))) &amp;&amp; (<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>sky.emitted_radiance, Pigment::Uniform(pg) <span class="kw">if </span>pg.color==sky_radiance_uniform))
             )
         );
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(materials.as_ref().unwrap().get(<span class="string">&quot;ground&quot;</span>), <span class="prelude-val">Some</span>(ground) <span class="kw">if </span>(<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>ground.brdf, BRDF::Diffuse(df) <span class="kw">if </span><span class="macro">matches!</span>(df.pigment, Pigment::Checkered(pg) <span class="kw">if </span>pg.color1==ground_brdf_checkered_c1 &amp;&amp; pg.color2==ground_brdf_checkered_c2 &amp;&amp; pg.steps==ground_brdf_checkered_steps))) &amp;&amp; (<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>ground.emitted_radiance, Pigment::Uniform(pg) <span class="kw">if </span>pg.color==ground_radiance_uniform))
+            <span class="macro">matches!</span>(materials.as_ref().unwrap().get(<span class="string">"ground"</span>), <span class="prelude-val">Some</span>(ground) <span class="kw">if </span>(<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>ground.brdf, BRDF::Diffuse(df) <span class="kw">if </span><span class="macro">matches!</span>(df.pigment, Pigment::Checkered(pg) <span class="kw">if </span>pg.color1==ground_brdf_checkered_c1 &amp;&amp; pg.color2==ground_brdf_checkered_c2 &amp;&amp; pg.steps==ground_brdf_checkered_steps))) &amp;&amp; (<span class="macro">matches!</span>(<span class="kw-2">&amp;</span>ground.emitted_radiance, Pigment::Uniform(pg) <span class="kw">if </span>pg.color==ground_radiance_uniform))
             )
         );
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;materials:\n&quot;</span>,
-            <span class="string">&quot;  - name: sky\n&quot;</span>,
-            <span class="string">&quot;    specular:\n&quot;</span>,
-            <span class="string">&quot;      image: &#39;not_found.pfm&#39;\n&quot;</span>,
-            <span class="string">&quot;    uniform: [2.1, 9.0, 7.3]\n&quot;</span>,
+            <span class="string">"materials:\n"</span>,
+            <span class="string">"  - name: sky\n"</span>,
+            <span class="string">"    specular:\n"</span>,
+            <span class="string">"      image: 'not_found.pfm'\n"</span>,
+            <span class="string">"    uniform: [2.1, 9.0, 7.3]\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3956,11 +3958,11 @@
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;materials:\n&quot;</span>,
-            <span class="string">&quot;  - name: sky\n&quot;</span>,
-            <span class="string">&quot;    reflex:\n&quot;</span>,
-            <span class="string">&quot;      image: &#39;not_found.pfm&#39;\n&quot;</span>,
-            <span class="string">&quot;    uniform: [2.1, 9.0, 7.3]\n&quot;</span>,
+            <span class="string">"materials:\n"</span>,
+            <span class="string">"  - name: sky\n"</span>,
+            <span class="string">"    reflex:\n"</span>,
+            <span class="string">"      image: 'not_found.pfm'\n"</span>,
+            <span class="string">"    uniform: [2.1, 9.0, 7.3]\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3971,11 +3973,11 @@
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;materials:\n&quot;</span>,
-            <span class="string">&quot;  - name: sky\n&quot;</span>,
-            <span class="string">&quot;    specular:\n&quot;</span>,
-            <span class="string">&quot;      uniform: [1.2, 1.3, 1.4]\n&quot;</span>,
-            <span class="string">&quot;    not_uniform: [2.1, 9.0, 7.3]\n&quot;</span>,
+            <span class="string">"materials:\n"</span>,
+            <span class="string">"  - name: sky\n"</span>,
+            <span class="string">"    specular:\n"</span>,
+            <span class="string">"      uniform: [1.2, 1.3, 1.4]\n"</span>,
+            <span class="string">"    not_uniform: [2.1, 9.0, 7.3]\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -3986,15 +3988,15 @@
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;materials:\n&quot;</span>,
-            <span class="string">&quot;   - name: sky\n&quot;</span>,
-            <span class="string">&quot;     specular:\n&quot;</span>,
-            <span class="string">&quot;         uniform: [1.2, 0.9, 3.7]\n&quot;</span>,
-            <span class="string">&quot;     uniform: random # This is an inline comment\n&quot;</span>,
-            <span class="string">&quot;   - name: ground\n&quot;</span>,
-            <span class="string">&quot;     diffuse:\n&quot;</span>,
-            <span class="string">&quot;        checkered: [BLACK, WHITE, 7.]\n&quot;</span>,
-            <span class="string">&quot;     uniform: [2.1, 9.0, 7.3]\n&quot;</span>,
+            <span class="string">"materials:\n"</span>,
+            <span class="string">"   - name: sky\n"</span>,
+            <span class="string">"     specular:\n"</span>,
+            <span class="string">"         uniform: [1.2, 0.9, 3.7]\n"</span>,
+            <span class="string">"     uniform: random # This is an inline comment\n"</span>,
+            <span class="string">"   - name: ground\n"</span>,
+            <span class="string">"     diffuse:\n"</span>,
+            <span class="string">"        checkered: [BLACK, WHITE, 7.]\n"</span>,
+            <span class="string">"     uniform: [2.1, 9.0, 7.3]\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -4008,11 +4010,11 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_transformations_parser() {
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot; - name: camera\n&quot;</span>,
-            <span class="string">&quot;   compose:\n&quot;</span>,
-            <span class="string">&quot;    - rotationz: +1\n&quot;</span>,
-            <span class="string">&quot;    - translation: [-.3, 1E-02, -1E+1]\n&quot;</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">" - name: camera\n"</span>,
+            <span class="string">"   compose:\n"</span>,
+            <span class="string">"    - rotationz: +1\n"</span>,
+            <span class="string">"    - translation: [-.3, 1E-02, -1E+1]\n"</span>,
         )));
         <span class="kw">let </span>var: Var = Var::default();
         <span class="kw">let </span>camera =
@@ -4021,21 +4023,21 @@
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
         <span class="macro">assert!</span>(input.match_keyword(Keywords::Transformations).is_ok());
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(input.parse_transformations(<span class="kw-2">&amp;</span>var), <span class="prelude-val">Ok</span>(trs) <span class="kw">if </span><span class="macro">matches!</span>(trs.get(<span class="string">&quot;camera&quot;</span>), <span class="prelude-val">Some</span>(cam) <span class="kw">if </span><span class="kw-2">*</span>cam==camera)
+            <span class="macro">matches!</span>(input.parse_transformations(<span class="kw-2">&amp;</span>var), <span class="prelude-val">Ok</span>(trs) <span class="kw">if </span><span class="macro">matches!</span>(trs.get(<span class="string">"camera"</span>), <span class="prelude-val">Some</span>(cam) <span class="kw">if </span><span class="kw-2">*</span>cam==camera)
             )
         );
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot;  - name: rot_x\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationx: 90\n&quot;</span>,
-            <span class="string">&quot;  - name: rot_y\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationy: 180\n&quot;</span>,
-            <span class="string">&quot;  - name: rot_z\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationz: 270\n&quot;</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">"  - name: rot_x\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationx: 90\n"</span>,
+            <span class="string">"  - name: rot_y\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationy: 180\n"</span>,
+            <span class="string">"  - name: rot_z\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationz: 270\n"</span>,
         )));
         <span class="kw">let </span>rot_x = rotation_x(f32::to_radians(<span class="number">90.</span>));
         <span class="kw">let </span>rot_y = rotation_y(f32::to_radians(<span class="number">180.</span>));
@@ -4045,30 +4047,30 @@
         <span class="macro">assert!</span>(input.match_keyword(Keywords::Transformations).is_ok());
         <span class="kw">let </span>transformations = input.parse_transformations(<span class="kw-2">&amp;</span>var);
         <span class="macro">assert!</span>(transformations.is_ok());
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">&quot;rot_x&quot;</span>), <span class="prelude-val">Some</span>(rx) <span class="kw">if </span><span class="kw-2">*</span>rx==rot_x));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">&quot;rot_y&quot;</span>), <span class="prelude-val">Some</span>(ry) <span class="kw">if </span><span class="kw-2">*</span>ry==rot_y));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">&quot;rot_z&quot;</span>), <span class="prelude-val">Some</span>(rz) <span class="kw">if </span><span class="kw-2">*</span>rz==rot_z));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">"rot_x"</span>), <span class="prelude-val">Some</span>(rx) <span class="kw">if </span><span class="kw-2">*</span>rx==rot_x));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">"rot_y"</span>), <span class="prelude-val">Some</span>(ry) <span class="kw">if </span><span class="kw-2">*</span>ry==rot_y));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">"rot_z"</span>), <span class="prelude-val">Some</span>(rz) <span class="kw">if </span><span class="kw-2">*</span>rz==rot_z));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot;  - name: rotationx\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationx: 90\n&quot;</span>,
-            <span class="string">&quot;  - name: rotationy\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationy: 180\n&quot;</span>,
-            <span class="string">&quot;  - name: rotationz\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationz: 270\n&quot;</span>,
-            <span class="string">&quot;  - name: rotation_tot\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationx\n&quot;</span>,
-            <span class="string">&quot;      - rotationy\n&quot;</span>,
-            <span class="string">&quot;      - rotationz\n&quot;</span>,
-            <span class="string">&quot;  - name: rotation_translation\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotation_tot\n&quot;</span>,
-            <span class="string">&quot;      - translation: E3\n&quot;</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">"  - name: rotationx\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationx: 90\n"</span>,
+            <span class="string">"  - name: rotationy\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationy: 180\n"</span>,
+            <span class="string">"  - name: rotationz\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationz: 270\n"</span>,
+            <span class="string">"  - name: rotation_tot\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationx\n"</span>,
+            <span class="string">"      - rotationy\n"</span>,
+            <span class="string">"      - rotationz\n"</span>,
+            <span class="string">"  - name: rotation_translation\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotation_tot\n"</span>,
+            <span class="string">"      - translation: E3\n"</span>,
         )));
         <span class="kw">let </span>rot_tot = rot_z * rot_y * rot_x;
         <span class="kw">let </span>rot_tra = translation(E3) * rot_tot;
@@ -4078,40 +4080,40 @@
         <span class="kw">let </span>transformations = input.parse_transformations(<span class="kw-2">&amp;</span>var);
         <span class="macro">assert!</span>(transformations.is_ok());
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">&quot;rotation_tot&quot;</span>), <span class="prelude-val">Some</span>(rt) <span class="kw">if </span><span class="kw-2">*</span>rt==rot_tot)
+            <span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">"rotation_tot"</span>), <span class="prelude-val">Some</span>(rt) <span class="kw">if </span><span class="kw-2">*</span>rt==rot_tot)
         );
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">&quot;rotation_translation&quot;</span>), <span class="prelude-val">Some</span>(rt) <span class="kw">if </span><span class="kw-2">*</span>rt==rot_tra)
+            <span class="macro">matches!</span>(transformations.as_ref().unwrap().get(<span class="string">"rotation_translation"</span>), <span class="prelude-val">Some</span>(rt) <span class="kw">if </span><span class="kw-2">*</span>rt==rot_tra)
         );
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot;  - name: rot_scl\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationx: 90\n&quot;</span>,
-            <span class="string">&quot;      - scaling: [2.1, 1.7, 0.5]\n&quot;</span>,
-            <span class="string">&quot;  - name: rot_y\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationy: 180\n&quot;</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">"  - name: rot_scl\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationx: 90\n"</span>,
+            <span class="string">"      - scaling: [2.1, 1.7, 0.5]\n"</span>,
+            <span class="string">"  - name: rot_y\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationy: 180\n"</span>,
         )));
         <span class="kw">let </span>rot_scl = scaling(Vector::from((<span class="number">2.1</span>, <span class="number">1.7</span>, <span class="number">0.5</span>))) * rotation_x(f32::to_radians(<span class="number">90.</span>));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
         <span class="macro">assert!</span>(input.match_keyword(Keywords::Transformations).is_ok());
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(input.parse_transformations(<span class="kw-2">&amp;</span>var), <span class="prelude-val">Ok</span>(trs) <span class="kw">if </span><span class="macro">matches!</span>(trs.get(<span class="string">&quot;rot_scl&quot;</span>), <span class="prelude-val">Some</span>(rs) <span class="kw">if </span><span class="kw-2">*</span>rs==rot_scl)
+            <span class="macro">matches!</span>(input.parse_transformations(<span class="kw-2">&amp;</span>var), <span class="prelude-val">Ok</span>(trs) <span class="kw">if </span><span class="macro">matches!</span>(trs.get(<span class="string">"rot_scl"</span>), <span class="prelude-val">Some</span>(rs) <span class="kw">if </span><span class="kw-2">*</span>rs==rot_scl)
             )
         );
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot;  - name: invalid\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationx: 90\n&quot;</span>,
-            <span class="string">&quot;      - mirroring: [2.1, 1.7, 0.5]\n&quot;</span>,
-            <span class="string">&quot;  - name: rot_y\n&quot;</span>,
-            <span class="string">&quot;    compose:\n&quot;</span>,
-            <span class="string">&quot;      - rotationy: 180\n&quot;</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">"  - name: invalid\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationx: 90\n"</span>,
+            <span class="string">"      - mirroring: [2.1, 1.7, 0.5]\n"</span>,
+            <span class="string">"  - name: rot_y\n"</span>,
+            <span class="string">"    compose:\n"</span>,
+            <span class="string">"      - rotationy: 180\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -4122,11 +4124,11 @@
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot; - name: camera\n&quot;</span>,
-            <span class="string">&quot;   compose:\n&quot;</span>,
-            <span class="string">&quot;     - rotationz: +1\n&quot;</span>,
-            <span class="string">&quot;      - translation: [-.3, 1E-02, -1E+1]\n&quot;</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">" - name: camera\n"</span>,
+            <span class="string">"   compose:\n"</span>,
+            <span class="string">"     - rotationz: +1\n"</span>,
+            <span class="string">"      - translation: [-.3, 1E-02, -1E+1]\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -4140,14 +4142,14 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_shapes_parser() {
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;shapes:\n&quot;</span>,
-            <span class="string">&quot;     - shape: sphere\n&quot;</span>,
-            <span class="string">&quot;       material: sphere\n&quot;</span>,
-            <span class="string">&quot;       transformation: IDENTITY\n&quot;</span>,
-            <span class="string">&quot;     - shape: plane\n&quot;</span>,
-            <span class="string">&quot;       material: sky\n&quot;</span>,
-            <span class="string">&quot;       transformation: rotationx\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"shapes:\n"</span>,
+            <span class="string">"     - shape: sphere\n"</span>,
+            <span class="string">"       material: sphere\n"</span>,
+            <span class="string">"       transformation: IDENTITY\n"</span>,
+            <span class="string">"     - shape: plane\n"</span>,
+            <span class="string">"       material: sky\n"</span>,
+            <span class="string">"       transformation: rotationx\n"</span>,
         )));
         <span class="kw">let </span><span class="kw-2">mut </span>var: Var = Var::default();
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
@@ -4173,25 +4175,25 @@
             sphere.clone(),
         )));
         world.add(Box::new(Plane::new(rot_x, sky.clone())));
-        var.transformations.insert(String::from(<span class="string">&quot;rotationx&quot;</span>), rot_x);
-        var.materials.insert(String::from(<span class="string">&quot;sphere&quot;</span>), sphere);
-        var.materials.insert(String::from(<span class="string">&quot;sky&quot;</span>), sky);
+        var.transformations.insert(String::from(<span class="string">"rotationx"</span>), rot_x);
+        var.materials.insert(String::from(<span class="string">"sphere"</span>), sphere);
+        var.materials.insert(String::from(<span class="string">"sky"</span>), sky);
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
         <span class="macro">assert!</span>(input.match_keyword(Keywords::Shapes).is_ok());
         <span class="kw">let </span>shapes = input.parse_shapes(<span class="kw-2">&amp;</span>var);
         <span class="macro">assert!</span>(shapes.is_ok());
-        <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, shapes.unwrap()), <span class="macro">format!</span>(<span class="string">&quot;{world:?}&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">"{:?}"</span>, shapes.unwrap()), <span class="macro">format!</span>(<span class="string">"{world:?}"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;shapes:\n&quot;</span>,
-            <span class="string">&quot;  - shape: sphere\n&quot;</span>,
-            <span class="string">&quot;    material: invalid\n&quot;</span>,
-            <span class="string">&quot;    transformation: IDENTITY\n&quot;</span>,
-            <span class="string">&quot;  - shape: plane\n&quot;</span>,
-            <span class="string">&quot;    material: sky\n&quot;</span>,
-            <span class="string">&quot;    transformation: rotationx\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"shapes:\n"</span>,
+            <span class="string">"  - shape: sphere\n"</span>,
+            <span class="string">"    material: invalid\n"</span>,
+            <span class="string">"    transformation: IDENTITY\n"</span>,
+            <span class="string">"  - shape: plane\n"</span>,
+            <span class="string">"    material: sky\n"</span>,
+            <span class="string">"    transformation: rotationx\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -4202,14 +4204,14 @@
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;shapes:\n&quot;</span>,
-            <span class="string">&quot;  - shape: sphere\n&quot;</span>,
-            <span class="string">&quot;    material: sphere\n&quot;</span>,
-            <span class="string">&quot;    transformation: IDENTITY\n&quot;</span>,
-            <span class="string">&quot;   - shape: plane\n&quot;</span>,
-            <span class="string">&quot;     material: sky\n&quot;</span>,
-            <span class="string">&quot;     transformation: rotationx\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"shapes:\n"</span>,
+            <span class="string">"  - shape: sphere\n"</span>,
+            <span class="string">"    material: sphere\n"</span>,
+            <span class="string">"    transformation: IDENTITY\n"</span>,
+            <span class="string">"   - shape: plane\n"</span>,
+            <span class="string">"     material: sky\n"</span>,
+            <span class="string">"     transformation: rotationx\n"</span>,
         )));
 
         <span class="macro">assert!</span>(input.match_whitespaces_and_comments().is_ok());
@@ -4223,59 +4225,59 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_scene_parser() {
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;colors:\n&quot;</span>,
-            <span class="string">&quot; - name: red\n&quot;</span>,
-            <span class="string">&quot;   color: [1.0, 0., 0]\n&quot;</span>,
-            <span class="string">&quot; - name: green\n&quot;</span>,
-            <span class="string">&quot;   color: [0.0, 1., 0]\n&quot;</span>,
-            <span class="string">&quot; - name: blue\n&quot;</span>,
-            <span class="string">&quot;   color: [0.0, 0., 1]                 # This is an inline comment\n&quot;</span>,
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;materials:\n&quot;</span>,
-            <span class="string">&quot;  - name: sky\n&quot;</span>,
-            <span class="string">&quot;    specular:\n&quot;</span>,
-            <span class="string">&quot;      uniform: [1.2, 0.9, 3.7]\n&quot;</span>,
-            <span class="string">&quot;    uniform: blue                      # This is an inline comment\n&quot;</span>,
-            <span class="string">&quot;  - name: sphere\n&quot;</span>,
-            <span class="string">&quot;    diffuse:\n&quot;</span>,
-            <span class="string">&quot;      checkered: [BLACK, WHITE, 7.]\n&quot;</span>,
-            <span class="string">&quot;    uniform: green\n&quot;</span>,
-            <span class="string">&quot;  - name: from_image\n&quot;</span>,
-            <span class="string">&quot;    diffuse:\n&quot;</span>,
-            <span class="string">&quot;      image: &#39;/tmp/pfm_reference&#39;\n&quot;</span>,
-            <span class="string">&quot;    uniform: red\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot;   - name: rotationx\n&quot;</span>,
-            <span class="string">&quot;     compose:\n&quot;</span>,
-            <span class="string">&quot;        - rotationx: 90\n&quot;</span>,
-            <span class="string">&quot;   - name: rot_y\n&quot;</span>,
-            <span class="string">&quot;     compose:\n&quot;</span>,
-            <span class="string">&quot;        - rotationy: 180\n&quot;</span>,
-            <span class="string">&quot;   - name: camera\n&quot;</span>,
-            <span class="string">&quot;     compose:\n&quot;</span>,
-            <span class="string">&quot;        - rotationz: 270\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;camera:\n&quot;</span>,
-            <span class="string">&quot;  type: \&quot;perspective\&quot;                # This is an inline comment\n&quot;</span>,
-            <span class="string">&quot;  ratio: RATIO\n&quot;</span>,
-            <span class="string">&quot;  distance: 2.0\n&quot;</span>,
-            <span class="string">&quot;  transformation: camera\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;shapes:\n&quot;</span>,
-            <span class="string">&quot;  - shape: sphere\n&quot;</span>,
-            <span class="string">&quot;    material: sphere\n&quot;</span>,
-            <span class="string">&quot;    transformation: IDENTITY\n&quot;</span>,
-            <span class="string">&quot;  - shape: plane\n&quot;</span>,
-            <span class="string">&quot;    material: sky\n&quot;</span>,
-            <span class="string">&quot;    transformation: rotationx\n&quot;</span>,
-            <span class="string">&quot;  - shape: sphere\n&quot;</span>,
-            <span class="string">&quot;    material: from_image\n&quot;</span>,
-            <span class="string">&quot;    transformation: rot_y\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"colors:\n"</span>,
+            <span class="string">" - name: red\n"</span>,
+            <span class="string">"   color: [1.0, 0., 0]\n"</span>,
+            <span class="string">" - name: green\n"</span>,
+            <span class="string">"   color: [0.0, 1., 0]\n"</span>,
+            <span class="string">" - name: blue\n"</span>,
+            <span class="string">"   color: [0.0, 0., 1]                 # This is an inline comment\n"</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"materials:\n"</span>,
+            <span class="string">"  - name: sky\n"</span>,
+            <span class="string">"    specular:\n"</span>,
+            <span class="string">"      uniform: [1.2, 0.9, 3.7]\n"</span>,
+            <span class="string">"    uniform: blue                      # This is an inline comment\n"</span>,
+            <span class="string">"  - name: sphere\n"</span>,
+            <span class="string">"    diffuse:\n"</span>,
+            <span class="string">"      checkered: [BLACK, WHITE, 7.]\n"</span>,
+            <span class="string">"    uniform: green\n"</span>,
+            <span class="string">"  - name: from_image\n"</span>,
+            <span class="string">"    diffuse:\n"</span>,
+            <span class="string">"      image: '/tmp/pfm_reference'\n"</span>,
+            <span class="string">"    uniform: red\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">"   - name: rotationx\n"</span>,
+            <span class="string">"     compose:\n"</span>,
+            <span class="string">"        - rotationx: 90\n"</span>,
+            <span class="string">"   - name: rot_y\n"</span>,
+            <span class="string">"     compose:\n"</span>,
+            <span class="string">"        - rotationy: 180\n"</span>,
+            <span class="string">"   - name: camera\n"</span>,
+            <span class="string">"     compose:\n"</span>,
+            <span class="string">"        - rotationz: 270\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"camera:\n"</span>,
+            <span class="string">"  type: \"perspective\"                # This is an inline comment\n"</span>,
+            <span class="string">"  ratio: RATIO\n"</span>,
+            <span class="string">"  distance: 2.0\n"</span>,
+            <span class="string">"  transformation: camera\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"shapes:\n"</span>,
+            <span class="string">"  - shape: sphere\n"</span>,
+            <span class="string">"    material: sphere\n"</span>,
+            <span class="string">"    transformation: IDENTITY\n"</span>,
+            <span class="string">"  - shape: plane\n"</span>,
+            <span class="string">"    material: sky\n"</span>,
+            <span class="string">"    transformation: rotationx\n"</span>,
+            <span class="string">"  - shape: sphere\n"</span>,
+            <span class="string">"    material: from_image\n"</span>,
+            <span class="string">"    transformation: rot_y\n"</span>,
         )));
         <span class="comment">// Build a cli
         </span><span class="kw">let </span>cli = Cli {
@@ -4292,11 +4294,11 @@
             <span class="number">0x70</span>, <span class="number">0x42</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x8c</span>, <span class="number">0x42</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0xa0</span>, <span class="number">0x42</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0xb4</span>, <span class="number">0x42</span>,
         ];
         <span class="macro">assert!</span>(
-            BufWriter::new(File::create(Path::new(<span class="string">&quot;/tmp/pfm_reference&quot;</span>)).unwrap())
+            BufWriter::new(File::create(Path::new(<span class="string">"/tmp/pfm_reference"</span>)).unwrap())
                 .write_all(<span class="kw-2">&amp;</span>pfm_reference_bytes)
                 .is_ok()
         );
-        <span class="kw">let </span>pfm_reference = HdrImage::read_pfm_file(Path::new(<span class="string">&quot;/tmp/pfm_reference&quot;</span>));
+        <span class="kw">let </span>pfm_reference = HdrImage::read_pfm_file(Path::new(<span class="string">"/tmp/pfm_reference"</span>));
         <span class="macro">assert!</span>(pfm_reference.is_ok());
         <span class="comment">// Build reference scene
         </span><span class="kw">let </span><span class="kw-2">mut </span>scene_ref = Scene::default();
@@ -4348,43 +4350,43 @@
 
         <span class="kw">let </span>scene = input.parse_scene(cli);
         <span class="macro">assert!</span>(scene.is_ok());
-        <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, scene.unwrap()), <span class="macro">format!</span>(<span class="string">&quot;{scene_ref:?}&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">"{:?}"</span>, scene.unwrap()), <span class="macro">format!</span>(<span class="string">"{scene_ref:?}"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>input = InputStream::new(Cursor::new(<span class="macro">concat!</span>(
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;colors:\n&quot;</span>,
-            <span class="string">&quot; - name: red\n&quot;</span>,
-            <span class="string">&quot;   color: [1.0, 0., 0]\n&quot;</span>,
-            <span class="string">&quot; - name: green\n&quot;</span>,
-            <span class="string">&quot;   color: [0.0, 1., 0]\n&quot;</span>,
-            <span class="string">&quot; - name: blue\n&quot;</span>,
-            <span class="string">&quot;   color: [0.0, 0., 1] # This is an inline comment\n&quot;</span>,
-            <span class="string">&quot;# This is a comment\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;materials:\n&quot;</span>,
-            <span class="string">&quot;  - name: sphere\n&quot;</span>,
-            <span class="string">&quot;    diffuse:\n&quot;</span>,
-            <span class="string">&quot;      checkered: [BLACK, WHITE, 7.]\n&quot;</span>,
-            <span class="string">&quot;    uniform: blue # This is an inline comment\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;transformations:\n&quot;</span>,
-            <span class="string">&quot;   - name: rotationx\n&quot;</span>,
-            <span class="string">&quot;     compose:\n&quot;</span>,
-            <span class="string">&quot;        - rotationx: 90\n&quot;</span>,
-            <span class="string">&quot;   - name: rot_y\n&quot;</span>,
-            <span class="string">&quot;     compose:\n&quot;</span>,
-            <span class="string">&quot;        - rotationy: 180\n&quot;</span>,
-            <span class="string">&quot;   - name: camera\n&quot;</span>,
-            <span class="string">&quot;     compose:\n&quot;</span>,
-            <span class="string">&quot;        - rotationz: 270\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;\n&quot;</span>,
-            <span class="string">&quot;shapes:\n&quot;</span>,
-            <span class="string">&quot;  - shape: sphere\n&quot;</span>,
-            <span class="string">&quot;    material: sphere\n&quot;</span>,
-            <span class="string">&quot;    transformation: IDENTITY\n&quot;</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"colors:\n"</span>,
+            <span class="string">" - name: red\n"</span>,
+            <span class="string">"   color: [1.0, 0., 0]\n"</span>,
+            <span class="string">" - name: green\n"</span>,
+            <span class="string">"   color: [0.0, 1., 0]\n"</span>,
+            <span class="string">" - name: blue\n"</span>,
+            <span class="string">"   color: [0.0, 0., 1] # This is an inline comment\n"</span>,
+            <span class="string">"# This is a comment\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"materials:\n"</span>,
+            <span class="string">"  - name: sphere\n"</span>,
+            <span class="string">"    diffuse:\n"</span>,
+            <span class="string">"      checkered: [BLACK, WHITE, 7.]\n"</span>,
+            <span class="string">"    uniform: blue # This is an inline comment\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"transformations:\n"</span>,
+            <span class="string">"   - name: rotationx\n"</span>,
+            <span class="string">"     compose:\n"</span>,
+            <span class="string">"        - rotationx: 90\n"</span>,
+            <span class="string">"   - name: rot_y\n"</span>,
+            <span class="string">"     compose:\n"</span>,
+            <span class="string">"        - rotationy: 180\n"</span>,
+            <span class="string">"   - name: camera\n"</span>,
+            <span class="string">"     compose:\n"</span>,
+            <span class="string">"        - rotationz: 270\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"\n"</span>,
+            <span class="string">"shapes:\n"</span>,
+            <span class="string">"  - shape: sphere\n"</span>,
+            <span class="string">"    material: sphere\n"</span>,
+            <span class="string">"    transformation: IDENTITY\n"</span>,
         )));
 
         <span class="macro">assert!</span>(

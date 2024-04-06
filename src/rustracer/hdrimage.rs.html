@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/hdrimage.rs`."><title>hdrimage.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/hdrimage.rs`."><title>hdrimage.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustracer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.1 (7cf61ebde 2024-03-27)" data-channel="1.77.1" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../docs/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -970,9 +972,9 @@
     ///
     /// The expected input buffer must respect pfm format:
     /// ```text
-    /// PF              # ASCII text, &#39;\n&#39; as line separator
-    /// width height    # ASCII text, &#39;\n&#39; as line separator
-    /// ±1.0            # ASCII text, &#39;\n&#39; as line separator
+    /// PF              # ASCII text, '\n' as line separator
+    /// width height    # ASCII text, '\n' as line separator
+    /// ±1.0            # ASCII text, '\n' as line separator
     /// pixels matrix   # binary content (float RGB x #pixels)
     /// ```
     /// Little description:
@@ -1000,23 +1002,23 @@
         buf_reader
             .read_line(<span class="kw-2">&amp;mut </span>line)
             .map_err(HdrImageErr::PfmFileReadFailure)<span class="question-mark">?</span>;
-        check_eol(line.ends_with(<span class="string">&#39;\n&#39;</span>))<span class="question-mark">?</span>;
-        <span class="kw">if </span>line.trim_end() != <span class="string">&quot;PF&quot; </span>{
+        check_eol(line.ends_with(<span class="string">'\n'</span>))<span class="question-mark">?</span>;
+        <span class="kw">if </span>line.trim_end() != <span class="string">"PF" </span>{
             <span class="kw">return </span><span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(String::from(
-                <span class="string">&quot;wrong magic inside header&quot;</span>,
+                <span class="string">"wrong magic inside header"</span>,
             )));
         }
         line.clear();
         buf_reader
             .read_line(<span class="kw-2">&amp;mut </span>line)
             .map_err(HdrImageErr::PfmFileReadFailure)<span class="question-mark">?</span>;
-        check_eol(line.ends_with(<span class="string">&#39;\n&#39;</span>))<span class="question-mark">?</span>;
+        check_eol(line.ends_with(<span class="string">'\n'</span>))<span class="question-mark">?</span>;
         <span class="kw">let </span>(width, height) = parse_img_shape(line.trim_end())<span class="question-mark">?</span>;
         line.clear();
         buf_reader
             .read_line(<span class="kw-2">&amp;mut </span>line)
             .map_err(HdrImageErr::PfmFileReadFailure)<span class="question-mark">?</span>;
-        check_eol(line.ends_with(<span class="string">&#39;\n&#39;</span>))<span class="question-mark">?</span>;
+        check_eol(line.ends_with(<span class="string">'\n'</span>))<span class="question-mark">?</span>;
         <span class="kw">let </span>endianness: ByteOrder = parse_endianness(line.trim_end())<span class="question-mark">?</span>;
         line.clear();
         <span class="kw">let </span><span class="kw-2">mut </span>buffer = [<span class="number">0_f32</span>; <span class="number">3</span>];
@@ -1047,7 +1049,7 @@
             <span class="prelude-val">Ok</span>(hdr_img)
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(String::from(
-                <span class="string">&quot;find binary content, expected eof&quot;</span>,
+                <span class="string">"find binary content, expected eof"</span>,
             )))
         }
     }
@@ -1074,10 +1076,10 @@
         stream: <span class="kw-2">&amp;mut </span>W,
         endianness: ByteOrder,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), HdrImageErr&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>header = <span class="macro">format!</span>(<span class="string">&quot;PF\n{} {}\n&quot;</span>, <span class="self">self</span>.width, <span class="self">self</span>.height);
+        <span class="kw">let </span><span class="kw-2">mut </span>header = <span class="macro">format!</span>(<span class="string">"PF\n{} {}\n"</span>, <span class="self">self</span>.width, <span class="self">self</span>.height);
         <span class="kw">match </span>endianness {
-            ByteOrder::BigEndian =&gt; header.push_str(<span class="string">&quot;1.0\n&quot;</span>),
-            ByteOrder::LittleEndian =&gt; header.push_str(<span class="string">&quot;-1.0\n&quot;</span>),
+            ByteOrder::BigEndian =&gt; header.push_str(<span class="string">"1.0\n"</span>),
+            ByteOrder::LittleEndian =&gt; header.push_str(<span class="string">"-1.0\n"</span>),
         }
         stream
             .write_all(header.as_bytes())
@@ -1200,7 +1202,7 @@
             },
             <span class="kw">_ </span>=&gt; {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(HdrImageErr::UnsupportedLdrFileFormat(String::from(
-                    path.extension().unwrap().to_str().unwrap_or(<span class="string">&quot;&quot;</span>),
+                    path.extension().unwrap().to_str().unwrap_or(<span class="string">""</span>),
                 )))
             },
         }
@@ -1211,13 +1213,13 @@
 ///
 /// Return an [`HdrImageErr::InvalidPfmFileFormat`]
 /// as function of passed boolean `eol`.
-/// Where `eol` is `true` if contain &#39;\n&#39;, `false` if not contain `\n`.
+/// Where `eol` is `true` if contain '\n', `false` if not contain `\n`.
 </span><span class="kw">fn </span>check_eol(eol: bool) -&gt; <span class="prelude-ty">Result</span>&lt;(), HdrImageErr&gt; {
     <span class="kw">if </span>eol {
         <span class="prelude-val">Ok</span>(())
     } <span class="kw">else </span>{
         <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(String::from(
-            <span class="string">&quot;expected eol as separator inside header&quot;</span>,
+            <span class="string">"expected eol as separator inside header"</span>,
         )))
     }
 }
@@ -1228,16 +1230,16 @@
 ///
 /// If parse fails, the [`std::result::Result`] will be an [`HdrImageErr`] error variant.
 </span><span class="kw">fn </span>parse_img_shape(line: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(u32, u32), HdrImageErr&gt; {
-    <span class="kw">let </span>shape: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = line.split(<span class="string">&#39; &#39;</span>).filter(|s| s != <span class="kw-2">&amp;</span><span class="string">&quot;&quot;</span>).collect();
+    <span class="kw">let </span>shape: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = line.split(<span class="string">' '</span>).filter(|s| s != <span class="kw-2">&amp;</span><span class="string">""</span>).collect();
     <span class="kw">if </span>shape.len() == <span class="number">2 </span>{
         <span class="kw">let </span>width = u32::from_str(shape[<span class="number">0</span>])
-            .map_err(|e| HdrImageErr::PfmIntParseFailure(e, String::from(<span class="string">&quot;image width&quot;</span>)))<span class="question-mark">?</span>;
+            .map_err(|e| HdrImageErr::PfmIntParseFailure(e, String::from(<span class="string">"image width"</span>)))<span class="question-mark">?</span>;
         <span class="kw">let </span>height = u32::from_str(shape[<span class="number">1</span>])
-            .map_err(|e| HdrImageErr::PfmIntParseFailure(e, String::from(<span class="string">&quot;image height&quot;</span>)))<span class="question-mark">?</span>;
+            .map_err(|e| HdrImageErr::PfmIntParseFailure(e, String::from(<span class="string">"image height"</span>)))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>((width, height))
     } <span class="kw">else </span>{
         <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(String::from(
-            <span class="string">&quot;wrong image shape inside header&quot;</span>,
+            <span class="string">"wrong image shape inside header"</span>,
         )))
     }
 }
@@ -1249,14 +1251,14 @@
 /// If parse fails the [`std::result::Result`] will be an [`HdrImageErr`] error variant.
 </span><span class="kw">fn </span>parse_endianness(line: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;ByteOrder, HdrImageErr&gt; {
     <span class="kw">let </span>value = f32::from_str(line)
-        .map_err(|e| HdrImageErr::PfmFloatParseFailure(e, String::from(<span class="string">&quot;endianness&quot;</span>)))<span class="question-mark">?</span>;
+        .map_err(|e| HdrImageErr::PfmFloatParseFailure(e, String::from(<span class="string">"endianness"</span>)))<span class="question-mark">?</span>;
     <span class="kw">if </span>value &gt; <span class="number">0.0 </span>{
         <span class="prelude-val">Ok</span>(ByteOrder::BigEndian)
     } <span class="kw">else if </span>value &lt; <span class="number">0.0 </span>{
         <span class="prelude-val">Ok</span>(ByteOrder::LittleEndian)
     } <span class="kw">else </span>{
         <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(String::from(
-            <span class="string">&quot;invalid endianness inside header&quot;</span>,
+            <span class="string">"invalid endianness inside header"</span>,
         )))
     }
 }
@@ -1358,59 +1360,59 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_img_shape() {
-        <span class="kw">let </span><span class="kw-2">mut </span>line = <span class="string">&quot;10 20&quot;</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>line = <span class="string">"10 20"</span>;
 
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(parse_img_shape(line), <span class="prelude-val">Ok</span>((<span class="number">10</span>, <span class="number">20</span>))));
-        line = <span class="string">&quot; 10    20  &quot;</span>;
+        line = <span class="string">" 10    20  "</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(parse_img_shape(line), <span class="prelude-val">Ok</span>((<span class="number">10</span>, <span class="number">20</span>))));
-        line = <span class="string">&quot;10 20 30&quot;</span>;
+        line = <span class="string">"10 20 30"</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_img_shape(line),
             <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(<span class="kw">_</span>))
         ));
-        line = <span class="string">&quot;10 &quot;</span>;
+        line = <span class="string">"10 "</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_img_shape(line),
             <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(<span class="kw">_</span>))
         ));
-        line = <span class="string">&quot;102030&quot;</span>;
+        line = <span class="string">"102030"</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_img_shape(line),
             <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(<span class="kw">_</span>))
         ));
-        line = <span class="string">&quot;10 20.1&quot;</span>;
+        line = <span class="string">"10 20.1"</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_img_shape(line),
-            <span class="prelude-val">Err</span>(HdrImageErr::PfmIntParseFailure(<span class="kw">_</span>, msg)) <span class="kw">if </span>msg.as_str() == <span class="string">&quot;image height&quot;
+            <span class="prelude-val">Err</span>(HdrImageErr::PfmIntParseFailure(<span class="kw">_</span>, msg)) <span class="kw">if </span>msg.as_str() == <span class="string">"image height"
         </span>));
-        line = <span class="string">&quot;-10 20&quot;</span>;
+        line = <span class="string">"-10 20"</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_img_shape(line),
-            <span class="prelude-val">Err</span>(HdrImageErr::PfmIntParseFailure(<span class="kw">_</span>, msg)) <span class="kw">if </span>msg.as_str() == <span class="string">&quot;image width&quot;
+            <span class="prelude-val">Err</span>(HdrImageErr::PfmIntParseFailure(<span class="kw">_</span>, msg)) <span class="kw">if </span>msg.as_str() == <span class="string">"image width"
         </span>));
-        line = <span class="string">&quot;abc 20&quot;</span>;
+        line = <span class="string">"abc 20"</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_img_shape(line),
-            <span class="prelude-val">Err</span>(HdrImageErr::PfmIntParseFailure(<span class="kw">_</span>, msg)) <span class="kw">if </span>msg.as_str() == <span class="string">&quot;image width&quot;
+            <span class="prelude-val">Err</span>(HdrImageErr::PfmIntParseFailure(<span class="kw">_</span>, msg)) <span class="kw">if </span>msg.as_str() == <span class="string">"image width"
         </span>))
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_endianness() {
-        <span class="kw">let </span><span class="kw-2">mut </span>line = <span class="string">&quot;-3.2&quot;</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>line = <span class="string">"-3.2"</span>;
 
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_endianness(line),
             <span class="prelude-val">Ok</span>(ByteOrder::LittleEndian)
         ));
-        line = <span class="string">&quot;1e15&quot;</span>;
+        line = <span class="string">"1e15"</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(parse_endianness(line), <span class="prelude-val">Ok</span>(ByteOrder::BigEndian)));
-        line = <span class="string">&quot;0&quot;</span>;
+        line = <span class="string">"0"</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_endianness(line),
             <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(<span class="kw">_</span>))
         ));
-        line = <span class="string">&quot;abc&quot;</span>;
+        line = <span class="string">"abc"</span>;
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             parse_endianness(line),
             <span class="prelude-val">Err</span>(HdrImageErr::PfmFloatParseFailure(..))
@@ -1479,7 +1481,7 @@
         <span class="kw">let </span>hdr_img_result = HdrImage::read_pfm_image(<span class="kw-2">&amp;mut </span>stream);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
         hdr_img_result,
-        <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(msg)) <span class="kw">if </span>msg.as_str() == <span class="string">&quot;wrong magic inside header&quot;
+        <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(msg)) <span class="kw">if </span>msg.as_str() == <span class="string">"wrong magic inside header"
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>stream = Cursor::new(wrong_st);
@@ -1493,7 +1495,7 @@
         <span class="kw">let </span>hdr_img_result = HdrImage::read_pfm_image(<span class="kw-2">&amp;mut </span>stream);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
         hdr_img_result,
-        <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(msg)) <span class="kw">if </span>msg.as_str() == <span class="string">&quot;expected eol as separator inside header&quot;
+        <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(msg)) <span class="kw">if </span>msg.as_str() == <span class="string">"expected eol as separator inside header"
         </span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>stream = Cursor::new(wrong_nd);
@@ -1507,7 +1509,7 @@
         <span class="kw">let </span>hdr_img_result = HdrImage::read_pfm_image(<span class="kw-2">&amp;mut </span>stream);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
         hdr_img_result,
-        <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(msg)) <span class="kw">if </span>msg.as_str() == <span class="string">&quot;expected eol as separator inside header&quot;
+        <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(msg)) <span class="kw">if </span>msg.as_str() == <span class="string">"expected eol as separator inside header"
         </span>));
 
         reference_bytes_le.push(<span class="number">0x00</span>);
@@ -1515,7 +1517,7 @@
         <span class="kw">let </span>hdr_img_result = HdrImage::read_pfm_image(<span class="kw-2">&amp;mut </span>stream);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
         hdr_img_result,
-        <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(msg)) <span class="kw">if </span>msg.as_str() == <span class="string">&quot;find binary content, expected eof&quot;
+        <span class="prelude-val">Err</span>(HdrImageErr::InvalidPfmFileFormat(msg)) <span class="kw">if </span>msg.as_str() == <span class="string">"find binary content, expected eof"
         </span>));
 
         reference_bytes_le.truncate(<span class="kw-2">&amp;</span>reference_bytes_le.len() - <span class="number">2</span>);
@@ -1615,10 +1617,10 @@
             .set_pixel(<span class="number">2</span>, <span class="number">1</span>, Color::from((<span class="number">7.0e2</span>, <span class="number">8.0e2</span>, <span class="number">9.0e2</span>)))
             .unwrap();
 
-        <span class="kw">let </span>reference_file_be = Path::new(<span class="string">&quot;/tmp/reference_be.pfm&quot;</span>);
-        <span class="kw">let </span>reference_file_le = Path::new(<span class="string">&quot;/tmp/reference_le.pfm&quot;</span>);
-        <span class="kw">let </span>invalid_path = Path::new(<span class="string">&quot;/invalid&quot;</span>);
-        <span class="kw">let </span>invalid_file = Path::new(<span class="string">&quot;/tmp/invalid&quot;</span>);
+        <span class="kw">let </span>reference_file_be = Path::new(<span class="string">"/tmp/reference_be.pfm"</span>);
+        <span class="kw">let </span>reference_file_le = Path::new(<span class="string">"/tmp/reference_le.pfm"</span>);
+        <span class="kw">let </span>invalid_path = Path::new(<span class="string">"/invalid"</span>);
+        <span class="kw">let </span>invalid_file = Path::new(<span class="string">"/tmp/invalid"</span>);
 
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             hdr_img.write_pfm_file(reference_file_be, ByteOrder::BigEndian),
@@ -1718,11 +1720,11 @@
         hdr_img.normalize_image(<span class="number">1000.0</span>, Luminosity::AverageLuminosity);
         hdr_img.clamp_image();
 
-        <span class="kw">let </span>invalid_format = Path::new(<span class="string">&quot;/tmp/reference_le.mkv&quot;</span>);
-        <span class="kw">let </span>unsupported_format = Path::new(<span class="string">&quot;/tmp/reference_le.jpeg&quot;</span>);
-        <span class="kw">let </span>invalid_path = Path::new(<span class="string">&quot;/invalid_path/reference_le.png&quot;</span>);
-        <span class="kw">let </span>reference_png = Path::new(<span class="string">&quot;/tmp/reference_le.png&quot;</span>);
-        <span class="kw">let </span>reference_ff = Path::new(<span class="string">&quot;/tmp/reference_le.ff&quot;</span>);
+        <span class="kw">let </span>invalid_format = Path::new(<span class="string">"/tmp/reference_le.mkv"</span>);
+        <span class="kw">let </span>unsupported_format = Path::new(<span class="string">"/tmp/reference_le.jpeg"</span>);
+        <span class="kw">let </span>invalid_path = Path::new(<span class="string">"/invalid_path/reference_le.png"</span>);
+        <span class="kw">let </span>reference_png = Path::new(<span class="string">"/tmp/reference_le.png"</span>);
+        <span class="kw">let </span>reference_ff = Path::new(<span class="string">"/tmp/reference_le.ff"</span>);
 
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             hdr_img.write_ldr_file(invalid_format, <span class="number">1.0</span>),
@@ -1730,7 +1732,7 @@
         ));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             hdr_img.write_ldr_file(unsupported_format, <span class="number">1.0</span>),
-            <span class="prelude-val">Err</span>(HdrImageErr::UnsupportedLdrFileFormat(format)) <span class="kw">if </span>format.as_str() == <span class="string">&quot;jpeg&quot;
+            <span class="prelude-val">Err</span>(HdrImageErr::UnsupportedLdrFileFormat(format)) <span class="kw">if </span>format.as_str() == <span class="string">"jpeg"
         </span>));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             hdr_img.write_ldr_file(invalid_path, <span class="number">1.0</span>),

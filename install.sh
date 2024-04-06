@@ -4,7 +4,7 @@
 # ==========
 # end-user `rustracer` installation script:
 #  * downloads particular release (default `latest+musl`)
-#  * downloads related checksum and signatures
+#  * downloads related checksum, attestation, signatures
 #  * controls related  checksum and signatures
 #  * installs inside given $PREFIX (default `~/.local`)
 
@@ -40,6 +40,7 @@ _check_deps() {
 _download_release() {
    local checksums_uri
    local rustracer_uri
+   local slsa_uri
    local repo="https://github.com/andros21/rustracer"
    local repo_api="https://api.github.com/repos/andros21/rustracer"
    if [ "${version}" == "latest" ]
@@ -48,6 +49,10 @@ _download_release() {
          | jq -r ".assets[] | select(.name | test(\"_checksums_sha256.txt\$\")) | .browser_download_url")
       rustracer_uri=$(curl -sL "${repo_api}/releases/latest" \
          | jq -r ".assets[] | select(.name | test(\"${platform}.tar.gz\$\")) | .browser_download_url")
+      slsa_uri=$(curl -sL "${repo_api}/releases/latest" \
+         | jq -r ".assets[] | select(.name | test(\"multiple.intoto.jsonl\$\")) | .browser_download_url")
+      version=$(curl -sL "${repo_api}/releases/latest" \
+         | jq -r '.tag_name')
    else
       curl -sL "${repo_api}/releases" \
          | jq -r ".[] | select(.tag_name | test(\"${version}\$\"))" \
@@ -58,6 +63,7 @@ _download_release() {
       rustracer_uri=$(curl -sL "${repo_api}/releases" \
          | jq -r ".[] | select(.tag_name | test(\"${version}\$\"))" \
          | jq -r ".assets[] | select(.name | test(\"${platform}.tar.gz\$\")) | .browser_download_url")
+      slsa_uri="${repo}/releases/download/${version}/multiple.intoto.jsonl"
    fi
    [[ -n "${rustracer_uri}" ]] \
       || _die "Invalid rustracer platform ${platform}" \
@@ -68,6 +74,13 @@ _download_release() {
    [[ -f "${checksums}" ]]             || curl -sSJOL "${checksums_uri}"
    [[ -f "${checksums}-keyless.pem" ]] || curl -sSJOL "${checksums_uri}-keyless.pem"
    [[ -f "${checksums}-keyless.sig" ]] || curl -sSJOL "${checksums_uri}-keyless.sig"
+   _info "Downloading rustracer ${version} slsa attestation"
+   IFS=. read -ra parts <<< "$version"
+   if [[ "${parts[2]}" -gt 3 ]]; then
+      [[ -f "multiple.intoto.jsonl" ]] || curl -sSJOL "${slsa_uri}"
+   else
+      _info "Cannot download SLSA attestation: attached only from 1.0.4 release"
+   fi
    _info "Downloading rustracer ${version} for platform ${platform}"
    [[ -f "${rustracer}" ]]             || curl -sSJOL "${rustracer_uri}"
    [[ -f "${rustracer}-keyless.pem" ]] || curl -sSJOL "${rustracer_uri}-keyless.pem"

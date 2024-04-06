@@ -2,14 +2,84 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.3] - 2023-12-31
+## [1.0.4] - 2024-04-06
 
-**Full Changelog**: [`d255cf8...ad7e151`](https://github.com/andros21/rustracer/compare/d255cf84fa1313c04ea07c70fea0fa65167e8556...ad7e151d188218bbdd15035ca85795c6932c50a2)
+**Full Changelog**: [`d255cf8...cd1ed16`](https://github.com/andros21/rustracer/compare/d255cf84fa1313c04ea07c70fea0fa65167e8556...cd1ed16dbdb680a98194c7826035ae101c582afa)
+
+### Build
+
+- [`016aa27`](https://github.com/andros21/rustracer/commit/016aa27f4ef80a57f10a60f5009aaa7bfea2f50f) bump the pip group in /.github/workflows with 2 updates ([#330](https://github.com/andros21/rustracer/issues/330))
+- [`b75b6ff`](https://github.com/andros21/rustracer/commit/b75b6ff3818ebdcce7b7f555c86be394f4b6d3e2) bump colored from 2.0.4 to 2.1.0 ([#331](https://github.com/andros21/rustracer/issues/331))
+- [`cd81b1c`](https://github.com/andros21/rustracer/commit/cd81b1c87846e6ac5845be46bf893f0bc2ca62f9) bump thiserror from 1.0.50 to 1.0.53 ([#332](https://github.com/andros21/rustracer/issues/332))
+- [`9f83a92`](https://github.com/andros21/rustracer/commit/9f83a92f2b34c6fa2b0c69f8587006426051cfea) bump clap_complete from 4.4.4 to 4.4.5 ([#333](https://github.com/andros21/rustracer/issues/333))
+- [`4e7c63b`](https://github.com/andros21/rustracer/commit/4e7c63b02d1211e55c8cba7e0481068d75f29a33) bump actions/upload-artifact from 3.1.3 to 4.0.0 ([#335](https://github.com/andros21/rustracer/issues/335))
+- [`83113ac`](https://github.com/andros21/rustracer/commit/83113ac648c2fe0ddb3a0a53b3c47e561a943258) bump actions/download-artifact from 3.0.2 to 4.1.0 ([#336](https://github.com/andros21/rustracer/issues/336))
+- [`08bc1a4`](https://github.com/andros21/rustracer/commit/08bc1a491286ce6164eb562d7753ab260ba0ce72) bump taiki-e/install-action from 2.23.7 to 2.23.9 ([#334](https://github.com/andros21/rustracer/issues/334))
+- [`c76bda6`](https://github.com/andros21/rustracer/commit/c76bda6732ac0be7fd784bb6bee0697379bfeed7) bump actions/download-artifact from 4.1.0 to 4.1.1 ([#337](https://github.com/andros21/rustracer/issues/337))
+- [`d632e77`](https://github.com/andros21/rustracer/commit/d632e7731260743e7c0de4b4dfc43635ff1f1df0) bump actions/upload-artifact from 4.0.0 to 4.1.0 ([#338](https://github.com/andros21/rustracer/issues/338))
+- [`13671a0`](https://github.com/andros21/rustracer/commit/13671a01c5eaa88e83a46c5ba33c9039b78fd6cb) bump actions/cache from 3.3.2 to 3.3.3 ([#339](https://github.com/andros21/rustracer/issues/339))
+- [`98d0875`](https://github.com/andros21/rustracer/commit/98d08750ed29521d310a5d879022ee3d6c3e816f) bump taiki-e/install-action from 2.23.9 to 2.25.0 ([#340](https://github.com/andros21/rustracer/issues/340))
+- [`9c3be1e`](https://github.com/andros21/rustracer/commit/9c3be1e5d0828e4ff5d3a89f527b4c932af85a93) bump actions/upload-artifact from 4.1.0 to 4.2.0 ([#341](https://github.com/andros21/rustracer/issues/341))
+- [`47b7e94`](https://github.com/andros21/rustracer/commit/47b7e94f8ed4a344a5761c97de9708503bd4226b) bump actions/cache from 3.3.3 to 4.0.0 ([#342](https://github.com/andros21/rustracer/issues/342))
+- [`62ea9e6`](https://github.com/andros21/rustracer/commit/62ea9e6f957d699e7862de4e4dbf16a9998d2b2e) bump taiki-e/install-action from 2.25.0 to 2.25.7 ([#343](https://github.com/andros21/rustracer/issues/343))
+- [`7e0668e`](https://github.com/andros21/rustracer/commit/7e0668e5ac7a0c90c557313b4137c5028eb34728) bump EndBug/add-and-commit from 9.1.3 to 9.1.4 ([#345](https://github.com/andros21/rustracer/issues/345))
+- [`b47e3f5`](https://github.com/andros21/rustracer/commit/b47e3f50076bafa0d006e0f274237186364af9ea) bump dorny/paths-filter from 2.11.1 to 3.0.0 ([#346](https://github.com/andros21/rustracer/issues/346))
+- [`0c45828`](https://github.com/andros21/rustracer/commit/0c4582803c732d6341d96d678c6b510362cd79bd) bump taiki-e/install-action from 2.25.7 to 2.26.7 ([#344](https://github.com/andros21/rustracer/issues/344))
+- [`a2449fd`](https://github.com/andros21/rustracer/commit/a2449fdb40c3e3f1778c1e5350c5856ac51cddcc) bump actions/upload-artifact from 4.2.0 to 4.3.0 ([#347](https://github.com/andros21/rustracer/issues/347))
+- [`043e038`](https://github.com/andros21/rustracer/commit/043e03860ab261d527a07f6054232508a49cfda2) bump sigstore/cosign-installer from 3.3.0 to 3.4.0 ([#356](https://github.com/andros21/rustracer/issues/356))
+- [`2697676`](https://github.com/andros21/rustracer/commit/26976767e45220073386cc0328c3eba4558b3f1f) bump taiki-e/install-action from 2.26.7 to 2.26.8 ([#355](https://github.com/andros21/rustracer/issues/355))
+- [`074808f`](https://github.com/andros21/rustracer/commit/074808fd1eebe53da257d88787385fc01339acaf) bump marocchino/sticky-pull-request-comment ([#354](https://github.com/andros21/rustracer/issues/354))
+- [`711c669`](https://github.com/andros21/rustracer/commit/711c669f8dd5407e4f2021ed38e15780b1e55b32) bump the pip group in /.github/workflows with 2 updates ([#353](https://github.com/andros21/rustracer/issues/353))
+- [`3c8bf42`](https://github.com/andros21/rustracer/commit/3c8bf42c8be9c6c3b0ee19b11360b8f763b5dcfc) bump rayon from 1.8.0 to 1.8.1 ([#348](https://github.com/andros21/rustracer/issues/348))
+- [`c164b70`](https://github.com/andros21/rustracer/commit/c164b70d15eae537010ed450adbb1e4c835cc840) bump image from 0.24.7 to 0.24.8 ([#349](https://github.com/andros21/rustracer/issues/349))
+- [`124f20e`](https://github.com/andros21/rustracer/commit/124f20ee006e991456d4be61a4586afb1888b846) bump thiserror from 1.0.53 to 1.0.56 ([#351](https://github.com/andros21/rustracer/issues/351))
+- [`227cc90`](https://github.com/andros21/rustracer/commit/227cc9075938c47a022a35349892ac7145cb3dbd) bump clap_complete from 4.4.5 to 4.4.9 ([#352](https://github.com/andros21/rustracer/issues/352))
+- [`c4308be`](https://github.com/andros21/rustracer/commit/c4308be1f14ab81972a23d751f0d33c096dc6f6c) bump clap from 4.4.3 to 4.4.18 ([#350](https://github.com/andros21/rustracer/issues/350))
+- [`d33eb41`](https://github.com/andros21/rustracer/commit/d33eb41a1850ea55d80f2f30bd44b32fcd08f205) bump taiki-e/install-action from 2.26.8 to 2.26.12 ([#357](https://github.com/andros21/rustracer/issues/357))
+- [`d3852da`](https://github.com/andros21/rustracer/commit/d3852da7b3059a5f473c70dffd007c4977ef905e) bump taiki-e/install-action from 2.26.12 to 2.26.16 ([#360](https://github.com/andros21/rustracer/issues/360))
+- [`b108bd5`](https://github.com/andros21/rustracer/commit/b108bd57514cefe0ede81375877ca71bdd16de25) bump actions/download-artifact from 4.1.1 to 4.1.2 ([#359](https://github.com/andros21/rustracer/issues/359))
+- [`aab2e30`](https://github.com/andros21/rustracer/commit/aab2e30d84f6f6a50121cfc296a16d5ad1d45b47) bump actions/upload-artifact from 4.3.0 to 4.3.1 ([#358](https://github.com/andros21/rustracer/issues/358))
+- [`44dea9e`](https://github.com/andros21/rustracer/commit/44dea9e0e060722816bb36bcf3f80895f19c68d1) bump dorny/paths-filter from 3.0.0 to 3.0.1 ([#363](https://github.com/andros21/rustracer/issues/363))
+- [`a41b9ce`](https://github.com/andros21/rustracer/commit/a41b9cecdb6d8055b8ad7e4b019a418c067157c2) bump taiki-e/install-action from 2.26.16 to 2.27.2 ([#362](https://github.com/andros21/rustracer/issues/362))
+- [`f729522`](https://github.com/andros21/rustracer/commit/f729522d4d4e0ba1dcc3f1ce4f0043ad9d31e95d) bump taiki-e/install-action from 2.27.2 to 2.27.9 ([#365](https://github.com/andros21/rustracer/issues/365))
+- [`24aeacf`](https://github.com/andros21/rustracer/commit/24aeacf10a019fa95462b769bc45a52cfc5c1e84) bump orhun/git-cliff-action from 2.3.0 to 3.0.1 ([#364](https://github.com/andros21/rustracer/issues/364))
+- [`58c852c`](https://github.com/andros21/rustracer/commit/58c852cc4719de3bd65c6569d3ec0de64dc02ceb) bump the pip group in /.github/workflows with 2 updates ([#371](https://github.com/andros21/rustracer/issues/371))
+- [`bba6cd2`](https://github.com/andros21/rustracer/commit/bba6cd250e85750e28604c508d6589f7baff4941) bump thiserror from 1.0.56 to 1.0.57 ([#368](https://github.com/andros21/rustracer/issues/368))
+- [`be13b7b`](https://github.com/andros21/rustracer/commit/be13b7bbd13945baa3bdd1bef60b303ee0fa5d23) bump image from 0.24.8 to 0.24.9 ([#367](https://github.com/andros21/rustracer/issues/367))
+- [`27cee5e`](https://github.com/andros21/rustracer/commit/27cee5ed29bfb6646ab5b7aeffea67d89f8066b3) bump rayon from 1.8.1 to 1.9.0 ([#366](https://github.com/andros21/rustracer/issues/366))
+- [`b2c63e9`](https://github.com/andros21/rustracer/commit/b2c63e900100cc5dae3cebb189283ca4fa3193ba) bump clap from 4.4.18 to 4.5.1 ([#370](https://github.com/andros21/rustracer/issues/370))
+- [`85664f3`](https://github.com/andros21/rustracer/commit/85664f3fa390c06c6c6b675bce599dfa6f92cb2a) bump clap_complete from 4.4.9 to 4.5.1 ([#369](https://github.com/andros21/rustracer/issues/369))
+- [`9621baf`](https://github.com/andros21/rustracer/commit/9621bafe7db61abfc7d35c066bd6798b9d0b4eac) bump actions/cache from 4.0.0 to 4.0.1 ([#374](https://github.com/andros21/rustracer/issues/374))
+- [`cb72b75`](https://github.com/andros21/rustracer/commit/cb72b75890d82c7ec930be24aae7609722ac720d) bump actions/download-artifact from 4.1.2 to 4.1.4 ([#373](https://github.com/andros21/rustracer/issues/373))
+- [`96ffbea`](https://github.com/andros21/rustracer/commit/96ffbea5d2a4158fb465ee1ccbe0f39826e18e95) bump taiki-e/install-action from 2.27.9 to 2.28.0 ([#372](https://github.com/andros21/rustracer/issues/372))
+- [`8f2000e`](https://github.com/andros21/rustracer/commit/8f2000e9226a648779a3776bdf10937ee7a4c3d2) bump dorny/paths-filter from 3.0.1 to 3.0.2 ([#375](https://github.com/andros21/rustracer/issues/375))
+- [`61b6797`](https://github.com/andros21/rustracer/commit/61b679732c70f7576b332929f1556baea2aaf928) bump orhun/git-cliff-action from 3.0.1 to 3.0.2 ([#378](https://github.com/andros21/rustracer/issues/378))
+- [`c3bec64`](https://github.com/andros21/rustracer/commit/c3bec647cf241867b9a7b8b17e43ed5e24ba7ac3) bump taiki-e/install-action from 2.28.0 to 2.28.7 ([#377](https://github.com/andros21/rustracer/issues/377))
+- [`534a3df`](https://github.com/andros21/rustracer/commit/534a3dfc341cb719462e20b2ee8b64e404cd754f) bump softprops/action-gh-release from 1 to 2 ([#376](https://github.com/andros21/rustracer/issues/376))
+- [`65e9319`](https://github.com/andros21/rustracer/commit/65e93194edebc378b9795ca08a4286a017178ee2) bump softprops/action-gh-release from 2.0.2 to 2.0.4 ([#381](https://github.com/andros21/rustracer/issues/381))
+- [`8e8e714`](https://github.com/andros21/rustracer/commit/8e8e714590d983b28a2b231ea25e68fb47513ea5) bump actions/checkout from 4.1.1 to 4.1.2 ([#379](https://github.com/andros21/rustracer/issues/379))
+- [`d256754`](https://github.com/andros21/rustracer/commit/d2567544f04b51eb187f09690dbdf85d193f21f6) bump taiki-e/install-action from 2.28.7 to 2.28.15 ([#380](https://github.com/andros21/rustracer/issues/380))
+- [`1bf8af9`](https://github.com/andros21/rustracer/commit/1bf8af98fbcc9afede0e6a884cc663f8cbadc60c) bump taiki-e/install-action from 2.28.15 to 2.29.6 ([#384](https://github.com/andros21/rustracer/issues/384))
+- [`d9ca457`](https://github.com/andros21/rustracer/commit/d9ca4570cdf30941abc8b1f94702b70578f9ce69) bump actions/cache from 4.0.1 to 4.0.2 ([#383](https://github.com/andros21/rustracer/issues/383))
+- [`81f012f`](https://github.com/andros21/rustracer/commit/81f012fbb8fac0526f555611936d5d46db5e0259) bump slsa-framework/slsa-github-generator ([#382](https://github.com/andros21/rustracer/issues/382))
+- [`8265111`](https://github.com/andros21/rustracer/commit/8265111100703a5e2d9fcd80ec7e0b394367e44c) bump taiki-e/install-action from 2.29.6 to 2.31.3 ([#386](https://github.com/andros21/rustracer/issues/386))
+- [`fa24089`](https://github.com/andros21/rustracer/commit/fa2408976f42a3e8bd039d37b27b1773698f1786) bump the pip group in /.github/workflows with 1 update ([#391](https://github.com/andros21/rustracer/issues/391))
+- [`cf60941`](https://github.com/andros21/rustracer/commit/cf609411a042064cac2da6dd678c98b16ca15969) bump thiserror from 1.0.57 to 1.0.58 ([#390](https://github.com/andros21/rustracer/issues/390))
+- [`cd39f29`](https://github.com/andros21/rustracer/commit/cd39f29c1e594a2d1c691da6bd26b788d1c16b5c) bump rayon from 1.9.0 to 1.10.0 ([#389](https://github.com/andros21/rustracer/issues/389))
+- [`dadd462`](https://github.com/andros21/rustracer/commit/dadd4621f9a7b2c20e7c9a2de2643f1a53b4c422) bump clap from 4.5.1 to 4.5.4 ([#388](https://github.com/andros21/rustracer/issues/388))
 
 ### Miscellaneous Tasks
 
-- [`00d13e9`](https://github.com/andros21/rustracer/commit/00d13e91edf10338aacb5fdcb6f74519aee6f5d0) stop pinning slsa-github-generator to commit
-- [`ad7e151`](https://github.com/andros21/rustracer/commit/ad7e151d188218bbdd15035ca85795c6932c50a2) fix patch for search bar
+- [`ed31a77`](https://github.com/andros21/rustracer/commit/ed31a77f6eef67455c1e37546acadb2235fc11d1) add rustracer 1.0.3 changes
+- [`b56c3ee`](https://github.com/andros21/rustracer/commit/b56c3ee47b5805e052d60d4ea21c71a3e34a8884) stop pinning slsa-github-generator to commit
+- [`f9ef027`](https://github.com/andros21/rustracer/commit/f9ef027123201c0868a7b2e77b5bfc49b9ea1521) fix search bar patch
+- [`c9d2683`](https://github.com/andros21/rustracer/commit/c9d26830eedac358f5fd989a79817f5b43a03a87) rust_docs checks with makefile target
+- [`496abf4`](https://github.com/andros21/rustracer/commit/496abf45735774a582f97e1947b02ced84c34d1b) add me as reviewer
+- [`70475c2`](https://github.com/andros21/rustracer/commit/70475c2b7d30b37754787a2b3c80bfc919c0d86c) bump rust to 1.76 ([#361](https://github.com/andros21/rustracer/issues/361))
+- [`3e83ee0`](https://github.com/andros21/rustracer/commit/3e83ee083b406ead179c34bc1daf068e5a53c73f) `ruff` now will replace also `black`
+- [`8a51145`](https://github.com/andros21/rustracer/commit/8a51145a679180f4ba138d608563f15e29db720c) bump rust to 1.77 ([#385](https://github.com/andros21/rustracer/issues/385))
+- [`1821d33`](https://github.com/andros21/rustracer/commit/1821d33274159c46afd27fe95d276a0f600cfaf9) bump rust to 1.77.1 ([#387](https://github.com/andros21/rustracer/issues/387))
+- [`cd1ed16`](https://github.com/andros21/rustracer/commit/cd1ed16dbdb680a98194c7826035ae101c582afa) bump crate from 1.0.3 to 1.0.4 ([#392](https://github.com/andros21/rustracer/issues/392))
 
 ## [1.0.3] - 2023-12-31
 
@@ -275,13 +345,13 @@ All notable changes to this project will be documented in this file.
 - [`ea915e4`](https://github.com/andros21/rustracer/commit/ea915e4a28823b6e84715ee8ab43930b66dc6ac6) bump actions/checkout from 3.1.0 to 3.2.0 ([#153](https://github.com/andros21/rustracer/issues/153))
 - [`5cf5106`](https://github.com/andros21/rustracer/commit/5cf5106c00ec8e3eb3c245d8974307f2dd40e5aa) bump taiki-e/install-action from 1.15.3 to 1.17.2 ([#154](https://github.com/andros21/rustracer/issues/154))
 - [`c9f72b1`](https://github.com/andros21/rustracer/commit/c9f72b1d3226a805e987d19c955e32a495c93304) bump dtolnay/rust-toolchain ([#152](https://github.com/andros21/rustracer/issues/152))
-- [`b0138d0`](https://github.com/andros21/rustracer/commit/b0138d02dc01cc7e8910fd16e53360f560d4dca0) bump rust from 1.65 to 1.66
-- [`145da7c`](https://github.com/andros21/rustracer/commit/145da7cbe8482040b7b01cce8a84d37e1b9e6987) change code cov report and sticky PR actions
 - [`d215b0f`](https://github.com/andros21/rustracer/commit/d215b0f4fd778f098034130f69250bca8af94176) bump actions/cache from 3.0.11 to 3.2.1 ([#156](https://github.com/andros21/rustracer/issues/156))
 - [`46a2ac0`](https://github.com/andros21/rustracer/commit/46a2ac04a43bec45f75c1d8b93b9b08b78c9be21) bump taiki-e/install-action from 1.17.2 to 1.17.3 ([#157](https://github.com/andros21/rustracer/issues/157))
 - [`6ea5b13`](https://github.com/andros21/rustracer/commit/6ea5b135d23228df1a505dc704cf181118380ac4) render from TEMPLATE
-- [`3c385dc`](https://github.com/andros21/rustracer/commit/3c385dc580304818715ad44dc128ca84a5884375) s/set-output/GITHUB_OUTPUT
 - [`21795c1`](https://github.com/andros21/rustracer/commit/21795c1cdf0e2fde99c717db1197a64e433b538c) stop caching cosign, <100M it's ok
+- [`b0138d0`](https://github.com/andros21/rustracer/commit/b0138d02dc01cc7e8910fd16e53360f560d4dca0) bump rust from 1.65 to 1.66
+- [`145da7c`](https://github.com/andros21/rustracer/commit/145da7cbe8482040b7b01cce8a84d37e1b9e6987) change code cov report and sticky PR actions
+- [`3c385dc`](https://github.com/andros21/rustracer/commit/3c385dc580304818715ad44dc128ca84a5884375) s/set-output/GITHUB_OUTPUT
 - [`a362efb`](https://github.com/andros21/rustracer/commit/a362efbc063a111b3fe6b99368cbef758a8ee562) bump actions/cache from 3.2.1 to 3.2.2 ([#160](https://github.com/andros21/rustracer/issues/160))
 - [`cbc13d5`](https://github.com/andros21/rustracer/commit/cbc13d5b7f51c0fbbe17e1847951cf6eafb505ba) bump taiki-e/install-action from 1.17.3 to 2.0.1 ([#161](https://github.com/andros21/rustracer/issues/161))
 - [`eb9783a`](https://github.com/andros21/rustracer/commit/eb9783a9fa4f7f956c667b78334f9757f095f45d) bump rayon from 1.6.0 to 1.6.1 ([#165](https://github.com/andros21/rustracer/issues/165))
@@ -362,8 +432,8 @@ All notable changes to this project will be documented in this file.
 
 - [`f28c367`](https://github.com/andros21/rustracer/commit/f28c3677b23808bb2dff3f96987b448ea2f82960) add a flat colors renderer useful for debugging ([#52](https://github.com/andros21/rustracer/issues/52))
 - [`8a6c19e`](https://github.com/andros21/rustracer/commit/8a6c19eba736887ff7d716e2b63a702856bf3232) impl anti-aliasing algorithm ([#53](https://github.com/andros21/rustracer/issues/53))
-- [`387228d`](https://github.com/andros21/rustracer/commit/387228d3b2616f4edee754de0023ca08aa76a92a) add method to set all pixels at once
 - [`527b79c`](https://github.com/andros21/rustracer/commit/527b79c222a368c20531e930d6752c7ad9dd2f71) improvements in error source location logic ([#59](https://github.com/andros21/rustracer/issues/59))
+- [`387228d`](https://github.com/andros21/rustracer/commit/387228d3b2616f4edee754de0023ca08aa76a92a) add method to set all pixels at once
 - [`d3a974c`](https://github.com/andros21/rustracer/commit/d3a974cc89141ee204595fe80839cc58f51d3e97) colored output
 - [`d9622a9`](https://github.com/andros21/rustracer/commit/d9622a9836d15a0c2212d85b30145d5a2c8504a2) enable colored cli
 - [`8563de7`](https://github.com/andros21/rustracer/commit/8563de7e0ce1aba64be437a9b0ff399f1583e163) add `completion` subcommand ([#62](https://github.com/andros21/rustracer/issues/62))
@@ -443,17 +513,17 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- [`03eb2e0`](https://github.com/andros21/rustracer/commit/03eb2e06aeca0b2d9ddafdca0fda498e54f8f33b) fail-fast for invalid/unsupported file format ([#37](https://github.com/andros21/rustracer/issues/37))
 - [`e1dfefe`](https://github.com/andros21/rustracer/commit/e1dfefe1d169916a4936373108ea4d39af6e7a8e) add PCG random numbers generator
 - [`694145d`](https://github.com/andros21/rustracer/commit/694145d176408de7eb9dfbd19b24fc2fdccf0954) add trait derivation for `Pcg`
-- [`03eb2e0`](https://github.com/andros21/rustracer/commit/03eb2e06aeca0b2d9ddafdca0fda498e54f8f33b) fail-fast for invalid/unsupported file format ([#37](https://github.com/andros21/rustracer/issues/37))
 - [`5b867ab`](https://github.com/andros21/rustracer/commit/5b867ab967e7f5371d68fbf88503e5695a0c5094) const `(E1, E2, E3)` versors
 - [`06d0bbd`](https://github.com/andros21/rustracer/commit/06d0bbda55e1625b5ed774301601ab1b16a3eadc) add useful function `create_onb_from_z`
 - [`dc21c92`](https://github.com/andros21/rustracer/commit/dc21c92a4f410a55d1f6ac38f719982aad237f88) add `Material` struct
 - [`65419c9`](https://github.com/andros21/rustracer/commit/65419c9ad857820fe633563cefe384c370a78fcb) `copysign` in `create_onb_from_z`
+- [`4fc55fb`](https://github.com/andros21/rustracer/commit/4fc55fb2c05273493f9bc05b77783cda3dbe9cd8) re-implement using enumerators instead of generics
 - [`7e693a4`](https://github.com/andros21/rustracer/commit/7e693a4e3e7a498227d5f2bde8b819df53c539cf) add a `Material` member to shapes and `HitRecord` structs
 - [`993ec53`](https://github.com/andros21/rustracer/commit/993ec5350fa0685a95b4997015560444429138da) add `PathTracer` to implement path tracing algorithm
 - [`2a959e2`](https://github.com/andros21/rustracer/commit/2a959e2b6f12bf5586fd3c16005118fe376f1bbe) add furnace test for `PathTracer`
-- [`4fc55fb`](https://github.com/andros21/rustracer/commit/4fc55fb2c05273493f9bc05b77783cda3dbe9cd8) re-implement using enumerators instead of generics
 - [`ebf91a6`](https://github.com/andros21/rustracer/commit/ebf91a62047a1af8403ef4a4030a5d1870f45bd3) new demo command
 - [`9b24f3d`](https://github.com/andros21/rustracer/commit/9b24f3d359a072ac55f5c2aa4b71c4ed445b7755) use path tracing algorithm in `demo` subcommand
 - [`d201f40`](https://github.com/andros21/rustracer/commit/d201f40983dd83052eb4ce8efc4638e04164753a) wrap cameras and renderers inside enum
@@ -467,8 +537,8 @@ All notable changes to this project will be documented in this file.
 
 ### Testing
 
-- [`cbc290f`](https://github.com/andros21/rustracer/commit/cbc290f1c64f026c75196cbdd5123fe6573c3941) remove some clippy noise
 - [`7c9ca48`](https://github.com/andros21/rustracer/commit/7c9ca48a3342b362ffaa085b42ff78f3f27e9e01) improve unit-tests and code coverage ([#34](https://github.com/andros21/rustracer/issues/34))
+- [`cbc290f`](https://github.com/andros21/rustracer/commit/cbc290f1c64f026c75196cbdd5123fe6573c3941) remove some clippy noise
 
 ### Devel
 
@@ -529,6 +599,8 @@ All notable changes to this project will be documented in this file.
 - [`d17ecba`](https://github.com/andros21/rustracer/commit/d17ecbac8dc9eca1e4144be225cd99d49ed88b8d) add `Matrix` class
 - [`f9d2e45`](https://github.com/andros21/rustracer/commit/f9d2e45ff4fa63e17ddb6427ffcafc69fd5adb04) Add `Tranformation` class
 - [`5ec60ae`](https://github.com/andros21/rustracer/commit/5ec60ae09d734b6233f6dfd8b03215064550e8e0) impl `Mul<f32>` operation
+- [`86d54bd`](https://github.com/andros21/rustracer/commit/86d54bd9d10089a20060c3000217c51a4ff0cb23) update build and test requirements for devel
+- [`ea09c00`](https://github.com/andros21/rustracer/commit/ea09c00aa0330928f93b2d2e0ed976cf499081ea) little improvement in line code coverage ([#18](https://github.com/andros21/rustracer/issues/18))
 - [`6f7443b`](https://github.com/andros21/rustracer/commit/6f7443b0510a1867a695d26d334928c062b63181) add `Ray` struct and methods
 - [`3865b8f`](https://github.com/andros21/rustracer/commit/3865b8f9ddc85e2b2b4237772af7e71f76bd7ae4) add tools to manage the camera
 - [`22838a1`](https://github.com/andros21/rustracer/commit/22838a1cfbd7645475bac1b592b17722104a59c5) add test for `Trasformation`*`Ray`
@@ -536,8 +608,6 @@ All notable changes to this project will be documented in this file.
 - [`462f6fd`](https://github.com/andros21/rustracer/commit/462f6fd306ca15c031a2d409b70a12b8a396219d) transform the `Ray` generated by `fire_ray`
 - [`cac5f6e`](https://github.com/andros21/rustracer/commit/cac5f6e0897d0ed7bf5dc50282990dcc714d2e7e) impl `shape` method for `HdrImage`
 - [`071b031`](https://github.com/andros21/rustracer/commit/071b03162a190c575fa59724c449149264c5ef67) add `imagetracer` and `render` modules
-- [`86d54bd`](https://github.com/andros21/rustracer/commit/86d54bd9d10089a20060c3000217c51a4ff0cb23) update build and test requirements for devel
-- [`ea09c00`](https://github.com/andros21/rustracer/commit/ea09c00aa0330928f93b2d2e0ed976cf499081ea) little improvement in line code coverage ([#18](https://github.com/andros21/rustracer/issues/18))
 - [`1c60cc3`](https://github.com/andros21/rustracer/commit/1c60cc3b36d1959a30fae75c73acec077e07a631) geometrical shapes are implemented
 - [`9992184`](https://github.com/andros21/rustracer/commit/99921842b36c90047cf5d05ac9f7fac32785925c) add `World` struct
 - [`bc22424`](https://github.com/andros21/rustracer/commit/bc22424884c33f9cc79808a78e2b9a8db86c017f) add `OnOffRenderer`
@@ -576,16 +646,16 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
+- [`6d55821`](https://github.com/andros21/rustracer/commit/6d558213d5795ceaad82c5a0b85bc2c32e109317) add `rustracer` logo
 - [`2153802`](https://github.com/andros21/rustracer/commit/21538027581fbee9c0ae70e8bf6444d8fb632be0) add `Color` struct with unit tests
 - [`532b641`](https://github.com/andros21/rustracer/commit/532b641a8b4defbda66dfe55022897cbe30e55e6) add `HdrImage` struct with unit tests
 - [`68133be`](https://github.com/andros21/rustracer/commit/68133befa1ae4b36abd9d6f6dae790f21b668547) [**breaking**] add new `HdrImageErr` variants
 - [`36643f8`](https://github.com/andros21/rustracer/commit/36643f874d2c79ef17a75dbffab618d27ac6aaf9) impl trait `IntoIter` for `Color`
 - [`7f2186e`](https://github.com/andros21/rustracer/commit/7f2186e68463ab9e7b5a4d7208103ac917f54399) add new dependency `endianness`
+- [`c73d712`](https://github.com/andros21/rustracer/commit/c73d712d52bddde47e2cd0bd02f9545e4dc1ec6b) tone mapping implementation
 - [`e63d9f8`](https://github.com/andros21/rustracer/commit/e63d9f83428a66a9664aeb0eb410439aaad68d21) add method read_pfm_file to HdrImage
 - [`8ceb963`](https://github.com/andros21/rustracer/commit/8ceb963aeae9d7ab5bb54b72a791bfe3076b9854) add error variants needed for `read_pfm_*` methods
-- [`c73d712`](https://github.com/andros21/rustracer/commit/c73d712d52bddde47e2cd0bd02f9545e4dc1ec6b) tone mapping implementation
 - [`e2efcd5`](https://github.com/andros21/rustracer/commit/e2efcd5ab46dd10c8cabc5384c00122fc460a9fc) add `read_pfm_*` and `write_ldr_file`
-- [`6d55821`](https://github.com/andros21/rustracer/commit/6d558213d5795ceaad82c5a0b85bc2c32e109317) add `rustracer` logo
 - [`3210c09`](https://github.com/andros21/rustracer/commit/3210c09a1bc3e4e05ddd5d0080e893a3b5edbaec) build `rustracer` cli using `clap`
 - [`2ab1ea0`](https://github.com/andros21/rustracer/commit/2ab1ea0be272e0f6bbaef0ccdffb8ca81d1e7c4d) `rustracer-convert` subcommand main impl
 - [`d737ca5`](https://github.com/andros21/rustracer/commit/d737ca5bccfe86cad647e6b036f509a217ad1a72) add install, usage, license sections

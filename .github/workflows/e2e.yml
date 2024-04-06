@@ -32,7 +32,7 @@ jobs:
             | sed 's/^_verify_release$/#\0/;s/^_install_release$/#\0/' \
             | bash -s -- ${libc}
           done
-      # verify using cosign and rekor
+      # verify keyless signature using cosign and rekor
       # see https://github.com/sigstore/cosign/blob/b2351d3d7e47e51548b46cc16f459e3c23a42d94/FUN.md
       - name: verify rustracer blobs
         run: |
@@ -66,6 +66,36 @@ jobs:
               --certificate-identity "${id}" \
               --certificate-oidc-issuer "${oidc}" \
               "rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz"
+          done
+  slsa:
+    name: slsa blob
+    runs-on: ubuntu-latest
+    steps:
+      - name: install slsa-verify
+        uses: slsa-framework/slsa-verifier/actions/installer@v2.5.1
+      # verify slsa attestation using slsa-verifier
+      # https://github.com/slsa-framework/slsa-verifier?tab=readme-ov-file#available-options
+      - name: download rustracer
+        run: |
+          set -x
+          # dowload only
+          for libc in musl gnu; do
+            curl -sSf https://andros21.github.io/rustracer/install.sh \
+            | sed 's/^_verify_release$/#\0/;s/^_install_release$/#\0/' \
+            | bash -s -- ${libc}
+          done
+      - name: verify slsa blobs
+        run: |
+          set -x
+          latest="$(curl -sL https://api.github.com/repos/andros21/rustracer/releases/latest \
+          | jq -r '.tag_name')"
+          repo="github.com/andros21/rustracer"
+          for libc in musl gnu; do
+            slsa-verifier verify-artifact \
+                      "rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz" \
+                      --provenance-path multiple.intoto.jsonl \
+                      --source-uri ${repo} \
+                      --source-tag "${latest}"
           done
   openssl:
     name: openssl blob

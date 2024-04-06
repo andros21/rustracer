@@ -55,7 +55,7 @@ jobs:
             "rustracer-${latest}_checksums_sha256.txt"
           # verify tar.gz
           for libc in musl gnu; do
-            uuid="$(rekor-cli search --artifact "rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz")"
+            uuid="$(rekor-cli search --artifact "rustracer-${latest}-x86_64-unknown-linux-${libc}.tar.gz" | tail -n1)"
             sig="$(rekor-cli get --uuid="$uuid" --format=json \
                   | jq -r .Body.HashedRekordObj.signature.content)"
             cert="$(rekor-cli get --uuid="$uuid" --format=json \

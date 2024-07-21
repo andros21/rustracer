@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: install slsa-verify
-        uses: slsa-framework/slsa-verifier/actions/installer@v2.5.1
+        uses: slsa-framework/slsa-verifier/actions/installer@v2.6.0
       # verify slsa attestation using slsa-verifier
       # https://github.com/slsa-framework/slsa-verifier?tab=readme-ov-file#available-options
       - name: download rustracer

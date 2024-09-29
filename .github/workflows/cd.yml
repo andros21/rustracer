@@ -69,7 +69,7 @@ jobs:
       - name: cosign artifacts
         run: .github/workflows/cd.sh cosign
       - name: generate changelog latest
-        uses: orhun/git-cliff-action@76ba43af940f631f5920e7f8d0de1321703b7cf0
+        uses: orhun/git-cliff-action@14bb67385aaac969efa2f146d137a42bb3b0aa87
         id: cliff
         with:
           config: cliff.toml
@@ -175,7 +175,7 @@ jobs:
         run: |
           echo "TAG=${GITHUB_REF:10}" >> "$GITHUB_ENV"
       - name: Refresh changelog
-        uses: orhun/git-cliff-action@76ba43af940f631f5920e7f8d0de1321703b7cf0
+        uses: orhun/git-cliff-action@14bb67385aaac969efa2f146d137a42bb3b0aa87
         with:
           config: cliff.toml
           args: --verbose --tag ${{ env.TAG }}

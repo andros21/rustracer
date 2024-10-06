@@ -145,7 +145,7 @@ jobs:
             target/
           key: ${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
       - name: install cargo-tarpaulin
-        uses: taiki-e/install-action@9bef7e9c3d7c7aa986ef19933b0722880ae377e0
+        uses: taiki-e/install-action@3dc0bf887971817c6565ede5175dd4809d18f471
         with:
           tool: cargo-tarpaulin
           checksum: true

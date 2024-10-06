@@ -18,7 +18,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
       - name: check cargo cache
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        uses: actions/cache@2cdf405574d6ef1f33a1d12acccd3ae82f47b3f2
         id: rust-cache
         with:
           path: |
@@ -119,7 +119,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
       - name: check cache
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        uses: actions/cache@2cdf405574d6ef1f33a1d12acccd3ae82f47b3f2
         id: cache
         with:
           path: |
@@ -143,7 +143,7 @@ jobs:
       - name: checkout project
         uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
       - name: check cache
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        uses: actions/cache@2cdf405574d6ef1f33a1d12acccd3ae82f47b3f2
         id: cache
         with:
           path: |

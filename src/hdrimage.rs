@@ -327,11 +327,9 @@ impl HdrImage {
                     .save_with_format(&path, format)
                     .map_err(HdrImageErr::LdrFileWriteFailure)
             },
-            _ => {
-                return Err(HdrImageErr::UnsupportedLdrFileFormat(String::from(
-                    path.extension().unwrap().to_str().unwrap_or(""),
-                )))
-            },
+            _ => Err(HdrImageErr::UnsupportedLdrFileFormat(String::from(
+                path.extension().unwrap().to_str().unwrap_or(""),
+            ))),
         }
     }
 }

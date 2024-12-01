@@ -54,7 +54,7 @@ pub struct FlatRenderer<'a> {
     bg_color: Color,
 }
 
-impl<'a> Solve for OnOffRenderer<'a> {
+impl Solve for OnOffRenderer<'_> {
     /// Solve rendering with on/off strategy.
     ///
     /// If intersection happens return `fg_color` otherwise `bg_color`.
@@ -73,7 +73,7 @@ impl<'a> FlatRenderer<'a> {
     }
 }
 
-impl<'a> Solve for FlatRenderer<'a> {
+impl Solve for FlatRenderer<'_> {
     /// Solve rendering with flat colors.
     ///
     /// If intersection happens return the color of the hit shape, otherwise `bg_color`.
@@ -126,7 +126,7 @@ impl<'a> PathTracer<'a> {
     }
 }
 
-impl<'a> Solve for PathTracer<'a> {
+impl Solve for PathTracer<'_> {
     /// Solve the rendering equation using a path tracing algorithm.
     ///
     /// The algorithm implemented here allows the caller to tune number of\
@@ -192,7 +192,7 @@ pub enum Renderer<'a> {
     Flat(FlatRenderer<'a>),
 }
 
-impl<'a> Solve for Renderer<'a> {
+impl Solve for Renderer<'_> {
     /// Render the scene using a particular [`Renderer`] variants.
     fn solve(&self, ray: Ray, pcg: &mut Pcg) -> Color {
         match self {

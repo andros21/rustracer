@@ -22,11 +22,11 @@ pub enum HdrImageErr {
     #[error("impossible to write to pfm file\n\tsource: {}",
         format!("{}", .0).to_lowercase())]
     PfmFileWriteFailure(#[source] std::io::Error),
-    #[error("impossible to parse {1} as integer from pfm file\n\tsource: {}",
-        format!("{}", .0).to_lowercase())]
+    #[error("impossible to parse {1} as integer from pfm file\n\tsource: {s}",
+        s = format!("{}", .0).to_lowercase())]
     PfmIntParseFailure(#[source] std::num::ParseIntError, String),
-    #[error("impossible to parse {1} as float from pfm file\n\tsource: {}",
-        format!("{}", .0).to_lowercase())]
+    #[error("impossible to parse {1} as float from pfm file\n\tsource: {s}",
+        s = format!("{}", .0).to_lowercase())]
     PfmFloatParseFailure(#[source] std::num::ParseFloatError, String),
     #[error("impossible to write to ldr file\n\tsource: {}",
         format!("{}", .0).to_lowercase())]
@@ -38,23 +38,23 @@ pub enum HdrImageErr {
 /// Error enum for [`convert`](../fn.convert.html) function inside [`main`](../fn.main.html).
 #[derive(Error, Debug)]
 pub enum ConvertErr {
-    #[error("{}\n\tsource: {0}",
-        format!("{:?} flag invalid value, expected floating-point number", .1).bold())]
+    #[error("{msg}\n\tsource: {0}",
+        msg = format!("{:?} flag invalid value, expected floating-point number", .1).bold())]
     FloatParseFailure(#[source] std::num::ParseFloatError, String),
-    #[error("{}\n\tsource: {0}", "image convert input/output error".bold())]
+    #[error("{msg}\n\tsource: {0}", msg = "image convert input/output error".bold())]
     IoError(#[source] HdrImageErr),
 }
 
 /// Error enum for [`demo`](../fn.demo.html) function inside [`main`](../fn.main.html).
 #[derive(Error, Debug)]
 pub enum DemoErr {
-    #[error("{}\n\tsource: {0}",
-        format!("{:?} flag invalid value, expected integer number", .1).bold())]
+    #[error("{msg}\n\tsource: {0}",
+        msg = format!("{:?} flag invalid value, expected integer number", .1).bold())]
     IntParseFailure(#[source] std::num::ParseIntError, String),
-    #[error("{}\n\tsource: {0}",
-        format!("{:?} flag invalid value, expected floating-point number", .1).bold())]
+    #[error("{msg}\n\tsource: {0}",
+        msg = format!("{:?} flag invalid value, expected floating-point number", .1).bold())]
     FloatParseFailure(#[source] std::num::ParseFloatError, String),
-    #[error("{}\n\tsource: {0}", "demo render input/output error".bold())]
+    #[error("{msg}\n\tsource: {0}", msg = "demo render input/output error".bold())]
     IoError(#[source] HdrImageErr),
 }
 
@@ -92,20 +92,20 @@ pub enum SceneErr {
     #[error("{} {}",
         format!(":{}:{}", loc.line_num, loc.col_num).yellow(), msg)]
     InvalidCamera { loc: SourceLocation, msg: String },
-    #[error("{} impossible to read from scene file\n\tsource: {0}", "::".yellow())]
+    #[error("{sep} impossible to read from scene file\n\tsource: {0}", sep = "::".yellow())]
     SceneFileReadFailure(#[source] std::io::Error),
 }
 
 /// Error enum for [`render`](../fn.render.html) function inside [`main`](../fn.main.html).
 #[derive(Error, Debug)]
 pub enum RenderErr {
-    #[error("{}\n\tsource: {0}",
-        format!("{:?} flag invalid value, expected integer number", .1).bold())]
+    #[error("{msg}\n\tsource: {0}",
+        msg = format!("{:?} flag invalid value, expected integer number", .1).bold())]
     IntParseFailure(#[source] std::num::ParseIntError, String),
-    #[error("{}\n\tsource: {0}",
-        format!("{:?} flag invalid value, expected floating-point number", .1).bold())]
+    #[error("{msg}\n\tsource: {0}",
+        msg = format!("{:?} flag invalid value, expected floating-point number", .1).bold())]
     FloatParseFailure(#[source] std::num::ParseFloatError, String),
-    #[error("{}\n\tsource: {0}", "render input/output error".bold())]
+    #[error("{msg}\n\tsource: {0}", msg = "render input/output error".bold())]
     IoError(#[source] HdrImageErr),
     #[error("{}\n\tsource: {}",
         format!("render parsing scene from {:?}", .1).bold(),

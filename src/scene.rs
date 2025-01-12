@@ -300,7 +300,7 @@ impl<R: Read> InputStream<R> {
         loop {
             ch = self.read_char();
             // If `e` or `E` char found could be an float in scientific notation.
-            if ch.to_ascii_lowercase() == 'e' {
+            if ch.eq_ignore_ascii_case(&'e') {
                 let ch_nx = self.read_char();
                 // If the char follow exp char isn't a digit or a sign, unroll.
                 if !(ch_nx.is_ascii_digit() || ['+', '-'].contains(&ch_nx)) {

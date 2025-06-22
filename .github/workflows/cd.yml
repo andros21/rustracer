@@ -65,7 +65,7 @@ jobs:
         with:
           name: rustracer-build
       - name: install cosign
-        uses: sigstore/cosign-installer@3454372f43399081ed03b604cb2d021dabca52bb
+        uses: sigstore/cosign-installer@fb28c2b6339dcd94da6e4cbcbc5e888961f6f8c3
       - name: cosign artifacts
         run: .github/workflows/cd.sh cosign
       - name: generate changelog latest

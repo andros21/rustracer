@@ -386,11 +386,9 @@ impl<R: Read> InputStream<R> {
     /// Otherwise return an error of type [`SceneErr::InvalidCharacter`].
     fn read_token(&mut self) -> Result<Token, SceneErr> {
         // If some saved token, use it.
-        if self.saved_token.is_some() {
-            let saved_token = self.saved_token.as_ref().unwrap().clone();
-            self.saved_token = None;
+        if let Some(saved_token) = self.saved_token.take() {
             return Ok(saved_token);
-        };
+        }
         // Save location where starting to parse token.
         let token_location = self.location;
         let ch = self.read_char();

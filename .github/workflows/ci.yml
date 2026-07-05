@@ -170,7 +170,7 @@ jobs:
           output: both
       - name: cov pr comment
         if: ${{ (github.event_name == 'pull_request') && (github.actor != 'dependabot[bot]') }}
-        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88
         with:
           message: Coverage Report
           recreate: true

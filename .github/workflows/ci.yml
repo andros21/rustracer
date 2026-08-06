@@ -36,7 +36,7 @@ jobs:
       rust: ${{ steps.filter.outputs.rust }}
     steps:
       - name: checkout project
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: dorny/paths-filter@7b450fff21473bca461d4b92ce414b9d0420d706
         id: filter
         with:
@@ -66,7 +66,7 @@ jobs:
       contents: read
     steps:
       - name: checkout project
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: check cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         id: cache
@@ -97,7 +97,7 @@ jobs:
       contents: read
     steps:
       - name: checkout project
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: setup python
         run: |
           set -x
@@ -118,7 +118,7 @@ jobs:
       contents: read
     steps:
       - name: checkout project
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: shellcheck bash
         run: |
           shopt -s globstar
@@ -134,7 +134,7 @@ jobs:
       coverage: ${{ steps.coverage.outputs.coverage }}
     steps:
       - name: checkout project
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: check cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         id: cache
@@ -214,7 +214,7 @@ jobs:
       contents: write
     steps:
       - name: checkout project
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: check cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         id: cache
